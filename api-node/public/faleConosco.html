@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../public/css/faleC.css">
+    <title>Fale conosco</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Advent+Pro:wght@100;200;300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <iframe src="include/header.html" frameborder="0"></iframe>
+    <main>
+        <div class="containerC">
+            <div class="faleConosco">
+                <p class="textoPa">Fale Conosco</p>
+                <label class="lInput" for="inpNome">Nome</label>
+                <input  type="text" class="inpFaleConosco" id="inpNome">
+                <label class="lInput" for="inpEmail">Email</label>
+                <input type="text" class="inpFaleConosco" id="inpEmail">
+                <label class="lInput" for="inpAssunto">Assunto</label>
+                <input type="text" class="inpFaleConoscoAssunto" id="inpAssunto">
+
+                <div class="divBotaoFaleConosco">
+                    <Button class="faleConoscoBtn">Enviar</Button>
+                </div>
+            </div>
+        </div>
+         <div class="linhaVerde"></div>
+         <div class="containerC">
+            <div class="contatos">
+                <div class="mapa">
+                    <iframe class="localSptech" src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3657.2873447333654!2d-46.661614!3d-23.558121299999996!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x94ce59d2b063f663%3A0xc567c0d16d0bc582!2sS%C3%A3o%20Paulo%20Tech%20School!5e0!3m2!1spt-BR!2sbr!4v1660690924641!5m2!1spt-BR!2sbr" ></iframe>                
+                </div>
+                
+                <div class="localNumeroEmail">
+                    <div class="textosComImgs">
+                        <img class="imgsPequenas" id="imgRua" src="assets/sistema/alfinete 1.png" alt="">
+                        <label for="imgRua">R.Haddock Lobo, 595</label>  
+                    </div>
+                    <div class="textosComImgs">
+                        <img class="imgsPequenas" id="imgEmail" src="assets/sistema/o-email 1.png" alt="">
+                        <label for="imgEmail">Email</label>
+                    </div>
+                    <div class="textosComImgs">
+                        <img class="imgsPequenas" id="imgTelefone" src="assets/sistema/telefone 1.png" alt="">
+                        <label for="imgtelefone">Telefone</label>
+                    </div>
+                </div>
+            </div> 
+        </div> 
+    </main>
+</body>
+
+<script>
+function menu() {
+    var element = document.getElementById("navbar");
+    element.classList.add("toggle");
+}
+function Fechamenu() {
+    var element = document.getElementById("navbar");
+    element.classList.remove("toggle");
+}
+</script>
+
+
+
+</body>
+</html>
