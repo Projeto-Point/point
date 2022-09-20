@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="../public/css/styleLogin_Cadastro.css">
+    <link rel="stylesheet" href="./css/styleLogin_Cadastro.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Advent+Pro:wght@100;200;300;400;500;600;700&display=swap"
@@ -28,17 +28,17 @@
 
                 <div class="inputs">
                     <span class="span_text">Email</span> <br>
-                    <input class="input" type="email" id="ipt_email" placeholder="seuemail@email.com">
+                    <input class="input" type="email" id="email_input" placeholder="seuemail@email.com">
                 </div>
 
                 <div class="inputs">
                     <span class="span_text">Senha</span> <br>
-                    <input class="input" type="password" id="ipt_senha" placeholder="********">
+                    <input class="input" type="password" id="senha_input" placeholder="********">
                     <small>Esqueceu sua senha?</small>
                 </div>
 
                 <div class="botao_login">
-                    <button class="btnEntrar">Entrar</button>
+                    <button class="btnEntrar" onclick="entrar()">Entrar</button>
                 </div>
 
                 <div class="sem_cadastro">
@@ -51,3 +51,76 @@
 </body>
 
 </html>
+
+<script>
+
+
+    function entrar() {
+
+
+        var emailVar = email_input.value;
+        var senhaVar = senha_input.value;
+        if (emailVar == "" || senhaVar == "") {
+            alert("Preencha todos os campos para prosseguir!")
+
+            finalizarAguardar();
+            return false;
+        }
+
+        if (emailVar.indexOf("@") == -1 || emailVar.indexOf(".com") == -1) {
+            alert("E-mail inválido! Verifique e tente novamente.")
+
+            finalizarAguardar();
+            return false;
+        }
+
+        console.log("FORM LOGIN: ", emailVar);
+        console.log("FORM SENHA: ", senhaVar);
+
+        fetch("/usuarios/autenticar", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                emailServer: emailVar,
+                senhaServer: senhaVar
+            })
+        }).then(function (resposta) {
+            console.log("ESTOU NO THEN DO entrar()!")
+
+            if (resposta.ok) {
+                console.log(resposta);
+
+                resposta.json().then(json => {
+                    console.log(json);
+                    console.log(JSON.stringify(json));
+
+                    sessionStorage.EMAIL_USUARIO = json.email;
+                    sessionStorage.NOME_USUARIO = json.nome;
+                    sessionStorage.ID_USUARIO = json.id;
+
+                    setTimeout(function () {
+                        window.location = "index.html";
+                    }, 1000); // apenas para exibir o loading
+
+                });
+
+            } else {
+
+                console.log("Houve um erro ao tentar realizar o login!");
+
+                resposta.text().then(texto => {
+                    console.error(texto);
+                    finalizarAguardar(texto);
+                });
+            }
+
+        }).catch(function (erro) {
+            console.log(erro);
+        })
+
+        return false;
+    }
+
+</script>

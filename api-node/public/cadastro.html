@@ -24,27 +24,27 @@
 
                 <div class="inputs">
                     <span class="span_text">Nome:</span> <br>
-                    <input class="input"  id="ipt_nome" placeholder="Seu nome">
+                    <input class="input"  id="nome_input" placeholder="Seu nome">
                 </div>
 
                 <div class="inputs">
                     <span class="span_text">E-mail:</span> <br>
-                    <input class="input" type="email" id="ipt_email" placeholder="seuEmail@email.com">
+                    <input class="input" type="email" id="email_input" placeholder="seuEmail@email.com">
                 
                 </div>
                 <div class="inputs">
                     <span class="span_text">Sua senha:</span> <br>
-                    <input class="input" type="password" id="ipt_senha" placeholder="********">
+                    <input class="input" type="password" id="senha_input" placeholder="********">
                 
                 </div>
                 <div class="inputs">
                     <span class="span_text">Confirme sua senha:</span> <br>
-                    <input class="input" type="password" id="ipt_Confirmsenha" placeholder="********">
+                    <input class="input" type="password"  id="confirmacao_senha_input" placeholder="********">
                 
                 </div>
 
                 <div class="botao_cadastro">
-                    <button class="btnEntrar">Cadastrar-se</button>
+                    <button class="btnEntrar" onclick="cadastrar()">Cadastrar-se</button>
                 </div>
 
                 <div class="sem_login">
@@ -58,4 +58,82 @@
 </body>
 
 </html>
+
+<script>
+    function cadastrar() {
+        
+
+        var nomeVar = nome_input.value;
+        var emailVar = email_input.value;
+        var senhaVar = senha_input.value;
+        var confirmacaoSenhaVar = confirmacao_senha_input.value;
+
+        if (nomeVar == "" || emailVar == "" || senhaVar == "" || confirmacaoSenhaVar == "") {
+            cardErro.style.display = "block"
+            mensagem_erro.innerHTML = "Preencha todos os campos para prosseguir!";
+
+            
+            return false;
+        }
+        else {
+            setInterval(sumirMensagem, 5000)
+        }
+
+        if (emailVar.indexOf("@") == -1 || emailVar.indexOf(".com") == -1) {
+            cardErro.style.display = "block"
+            mensagem_erro.innerHTML = "Ops, e-mail inválido! Verifique e tente novamente.";
+            
+            return false;
+        }
+        else {
+            setInterval(sumirMensagem, 5000)
+        }
+
+        if (senhaVar != confirmacaoSenhaVar) {
+            cardErro.style.display = "block"
+            mensagem_erro.innerHTML = "As senhas inseridas devem ser iguais para prosseguir!";
+            
+            return false;
+        }
+        else {
+            setInterval(sumirMensagem, 5000)
+        }
+
+        // Enviando o valor da nova input
+        fetch("/usuarios/cadastrar", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                // crie um atributo que recebe o valor recuperado aqui
+                // Agora vá para o arquivo routes/usuario.js
+                nomeServer: nomeVar,
+                emailServer: emailVar,
+                senhaServer: senhaVar,
+            })
+        }).then(function (resposta) {
+
+            console.log("resposta: ", resposta);
+
+            if (resposta.ok) {
+                cardErro.style.display = "block"
+                mensagem_erro.innerHTML = "Cadastro realizado com sucesso!";
+                window.location = "login.html";
+                limparFormulario();
+                
+            } else {
+                throw ("Houve um erro ao tentar realizar o cadastro!");
+            }
+        }).catch(function (resposta) {
+            console.log(`#ERRO: ${resposta}`);
+            
+        });
+
+        return false;
+    }
+
+
+
+</script>
 
