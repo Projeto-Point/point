@@ -33,6 +33,12 @@
                 
                 </div>
                 <div class="inputs">
+                    <span class="span_text">CPF:</span> <br>
+                    <input class="input" type="email" id="cpf_input" placeholder="***********">
+                
+                </div>
+
+                <div class="inputs">
                     <span class="span_text">Sua senha:</span> <br>
                     <input class="input" type="password" id="senha_input" placeholder="********">
                 
@@ -48,7 +54,7 @@
                 </div>
 
                 <div class="sem_login">
-                    <span class="span_text_scad">Não possui cadastro?</span> <a href="login.html">Clique aqui.</a>
+                    <span class="span_text_scad">Já possui um cadastro?</span> <a href="login.html">Clique aqui.</a>
                 </div>
 
             </div>
@@ -65,19 +71,18 @@
 
         var nomeVar = nome_input.value;
         var emailVar = email_input.value;
+        var cpfVar = cpf_input.value;
         var senhaVar = senha_input.value;
         var confirmacaoSenhaVar = confirmacao_senha_input.value;
 
-        if (nomeVar == "" || emailVar == "" || senhaVar == "" || confirmacaoSenhaVar == "") {
+        if (nomeVar == "" || emailVar == "" || senhaVar == "" || confirmacaoSenhaVar == "" || cpfVar == "") {
             cardErro.style.display = "block"
             mensagem_erro.innerHTML = "Preencha todos os campos para prosseguir!";
 
             
             return false;
         }
-        else {
-            setInterval(sumirMensagem, 5000)
-        }
+       
 
         if (emailVar.indexOf("@") == -1 || emailVar.indexOf(".com") == -1) {
             cardErro.style.display = "block"
@@ -85,8 +90,16 @@
             
             return false;
         }
-        else {
-            setInterval(sumirMensagem, 5000)
+        
+
+        if (cpfVar.length != 11) {
+            alert("Insira todos os números do CPF: Há um número a mais ou a menos. ")
+            
+            return false;
+        } else if (cpfVar != Number(cpfVar)) {
+            alert("Insira apenas caractéres válidos no CPF: Hà um caractere inválido.")
+            
+            return false;
         }
 
         if (senhaVar != confirmacaoSenhaVar) {
@@ -95,9 +108,7 @@
             
             return false;
         }
-        else {
-            setInterval(sumirMensagem, 5000)
-        }
+        
 
         // Enviando o valor da nova input
         fetch("/usuarios/cadastrar", {
@@ -110,6 +121,7 @@
                 // Agora vá para o arquivo routes/usuario.js
                 nomeServer: nomeVar,
                 emailServer: emailVar,
+                cpfServer: cpfVar,
                 senhaServer: senhaVar,
             })
         }).then(function (resposta) {
@@ -117,9 +129,14 @@
             console.log("resposta: ", resposta);
 
             if (resposta.ok) {
-                cardErro.style.display = "block"
-                mensagem_erro.innerHTML = "Cadastro realizado com sucesso!";
-                window.location = "login.html";
+                
+                
+                
+                setTimeout(()=>{
+                    console.log("entrou")
+                    window.location = "login.html";
+                },1000)
+                
                 limparFormulario();
                 
             } else {
