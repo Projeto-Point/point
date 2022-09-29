@@ -19,7 +19,7 @@ create table funcionario (
     fkEmpresa int,
     foreign key (fkGestor) references funcionario (idFuncionario),
     foreign key (fkEmpresa) references empresa (idEmpresa)
-) auto_increment = 100;
+);
 
 create table telefone (
 	idTelefone int primary key auto_increment,
@@ -34,7 +34,7 @@ create table endereco (
     num int,
     bairro varchar(45),
     estado char(2),
-    cidade char(2),
+    cidade VARCHAR(45),
     pais varchar(45),
     fkFuncionario int,
     foreign key (fkFuncionario) references funcionario (idFuncionario),
@@ -43,75 +43,71 @@ create table endereco (
 );
 
 create table maquina (
-	idMaquina int primary key auto_increment,
+    idMaquina int primary key auto_increment,
+    nomeMaquina varchar(45),
     sistemaOperacional varchar(45),
     fkfuncionario int,
     foreign key (fkFuncionario) references funcionario (idFuncionario)
-    )auto_increment = 1000;
-    
-    
-create table cpuMaquina(
-	idCPU int primary key auto_increment,
-    modelo varchar(45),
-    fkMaquina int,
-     foreign key (fkMaquina) references maquina (idMaquina)
-) auto_increment = 222;
+);
 
-create table registroCPU(
-	idRegistroCPU int primary key auto_increment,
-    porcentagem decimal(5,2),
-    temperatura decimal(5,2),
-    dataEhora datetime,
-    fkCPU int,
-    foreign key (fkCPU) references cpuMaquina (idCPU)
-    ) auto_increment = 222000;
-
-create table RAM(
-	idRAM int primary key auto_increment,
-    modelo varchar (45),
-    capacidade int,
+create table componente(
+    idComponente int primary key auto_increment,
+    tipo varchar(50),
     fkMaquina int,
     foreign key (fkMaquina) references maquina (idMaquina)
-    )auto_increment = 333;
-    
-create table registroRAM(
-	idRegistroRAM int primary key auto_increment,
-    porcentagem decimal(5,2),
+);
+
+create table atributo(
+    idAtributo int primary key auto_increment,
+    atributo varchar(50),
+    valor decimal(6,2),
+    unidadeMedida varchar(30),
+    fkComponente int,
+    foreign key (fkComponente) references componente (idComponente)
+);
+
+create table registro(
+    idRegistro int primary key auto_increment,
+    valor decimal(6,2),
+    unidadeMedida varchar(5),
     dataEhora datetime,
-    fkRAM int,
-	foreign key (fkRAM) references RAM (idRAM)
-    )auto_increment = 333000;
-    
-create table Disco (
-	idDisco int primary key auto_increment,
-    tipoArmazenamento varchar (3),
-    capacidadeMaxima decimal (5,1),
-    fkMaquina int,
-    foreign key (fkMaquina) references maquina (idMaquina)
-    )auto_increment = 444;
-    
-create table registroDisco(
-	idRegistroDisco int primary key auto_increment,
-    porcentagem decimal (5,2),
-    dataEhora datetime,
-    fkDisco int,
-    foreign key (fkDisco) references Disco (idDisco)
-    )auto_increment= 444000;
+    fkComponente int,
+    foreign key (fkComponente) references componente (idComponente)
+);
 
-INSERT INTO empresa values (null, 'C6 Bank', 11111111111111, 'Banco digital brasileiro'),
-						   (null, 'VR', 22222222222222, 'Fornecedora de benefícios PAT'),
-                           (null, 'Safra', 33333333333333, 'Banco brasileiro');
-INSERT INTO funcionario values (null, 'Antônio', 11111111111, 123, 'antonio@gmail.com', null, 1),
-							   (null, 'Augusto', 22222222222, 123, 'augusto@gmail.com', null, 2),
-                               (null, 'José', 33333333333, 123, 'jose@gmail.com', null, 3),
-                               (null, 'Maria', 44444444444, 123, 'maria@gmail.com', 100, 1),
-                               (null, 'Leandro', 55555555555, 123, 'leandro@gmail.com', 101, 2),
-                               (null, 'Luana', 66666666666, 123, 'luana@gmail.com', 102, 3);
-					
-# Leandro, Maria, Luana
+-- Views
+CREATE VIEW `vw_componentes` AS
+SELECT E.nome AS 'empresa', E.cnpj,
+	F.email,
+    Endereco.cidade, Endereco.estado, Endereco.pais,
+    idMaquina, nomeMaquina, sistemaOperacional,
+    tipo,
+    atributo, valor, unidadeMedida
+FROM Empresa E
+INNER JOIN Endereco ON Endereco.fkEmpresa = idEmpresa
+INNER JOIN Funcionario F ON F.fkEmpresa = idEmpresa AND Endereco.fkFuncionario = idFuncionario
+INNER JOIN Maquina ON Maquina.fkFuncionario = idFuncionario
+INNER JOIN Componente ON fkMaquina = idMaquina
+INNER JOIN Atributo ON fkComponente = idComponente;
 
-select * from empresa;
+CREATE VIEW `vw_registros` AS
+SELECT  E.nome AS 'empresa', E.cnpj,
+		email,
+        Endereco.cidade, Endereco.estado, Endereco.pais,
+        idMaquina, nomeMaquina, sistemaOperacional,
+        tipo,
+        valor, unidadeMedida, dataEhora
+FROM Empresa E
+INNER JOIN Endereco ON Endereco.fkEmpresa = idEmpresa
+INNER JOIN Funcionario F ON F.fkEmpresa = idEmpresa AND Endereco.fkFuncionario = idFuncionario
+INNER JOIN Maquina ON Maquina.fkFuncionario = idFuncionario
+INNER JOIN Componente ON fkMaquina = idMaquina
+INNER JOIN Registro ON fkComponente = idComponente;
 
-select * from funcionario;
-
-
+-- INSERTS TESTE
+INSERT INTO Empresa VALUES (NULL, 'Banco Safra', '12345678912345', 'Somos um banco, queremos dinheiro!');
+INSERT INTO Funcionario VALUES (NULL, 'Ivan Miranda', '12345698545', '1234', 'ivan@miranda.com', NULL, 1);
+INSERT INTO Endereco VALUES (NULL, 'Rua A', 23, 'Bairro XYV', 'SP', 'São Paulo', 'Brazil', 1, 1);
+INSERT INTO Maquina VALUES (NULL, 'Windows 95', 'Lullynho', 1);
+INSERT INTO Componente VALUES (NULL, 'CPU', 1);
+INSERT INTO Atributo VALUES (NULL, 'Cores', 1.0, 'unidade', 1);
