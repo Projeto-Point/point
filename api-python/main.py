@@ -1,8 +1,9 @@
 import psutil
 import pymysql
 from time import sleep
-
-def registro():
+    
+contador = 1
+while True:
     conexao = pymysql.connect(db='BDpoint', user='root', passwd='1234', port=3307)
     cursor = conexao.cursor()
     
@@ -11,6 +12,6 @@ def registro():
 
     conexao.close()
 
-while True:
-    registro()
+    print(f'Registro {contador} inserido!')
+    contador += 1
     sleep(1)
