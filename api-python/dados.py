@@ -1,7 +1,16 @@
+from pickle import TRUE
+
+# Fazer a conexão com SQL 
 import pymysql
+# datetime é para pegar as datas e as horas com precisão exata e conseguir fazer contasa 
 import datetime
+
+# Pega os dados do sistema exemplo sistema operacional da máquina
 import os
+
+# Faz uma pausa no código
 from time import sleep
+
 from dashing import (
     HSplit, 
     VSplit, 
@@ -9,44 +18,62 @@ from dashing import (
     HGauge, 
     Text
 )
+
+# Pega os dados das máquina 
 from psutil import (
+    # Pega os dados da memória virtual (ram)
     virtual_memory,
-    sensors_battery,
+    # Porcentagem de uso do processador
     cpu_percent,
+    # Uso de disco
     disk_usage,
+    # Pega uma lista dos usuários
     users,
-    boot_time,
+    # return os processos que estão sendo executados
     pids,
+    # Mostra todos os processos que foram executados desde o boot da máquina  e o pid
     process_iter
 )
 
+# Verifica se é Windowns ou Linux 
 def limpar():
+    #Linux
     if os.name == 'posix':
         os.system("clear")
+    #Windowns
     else:
         os.system("cls")
 
-verificaLogin = False
+verificaLogin = TRUE
 
 while verificaLogin == False:
+    #Chama a função limpar
     limpar()
 
     login = input('Bem vindo ao Point! \n Digite o login do funcionário: ')
     senha = input('Digite a senha do funcionário: ')
 
+    # Conecta com o banco, passando o usuário, e o banco desejado
     conexao = pymysql.connect(db='BDpoint', user='aluno', passwd='sptech')
 
+    # AGDDAAAAA
     cursor = conexao.cursor()
-
+    
+    #Executa o comando no banco que foi conectado 
     verificaLogin = cursor.execute(("select email, senha from funcionario where email = '{}' and senha = {}").format(login, senha))
 
+    # AGDAAAAAAA
     conexao.commit()
 
+    #Encerra o processo
     conexao.close()
 
-def bytes_to_gigas(value):
+
+# Converte de bytes para giga 
+def bytes_para_giga(value):
     return value / 1024 / 1024 / 1024
 
+# Personaliza o terminal 
 
 ui = HSplit(  # ui
     VSplit(
@@ -88,23 +115,15 @@ ui = HSplit(  # ui
 while True:
     
     #Processos
+
+    #Pega os processos que foram executados na máquina e coloca na caixa [0] do terminal 
     proc_tui = ui.items[0].items[0]
     p_list = []
+    #mostra todos os processos
     for proc in process_iter():
         proc_info = proc.as_dict(['name', 'cpu_percent'])
         if proc_info['cpu_percent'] > 0:
             p_list.append(proc_info)
-
-    # Ve top 10 processos que estão mais usando CPU
-    ordenados = sorted(
-        p_list,
-        key=lambda p: p['cpu_percent'],
-        reverse=True
-    )[:10]
-    proc_tui.text = f"{'Nome':<30}CPU"
-
-    for proc in ordenados:
-        proc_tui.text += f"\n{proc['name']:<30} {proc['cpu_percent']}"
 
     #Memória RAM
     mem_tui = ui.items[0].items[1]
@@ -150,13 +169,13 @@ while True:
 
     # Conexão BD
 
-    conexao = pymysql.connect(db='BDpoint', user='aluno', passwd='sptech')
+    conexao = pymysql.connect(db='BDpoint', user='ivanfm', passwd='')
 
     cursor = conexao.cursor()
 
-    cursor.execute("select idDispositivo from dispositivo join funcionario as func on dispositivo.fkFuncionario = func.idFuncionario join empresa on idEmpresa = func.fkEmpresa join funcionario as gestor on gestor.idFuncionario = func.fkGestor where func.email = '{}'".format(login))
+    # cursor.execute("select idDispositivo from dispositivo join funcionario as func on dispositivo.fkFuncionario = func.idFuncionario join empresa on idEmpresa = func.fkEmpresa join funcionario as gestor on gestor.idFuncionario = func.fkGestor where func.email = '{}'".format(login))
 
-    identificador = cursor.fetchall()
+    # identificador = cursor.fetchall()
 
     cursor.execute("INSERT INTO dados (idDados, usoRAM, usoCPU, usoDiscoLocal, fkDispositivo, dataEhora) VALUES (null, {}, {}, {}, {}, '{}')".format(ram_tui.value, cpu_percent_tui.value, disk_usage("/").percent, identificador[0][0], agora_datetime))
 
