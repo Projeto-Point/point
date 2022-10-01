@@ -1,20 +1,18 @@
 <!DOCTYPE html>
 <html lang="pt-br">
-
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <link href="https://fonts.googleapis.com/css2?family=Advent+Pro:wght@100;200;300;400;500;600;700&display=swap" rel="stylesheet">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="css/styleLogin_Cadastro.css">
-    <title>Point</title>
+    <title>Cadastro | Point</title>
 </head>
-
 <body id="form_cadastro">
     <div id="cadastro" class="container">
         <div class="cadastro">
 
-            
+
             <div class="banner_cadastro">
                 <a href="index.html">
                     <img src="assets/imgs/arrow.png" alt="" class="icon">
@@ -24,29 +22,29 @@
 
                 <div class="inputs">
                     <span class="span_text">Nome:</span> <br>
-                    <input class="input"  id="nome_input" placeholder="Seu nome">
+                    <input class="input" id="nome_input" placeholder="Seu nome">
                 </div>
 
                 <div class="inputs">
                     <span class="span_text">E-mail:</span> <br>
                     <input class="input" type="email" id="email_input" placeholder="seuEmail@email.com">
-                
+
                 </div>
                 <div class="inputs">
                     <span class="span_text">CPF:</span> <br>
                     <input class="input" type="email" id="cpf_input" placeholder="***********">
-                
+
                 </div>
 
                 <div class="inputs">
                     <span class="span_text">Sua senha:</span> <br>
                     <input class="input" type="password" id="senha_input" placeholder="********">
-                
+
                 </div>
                 <div class="inputs">
                     <span class="span_text">Confirme sua senha:</span> <br>
-                    <input class="input" type="password"  id="confirmacao_senha_input" placeholder="********">
-                
+                    <input class="input" type="password" id="confirmacao_senha_input" placeholder="********">
+
                 </div>
 
                 <div class="botao_cadastro">
@@ -67,7 +65,7 @@
 
 <script>
     function cadastrar() {
-        
+
 
         var nomeVar = nome_input.value;
         var emailVar = email_input.value;
@@ -79,36 +77,36 @@
             cardErro.style.display = "block"
             mensagem_erro.innerHTML = "Preencha todos os campos para prosseguir!";
 
-            
+
             return false;
         }
-       
+
 
         if (emailVar.indexOf("@") == -1 || emailVar.indexOf(".com") == -1) {
             cardErro.style.display = "block"
             mensagem_erro.innerHTML = "Ops, e-mail inválido! Verifique e tente novamente.";
-            
+
             return false;
         }
-        
+
 
         if (cpfVar.length != 11) {
             alert("Insira todos os números do CPF: Há um número a mais ou a menos. ")
-            
+
             return false;
         } else if (cpfVar != Number(cpfVar)) {
             alert("Insira apenas caractéres válidos no CPF: Hà um caractere inválido.")
-            
+
             return false;
         }
 
         if (senhaVar != confirmacaoSenhaVar) {
             cardErro.style.display = "block"
             mensagem_erro.innerHTML = "As senhas inseridas devem ser iguais para prosseguir!";
-            
+
             return false;
         }
-        
+
 
         // Enviando o valor da nova input
         fetch("/usuarios/cadastrar", {
@@ -129,22 +127,22 @@
             console.log("resposta: ", resposta);
 
             if (resposta.ok) {
-                
-                
-                
-                setTimeout(()=>{
+
+
+
+                setTimeout(() => {
                     console.log("entrou")
                     window.location = "login.html";
-                },1000)
-                
+                }, 1000)
+
                 limparFormulario();
-                
+
             } else {
                 throw ("Houve um erro ao tentar realizar o cadastro!");
             }
         }).catch(function (resposta) {
             console.log(`#ERRO: ${resposta}`);
-            
+
         });
 
         return false;
@@ -153,4 +151,3 @@
 
 
 </script>
-
