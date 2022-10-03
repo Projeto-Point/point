@@ -127,21 +127,24 @@ main section.dashboard #gfRam {
 }
 main section.dashboard #tbProcessos {
   grid-area: t1;
+  height: 160px;
 }
 main section.dashboard #tbHistorico {
   grid-area: t2;
+  height: 160px;
 }
 main section.dashboard #tbHorario {
   grid-area: t3;
 }
 main section.dashboard #tbFuncionarios {
   grid-area: t4;
+  height: 100px;
 }
 main section.dashboard .grafico, main section.dashboard .tabela {
   color: black;
   background: #eee;
   border-radius: var(--radius);
-  padding: 15px;
+  padding: 10px;
 }
 main section.dashboard .grafico h3, main section.dashboard .tabela h3 {
   font-size: 1.3rem;

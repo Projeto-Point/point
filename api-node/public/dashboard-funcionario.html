@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard Tempo Real | Pardalis</title>
+    <title>Dashboard Tempo Real | Point</title>
     <link rel="stylesheet" href="css/styleDash.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -57,15 +57,15 @@
         <section class="dashboard">
             <div class="grafico" id="gfCpu">
                 <h3>Processador</h3>
-                <div></div>
+                <div> <canvas id="myChart" style="position: relative;"></canvas></div>
             </div>
             <div class="grafico" id="gfDisco">
                 <h3>Disco</h3>
-                <div></div>
+                <div><canvas id="myChart2" style="position: relative; width: 20vh"></canvas></div>
             </div>
             <div class="grafico" id="gfRam">
                 <h3>Memória RAM</h3>
-                <div></div>
+                <div><div><canvas id="myChart3" style="position: relative;"></canvas></div></div>
             </div>
             <div class="tabela" id="tbProcessos">
                 <h3>Aplicativos abertos</h3>
@@ -122,22 +122,43 @@
 
 <script>
     const labels = [
-        'January',
-        'February',
-        'March',
-        'April',
-        'May',
-        'June',
+        '12:00',
+        '13:00',
+        '14:00',
+        '15:00',
+        '16:00',
+        '17:00',
+    ];
+    const labels2 = [
+        'Janeiro',
+        'Fevereiro',
+        'Março',
+        'Abril',
+        'Maio',
+        'Junho',
     ];
 
     const data = {
         labels: labels,
         datasets: [{
-            label: 'My First dataset',
-            backgroundColor: 'rgba(255, 99, 132, 0.5)',
-            borderColor: 'rgba(255, 99, 132, 0.5)',
-            data: [0, 10, 5, 2, 20, 30, 45],
-        }]
+            // CPU
+            label: 'CPU',
+            backgroundColor: 'rgb(255, 99, 132)',
+            borderColor: 'rgb(255, 99, 132)',
+            data: [30, 29, 28, 25, 22, 23],
+        }
+        ]
+    };
+    const data2 = {
+        labels: labels2,
+        datasets: [{
+            // Armazenamento 
+            label: 'Armazenamento',
+            backgroundColor: 'rgb(255, 99, 132)',
+            borderColor: 'rgb(255, 99, 132)',
+            data: [22, 24]
+        }
+        ]
     };
 
     const config = {
@@ -148,35 +169,37 @@
                 legend: {
                     display: false
                 }
-            },
-            scales: {
-                x: {
-                    grid: {
-                        display: false,
-                        drawBorder: false,
-                    },
-                    ticks: {
-                        display: false
-                    }
-                },
-                y: {
-                    grid: {
-                        display: false,
-                        drawBorder: false,
-                    },
-                    ticks: {
-                        display: false
-                    }
+            }
+        }
+    };
+
+
+    const config2 = {
+        type: 'pie',
+        data: data2,
+        options: {
+            plugins: {
+                legend: {
+                    display: false
                 }
-            },
-        },
-        maintainAspectRatio: false,
+            }
+        }
     };
 </script>
 
 <script>
     const myChart = new Chart(
-        document.getElementById('graficoCPU'),
+        document.getElementById('myChart'),
+        config
+    );
+
+    const myChart2 = new Chart(
+        document.getElementById('myChart2'),
+        config2
+    );
+
+    const myChart3 = new Chart(
+        document.getElementById('myChart3'),
         config
     );
 </script>
@@ -192,8 +215,9 @@
                 idFuncionario: sessionStorage.ID_FUNCIONARIO
             })
         }).then(function (res) {
+
             if (res.ok) {
-                res.json().then(json=>{
+                res.json().then(json => {
                     console.log(json)
                 })
             }
