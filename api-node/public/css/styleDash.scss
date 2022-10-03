@@ -1,0 +1,187 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Advent Pro';
+    text-decoration: none;
+}
+
+:root{
+    --cor1: #00CA43;
+    --cor2: #00A219;
+    --cor3: #007B00;
+    --radius: 10px;
+}
+
+input{
+    height: 50px;
+    border: 2px solid var(--cor3);
+    border-radius: var(--radius);
+}
+
+body{
+    display: flex;
+}
+
+header{
+    width: 20%;
+    max-width: 300px;
+    height: 100vh;
+    nav{
+        display: flex;
+        flex-direction: column;
+        padding: 10px 30px;
+        .logo{
+            display: flex;
+            justify-content: center;
+            img{
+                width: 60%;
+            }
+        }
+        hr{
+            opacity: 0.5;
+            margin: 15px 0;
+        }
+        a{
+            color: black;
+            display: flex;
+            align-items: center;
+            margin: 10px 0;
+            font-size: 1.3rem;
+            img{
+                margin-right: 5px;
+            }
+        }
+    }
+}
+
+main{
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    background: var(--cor1);
+    background-image: url('../assets/dash/dash.png');
+    background-repeat: no-repeat;
+    background-size: contain;
+    color: white;
+    padding: 30px 2%;
+    section.top{
+        display: flex;
+        justify-content: space-between;
+        .top-esq{
+            p.titulo{
+                font-size: 1.3rem;
+            }
+            p.subtitulo{
+                font-size: 1rem;
+                color: #eee;
+            }
+        }
+        .top-meio{
+            input{
+                border: none;
+                width: 400px;
+                padding: 0 15px;
+                outline: none;
+            }
+        }
+        .top-dir{
+            display: flex;
+            align-items: center;
+            button{
+                width: 40px;
+                height: 40px;
+                border-radius: var(--radius);
+                img{
+                    width: 85%;
+                    height: 85%;
+                }
+            }
+            .nome{
+                margin-left: 15px;
+                margin-right: 10px;
+                font-size: 1.5rem;
+            }
+            img{
+                width: 55px;
+                height: 55px;
+                border-radius: var(--radius);
+            }
+        }
+    }
+    section.dashboard{
+        height: 100%;
+        margin-top: 30px;
+        display: grid;
+        gap: 25px;
+        grid-template-columns: 1fr 1fr 1fr 1fr;
+        grid-template-rows: 1fr 1fr 1fr 1fr;
+        grid-template-areas: "g1 g2 g3 t3"
+                             "t1 t1 t1 t3"
+                             "t1 t1 t1 t4"
+                             "t2 t2 t2 t4";
+        #gfCpu{
+            grid-area: g1;
+        }
+        #gfDisco{
+            grid-area: g2;
+        }
+        #gfRam{
+            grid-area: g3;
+        }
+        #tbProcessos{
+            grid-area: t1;
+        }
+        #tbHistorico{
+            grid-area: t2;
+        }
+        #tbHorario{
+            grid-area: t3;
+        }
+        #tbFuncionarios{
+            grid-area: t4;
+        }
+        .grafico, .tabela{
+            color: black;
+            background: #eee;
+            border-radius: var(--radius);
+            padding: 15px;
+            h3{
+                font-size: 1.3rem;
+            }
+        }
+    }
+}
+
+@media screen and (max-width: 1100px){
+    header{
+        nav{
+            padding: 10px 5px;
+            a{
+                font-size: 1.1rem;
+            }
+        }
+    }
+    #inp-pesquisar-funcionario{
+        display: none;
+    }
+    main{
+        section.dashboard{
+            grid-template-columns: 1fr 1fr 1fr;
+            grid-template-rows: 1fr 1fr 1fr;
+            grid-template-areas: "g1 g2 g3"
+                                 "t1 t1 t3"
+                                 "t2 t2 t3";
+            #tbFuncionarios{
+                display: none;
+            }
+        }
+    }
+}
+
+@media screen and (max-width: 900px){
+    header{
+        display: none;
+    }
+}

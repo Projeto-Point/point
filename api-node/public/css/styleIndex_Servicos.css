@@ -331,9 +331,8 @@ form textarea {
     max-width: 550px;
     margin-bottom: 1rem;
     border-radius: 5px;
-    padding: 5px 5px 5px;
+    padding: 5px 5px;
     border: 2px solid #00CA43;
-    resize: vertical;
     transition-duration: 0.2s;
     outline: none;
 }
@@ -570,7 +569,7 @@ button {
         max-width: 300px;
     }
 
-    form input {
+    form input, form textarea {
         width: 30vw;
     }
 

@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Dashboard Tempo Real | Pardalis</title>
+        <link rel="stylesheet" href="css/styleDash.css">
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Advent+Pro:wght@100;200;300;400;500;600;700&display=swap" rel="stylesheet">
+        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    </head>
+    <body>
+        <header>
+            <nav>
+                <a href="index.html" class="logo">
+                    <img src="assets/imgs/Point.png">
+                </a>
+                <hr>
+                <a href="#">
+                    <img src="assets/imgs/alfinete 1.png">
+                    <span>Dashboard</span>
+                </a>
+                <a href="#">
+                    <img src="assets/imgs/alfinete 1.png">
+                    <span>Alertas</span>
+                </a>
+                <a href="#">
+                    <img src="assets/imgs/alfinete 1.png">
+                    <span>Funcionários</span>
+                </a>
+                <a href="#">
+                    <img src="assets/imgs/alfinete 1.png">
+                    <span>Máquinas</span>
+                </a>
+            </nav>
+        </header>
+        <main>
+            <section class="top">
+                <div class="top-esq">
+                    <p class="titulo">Olá, Agda Taniguchi</p>
+                    <p class="subtitulo">02/10/2022 - 13:56</p>
+                </div>
+                <div class="top-meio">
+                    <input id="inp-pesquisar-funcionario" type="search" placeholder="Pesquise o nome de um funcionário...">
+                </div>
+                <div class="top-dir">
+                    <button><img src="assets/dash/bell.png"></button>
+                    <p class="nome">Agda Taniguchi</p>
+                    <img src="assets/dash/pessoa.jpeg">
+                </div>
+            </section>
+            <section class="dashboard">
+                <div class="grafico" id="gfCpu">
+                    <h3>Processador</h3>
+                    <div></div>
+                </div>
+                <div class="grafico" id="gfDisco">
+                    <h3>Disco</h3>
+                    <div></div>
+                </div>
+                <div class="grafico" id="gfRam">
+                    <h3>Memória RAM</h3>
+                    <div></div>
+                </div>
+                <div class="tabela" id="tbProcessos">
+                    <h3>Aplicativos abertos</h3>
+                    <table>
+                        <tr>
+                            <td>Algo</td>
+                            <td>Algo</td>
+                            <td>Algo</td>
+                            <td>Algo</td>
+                            <td>Algo</td>
+                        </tr>
+                        <tr>
+                            <td>Algo</td>
+                            <td>Algo</td>
+                            <td>Algo</td>
+                            <td>Algo</td>
+                            <td>Algo</td>
+                        </tr>
+                    </table>
+                </div>
+                <div class="tabela" id="tbHistorico">
+                    <h3>Histórico</h3>
+                    <table>
+                        <tr>
+                            <td>Algo</td>
+                            <td>Algo</td>
+                            <td>Algo</td>
+                            <td>Algo</td>
+                            <td>Algo</td>
+                        </tr>
+                        <tr>
+                            <td>Algo</td>
+                            <td>Algo</td>
+                            <td>Algo</td>
+                            <td>Algo</td>
+                            <td>Algo</td>
+                        </tr>
+                    </table>
+                </div>
+                <div class="tabela" id="tbHorario">
+                    <h3>Últimos alertas</h3>
+                </div>
+                <div class="tabela" id="tbFuncionarios">
+                    <h3>Sobre o funcionário</h3>
+                    <p>Nome:</p>
+                    <p>Cargo:</p>
+                    <p>E-mail:</p>
+                </div>
+            </section>
+        </main>
+    </body>
+</html>
+
+<script>
+    const labels = [
+      'January',
+      'February',
+      'March',
+      'April',
+      'May',
+      'June',
+    ];
+  
+    const data = {
+      labels: labels,
+      datasets: [{
+        label: 'My First dataset',
+        backgroundColor: 'rgba(255, 99, 132, 0.5)',
+        borderColor: 'rgba(255, 99, 132, 0.5)',
+        data: [0, 10, 5, 2, 20, 30, 45],
+      }]
+    };
+  
+    const config = {
+        type: 'line',
+        data: data,
+        options: {
+            plugins: {
+                legend: {
+                    display: false
+                }
+            },
+            scales: {
+                x: {
+                    grid: {
+                        display: false,
+                        drawBorder: false,
+                    },
+                    ticks: {
+                        display: false
+                    }
+                },
+                y : {
+                    grid: {
+                        display: false,
+                        drawBorder: false,
+                    },
+                    ticks: {
+                        display: false
+                    }
+                }
+            },
+        },
+        maintainAspectRatio: false,
+    };
+  </script>
+
+<script>
+    const myChart = new Chart(
+      document.getElementById('graficoCPU'),
+      config
+    );
+  </script>
