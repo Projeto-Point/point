@@ -1,5 +1,3 @@
-from pickle import TRUE
-
 # Fazer a conexão com SQL 
 import pymysql
 # datetime é para pegar as datas e as horas com precisão exata e conseguir fazer contasa 
@@ -7,6 +5,7 @@ import datetime
 
 # Pega os dados do sistema exemplo sistema operacional da máquina
 import os
+import platform
 
 # Faz uma pausa no código
 from time import sleep
@@ -44,13 +43,13 @@ def limpar():
     else:
         os.system("cls")
 
-verificaLogin = TRUE
+verificaLogin = False
 
 while verificaLogin == False:
     #Chama a função limpar
     limpar()
 
-    login = input('Bem vindo ao Point! \n Digite o login do funcionário: ')
+    login = input('Bem vindo ao Point! \nDigite o login do funcionário: ')
     senha = input('Digite a senha do funcionário: ')
 
     # Conecta com o banco, passando o usuário, e o banco desejado
@@ -60,14 +59,10 @@ while verificaLogin == False:
     cursor = conexao.cursor()
     
     #Executa o comando no banco que foi conectado 
-    verificaLogin = cursor.execute(("select email, senha from funcionario where email = '{}' and senha = {}").format(login, senha))
-
-    # AGDAAAAAAA
-    conexao.commit()
+    verificaLogin = cursor.execute(("select email, senha from Funcionario where email = '{}' and senha = '{}'").format(login, senha))
 
     #Encerra o processo
     conexao.close()
-
 
 # Converte de bytes para giga 
 def bytes_para_giga(value):
@@ -80,12 +75,8 @@ ui = HSplit(  # ui
         Text(
             ' ',
             border_color=9,
-            title='Processos'
-        ),
-        HSplit(  # ui.items[0]
-            VGauge(title='RAM'),  # ui.items[0].items[0]
-            title='Memória',
-            border_color=3
+            color=7,
+            title='Informações da máquina'
         ),
     ),
     VSplit(  # ui.items[1]
@@ -98,13 +89,13 @@ ui = HSplit(  # ui
         border_color=5,
     ),
     VSplit(  # ui.items[2]
-        Text(
-            ' ',
-            title='Outros',
-            border_color=4
+        HSplit(  # ui.items[0]
+            HGauge(title='RAM'),  # ui.items[2].items[0]
+            title='Memória',
+            border_color=3
         ),
-        Text(
-            ' ',
+        HSplit(
+            HGauge(title='Disco'),
             title='Disco',
             border_color=6,
             
@@ -115,7 +106,6 @@ ui = HSplit(  # ui
 while True:
     
     #Processos
-
     #Pega os processos que foram executados na máquina e coloca na caixa [0] do terminal 
     proc_tui = ui.items[0].items[0]
     p_list = []
@@ -126,7 +116,7 @@ while True:
             p_list.append(proc_info)
 
     #Memória RAM
-    mem_tui = ui.items[0].items[1]
+    mem_tui = ui.items[2].items[0]
     ram_tui = mem_tui.items[0]
     ram_tui.value = virtual_memory().percent
     ram_tui.title = f'RAM {ram_tui.value} %'
@@ -145,19 +135,22 @@ while True:
        core.value = value
        core.title = f'Core_{i} {value}%'
     
-    # User + Bateria + Boot + Contagens de processos no PC
-    outros_tui = ui.items[2].items[0]
+    # Informações da máquina
+    outros_tui = ui.items[0].items[0]
     outros_tui.text = ''
-    outros_tui.text += f'\nUsuário: {users()[0].name}'
-    # outros_tui.text += f'\nBateria: {sensors_battery().percent}%'
+    
     # boot = datetime.fromtimestamp(boot_time()).strftime("%Y-%m-%d %H:%M:%S")
     # outros_tui.text += f'\nHorário do boot: {boot}'
-    outros_tui.text += f'\nProcessos: {len(pids())}'
+    outros_tui.text += f'Nome da máquina: {platform.node()}'
+    outros_tui.text += f'\nUsuário: {users()[0].name}'
+    outros_tui.text += f'\n\nSistema operacional: {platform.system()}'
+    outros_tui.text += f'\n\nQuantidade de processos: {len(pids())}'
     
     # Disco - Porcentagem de memória ocupada do disco
-    disk_tui = ui.items[2].items[1]
+    disk_tui = ui.items[2].items[1].items[0]
+    disk_tui.value = disk_usage("/").percent
     disk_tui.text = ''
-    disk_tui.text += f'\nEspaço em disco utilizado: {disk_usage("/").percent}%'
+    disk_tui.title = f'Disco {disk_tui.value}%'
 
     # Tempo real
 
@@ -169,15 +162,22 @@ while True:
 
     # Conexão BD
 
-    conexao = pymysql.connect(db='BDpoint', user='ivanfm', passwd='')
+    conexao = pymysql.connect(db='BDpoint', user='aluno', passwd='sptech')
 
     cursor = conexao.cursor()
 
-    # cursor.execute("select idDispositivo from dispositivo join funcionario as func on dispositivo.fkFuncionario = func.idFuncionario join empresa on idEmpresa = func.fkEmpresa join funcionario as gestor on gestor.idFuncionario = func.fkGestor where func.email = '{}'".format(login))
+    cursor.execute(f"SELECT idMaquina FROM Maquina INNER JOIN Funcionario ON fkFuncionario = idFuncionario WHERE email = '{login}'")
 
-    # identificador = cursor.fetchall()
+    identificador = cursor.fetchall()
 
-    cursor.execute("INSERT INTO dados (idDados, usoRAM, usoCPU, usoDiscoLocal, fkDispositivo, dataEhora) VALUES (null, {}, {}, {}, {}, '{}')".format(ram_tui.value, cpu_percent_tui.value, disk_usage("/").percent, identificador[0][0], agora_datetime))
+    # Inserindo porcentagem da CPU
+    cursor.execute(f"INSERT INTO Registro (valor, unidadeMedida, dataEhora) VALUES ({cpu_percent()}, '%', NOW())")
+    
+    # Inserindo porcentagem da RAM
+    cursor.execute(f"INSERT INTO Registro (valor, unidadeMedida, dataEhora) VALUES ({virtual_memory().percent}, '%', NOW())")
+    
+    # Inserindo porcentagem do Disco
+    cursor.execute(f"INSERT INTO Registro (valor, unidadeMedida, dataEhora) VALUES ({disk_usage('/').percent}, '%', NOW())")
 
     conexao.commit()
 
