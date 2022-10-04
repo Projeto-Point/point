@@ -25,9 +25,8 @@ function buscarMedidasEmTempoReal(idAquario) {
     return database.executar(instrucaoSql);
 }
 
-function pegarRegistro(idFuncionario){
-    instrucaoSql = `select * from vw_registros`;
-    console.log("Recuperando registros");
+function pegarRegistro(){
+    instrucaoSql = `SELECT * FROM Registro`;
     return database.executar(instrucaoSql);
 }
 

@@ -16,7 +16,7 @@
 
 <body>
     <header>
-        <nav>
+        <nav id="menu">
             <a href="index.html" class="logo">
                 <img src="assets/imgs/Point.png">
             </a>
@@ -38,6 +38,7 @@
                 <span>Máquinas</span>
             </a>
         </nav>
+        <nav id="menu-mobile"><img src="assets/imgs/alfinete 1.png"></nav>
     </header>
     <main>
         <section class="top">
@@ -108,7 +109,7 @@
             <div class="tabela" id="tbHorario">
                 <h3>Últimos alertas</h3>
             </div>
-            <div class="tabela" id="tbFuncionarios">
+            <div class="tabela" id="tbFuncionario">
                 <h3>Sobre o funcionário</h3>
                 <p>Nome:</p>
                 <p>Cargo:</p>
@@ -182,7 +183,8 @@
                 legend: {
                     display: false
                 }
-            }
+            },
+            responsive: false,
         }
     };
 </script>
@@ -206,16 +208,7 @@
 
 <script>
     function recuperarDados() {
-        fetch("/medidas/pegarRegistro", {
-            method: 'POST',
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify({
-                idFuncionario: sessionStorage.ID_FUNCIONARIO
-            })
-        }).then(function (res) {
-
+        fetch(`/medidas/pegarRegistro?idMaquina=1`).then(function (res) {
             if (res.ok) {
                 res.json().then(json => {
                     console.log(json)

@@ -42,11 +42,12 @@ function buscarMedidasEmTempoReal(req, res) {
 }
 
 function pegarRegistro(req, res){
-    var idFuncionario = req.params.idFuncionario;
-    console.log(`Recuperando idFuncionario`);
-    medidaModel.pegarRegistro(idFuncionario).then(function (funcionario) {
-        res.status(200).json(funcionario);
-    }).catch(function(erro){
+    var idMaquina = req.query.idMaquina;
+    medidaModel.pegarRegistro()
+    .then(function (resposta) {
+        res.status(200).json(resposta);
+    })
+    .catch(function(erro){
         console.log(erro);
         console.log("Houve um erro ao buscar os registros.", erro.sqlMessage);
         res.status(500).json(erro.sqlMessage);

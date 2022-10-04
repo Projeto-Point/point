@@ -108,7 +108,7 @@ INNER JOIN Registro ON fkComponente = idComponente;
 -- INSERTS TESTE
 INSERT INTO Empresa VALUES (NULL, 'Banco Safra', '12345678912345', 'Somos um banco, queremos dinheiro!');
 INSERT INTO Funcionario VALUES (NULL, 'Ivan Miranda', '12345698545', '1234', 'ivan@miranda.com', NULL, 1);
-INSERT INTO Endereco VALUES (NULL, 'Rua A', 23, 'Bairro XYV', 'São Paulo', 'SP', 'Brazil', 1, 1);
+INSERT INTO Endereco VALUES (NULL, 'Rua A', 23, 'Bairro XYV', 'SP', 'São Paulo', 'Brazil', 1, 1);
 INSERT INTO Maquina VALUES (NULL, 'Windows 95', 'Lullynho', 1);
 INSERT INTO Componente VALUES (NULL, 'CPU', 1);
 INSERT INTO Atributo VALUES (NULL, 'Cores', 1.0, 'unidade', 1);

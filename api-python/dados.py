@@ -53,7 +53,7 @@ while verificaLogin == False:
     senha = input('Digite a senha do funcionário: ')
 
     # Conecta com o banco, passando o usuário, e o banco desejado
-    conexao = pymysql.connect(db='BDpoint', user='aluno', passwd='sptech')
+    conexao = pymysql.connect(db='bd_point', user='aluno', passwd='sptech')
 
     # AGDDAAAAA
     cursor = conexao.cursor()
@@ -162,7 +162,7 @@ while True:
 
     # Conexão BD
 
-    conexao = pymysql.connect(db='BDpoint', user='aluno', passwd='sptech')
+    conexao = pymysql.connect(db='bd_point', user='aluno', passwd='sptech')
 
     cursor = conexao.cursor()
 
