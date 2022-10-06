@@ -1,16 +1,16 @@
-create database BDpoint;
-
-use BDpoint;
+use [bd-point];
 
 create table Empresa (
-	idEmpresa int primary key auto_increment,
+	idEmpresa int primary key identity(1,1),
     nome varchar(45) not null,
     cnpj char(14) unique not null,
-    descEmpresa varchar(45)
+    plano int,
+    descEmpresa varchar(45),
+    constraint tipo_plano check (plano >= 1 and plano <= 3)
 );
 
 create table Funcionario (
-	idFuncionario int primary key auto_increment,
+	idFuncionario int primary key identity(1,1),
     nome varchar(45) not null,
     cpf char(11) unique not null,
     senha varchar(45) not null,
@@ -22,14 +22,14 @@ create table Funcionario (
 );
 
 create table Telefone (
-	idTelefone int primary key auto_increment,
+	idTelefone int primary key identity(1,1),
     telefone char(11),
     fkFuncionario int,
     foreign key (fkFuncionario) references funcionario (idFuncionario)
 );
 
 create table Endereco (
-	idEndereco int primary key auto_increment,
+	idEndereco int primary key identity(1,1),
     rua varchar(45),
     num int,
     bairro varchar(45),
@@ -43,7 +43,7 @@ create table Endereco (
 );
 
 create table Maquina (
-    idMaquina int primary key auto_increment,
+    idMaquina int primary key identity(1,1),
     sistemaOperacional varchar(45) not null,
     nomeMaquina varchar(45),
     fkfuncionario int,
@@ -51,14 +51,14 @@ create table Maquina (
 );
 
 create table Componente(
-    idComponente int primary key auto_increment,
+    idComponente int primary key identity(1,1),
     tipo varchar(50),
     fkMaquina int,
     foreign key (fkMaquina) references maquina (idMaquina)
 );
 
 create table Atributo(
-    idAtributo int primary key auto_increment,
+    idAtributo int primary key identity(1,1),
     atributo varchar(50),
     valor decimal(6,2),
     unidadeMedida varchar(30),
@@ -67,7 +67,7 @@ create table Atributo(
 );
 
 create table Registro(
-    idRegistro int primary key auto_increment,
+    idRegistro int primary key IDENTITY(1,1),
     valor decimal(6,2),
     unidadeMedida varchar(5),
     dataEhora datetime,
@@ -75,8 +75,9 @@ create table Registro(
     foreign key (fkComponente) references componente (idComponente)
 );
 
+GO
 -- Views
-CREATE VIEW `vw_componentes` AS
+CREATE VIEW vw_componentes AS
 SELECT E.nome AS 'empresa', E.cnpj,
 	F.email,
     Endereco.cidade, Endereco.estado, Endereco.pais,
@@ -91,7 +92,12 @@ INNER JOIN Maquina ON Maquina.fkFuncionario = idFuncionario
 INNER JOIN Componente ON fkMaquina = idMaquina
 INNER JOIN Atributo ON fkComponente = idComponente;
 
-CREATE VIEW `vw_registros` AS
+
+SELECT * FROM vw_componentes;
+
+GO
+
+CREATE VIEW vw_registros AS
 SELECT  E.nome AS 'empresa', E.cnpj,
 		email,
         Endereco.cidade, Endereco.estado, Endereco.pais,
@@ -105,12 +111,5 @@ INNER JOIN Maquina ON Maquina.fkFuncionario = idFuncionario
 INNER JOIN Componente ON fkMaquina = idMaquina
 INNER JOIN Registro ON fkComponente = idComponente;
 
--- INSERTS TESTE
-INSERT INTO Empresa VALUES (NULL, 'Banco Safra', '12345678912345', 'Somos um banco, queremos dinheiro!');
-INSERT INTO Funcionario VALUES (NULL, 'Ivan Miranda', '12345698545', '1234', 'ivan@miranda.com', NULL, 1);
-INSERT INTO Endereco VALUES (NULL, 'Rua A', 23, 'Bairro XYV', 'SP', 'São Paulo', 'Brazil', 1, 1);
-INSERT INTO Maquina VALUES (NULL, 'Windows 95', 'Lullynho', 1);
-INSERT INTO Componente VALUES (NULL, 'CPU', 1);
-INSERT INTO Atributo VALUES (NULL, 'Cores', 1.0, 'unidade', 1);
 
-
+SELECT * FROM vw_registros;

@@ -25,8 +25,15 @@ function buscarMedidasEmTempoReal(idAquario) {
     return database.executar(instrucaoSql);
 }
 
+function pegarRegistro(){
+    instrucaoSql = `SELECT * FROM Registro`;
+    return database.executar(instrucaoSql);
+}
+
 
 module.exports = {
     buscarUltimasMedidas,
-    buscarMedidasEmTempoReal
+    buscarMedidasEmTempoReal,
+    pegarRegistro
+
 }

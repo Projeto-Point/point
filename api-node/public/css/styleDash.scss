@@ -24,12 +24,14 @@ body{
 }
 
 header{
-    width: 20%;
-    max-width: 300px;
-    height: 100vh;
-    nav{
+    nav#menu{
+        max-width: 300px;
+        height: 100vh;
         display: flex;
         flex-direction: column;
+        position: sticky;
+        top: 0;
+        box-shadow: 5px 0px 5px rgba(0, 0, 0, 0.3);
         padding: 10px 30px;
         .logo{
             display: flex;
@@ -53,11 +55,26 @@ header{
             }
         }
     }
+    nav#menu-mobile{
+        display: none;
+        position: sticky;
+        top: 0;
+        box-shadow: 5px 0px 5px rgba(0, 0, 0, 0.3);
+        width: 70px;
+        height: 100vh;
+        justify-content: center;
+        padding: 15px 0;
+        img{
+            width: 50px;
+            height: fit-content;
+            cursor: pointer;
+        }
+    }
 }
 
 main{
     width: 100%;
-    height: 100vh;
+    min-height: 100vh;
     display: flex;
     flex-direction: column;
     background: var(--cor1);
@@ -139,7 +156,7 @@ main{
         #tbHorario{
             grid-area: t3;
         }
-        #tbFuncionarios{
+        #tbFuncionario{
             grid-area: t4;
         }
         .grafico, .tabela{
@@ -147,9 +164,26 @@ main{
             background: #eee;
             border-radius: var(--radius);
             padding: 15px;
+            div{
+                display: flex;
+                justify-content: center;
+                align-items: center;
+            }
             h3{
                 font-size: 1.3rem;
             }
+        }
+    }
+}
+
+@media screen and (max-width: 1400px){
+    header{
+        nav#menu{
+            display: none;
+            transform: translateX(-100%);
+        }
+        nav#menu-mobile{
+            display: flex;
         }
     }
 }
@@ -172,16 +206,7 @@ main{
             grid-template-rows: 1fr 1fr 1fr;
             grid-template-areas: "g1 g2 g3"
                                  "t1 t1 t3"
-                                 "t2 t2 t3";
-            #tbFuncionarios{
-                display: none;
-            }
+                                 "t2 t2 t4";
         }
-    }
-}
-
-@media screen and (max-width: 900px){
-    header{
-        display: none;
     }
 }

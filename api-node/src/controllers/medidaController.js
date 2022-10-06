@@ -41,8 +41,23 @@ function buscarMedidasEmTempoReal(req, res) {
     });
 }
 
+function pegarRegistro(req, res){
+    var idMaquina = req.query.idMaquina;
+    medidaModel.pegarRegistro()
+    .then(function (resposta) {
+        res.status(200).json(resposta);
+    })
+    .catch(function(erro){
+        console.log(erro);
+        console.log("Houve um erro ao buscar os registros.", erro.sqlMessage);
+        res.status(500).json(erro.sqlMessage);
+    });
+
+}
+
 module.exports = {
     buscarUltimasMedidas,
-    buscarMedidasEmTempoReal
+    buscarMedidasEmTempoReal,
+    pegarRegistro
 
 }
