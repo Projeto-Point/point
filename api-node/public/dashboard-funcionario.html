@@ -122,12 +122,53 @@
 </body>
 
 </html>
-
 <script>
-    var cpuMedida = [];
-    var disco = [];
+    var cpuMedida=[];
+    var cpuMedida1;
+    var cpuMedida2;
+    var cpuMedida3;
+    var cpuMedida4;
+    var cpuMedida5;
 
-    
+    function recuperarDados() {
+        
+
+        fetch(`/medidas/pegarRegistroCPU?idMaquina=1`).then(function (res) {
+            if (res.ok) {
+                res.json().then(CPU => {
+
+
+                    cpuMedida = CPU.map((object) => object.valor);
+
+                    cpuMedida1 = cpuMedida[0];
+                    cpuMedida2 = cpuMedida[1];
+                    cpuMedida3 = cpuMedida[2];
+                    cpuMedida4 = cpuMedida[3];
+                    cpuMedida5 = cpuMedida[4];
+                    
+                })
+            }
+        })
+
+        fetch(`/medidas/pegarRegistroDISCO?idMaquina=1`).then(function (res) {
+            if (res.ok) {
+                res.json().then(DISCO => {
+
+                })
+            }
+        })
+
+        fetch(`/medidas/pegarRegistroRAM?idMaquina=1`).then(function (res) {
+            if (res.ok) {
+                res.json().then(RAM => {
+
+                })
+            }
+        })
+
+    }
+
+
     const labels = [
         '',
         '',
@@ -155,7 +196,7 @@
         datasets: [{
             //CPU
             label: 'CPU',
-            data: Number(cpuMedida),
+            data: [Number(cpuMedida1), Number(cpuMedida2), Number(cpuMedida3), Number(cpuMedida4), Number(cpuMedida5)],
             fill: false,
             borderColor: 'rgb(75, 192, 192)',
             tension: 0.1
@@ -168,7 +209,7 @@
             label: 'Armazenamento',
             backgroundColor: 'rgb(255, 99, 132)',
             borderColor: 'rgb(255, 99, 132)',
-            data: [24]
+            data: []
         }
         ]
     };
@@ -239,41 +280,6 @@
         document.getElementById('myChart3'),
         config3
     );
-</script>
-
-<script>
-
-
-    function recuperarDados() {
-        fetch(`/medidas/pegarRegistroCPU?idMaquina=1`).then(function (res) {
-            if (res.ok) {
-                res.json().then(CPU => {
-                    console.log(CPU)
-
-                    cpuMedida = CPU
-                })
-            }
-        })
-
-        fetch(`/medidas/pegarRegistroDISCO?idMaquina=1`).then(function (res) {
-            if (res.ok) {
-                res.json().then(DISCO => {
-                    console.log(DISCO)
-                    console.log(DISCO[1])
-                })
-            }
-        })
-
-        fetch(`/medidas/pegarRegistroRAM?idMaquina=1`).then(function (res) {
-            if (res.ok) {
-                res.json().then(RAM => {
-                    console.log(RAM)
-                    console.log(RAM[1])
-                })
-            }
-        })
-
-    }
 
     recuperarDados()
 </script>
