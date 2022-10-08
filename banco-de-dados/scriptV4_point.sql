@@ -18,7 +18,7 @@ create table Funcionario (
     nome varchar(45) not null,
     cpf char(11) unique not null,
     senha varchar(45) not null,
-    email varchar(45) unique,
+    email varchar(45) unique not null,
     fkGestor int,
     fkEmpresa int,
     foreign key (fkGestor) references funcionario (idFuncionario),
@@ -109,7 +109,19 @@ INNER JOIN Maquina ON Maquina.fkFuncionario = idFuncionario
 INNER JOIN Componente ON fkMaquina = idMaquina
 INNER JOIN Registro ON fkComponente = idComponente;
 
+-- Dados Fake para teste
+INSERT INTO Empresa VALUES (null, "Google", "21625996000109", 1, "Tecnologia");
+INSERT INTO Funcionario VALUES (null, "Julio Cesar","37004211096","123", "nome@sptech.school", null, 1);
+INSERT INTO Telefone VALUES(null, "11992015034", 1);
+INSERT INTO Endereco VALUES(null, "Rua armando", 131, "Jardim Holanda", "São Paulo", "SP","Brasil", 1,1);
+-- Select para verificar se bate
+SELECT f.nome as "Nome Funcionario", t.telefone as "Telefone Funcionario", ed.rua as "Rua Funcionario", ep.nome as "Nome Empresa"
 
--- SQL SERVER 
+FROM Funcionario as f
+INNER JOIN Telefone as t ON t.fkFuncionario = f.idFuncionario
+INNER JOIN Empresa as ep ON f.fkEmpresa = ep.idEmpresa
+INNER JOIN Endereco as ed ON ed.fkFuncionario = f.idFuncionario
+AND ed.fkEmpresa = ep.idEmpresa;
+
 
 

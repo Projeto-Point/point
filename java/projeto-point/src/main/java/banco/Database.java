@@ -4,6 +4,7 @@
  */
 package banco;
 
+import javax.sql.DataSource;
 import javax.swing.Timer;
 import org.apache.commons.dbcp2.BasicDataSource;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -25,20 +26,17 @@ public class Database {
 
     BasicDataSource dataSource = new BasicDataSource();
 
-    dataSource​.setDriverClassName("org.h2.Driver");
+    dataSource​.setDriverClassName("com.mysql.jdbc.Driver");
 
-    dataSource​.setUrl("jdbc:h2:file:./banco_teste");
+    dataSource​.setUrl("jdbc:mysql://127.0.0.1:3306/bd_point");
 
     dataSource​.setUsername("aluno");
 
     dataSource​.setPassword("sptech");
 
-
-
     this.connection = new JdbcTemplate(dataSource);
 
   }
-  
   
   
   public JdbcTemplate getConnection() {
@@ -46,6 +44,6 @@ public class Database {
     return connection;
 
   }
-
+  
 
 }

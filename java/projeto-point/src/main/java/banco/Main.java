@@ -7,6 +7,7 @@ package banco;
 import com.github.britooo.looca.api.core.Looca;
 import javax.swing.Timer;
 import org.apache.commons.logging.Log;
+import org.springframework.jdbc.core.JdbcTemplate;
 
 /**
  *
@@ -17,11 +18,21 @@ public class Main {
     public static void main(String[] args) {
 
         Looca looca = new Looca();
-
-        for (int i = 0; i < 10; i++) {
-
-            System.out.println(looca.getSistema());
-        }
+        
+        Database database = new Database();
+        
+        JdbcTemplate connection = database.getConnection();
+        
+        Funcionario func = new Funcionario();
+        
+        
+        
+        Boolean x = func.isFuncionarioCadastrado("nome@sptech.school", "123");
+        
+      
+        
+     
+        
 
     }
 

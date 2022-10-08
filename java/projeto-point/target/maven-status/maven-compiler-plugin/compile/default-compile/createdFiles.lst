@@ -1,8 +1,15 @@
 banco\Maquina.class
 telas\TelaLogin$2.class
 telas\TelaLogin$1.class
-banco\Conexao.class
-banco\Database.class
 telas\TelaPrincipal$1.class
 telas\TelaLogin.class
+telas\TelaPrincipal$2.class
+telas\Monitoramento.class
+telas\TelaLogin$4.class
+banco\Database.class
+telas\TelaLogin$3.class
+telas\App.class
+banco\Funcionario.class
 telas\TelaPrincipal.class
+banco\Main.class
+telas\App$1.class

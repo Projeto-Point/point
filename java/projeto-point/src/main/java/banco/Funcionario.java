@@ -4,47 +4,44 @@
  */
 package banco;
 
+import java.util.List;
+import org.springframework.jdbc.core.BeanPropertyRowMapper;
+import org.springframework.jdbc.core.JdbcTemplate;
+
 /**
  *
  * @author ivanm
  */
 public class Funcionario {
-    
+
     private Integer id;
     private String nome;
-    private String cpf;
-    private String senha;
-    private String email;
-    private Integer fkGestor;
-    private Integer fkEmpresa;
+    
 
-    public Funcionario(Integer id, String nome, String cpf, String senha, String email, Integer fkGestor, Integer fkEmpresa) {
-        
-        if(isFuncionarioValido(cpf, email)){
-            
-        this.id = id;
-        this.nome = nome;
-        this.cpf = cpf;
-        this.senha = senha;
-        this.email = email;
-        this.fkGestor = fkGestor;
-        this.fkEmpresa = fkEmpresa;
-            
-        }
+    Database database = new Database();
+
+    JdbcTemplate connection = database.getConnection();
+
+  
+    public Boolean isFuncionarioCadastrado(String email, String senha) {
+     
+         
+          List <Funcionario> resultado = connection.query("SELECT nome from Funcionario where email = '" + email + "' AND senha ='" + senha + "';", 
+                new BeanPropertyRowMapper(Funcionario.class));
           
+          
+         for (Funcionario funcionario : resultado) {
+            
+             return funcionario.toString().length() > 0;
+             
+         }
+             
+         return false;
     }
-    
-    
-    public Boolean isFuncionarioValido(String cpf, String email){
-    
-        return cpf.length() == 14 && email.indexOf("@") > 0;
-        
-    }
-    
-    
-    
-    
-    
     
     
 }
+        
+  
+
+
