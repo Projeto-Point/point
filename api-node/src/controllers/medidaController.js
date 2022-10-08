@@ -84,6 +84,20 @@ function pegarRegistroRAM(req, res){
 
 }
 
+function pegarRegistroFuncionario(req, res){
+    var idMaquina = req.query.idMaquina;
+    medidaModel.pegarRegistroFuncionario()
+    .then(function (resposta) {
+        res.status(200).json(resposta);
+    })
+    .catch(function(erro){
+        console.log(erro);
+        console.log("Houve um erro ao buscar os registroINFO.", erro.sqlMessage);
+        res.status(500).json(erro.sqlMessage);
+    });
+
+}
+
 
 
 module.exports = {
@@ -91,5 +105,6 @@ module.exports = {
     buscarMedidasEmTempoReal,
     pegarRegistroCPU,
     pegarRegistroDISCO,
-    pegarRegistroRAM
+    pegarRegistroRAM,
+    pegarRegistroFuncionario
 }

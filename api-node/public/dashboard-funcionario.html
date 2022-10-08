@@ -43,7 +43,7 @@
     <main>
         <section class="top">
             <div class="top-esq">
-                <p class="titulo">Olá, Agda Taniguchi</p>
+                <p class="titulo">Olá, <span id="b_usuario"></span></p>
                 <p class="subtitulo">02/10/2022 - 13:56</p>
             </div>
             <div class="top-meio">
@@ -113,9 +113,9 @@
             </div>
             <div class="tabela" id="tbFuncionario">
                 <h3>Sobre o funcionário</h3>
-                <p>Nome:</p>
+                <p>Nome: <span id="nome"></span></p>
                 <p>Cargo:</p>
-                <p>E-mail:</p>
+                <p>E-mail:<span id="mail"></span></p>
             </div>
         </section>
     </main>
@@ -125,7 +125,7 @@
 <script>
     var cpuMedida = [];
     var discoUtilizado = [];
-    var ramMedida= [];
+    var ramMedida = [];
 
     function recuperarDados() {
 
@@ -295,23 +295,22 @@
             }
         })
 
+        fetch(`/medidas/pegarRegistroFuncionario?idMaquina=1`).then(function (res) {
+            if (res.ok) {
+                res.json().then(RegistroFuncionario => {
+                    console.log(RegistroFuncionario)
+
+                    var nomeFuncionario = RegistroFuncionario.map((object) => object.nome);
+                    var emailFuncionario = RegistroFuncionario.map((object) => object.email);
+
+                    nome.innerHTML = nomeFuncionario;
+                    mail.innerHTML = emailFuncionario
+
+                })
+            }
+        })
     }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+    
     recuperarDados()
 </script>

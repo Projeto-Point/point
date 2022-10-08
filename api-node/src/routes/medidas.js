@@ -24,5 +24,8 @@ router.get("/pegarRegistroRAM", function(req, res){
     medidaController.pegarRegistroRAM(req, res);
 });
 
+router.get("/pegarRegistroFuncionario", function(req, res){ 
+    medidaController.pegarRegistroFuncionario(req, res);
+});
 
 module.exports = router;

@@ -18,10 +18,17 @@ function pegarRegistroRAM(){
     return database.executar(instrucaoSql);
 }
 
+function pegarRegistroFuncionario(){
+    instrucaoSql = `SELECT nome, email FROM Funcionario;`;
+    console.log("Executando a instrução SQL: \n" + instrucaoSql);
+    return database.executar(instrucaoSql);
+}
+
 
 module.exports = {
     pegarRegistroCPU,
     pegarRegistroDISCO,
-    pegarRegistroRAM
+    pegarRegistroRAM,
+    pegarRegistroFuncionario
 
 }
