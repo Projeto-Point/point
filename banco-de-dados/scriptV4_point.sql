@@ -124,4 +124,4 @@ INNER JOIN Endereco as ed ON ed.fkFuncionario = f.idFuncionario
 AND ed.fkEmpresa = ep.idEmpresa;
 
 
-
+SELECT * FROM Funcionario where nome = 'Julio Cesar'; 

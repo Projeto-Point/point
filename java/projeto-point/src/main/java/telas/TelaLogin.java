@@ -4,6 +4,7 @@
  */
 package telas;
 
+import banco.Funcionario;
 import javax.security.auth.spi.LoginModule;
 import javax.swing.JOptionPane;
 
@@ -12,7 +13,8 @@ import javax.swing.JOptionPane;
  * @author corin
  */
 public class TelaLogin extends javax.swing.JFrame {
-
+    
+    Funcionario func = new Funcionario();
     /**
      * Creates new form TelaLogin
      */
@@ -151,7 +153,7 @@ public class TelaLogin extends javax.swing.JFrame {
         if ((email == null || email.isEmpty()) || senha.isEmpty() ) {
             JOptionPane.showMessageDialog(this, "Informe login e senha", "Dados inválidos", JOptionPane.ERROR_MESSAGE);
         }else{
-            if (email.equals("admin") && senha.equals("1234")) {
+            if (func.isFuncionarioCadastrado(email, senha)) {
                TelaPrincipal tela =new TelaPrincipal();
                tela.setVisible(true);
                this.setVisible(false);
