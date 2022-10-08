@@ -41,23 +41,55 @@ function buscarMedidasEmTempoReal(req, res) {
     });
 }
 
-function pegarRegistro(req, res){
+
+function pegarRegistroCPU(req, res){
     var idMaquina = req.query.idMaquina;
-    medidaModel.pegarRegistro()
+    medidaModel.pegarRegistroCPU()
     .then(function (resposta) {
         res.status(200).json(resposta);
     })
     .catch(function(erro){
         console.log(erro);
-        console.log("Houve um erro ao buscar os registros.", erro.sqlMessage);
+        console.log("Houve um erro ao buscar os registroCPUs.", erro.sqlMessage);
         res.status(500).json(erro.sqlMessage);
     });
 
 }
 
+function pegarRegistroDISCO(req, res){
+    var idMaquina = req.query.idMaquina;
+    medidaModel.pegarRegistroDISCO()
+    .then(function (resposta) {
+        res.status(200).json(resposta);
+    })
+    .catch(function(erro){
+        console.log(erro);
+        console.log("Houve um erro ao buscar os registroDISCO.", erro.sqlMessage);
+        res.status(500).json(erro.sqlMessage);
+    });
+
+}
+
+function pegarRegistroRAM(req, res){
+    var idMaquina = req.query.idMaquina;
+    medidaModel.pegarRegistroRAM()
+    .then(function (resposta) {
+        res.status(200).json(resposta);
+    })
+    .catch(function(erro){
+        console.log(erro);
+        console.log("Houve um erro ao buscar os registroRAM.", erro.sqlMessage);
+        res.status(500).json(erro.sqlMessage);
+    });
+
+}
+
+
+
 module.exports = {
     buscarUltimasMedidas,
     buscarMedidasEmTempoReal,
-    pegarRegistro
-
+    pegarRegistroCPU,
+    pegarRegistroDISCO,
+    pegarRegistroRAM
 }

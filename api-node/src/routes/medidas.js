@@ -11,8 +11,17 @@ router.get("/tempo-real/:idAquario", function (req, res) {
     medidaController.buscarMedidasEmTempoReal(req, res);
 });
 
-router.get("/pegarRegistro", function(req, res){ 
-    medidaController.pegarRegistro(req, res);
+
+router.get("/pegarRegistroCPU", function(req, res){ 
+    medidaController.pegarRegistroCPU(req, res);
+});
+
+router.get("/pegarRegistroDISCO", function(req, res){ 
+    medidaController.pegarRegistroDISCO(req, res);
+});
+
+router.get("/pegarRegistroRAM", function(req, res){ 
+    medidaController.pegarRegistroRAM(req, res);
 });
 
 

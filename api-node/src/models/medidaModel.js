@@ -25,8 +25,20 @@ function buscarMedidasEmTempoReal(idAquario) {
     return database.executar(instrucaoSql);
 }
 
-function pegarRegistro(){
-    instrucaoSql = `SELECT * FROM Registro`;
+
+
+function pegarRegistroCPU(){
+    instrucaoSql = `SELECT valor FROM vw_registros WHERE tipo = 'CPU' limit 0,10`;
+    return database.executar(instrucaoSql);
+}
+
+function pegarRegistroDISCO(){
+    instrucaoSql = `SELECT valor FROM vw_registros WHERE tipo = 'DISCO' limit 0,10`;
+    return database.executar(instrucaoSql);
+}
+
+function pegarRegistroRAM(){
+    instrucaoSql = `SELECT valor FROM vw_registros WHERE tipo = 'RAM' limit 0,10`;
     return database.executar(instrucaoSql);
 }
 
@@ -34,6 +46,8 @@ function pegarRegistro(){
 module.exports = {
     buscarUltimasMedidas,
     buscarMedidasEmTempoReal,
-    pegarRegistro
+    pegarRegistroCPU,
+    pegarRegistroDISCO,
+    pegarRegistroRAM
 
 }
