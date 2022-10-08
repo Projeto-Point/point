@@ -123,15 +123,12 @@
 
 </html>
 <script>
-    var cpuMedida=[];
-    var cpuMedida1;
-    var cpuMedida2;
-    var cpuMedida3;
-    var cpuMedida4;
-    var cpuMedida5;
+    var cpuMedida = [];
+    var discoUtilizado = [];
+    var ramMedida= [];
 
     function recuperarDados() {
-        
+
 
         fetch(`/medidas/pegarRegistroCPU?idMaquina=1`).then(function (res) {
             if (res.ok) {
@@ -140,12 +137,55 @@
 
                     cpuMedida = CPU.map((object) => object.valor);
 
-                    cpuMedida1 = cpuMedida[0];
-                    cpuMedida2 = cpuMedida[1];
-                    cpuMedida3 = cpuMedida[2];
-                    cpuMedida4 = cpuMedida[3];
-                    cpuMedida5 = cpuMedida[4];
-                    
+                    var cpuMedida1 = Number(parseFloat(cpuMedida[0]));
+                    var cpuMedida2 = Number(parseFloat(cpuMedida[1]));
+                    var cpuMedida3 = Number(parseFloat(cpuMedida[2]));
+                    var cpuMedida4 = Number(parseFloat(cpuMedida[3]));
+                    var cpuMedida5 = Number(parseFloat(cpuMedida[4]));
+                    var cpuMedida6 = Number(parseFloat(cpuMedida[5]));
+                    var cpuMedida7 = Number(parseFloat(cpuMedida[6]));
+                    var cpuMedida8 = Number(parseFloat(cpuMedida[7]));
+                    var cpuMedida9 = Number(parseFloat(cpuMedida[8]));
+                    var cpuMedida10 = Number(parseFloat(cpuMedida[9]));
+
+                    const labels = [
+                        '',
+                        '',
+                        '',
+                        '',
+                        '',
+                        '',
+                    ];
+
+                    const data = {
+                        labels: labels,
+                        datasets: [{
+                            //CPU
+                            label: 'CPU',
+                            data: [cpuMedida1, cpuMedida2, cpuMedida3, cpuMedida4, cpuMedida5, cpuMedida6, cpuMedida7, cpuMedida8, cpuMedida9, cpuMedida10],
+                            fill: false,
+                            borderColor: 'rgb(75, 192, 192)',
+                            tension: 0.1
+                        }]
+                    };
+
+                    const config = {
+                        type: 'line',
+                        data: data,
+                        options: {
+                            plugins: {
+                                legend: {
+                                    display: false
+                                }
+                            }
+                        }
+                    };
+
+                    const myChart = new Chart(
+                        document.getElementById('myChart'),
+                        config
+                    );
+
                 })
             }
         })
@@ -154,6 +194,44 @@
             if (res.ok) {
                 res.json().then(DISCO => {
 
+
+                    discoUtilizado = DISCO.map((object) => object.valor);
+                    discoLivre = 100 - discoUtilizado;
+
+                    const labels2 = [
+                        'Livre',
+                        'Ocupado',
+                    ];
+
+                    const data2 = {
+                        labels: labels2,
+                        datasets: [{
+                            // Armazenamento 
+                            label: 'Armazenamento',
+                            backgroundColor: ['rgb(255, 000, 000)', 'rgb(75, 192, 192)'],
+                            borderColor: ['rgb(255, 000, 000)', 'rgb(75, 192, 192)'],
+                            data: [discoUtilizado, discoLivre]
+                        }
+                        ]
+                    };
+
+                    const config2 = {
+                        type: 'pie',
+                        data: data2,
+                        options: {
+                            plugins: {
+                                legend: {
+                                    display: false
+                                }
+                            },
+                            responsive: false,
+                        }
+                    };
+
+                    const myChart2 = new Chart(
+                        document.getElementById('myChart2'),
+                        config2
+                    );
                 })
             }
         })
@@ -162,6 +240,57 @@
             if (res.ok) {
                 res.json().then(RAM => {
 
+                    ramMedida = RAM.map((object) => object.valor);
+
+                    var ramMedida1 = Number(parseFloat(ramMedida[0]));
+                    var ramMedida2 = Number(parseFloat(ramMedida[1]));
+                    var ramMedida3 = Number(parseFloat(ramMedida[2]));
+                    var ramMedida4 = Number(parseFloat(ramMedida[3]));
+                    var ramMedida5 = Number(parseFloat(ramMedida[4]));
+                    var ramMedida6 = Number(parseFloat(ramMedida[5]));
+                    var ramMedida7 = Number(parseFloat(ramMedida[6]));
+                    var ramMedida8 = Number(parseFloat(ramMedida[7]));
+                    var ramMedida9 = Number(parseFloat(ramMedida[8]));
+                    var ramMedida10 = Number(parseFloat(ramMedida[9]));
+
+                    const labels3 = [
+                        '',
+                        '',
+                        '',
+                        '',
+                        '',
+                        '',
+                    ];
+
+                    const data3 = {
+                        labels: labels3,
+                        datasets: [{
+                            //RAM
+                            label: 'RAM',
+                            data: [ramMedida1, ramMedida2, ramMedida3, ramMedida4, ramMedida5, ramMedida6, ramMedida7, ramMedida8, ramMedida9, ramMedida10],
+                            fill: false,
+                            borderColor: 'rgb(75, 192, 192)',
+                            tension: 0.1
+                        }]
+                    };
+
+                    const config3 = {
+                        type: 'line',
+                        data: data3,
+                        options: {
+                            plugins: {
+                                legend: {
+                                    display: false
+                                }
+                            }
+                        }
+                    };
+
+                    const myChart3 = new Chart(
+                        document.getElementById('myChart3'),
+                        config3
+                    );
+
                 })
             }
         })
@@ -169,117 +298,20 @@
     }
 
 
-    const labels = [
-        '',
-        '',
-        '',
-        '',
-        '',
-        '',
-    ];
-    const labels2 = [
-        'Ocupado',
-        'Livre',
-    ];
-
-    const labels3 = [
-        '',
-        '',
-        '',
-        '',
-        '',
-        '',
-    ];
-
-    const data = {
-        labels: labels,
-        datasets: [{
-            //CPU
-            label: 'CPU',
-            data: [Number(cpuMedida1), Number(cpuMedida2), Number(cpuMedida3), Number(cpuMedida4), Number(cpuMedida5)],
-            fill: false,
-            borderColor: 'rgb(75, 192, 192)',
-            tension: 0.1
-        }]
-    };
-    const data2 = {
-        labels: labels2,
-        datasets: [{
-            // Armazenamento 
-            label: 'Armazenamento',
-            backgroundColor: 'rgb(255, 99, 132)',
-            borderColor: 'rgb(255, 99, 132)',
-            data: []
-        }
-        ]
-    };
-
-    const data3 = {
-        labels: labels3,
-        datasets: [{
-            //RAM
-            label: 'RAM',
-            data: [80, 81, 56, 55, 40],
-            fill: false,
-            borderColor: 'rgb(75, 192, 192)',
-            tension: 0.1
-        }]
-    };
-
-    const config = {
-        type: 'line',
-        data: data,
-        options: {
-            plugins: {
-                legend: {
-                    display: false
-                }
-            }
-        }
-    };
 
 
-    const config2 = {
-        type: 'pie',
-        data: data2,
-        options: {
-            plugins: {
-                legend: {
-                    display: false
-                }
-            },
-            responsive: false,
-        }
-    };
 
-    const config3 = {
-        type: 'line',
-        data: data3,
-        options: {
-            plugins: {
-                legend: {
-                    display: false
-                }
-            }
-        }
-    };
-</script>
 
-<script>
-    const myChart = new Chart(
-        document.getElementById('myChart'),
-        config
-    );
 
-    const myChart2 = new Chart(
-        document.getElementById('myChart2'),
-        config2
-    );
 
-    const myChart3 = new Chart(
-        document.getElementById('myChart3'),
-        config3
-    );
+
+
+
+
+
+
+
+
 
     recuperarDados()
 </script>

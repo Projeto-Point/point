@@ -723,6 +723,7 @@ INSERT INTO Registro VALUES (NULL, 20, '%', '2022-10-06 6:49:45', 3);
 
 
 select * from vw_registros;
+SELECT valor FROM vw_registros WHERE tipo = 'CPU' limit 0,5;
 
 
 

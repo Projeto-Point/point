@@ -7,7 +7,7 @@ function pegarRegistroCPU(){
 }
 
 function pegarRegistroDISCO(){
-    instrucaoSql = `SELECT valor FROM vw_registros WHERE tipo = 'DISCO' limit 0,10`;
+    instrucaoSql = `SELECT valor FROM vw_registros WHERE tipo = 'DISCO' limit 0,1`;
     console.log("Executando a instrução SQL: \n" + instrucaoSql);
     return database.executar(instrucaoSql);
 }
