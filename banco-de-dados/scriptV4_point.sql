@@ -116,12 +116,12 @@ INNER JOIN Registro ON fkComponente = idComponente;
 -- INSERT INTO Endereco VALUES(null, "Rua armando", 131, "Jardim Holanda", "São Paulo", "SP","Brasil", 1,1);
 -- Select para verificar se bate
 
-SELECT f.nome as "Nome Funcionario", t.telefone as "Telefone Funcionario", ed.rua as "Rua Funcionario", ep.nome as "Nome Empresa"
-FROM Funcionario as f
-INNER JOIN Telefone as t ON t.fkFuncionario = f.idFuncionario
-INNER JOIN Empresa as ep ON f.fkEmpresa = ep.idEmpresa
-INNER JOIN Endereco as ed ON ed.fkFuncionario = f.idFuncionario
-AND ed.fkEmpresa = ep.idEmpresa;
+-- SELECT f.nome as "Nome Funcionario", t.telefone as "Telefone Funcionario", ed.rua as "Rua Funcionario", ep.nome as "Nome Empresa"
+-- FROM Funcionario as f
+-- INNER JOIN Telefone as t ON t.fkFuncionario = f.idFuncionario
+-- INNER JOIN Empresa as ep ON f.fkEmpresa = ep.idEmpresa
+-- INNER JOIN Endereco as ed ON ed.fkFuncionario = f.idFuncionario
+-- AND ed.fkEmpresa = ep.idEmpresa;
 
 
 -- Dados Maquina Fake 
@@ -130,4 +130,15 @@ SELECT * FROM Funcionario;
 select * from Maquina;
 SELECT idMaquina, sistemaOperacional, Funcionario.idFuncionario, fkFuncionario FROM Maquina 
 INNER JOIN Funcionario ON idFuncionario = fkFuncionario
-WHERE idFuncionario = 1;
+WHERE idFuncionario = 2;
+
+DESC Componente;
+INSERT INTO Componente VALUES (null, "Disco", 1);
+
+SELECT c.tipo, f.nome, f.idFuncionario 
+FROM Componente as c
+INNER JOIN Maquina as m 
+ON m.idMaquina = c.fkMaquina
+INNER JOIN Funcionario as f
+ON m.fkFuncionario = f.idFuncionario
+WHERE idMaquina = 1;

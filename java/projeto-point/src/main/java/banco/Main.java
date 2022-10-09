@@ -25,15 +25,18 @@ public class Main {
         
         Funcionario func = new Funcionario();
         Maquina maquina = new Maquina();
-
-        // Colocar como parâmetro o email do usuário criado + senha com aspas
+        Componentes componentes = new Componentes();
+    
+        
+       
+//         Colocar como parâmetro o email do usuário criado + senha com aspas
         if(func.isFuncionarioCadastrado("steh@.com", "123")){
            
             System.out.println(maquina.isMaquinaCadastrada(func));
             
             if (maquina.isMaquinaCadastrada(func)) {
                 System.out.println("Máquina já cadastrada");
-            }else if (maquina.cadastrarMaquina(func)){
+            }else if (maquina.isCadastrarMaquina(func)){
                 System.out.println("Máquina Cadastrada");
             }else{
                 System.out.println("Não foi possível encontrar máquina/cadastar máquina");

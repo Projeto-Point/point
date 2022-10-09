@@ -66,7 +66,7 @@ public class Maquina {
     }
     
     
-    public Boolean cadastrarMaquina(Funcionario funcionario){
+    public Boolean isCadastrarMaquina(Funcionario funcionario){
           
         String so = looca.getSistema().getSistemaOperacional();
         try {
