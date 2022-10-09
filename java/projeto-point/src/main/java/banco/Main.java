@@ -29,7 +29,8 @@ public class Main {
         
         Boolean x = func.isFuncionarioCadastrado("nome@sptech.school", "123");
         
-      
+        
+        System.out.println(x);
         
      
         
