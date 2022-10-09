@@ -5,6 +5,7 @@
 package banco;
 
 import com.github.britooo.looca.api.core.Looca;
+import java.net.InetAddress;
 import javax.swing.Timer;
 import org.apache.commons.logging.Log;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -24,17 +25,20 @@ public class Main {
         JdbcTemplate connection = database.getConnection();
         
         Funcionario func = new Funcionario();
-        
-        
-        
-        Boolean x = func.isFuncionarioCadastrado("nome@sptech.school", "123");
-        
-        
-        System.out.println(x);
-        
-     
-        
+        Maquina maquina = new Maquina();
 
+        
+        if(func.isFuncionarioCadastrado("iva@.com", "123")){
+            maquina.isMaquinaCadastrada(func);
+            System.out.println(String.format("Nome funcionário: %s\nSO: %s\n", func.getNome(), maquina.getSistemaOperacional()));
+        }else{
+            System.out.println("Funcionário não encontrado");
+        }
+  
+        
+        
+       
+        
     }
 
 }

@@ -1,5 +1,5 @@
 -- Script SQL Server
-
+DROP DATABASE bd_point;
 create database bd_point;
 
 use bd_point;
@@ -109,9 +109,9 @@ INNER JOIN Maquina ON Maquina.fkFuncionario = idFuncionario
 INNER JOIN Componente ON fkMaquina = idMaquina
 INNER JOIN Registro ON fkComponente = idComponente;
 
--- Dados Fake para teste
+-- Dados Fake para teste -- Dados Funcionario
 INSERT INTO Empresa VALUES (null, "Google", "21625996000109", 1, "Tecnologia");
-INSERT INTO Funcionario VALUES (null, "Julio Cesar","37004211096","123", "nome@sptech.school", null, 1);
+INSERT INTO Funcionario VALUES (null, "Ir","3700421409d","123", "iva@.com", null, 1);
 INSERT INTO Telefone VALUES(null, "11992015034", 1);
 INSERT INTO Endereco VALUES(null, "Rua armando", 131, "Jardim Holanda", "São Paulo", "SP","Brasil", 1,1);
 -- Select para verificar se bate
@@ -124,4 +124,7 @@ INNER JOIN Endereco as ed ON ed.fkFuncionario = f.idFuncionario
 AND ed.fkEmpresa = ep.idEmpresa;
 
 
-SELECT * FROM Funcionario where nome = 'Julio Cesar'; 
+-- Dados Maquina Fake 
+
+SELECT * FROM Funcionario; 
+SELECT * FROM Maquina;

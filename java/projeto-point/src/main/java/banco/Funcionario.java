@@ -45,8 +45,6 @@ public class Funcionario {
         try {
             List<Map<String, Object>> resultado = connection.queryForList("SELECT idFuncionario,nome from Funcionario where email = '" + email + "' AND senha ='" + senha + "';");
 
-            System.out.println(resultado);
-
             JSONObject jsonResultado = new JSONObject(resultado.get(0));
 
             int id = jsonResultado.getInt("idFuncionario");
@@ -57,7 +55,8 @@ public class Funcionario {
 
             return true;
         } catch (Exception e) {
-
+            
+            System.out.println("Usuário Não encontrado");
             return false;
         }
 
