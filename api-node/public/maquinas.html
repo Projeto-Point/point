@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Máquinas | Point</title>
+        <link rel="stylesheet" href="css/styleDash.css">
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Advent+Pro:wght@100;200;300;400;500;600;700&display=swap"
+        rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    </head>
+    <body>
+        <header>
+            <nav id="menu">
+                <a href="index.html" class="logo">
+                    <img src="assets/imgs/Point.png">
+                </a>
+                <hr>
+                <a href="#">
+                    <img src="assets/imgs/alfinete 1.png">
+                    <span>Dashboard</span>
+                </a>
+                <a href="#">
+                    <img src="assets/imgs/alfinete 1.png">
+                    <span>Alertas</span>
+                </a>
+                <a href="#">
+                    <img src="assets/imgs/alfinete 1.png">
+                    <span>Funcionários</span>
+                </a>
+                <a href="#">
+                    <img src="assets/imgs/alfinete 1.png">
+                    <span>Máquinas</span>
+                </a>
+            </nav>
+            <nav id="menu-mobile"><img src="assets/imgs/alfinete 1.png"></nav>
+        </header>
+        <main>
+            <div id="lista-maquinas">
+
+            </div>
+        </main>
+    </body>
+</html>
+<script>
+    fetch(`/maquinas/listar`).then(function (res) {
+            if (res.ok) {
+                res.json().then(resposta => {
+                    var lista = document.querySelector("#lista-maquinas");
+                    for(let maquina = 0; maquina < resposta.length; maquina++){
+                        lista.innerHTML += `<div class="maquina"><h2>${resposta[maquina].nome}</h2><h3>${resposta[maquina].nomeMaquina}</h3></div>`;
+                    }
+                });
+            }
+        });
+</script>
