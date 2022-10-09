@@ -50,13 +50,12 @@ public class Funcionario {
             int id = jsonResultado.getInt("idFuncionario");
             String nome = jsonResultado.getString("nome");
 
-            setId(id);
-            setNome(nome);
+           this.id = id;
+           this.nome = nome;
 
             return true;
         } catch (Exception e) {
-            
-            System.out.println("Usuário Não encontrado");
+  
             return false;
         }
 

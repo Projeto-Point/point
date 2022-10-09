@@ -27,11 +27,14 @@ public class Database {
     BasicDataSource dataSource = new BasicDataSource();
 
     dataSource​.setDriverClassName("com.mysql.jdbc.Driver");
-
+    
+    // Colocar aqui o caminho do banco e o nome do database -- padrão = localhost:3306
     dataSource​.setUrl("jdbc:mysql://127.0.0.1:3306/bd_point");
-
+    
+    // Nome do usuário da conexão 
     dataSource​.setUsername("aluno");
-
+    
+    // Senha da conexão 
     dataSource​.setPassword("sptech");
 
     this.connection = new JdbcTemplate(dataSource);

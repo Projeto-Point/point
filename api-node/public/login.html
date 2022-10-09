@@ -109,7 +109,7 @@
             } else {
 
                 console.log("Houve um erro ao tentar realizar o login!");
-
+                alert("Não foi possível realizar o login")
                 resposta.text().then(texto => {
                     console.error(texto);
                     finalizarAguardar(texto);

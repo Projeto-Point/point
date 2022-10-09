@@ -21,24 +21,26 @@ public class Main {
         Looca looca = new Looca();
         
         Database database = new Database();
-        
-        JdbcTemplate connection = database.getConnection();
+    
         
         Funcionario func = new Funcionario();
         Maquina maquina = new Maquina();
 
-        
-        if(func.isFuncionarioCadastrado("iva@.com", "123")){
-            maquina.isMaquinaCadastrada(func);
-            System.out.println(String.format("Nome funcionário: %s\nSO: %s\n", func.getNome(), maquina.getSistemaOperacional()));
+        // Colocar como parâmetro o email do usuário criado + senha com aspas
+        if(func.isFuncionarioCadastrado("steh@.com", "123")){
+           
+            System.out.println(maquina.isMaquinaCadastrada(func));
+            
+            if (maquina.isMaquinaCadastrada(func)) {
+                System.out.println("Máquina já cadastrada");
+            }else if (maquina.cadastrarMaquina(func)){
+                System.out.println("Máquina Cadastrada");
+            }else{
+                System.out.println("Não foi possível encontrar máquina/cadastar máquina");
+            }
         }else{
             System.out.println("Funcionário não encontrado");
         }
-  
-        
-        
-       
-        
     }
 
 }

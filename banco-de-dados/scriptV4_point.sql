@@ -110,13 +110,13 @@ INNER JOIN Componente ON fkMaquina = idMaquina
 INNER JOIN Registro ON fkComponente = idComponente;
 
 -- Dados Fake para teste -- Dados Funcionario
-INSERT INTO Empresa VALUES (null, "Google", "21625996000109", 1, "Tecnologia");
-INSERT INTO Funcionario VALUES (null, "Ir","3700421409d","123", "iva@.com", null, 1);
-INSERT INTO Telefone VALUES(null, "11992015034", 1);
-INSERT INTO Endereco VALUES(null, "Rua armando", 131, "Jardim Holanda", "São Paulo", "SP","Brasil", 1,1);
+-- INSERT INTO Empresa VALUES (null, "Google", "21625996000109", 1, "Tecnologia");
+-- INSERT INTO Funcionario VALUES (null, "Ir","3700421409d","123", "iva@.com", null, 1);
+-- INSERT INTO Telefone VALUES(null, "11992015034", 1);
+-- INSERT INTO Endereco VALUES(null, "Rua armando", 131, "Jardim Holanda", "São Paulo", "SP","Brasil", 1,1);
 -- Select para verificar se bate
-SELECT f.nome as "Nome Funcionario", t.telefone as "Telefone Funcionario", ed.rua as "Rua Funcionario", ep.nome as "Nome Empresa"
 
+SELECT f.nome as "Nome Funcionario", t.telefone as "Telefone Funcionario", ed.rua as "Rua Funcionario", ep.nome as "Nome Empresa"
 FROM Funcionario as f
 INNER JOIN Telefone as t ON t.fkFuncionario = f.idFuncionario
 INNER JOIN Empresa as ep ON f.fkEmpresa = ep.idEmpresa
@@ -127,4 +127,7 @@ AND ed.fkEmpresa = ep.idEmpresa;
 -- Dados Maquina Fake 
 
 SELECT * FROM Funcionario; 
-SELECT * FROM Maquina;
+select * from Maquina;
+SELECT idMaquina, sistemaOperacional, Funcionario.idFuncionario, fkFuncionario FROM Maquina 
+INNER JOIN Funcionario ON idFuncionario = fkFuncionario
+WHERE idFuncionario = 1;

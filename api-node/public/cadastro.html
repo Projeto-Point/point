@@ -31,7 +31,7 @@
 
                 </div>
                 <div class="inputs">
-                    <span class="span_text">:</CNPKspan> <br>
+                    <span class="span_text">CPF:</CNPKspan> <br>
                     <input class="input" type="email" id="cpf_input" placeholder="***********">
 
                 </div>
@@ -138,6 +138,7 @@
                 limparFormulario();
 
             } else {
+                alert("Não foi possível realizar o login")
                 throw ("Houve um erro ao tentar realizar o cadastro!");
             }
         }).catch(function (resposta) {

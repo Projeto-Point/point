@@ -46,21 +46,22 @@ public class Maquina {
          
         try {
             
-            List<Map<String, Object>> resultado = connection.queryForList("SELECT idMaquina, sistemaOperacional FROM Maquina INNER JOIN Funcionario ON idFuncionario = " + funcionario.getId() + ";");
-
-            JSONObject jsonResultado = new JSONObject(resultado.get(0));
+            List<Map<String, Object>> resultado = connection.queryForList
+        ("SELECT idMaquina, sistemaOperacional FROM Maquina INNER JOIN Funcionario ON idFuncionario = fkFuncionario WHERE idFuncionario = " + funcionario.getId() + ";");
             
+            JSONObject jsonResultado = new JSONObject(resultado.get(0));
+            System.out.println(jsonResultado);
             int idMaquina = jsonResultado.getInt("idMaquina");
             String so = jsonResultado.getString("sistemaOperacional");
-            
+ 
             this.id = idMaquina;
-            this.SistemaOperacional = so;
+            this.SistemaOperacional = so;     
             
-            System.out.println("Maquina já está em nosso registro");
             return true;
         } catch (Exception e) {
-            System.out.println("Máquina não cadastrada");
-            return cadastrarMaquina(funcionario);
+            
+            System.out.println(e);
+            return false;
         }
     }
     
@@ -76,19 +77,14 @@ public class Maquina {
             null,
             funcionario.getId()
             );
-            
-            System.out.println("Maquina Cadastrada");
-            isMaquinaCadastrada(funcionario);
+           
             return true;
          
         } catch (Exception e) {
-            System.out.println("Não foi possível cadastrar Máquina");
+         
             return false;
         }
          
     }
-    
-    
-    
     
 }
