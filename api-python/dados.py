@@ -1,4 +1,6 @@
 # Fazer a conexão com SQL 
+from ast import If
+from asyncio.windows_events import NULL
 import pymysql
 # datetime é para pegar as datas e as horas com precisão exata e conseguir fazer contasa 
 import datetime
@@ -31,7 +33,8 @@ from psutil import (
     # return os processos que estão sendo executados
     pids,
     # Mostra todos os processos que foram executados desde o boot da máquina  e o pid
-    process_iter
+    process_iter,
+    cpu_freq
 )
 
 # Verifica se é Windowns ou Linux 
@@ -45,6 +48,10 @@ def limpar():
 
 verificaLogin = False
 
+cadastrarMaquina = False
+
+verificarCadastro = False
+
 while verificaLogin == False:
     #Chama a função limpar
     limpar()
@@ -53,7 +60,7 @@ while verificaLogin == False:
     senha = input('Digite a senha do funcionário: ')
 
     # Conecta com o banco, passando o usuário, e o banco desejado
-    conexao = pymysql.connect(db='bdpoint', user='root', passwd='#Gf45297661870')
+    conexao = pymysql.connect(db='bd_point', user='root', passwd='GuilhermeAugusto123')
 
     # AGDDAAAAA
     cursor = conexao.cursor()
@@ -64,7 +71,48 @@ while verificaLogin == False:
     #Encerra o processo
     conexao.close()
 
-# Converte de bytes para giga 
+
+
+nome = platform.node()
+conexao = pymysql.connect(db='bd_point', user='root', passwd='GuilhermeAugusto123')
+cursor = conexao.cursor()
+verificarCadastro = cursor.execute(("SELECT nomeMaquina FROM Maquina WHERE nomeMaquina = '{}'").format(nome))
+resultado = cursor.fetchall()
+
+conexao.close()
+
+if verificarCadastro != NULL:
+    print("Esta máquina já está cadastrada")
+else:
+
+    print("Cadsatro feito")
+
+    def bytes_para_giga(value):
+        return f'{value / 1024 / 1024 / 1024: .2f}'
+
+
+    memoriaTotal = bytes_para_giga(virtual_memory().total)
+    discoTotal = bytes_para_giga(disk_usage("/").total)
+
+    conexao = pymysql.connect(db='bd_point', user='root', passwd='GuilhermeAugusto123')
+
+    cursor = conexao.cursor()
+    
+    #Executa o comando no banco que foi conectado 
+    cursor.execute(f"INSERT INTO Maquina (sistemaOperacional, nomeMaquina) VALUES ('{platform.system()}', '{platform.node()}')")
+
+    cursor.execute(f"INSERT INTO Componente VALUES (null, 'CPU', null)")
+
+    cursor.execute(f"INSERT INTO Componente VALUES (null, 'MemóriaRAM', null)")
+
+    cursor.execute(f"INSERT INTO Componente VALUES (null, 'Disco', null)")
+
+    cursor.execute(f"INSERT INTO Atributo (atributo, valor, unidadeMedida) VALUES (null, {memoriaTotal}, 'GB')")
+    cursor.execute(f"INSERT INTO Atributo (atributo, valor, unidadeMedida) VALUES (null, {discoTotal}, 'GB')")
+
+    conexao.commit()
+
+    # Converte de bytes para giga 
 def bytes_para_giga(value):
     return value / 1024 / 1024 / 1024
 
@@ -73,7 +121,7 @@ def bytes_para_giga(value):
 ui = HSplit(  # ui
     VSplit(
         Text(
-            ' ',
+             ' ',
             border_color=9,
             color=7,
             title='Informações da máquina'
@@ -86,7 +134,7 @@ ui = HSplit(  # ui
         HGauge(title='cpu_2'),
         HGauge(title='cpu_3'),
         title='CPU',
-        border_color=5,
+            border_color=5,
     ),
     VSplit(  # ui.items[2]
         HSplit(  # ui.items[0]
@@ -100,9 +148,8 @@ ui = HSplit(  # ui
             border_color=6,
             
         ),
-    ),
+        ),
 )
-
 while True:
     
     #Processos
@@ -132,8 +179,8 @@ while True:
     cores_tui = cpu_tui.items[1:9]
     ps_cpu_percent = cpu_percent(percpu=True)
     for i, (core, value) in enumerate(zip(cores_tui, ps_cpu_percent)):
-       core.value = value
-       core.title = f'Core_{i} {value}%'
+        core.value = value
+        core.title = f'Core_{i} {value}%'
     
     # Informações da máquina
     outros_tui = ui.items[0].items[0]
@@ -155,14 +202,13 @@ while True:
     # Tempo real
 
     agora = datetime.datetime.now()
-
     agora_string = agora.strftime("%A %d %B %y %I:%M")
 
     agora_datetime = datetime.datetime.strptime(agora_string, "%A %d %B %y %I:%M")
 
     # Conexão BD
 
-    conexao = pymysql.connect(db='bdpoint', user='root', passwd='#Gf45297661870')
+    conexao = pymysql.connect(db='bd_point', user='root', passwd='GuilhermeAugusto123')
 
     cursor = conexao.cursor()
 
@@ -170,23 +216,28 @@ while True:
 
     identificador = cursor.fetchall()
 
-    # Inserindo porcentagem da CPU
+        # Inserindo porcentagem da CPU
     cursor.execute(f"INSERT INTO Registro (valor, unidadeMedida, dataEhora) VALUES ({cpu_percent()}, '%', NOW())")
     
-    # Inserindo porcentagem da RAM
+        # Inserindo porcentagem da RAM
     cursor.execute(f"INSERT INTO Registro (valor, unidadeMedida, dataEhora) VALUES ({virtual_memory().percent}, '%', NOW())")
     
-    # Inserindo porcentagem do Disco
+        # Inserindo porcentagem do Disco
     cursor.execute(f"INSERT INTO Registro (valor, unidadeMedida, dataEhora) VALUES ({disk_usage('/').percent}, '%', NOW())")
 
     conexao.commit()
 
     conexao.close()
 
-    #Mostrar os dados de 3 em 3 segundos
+        #Mostrar os dados de 3 em 3 segundos
 
     try:
-         ui.display()
-         sleep(3.00)
+        ui.display()
+        sleep(3.00)
     except KeyboardInterrupt:
-         break
+        break
+
+
+           
+            
+

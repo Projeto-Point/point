@@ -15,3 +15,4 @@ while True:
     print(f'Registro {contador} inserido!')
     contador += 1
     sleep(1)
+
