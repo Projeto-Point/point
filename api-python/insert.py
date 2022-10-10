@@ -9,7 +9,7 @@ def insetzada():
     disc = psutil.disk_usage("/").percent
 
 
-    conexao = pymysql.connect(db='BDpoint', user='ivanfm', passwd='Mimoso009@', port=3306)
+    conexao = pymysql.connect(db='BDpoint', user='root', passwd='#Gf45297661870', port=3306)
 
     cursor = conexao.cursor()
 

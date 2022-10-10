@@ -21,5 +21,5 @@ funcionario <- data.frame(idFuncionario = c(1:length(mixed_data)),
                           senha = 123,
                           email = "nome@empresa.com",
                           fkGestor = sample(1:length(mixed_data), size = length(mixed_data), replace = TRUE),
-                          fkEmpresa = sample(1:200, size = length(mixed_data), replace = TRUE)
+                          fkEmpresa = sample(1:100, size = length(mixed_data), replace = TRUE)
                           )

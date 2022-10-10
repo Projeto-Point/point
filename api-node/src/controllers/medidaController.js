@@ -41,8 +41,70 @@ function buscarMedidasEmTempoReal(req, res) {
     });
 }
 
+
+function pegarRegistroCPU(req, res){
+    var idMaquina = req.query.idMaquina;
+    medidaModel.pegarRegistroCPU()
+    .then(function (resposta) {
+        res.status(200).json(resposta);
+    })
+    .catch(function(erro){
+        console.log(erro);
+        console.log("Houve um erro ao buscar os registroCPUs.", erro.sqlMessage);
+        res.status(500).json(erro.sqlMessage);
+    });
+
+}
+
+function pegarRegistroDISCO(req, res){
+    var idMaquina = req.query.idMaquina;
+    medidaModel.pegarRegistroDISCO()
+    .then(function (resposta) {
+        res.status(200).json(resposta);
+    })
+    .catch(function(erro){
+        console.log(erro);
+        console.log("Houve um erro ao buscar os registroDISCO.", erro.sqlMessage);
+        res.status(500).json(erro.sqlMessage);
+    });
+
+}
+
+function pegarRegistroRAM(req, res){
+    var idMaquina = req.query.idMaquina;
+    medidaModel.pegarRegistroRAM()
+    .then(function (resposta) {
+        res.status(200).json(resposta);
+    })
+    .catch(function(erro){
+        console.log(erro);
+        console.log("Houve um erro ao buscar os registroRAM.", erro.sqlMessage);
+        res.status(500).json(erro.sqlMessage);
+    });
+
+}
+
+function pegarRegistroFuncionario(req, res){
+    var idMaquina = req.query.idMaquina;
+    medidaModel.pegarRegistroFuncionario()
+    .then(function (resposta) {
+        res.status(200).json(resposta);
+    })
+    .catch(function(erro){
+        console.log(erro);
+        console.log("Houve um erro ao buscar os registroINFO.", erro.sqlMessage);
+        res.status(500).json(erro.sqlMessage);
+    });
+
+}
+
+
+
 module.exports = {
     buscarUltimasMedidas,
-    buscarMedidasEmTempoReal
-
+    buscarMedidasEmTempoReal,
+    pegarRegistroCPU,
+    pegarRegistroDISCO,
+    pegarRegistroRAM,
+    pegarRegistroFuncionario
 }

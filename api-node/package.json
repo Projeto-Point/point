@@ -1,14 +1,14 @@
 {
-  "name": "projeto-acquatec",
+  "name": "projeto-point",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "app.js",
   "scripts": {
     "start": "node app.js",
     "dev": "nodemon --exec node app.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "author": "Feito pelos desenvolvedores @ Bandtec Digital School",
+  "author": "Feito pela equipe Point",
   "license": "MIT",
   "dependencies": {
     "cors": "^2.8.5",
