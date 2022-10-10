@@ -1,13 +1,16 @@
 <!DOCTYPE html>
 <html lang="pt-br">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <link href="https://fonts.googleapis.com/css2?family=Advent+Pro:wght@100;200;300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Advent+Pro:wght@100;200;300;400;500;600;700&display=swap"
+        rel="stylesheet">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="css/styleLogin_Cadastro.css">
     <title>Cadastro | Point</title>
 </head>
+
 <body id="form_cadastro">
     <div id="cadastro" class="container">
         <div class="cadastro">
@@ -20,36 +23,58 @@
                 </a>
                 <img src="assets/imgs/Point.png" alt="Point Logo" class="img_cadastro">
 
-                <div class="inputs">
-                    <span class="span_text">Nome:</span> <br>
-                    <input class="input" id="nome_input" placeholder="Seu nome">
-                </div>
 
-                <div class="inputs">
-                    <span class="span_text">E-mail:</span> <br>
-                    <input class="input" type="email" id="email_input" placeholder="seuEmail@email.com">
+                <span id="spnEmpresa" class="banner_cadastro">
 
-                </div>
-                <div class="inputs">
-                    <span class="span_text">CPF:</CNPKspan> <br>
-                    <input class="input" type="email" id="cpf_input" placeholder="***********">
+                    <div class="inputs">
+                        <span class="span_text">Empresa:</span> <br>
+                        <input class="input" id="nomeEmpresa_input" placeholder="Nome da empresa">
+                    </div>
 
-                </div>
+                    <div class="inputs">
+                        <span class="span_text">CNPJ:</CNPKspan> <br>
+                            <input class="input" type="email" id="cnpj_input" placeholder="Somente números">
 
-                <div class="inputs">
-                    <span class="span_text">Sua senha:</span> <br>
-                    <input class="input" type="password" id="senha_input" placeholder="********">
+                    </div>
 
-                </div>
-                <div class="inputs">
-                    <span class="span_text">Confirme sua senha:</span> <br>
-                    <input class="input" type="password" id="confirmacao_senha_input" placeholder="********">
+                    <div class="botao_cadastro">
+                        <button class="btnEntrar" onclick="proximo()">Próximo</button>
+                    </div>
 
-                </div>
+                </span>
 
-                <div class="botao_cadastro">
-                    <button class="btnEntrar" onclick="cadastrar()">Cadastrar-se</button>
-                </div>
+                <span id="spnGerente" class="banner_cadastro" style="display: none;">
+                    <div class="inputs">
+                        <span class="span_text">Nome:</span> <br>
+                        <input class="input" id="nome_input" placeholder="Seu nome">
+                    </div>
+
+                    <div class="inputs">
+                        <span class="span_text">E-mail:</span> <br>
+                        <input class="input" type="email" id="email_input" placeholder="seuEmail@email.com">
+
+                    </div>
+                    <div class="inputs">
+                        <span class="span_text">CPF:</CNPKspan> <br>
+                            <input class="input" type="email" id="cpf_input" placeholder="Somente números">
+
+                    </div>
+
+                    <div class="inputs">
+                        <span class="span_text">Sua senha:</span> <br>
+                        <input class="input" type="password" id="senha_input" placeholder="********">
+
+                    </div>
+                    <div class="inputs">
+                        <span class="span_text">Confirme sua senha:</span> <br>
+                        <input class="input" type="password" id="confirmacao_senha_input" placeholder="********">
+
+                    </div>
+
+                    <div class="botao_cadastro">
+                        <button class="btnEntrar" onclick="cadastrar()">Cadastrar-se</button>
+                    </div>
+                </span>
 
                 <div class="sem_login">
                     <span class="span_text_scad">Já possui um cadastro?</span> <a href="login.html">Clique aqui.</a>
@@ -64,43 +89,62 @@
 </html>
 
 <script>
+
+    function proximo() {
+        var nomeEmpresa = nomeEmpresa_input.value;
+        var cnpjVar = cnpj_input.value;
+
+        if (nomeEmpresa == "" || cnpjVar == "") {
+            alert("Preencha todos os campos para prosseguir!")
+
+            return false;
+        } else if (cnpjVar != Number(cnpjVar)) {
+            alert("CNPJ deve conter apenas números.")
+
+            return false;
+        } else if (cnpjVar.length != 14) {
+            alert("O CNPJ deve conter 14 dígitos.")
+
+            return false;
+        } else {
+            spnEmpresa.style.display = 'none';
+            spnGerente.style.display = 'flex';
+        }
+
+    }
+
+
     function cadastrar() {
-
-
-        var nomeVar = nome_input.value;
+        var nomeEmpresa = nomeEmpresa_input.value;
+        var cnpjVar = cnpj_input.value;
+        var nomeGerenteVar = nome_input.value;
         var emailVar = email_input.value;
         var cpfVar = cpf_input.value;
         var senhaVar = senha_input.value;
         var confirmacaoSenhaVar = confirmacao_senha_input.value;
 
-        if (nomeVar == "" || emailVar == "" || senhaVar == "" || confirmacaoSenhaVar == "" || cpfVar == "") {
-            cardErro.style.display = "block"
-            mensagem_erro.innerHTML = "Preencha todos os campos para prosseguir!";
+        var idEmpresa = 0;
 
+        if (nomeGerenteVar == "" || emailVar == "" || senhaVar == "" || confirmacaoSenhaVar == "" || cpfVar == "") {
+            alert("Preencha todos os campos para prosseguir!")
 
             return false;
         }
 
 
         if (emailVar.indexOf("@") == -1 || emailVar.indexOf(".com") == -1) {
-            cardErro.style.display = "block"
-            mensagem_erro.innerHTML = "Ops, e-mail inválido! Verifique e tente novamente.";
-
-            return false;
-        }
-
-
-        if (cpfVar.length != 11) {
-            alert("Insira todos os números do CPF: Há um número a mais ou a menos. ")
+            alert("E-mail inválido! Verifique e tente novamente.")
 
             return false;
         } else if (cpfVar != Number(cpfVar)) {
-            alert("Insira apenas caractéres válidos no CPF: Hà um caractere inválido.")
+            alert("CPF deve conter apenas números.")
 
             return false;
-        }
+        } else if (cpfVar.length != 11) {
+            alert("CPF deve conter 11 dígitos.")
 
-        if (senhaVar != confirmacaoSenhaVar) {
+            return false;
+        } else if (senhaVar != confirmacaoSenhaVar) {
             cardErro.style.display = "block"
             mensagem_erro.innerHTML = "As senhas inseridas devem ser iguais para prosseguir!";
 
@@ -109,7 +153,7 @@
 
 
         // Enviando o valor da nova input
-        fetch("/usuarios/cadastrar", {
+        fetch("/usuarios/cadastrarEmpresa", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
@@ -117,10 +161,8 @@
             body: JSON.stringify({
                 // crie um atributo que recebe o valor recuperado aqui
                 // Agora vá para o arquivo routes/usuario.js
-                nomeServer: nomeVar,
-                emailServer: emailVar,
-                cpfServer: cpfVar,
-                senhaServer: senhaVar,
+                nomeEmpresaServer: nomeEmpresa,
+                cnpjServer: cnpjVar
             })
         }).then(function (resposta) {
 
@@ -128,14 +170,47 @@
 
             if (resposta.ok) {
 
+                resposta.json().then(json => {
+                    idEmpresa = json.insertId;
+                    //fetch do gestor
+                    fetch("/usuarios/cadastrarUsuario", {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json"
+                        },
+                        body: JSON.stringify({
+                            // crie um atributo que recebe o valor recuperado aqui
+                            // Agora vá para o arquivo routes/usuario.js
+                            nomeGerenteServer: nomeGerenteVar,
+                            cpfServer: cpfVar,
+                            emailServer: emailVar,
+                            senhaServer: senhaVar,
+                            idEmpresaServer: idEmpresa
+                        })
+                    }).then(function (resposta) {
+
+                        console.log("resposta: ", resposta);
+
+                        if (resposta.ok) {
+
+                            setTimeout(() => {
+                                console.log("entrou")
+                                window.location = "login.html";
+                            }, 1000)
+
+                            limparFormulario();
+
+                        } else {
+                            alert("Não foi possível realizar o login")
+                            throw ("Houve um erro ao tentar realizar o cadastro!");
+                        }
+                    }).catch(function (resposta) {
+                        console.log(`#ERRO: ${resposta}`);
+
+                    });
+                });
 
 
-                setTimeout(() => {
-                    console.log("entrou")
-                    window.location = "login.html";
-                }, 1000)
-
-                limparFormulario();
 
             } else {
                 alert("Não foi possível realizar o login")
