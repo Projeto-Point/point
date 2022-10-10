@@ -171,3 +171,20 @@ main section.dashboard .grafico h3, main section.dashboard .tabela h3 {
     display: none;
   }
 }/*# sourceMappingURL=styleDash.css.map */
+
+/* Incio css maquina*/
+.top-esq-maquina{
+
+  border: 2px dashed red;
+  display: flex;
+  flex-direction: row;
+}
+
+.top-meio-m{
+  border: none;
+  width: 400px;
+  padding: 0 15px;
+  outline: none;
+  display: flex;
+  flex-direction: row;
+}
