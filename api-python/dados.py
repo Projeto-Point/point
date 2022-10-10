@@ -1,6 +1,4 @@
 # Fazer a conexão com SQL 
-from ast import If
-from asyncio.windows_events import NULL
 from pickle import NONE
 import pymysql
 # datetime é para pegar as datas e as horas com precisão exata e conseguir fazer contasa 
@@ -82,7 +80,7 @@ resultado = cursor.fetchall()
 
 conexao.close()
 
-if verificarCadastro is None:
+if verificarCadastro != 0:
     print("Esta máquina já está cadastrada")
 else:
 
@@ -218,13 +216,13 @@ while True:
     identificador = cursor.fetchall()
 
     # Inserindo porcentagem da CPU
-    cursor.execute(f"INSERT INTO Registro (valor, unidadeMedida, dataEhora) VALUES ({cpu_percent()}, '%', NOW())")
+    cursor.execute(f"INSERT INTO Registro (valor, unidadeMedida, dataEhora, fkComponente) VALUES ({cpu_percent()}, '%', NOW(), {id})")
     
     # Inserindo porcentagem da RAM
-    cursor.execute(f"INSERT INTO Registro (valor, unidadeMedida, dataEhora) VALUES ({virtual_memory().percent}, '%', NOW())")
+    cursor.execute(f"INSERT INTO Registro (valor, unidadeMedida, dataEhora, fkComponente) VALUES ({virtual_memory().percent}, '%', NOW(), {id})")
     
     # Inserindo porcentagem do Disco
-    cursor.execute(f"INSERT INTO Registro (valor, unidadeMedida, dataEhora) VALUES ({disk_usage('/').percent}, '%', NOW())")
+    cursor.execute(f"INSERT INTO Registro (valor, unidadeMedida, dataEhora, fkComponente) VALUES ({disk_usage('/').percent}, '%', NOW(), {id})")
 
     conexao.commit()
 
