@@ -1,6 +1,5 @@
 # Fazer a conexão com SQL 
-from ast import If
-from asyncio.windows_events import NULL
+from pickle import NONE
 import pymysql
 # datetime é para pegar as datas e as horas com precisão exata e conseguir fazer contasa 
 import datetime
@@ -34,7 +33,6 @@ from psutil import (
     pids,
     # Mostra todos os processos que foram executados desde o boot da máquina  e o pid
     process_iter,
-    cpu_freq
 )
 
 # Verifica se é Windowns ou Linux 
@@ -77,15 +75,16 @@ nome = platform.node()
 conexao = pymysql.connect(db='bd_point', user='root', passwd='#Gf45297661870')
 cursor = conexao.cursor()
 verificarCadastro = cursor.execute(("SELECT nomeMaquina FROM Maquina WHERE nomeMaquina = '{}'").format(nome))
+id = cursor.execute(("SELECT idMaquina FROM Maquina WHERE nomeMaquina = '{}'").format(nome))
 resultado = cursor.fetchall()
 
 conexao.close()
 
-if verificarCadastro != NULL:
+if verificarCadastro != 0:
     print("Esta máquina já está cadastrada")
 else:
 
-    print("Cadsatro feito")
+    print("Cadastro feito")
 
     def bytes_para_giga(value):
         return f'{value / 1024 / 1024 / 1024: .2f}'
@@ -101,14 +100,14 @@ else:
     #Executa o comando no banco que foi conectado 
     cursor.execute(f"INSERT INTO Maquina (sistemaOperacional, nomeMaquina) VALUES ('{platform.system()}', '{platform.node()}')")
 
-    cursor.execute(f"INSERT INTO Componente VALUES (null, 'CPU', null)")
+    cursor.execute(f"INSERT INTO Componente VALUES (null, 'CPU', {id})")
 
-    cursor.execute(f"INSERT INTO Componente VALUES (null, 'MemóriaRAM', null)")
+    cursor.execute(f"INSERT INTO Componente VALUES (null, 'MemóriaRAM', {id})")
 
-    cursor.execute(f"INSERT INTO Componente VALUES (null, 'Disco', null)")
+    cursor.execute(f"INSERT INTO Componente VALUES (null, 'Disco', {id})")
 
-    cursor.execute(f"INSERT INTO Atributo (atributo, valor, unidadeMedida) VALUES (null, {memoriaTotal}, 'GB')")
-    cursor.execute(f"INSERT INTO Atributo (atributo, valor, unidadeMedida) VALUES (null, {discoTotal}, 'GB')")
+    cursor.execute(f"INSERT INTO Atributo (atributo, valor, unidadeMedida, fkComponente) VALUES (null, {memoriaTotal}, 'GB', {id})")
+    cursor.execute(f"INSERT INTO Atributo (atributo, valor, unidadeMedida, fkComponente) VALUES (null, {discoTotal}, 'GB', {id})")
 
     conexao.commit()
 
@@ -216,20 +215,22 @@ while True:
 
     identificador = cursor.fetchall()
 
-        # Inserindo porcentagem da CPU
-    cursor.execute(f"INSERT INTO Registro (valor, unidadeMedida, dataEhora, fkComponente) VALUES ({cpu_percent()}, '%', NOW(), 1)")
+
+    # Inserindo porcentagem da CPU
+    cursor.execute(f"INSERT INTO Registro (valor, unidadeMedida, dataEhora, fkComponente) VALUES ({cpu_percent()}, '%', NOW(), {id})")
+
     
-        # Inserindo porcentagem da RAM
-    cursor.execute(f"INSERT INTO Registro (valor, unidadeMedida, dataEhora) VALUES ({virtual_memory().percent}, '%', NOW())")
+    # Inserindo porcentagem da RAM
+    cursor.execute(f"INSERT INTO Registro (valor, unidadeMedida, dataEhora, fkComponente) VALUES ({virtual_memory().percent}, '%', NOW(), {id})")
     
-        # Inserindo porcentagem do Disco
-    cursor.execute(f"INSERT INTO Registro (valor, unidadeMedida, dataEhora) VALUES ({disk_usage('/').percent}, '%', NOW())")
+    # Inserindo porcentagem do Disco
+    cursor.execute(f"INSERT INTO Registro (valor, unidadeMedida, dataEhora, fkComponente) VALUES ({disk_usage('/').percent}, '%', NOW(), {id})")
 
     conexao.commit()
 
     conexao.close()
 
-        #Mostrar os dados de 3 em 3 segundos
+    #Mostrar os dados de 3 em 3 segundos
 
     try:
         ui.display()
