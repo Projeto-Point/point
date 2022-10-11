@@ -19,6 +19,7 @@ create table Funcionario (
     cpf char(11) unique not null,
     senha varchar(45) not null,
     email varchar(45) unique not null,
+    cargo varchar (45) not null,
     fkGestor int,
     fkEmpresa int,
     foreign key (fkGestor) references funcionario (idFuncionario),
@@ -50,15 +51,27 @@ create table Maquina (
     idMaquina int primary key auto_increment,
     sistemaOperacional varchar(45) not null,
     nomeMaquina varchar(45),
+    tipo VARCHAR(30),
     fkfuncionario int,
     foreign key (fkFuncionario) references funcionario (idFuncionario)
 );
 
-create table Componente(
-    idComponente int primary key auto_increment,
-    tipo varchar(50),
+CREATE TABLE Alerta (
+	idAlerta INT PRIMARY KEY AUTO_INCREMENT,
+    dataEhora datetime,
+    titulo VARCHAR (100),
+    resolucao VARCHAR (30),
+    link VARCHAR(100),
+    fkMaquina INT, 
+    foreign key (fkMaquina) references Maquina(idMaquina)
+);
+
+CREATE TABLE Componente (
+	idComponente int,
     fkMaquina int,
-    foreign key (fkMaquina) references maquina (idMaquina)
+    tipo VARCHAR(50),
+    foreign key (fkMaquina) references Maquina (idMaquina),
+    primary key(idComponente, fkMaquina)
 );
 
 create table Atributo(
@@ -67,16 +80,17 @@ create table Atributo(
     valor decimal(6,2),
     unidadeMedida varchar(30),
     fkComponente int,
-    foreign key (fkComponente) references componente (idComponente)
+    fkMaquina INT,
+    foreign key (fkComponente) references Componente (idComponente),
+    foreign key (fkMaquina) references Maquina (idMaquina)
 );
 
 create table Registro(
-    idRegistro int primary key auto_increment,
-    valor decimal(6,2),
-    unidadeMedida varchar(5),
-    dataEhora datetime,
+    fkMaquina int,
     fkComponente int,
-    foreign key (fkComponente) references componente (idComponente)
+    dataEhora datetime,
+    valor decimal(6,2),
+    unidadeMedida VARCHAR(5)
 );
 
 -- Views
@@ -85,14 +99,14 @@ SELECT E.nome AS 'empresa', E.cnpj,
 	F.email,
     Endereco.cidade, Endereco.estado, Endereco.pais,
     idMaquina, nomeMaquina, sistemaOperacional,
-    tipo,
+    C.tipo,
     atributo, valor, unidadeMedida
 FROM Empresa E
 
 INNER JOIN Endereco ON Endereco.fkEmpresa = idEmpresa
 INNER JOIN Funcionario F ON F.fkEmpresa = idEmpresa AND Endereco.fkFuncionario = idFuncionario
 INNER JOIN Maquina ON Maquina.fkFuncionario = idFuncionario
-INNER JOIN Componente ON fkMaquina = idMaquina
+INNER JOIN Componente C ON fkMaquina = idMaquina
 INNER JOIN Atributo ON fkComponente = idComponente;
 
 CREATE VIEW `vw_registros` AS
@@ -100,14 +114,15 @@ SELECT  E.nome AS 'empresa', E.cnpj,
 		email,
         Endereco.cidade, Endereco.estado, Endereco.pais,
         idMaquina, nomeMaquina, sistemaOperacional,
-        tipo,
+        C.tipo,
         valor, unidadeMedida, dataEhora
 FROM Empresa E
 INNER JOIN Endereco ON Endereco.fkEmpresa = idEmpresa
 INNER JOIN Funcionario F ON F.fkEmpresa = idEmpresa AND Endereco.fkFuncionario = idFuncionario
 INNER JOIN Maquina ON Maquina.fkFuncionario = idFuncionario
-INNER JOIN Componente ON fkMaquina = idMaquina
+INNER JOIN Componente C ON fkMaquina = idMaquina
 INNER JOIN Registro ON fkComponente = idComponente;
+
 
 -- Dados Fake para teste -- Dados Funcionario
 -- INSERT INTO Empresa VALUES (null, "Google", "21625996000109", 1, "Tecnologia");
@@ -132,9 +147,6 @@ SELECT idMaquina, sistemaOperacional, Funcionario.idFuncionario, fkFuncionario F
 INNER JOIN Funcionario ON idFuncionario = fkFuncionario
 WHERE idFuncionario = 2;
 
-DESC Componente;
-INSERT INTO Componente VALUES (null, "Disco", 1);
-
 SELECT c.tipo, f.nome, f.idFuncionario 
 FROM Componente as c
 INNER JOIN Maquina as m 
@@ -142,3 +154,5 @@ ON m.idMaquina = c.fkMaquina
 INNER JOIN Funcionario as f
 ON m.fkFuncionario = f.idFuncionario
 WHERE idMaquina = 1;
+
+
