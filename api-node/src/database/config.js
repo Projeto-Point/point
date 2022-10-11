@@ -22,7 +22,7 @@ var mySqlConfig = {
     host: "localhost",
     user: "root",
     database: "bd_point",
-    password: "sptech",
+    password: "#Gf45297661870",
     port: 3306
 };
 

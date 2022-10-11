@@ -60,7 +60,7 @@ while verificaLogin == False:
     senha = input('Digite a senha do funcionário: ')
 
     # Conecta com o banco, passando o usuário, e o banco desejado
-    conexao = pymysql.connect(db='bd_point', user='root', passwd='GuilhermeAugusto123')
+    conexao = pymysql.connect(db='bd_point', user='root', passwd='#Gf45297661870')
 
     # AGDDAAAAA
     cursor = conexao.cursor()
@@ -74,7 +74,7 @@ while verificaLogin == False:
 
 
 nome = platform.node()
-conexao = pymysql.connect(db='bd_point', user='root', passwd='GuilhermeAugusto123')
+conexao = pymysql.connect(db='bd_point', user='root', passwd='#Gf45297661870')
 cursor = conexao.cursor()
 verificarCadastro = cursor.execute(("SELECT nomeMaquina FROM Maquina WHERE nomeMaquina = '{}'").format(nome))
 resultado = cursor.fetchall()
@@ -94,7 +94,7 @@ else:
     memoriaTotal = bytes_para_giga(virtual_memory().total)
     discoTotal = bytes_para_giga(disk_usage("/").total)
 
-    conexao = pymysql.connect(db='bd_point', user='root', passwd='GuilhermeAugusto123')
+    conexao = pymysql.connect(db='bd_point', user='root', passwd='#Gf45297661870')
 
     cursor = conexao.cursor()
     
@@ -208,7 +208,7 @@ while True:
 
     # Conexão BD
 
-    conexao = pymysql.connect(db='bd_point', user='root', passwd='GuilhermeAugusto123')
+    conexao = pymysql.connect(db='bd_point', user='root', passwd='#Gf45297661870')
 
     cursor = conexao.cursor()
 
@@ -217,7 +217,7 @@ while True:
     identificador = cursor.fetchall()
 
         # Inserindo porcentagem da CPU
-    cursor.execute(f"INSERT INTO Registro (valor, unidadeMedida, dataEhora) VALUES ({cpu_percent()}, '%', NOW())")
+    cursor.execute(f"INSERT INTO Registro (valor, unidadeMedida, dataEhora, fkComponente) VALUES ({cpu_percent()}, '%', NOW(), 1)")
     
         # Inserindo porcentagem da RAM
     cursor.execute(f"INSERT INTO Registro (valor, unidadeMedida, dataEhora) VALUES ({virtual_memory().percent}, '%', NOW())")

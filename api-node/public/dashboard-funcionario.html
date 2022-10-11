@@ -58,7 +58,7 @@
         <section class="dashboard">
             <div class="grafico" id="gfCpu">
                 <h3>Processador</h3>
-                <div> <canvas id="myChart" style="position: relative;"></canvas></div>
+                <div> <canvas id="graficoCPU" style="position: relative;"></canvas></div>
             </div>
             <div class="grafico" id="gfDisco">
                 <h3>Disco</h3>
@@ -123,6 +123,9 @@
 
 </html>
 <script>
+    var proximaAtualizacao;
+
+
     var cpuMedida = [];
     var discoUtilizado = [];
     var ramMedida = [];
@@ -134,183 +137,217 @@
             if (res.ok) {
                 res.json().then(CPU => {
 
-
+                    console.log(CPU)
                     cpuMedida = CPU.map((object) => object.valor);
+                    plotarGraficoCPU(cpuMedida);
 
-                    var cpuMedida1 = Number(parseFloat(cpuMedida[0]));
-                    var cpuMedida2 = Number(parseFloat(cpuMedida[1]));
-                    var cpuMedida3 = Number(parseFloat(cpuMedida[2]));
-                    var cpuMedida4 = Number(parseFloat(cpuMedida[3]));
-                    var cpuMedida5 = Number(parseFloat(cpuMedida[4]));
-                    var cpuMedida6 = Number(parseFloat(cpuMedida[5]));
-                    var cpuMedida7 = Number(parseFloat(cpuMedida[6]));
-                    var cpuMedida8 = Number(parseFloat(cpuMedida[7]));
-                    var cpuMedida9 = Number(parseFloat(cpuMedida[8]));
-                    var cpuMedida10 = Number(parseFloat(cpuMedida[9]));
 
-                    const labels = [
-                        '',
-                        '',
-                        '',
-                        '',
-                        '',
-                        '',
-                    ];
 
-                    const data = {
-                        labels: labels,
-                        datasets: [{
-                            //CPU
-                            label: 'CPU',
-                            data: [cpuMedida1, cpuMedida2, cpuMedida3, cpuMedida4, cpuMedida5, cpuMedida6, cpuMedida7, cpuMedida8, cpuMedida9, cpuMedida10],
-                            fill: false,
-                            borderColor: 'rgb(75, 192, 192)',
-                            tension: 0.1
-                        }]
-                    };
 
-                    const config = {
-                        type: 'line',
-                        data: data,
-                        options: {
-                            plugins: {
-                                legend: {
-                                    display: false
-                                }
-                            }
-                        }
-                    };
-
-                    const myChart = new Chart(
-                        document.getElementById('myChart'),
-                        config
-                    );
 
                 })
             }
         })
 
-        fetch(`/medidas/pegarRegistroDISCO?idMaquina=1`).then(function (res) {
-            if (res.ok) {
-                res.json().then(DISCO => {
+        
+
+        // fetch(`/medidas/pegarRegistroDISCO?idMaquina=1`).then(function (res) {
+        //     if (res.ok) {
+        //         res.json().then(DISCO => {
 
 
-                    discoUtilizado = DISCO.map((object) => object.valor);
-                    discoLivre = 100 - discoUtilizado;
+        //             discoUtilizado = DISCO.map((object) => object.valor);
+        //             discoLivre = 100 - discoUtilizado;
 
-                    const labels2 = [
-                        'Livre',
-                        'Ocupado',
-                    ];
+        //             const labels2 = [
+        //                 'Livre',
+        //                 'Ocupado',
+        //             ];
 
-                    const data2 = {
-                        labels: labels2,
-                        datasets: [{
-                            // Armazenamento 
-                            label: 'Armazenamento',
-                            backgroundColor: ['rgb(255, 000, 000)', 'rgb(75, 192, 192)'],
-                            borderColor: ['rgb(255, 000, 000)', 'rgb(75, 192, 192)'],
-                            data: [discoUtilizado, discoLivre]
-                        }
-                        ]
-                    };
+        //             const data2 = {
+        //                 labels: labels2,
+        //                 datasets: [{
+        //                     // Armazenamento 
+        //                     label: 'Armazenamento',
+        //                     backgroundColor: ['rgb(255, 000, 000)', 'rgb(75, 192, 192)'],
+        //                     borderColor: ['rgb(255, 000, 000)', 'rgb(75, 192, 192)'],
+        //                     data: [discoUtilizado, discoLivre]
+        //                 }
+        //                 ]
+        //             };
 
-                    const config2 = {
-                        type: 'pie',
-                        data: data2,
-                        options: {
-                            plugins: {
-                                legend: {
-                                    display: false
-                                }
-                            },
-                            responsive: false,
-                        }
-                    };
+        //             const config2 = {
+        //                 type: 'pie',
+        //                 data: data2,
+        //                 options: {
+        //                     plugins: {
+        //                         legend: {
+        //                             display: false
+        //                         }
+        //                     },
+        //                     responsive: false,
+        //                 }
+        //             };
 
-                    const myChart2 = new Chart(
-                        document.getElementById('myChart2'),
-                        config2
-                    );
-                })
-            }
-        })
+        //             const myChart2 = new Chart(
+        //                 document.getElementById('myChart2'),
+        //                 config2
+        //             );
+        //         })
+        //     }
+        // })
 
-        fetch(`/medidas/pegarRegistroRAM?idMaquina=1`).then(function (res) {
-            if (res.ok) {
-                res.json().then(RAM => {
+        // fetch(`/medidas/pegarRegistroRAM?idMaquina=1`).then(function (res) {
+        //     if (res.ok) {
+        //         res.json().then(RAM => {
 
-                    ramMedida = RAM.map((object) => object.valor);
+        //             ramMedida = RAM.map((object) => object.valor);
 
-                    var ramMedida1 = Number(parseFloat(ramMedida[0]));
-                    var ramMedida2 = Number(parseFloat(ramMedida[1]));
-                    var ramMedida3 = Number(parseFloat(ramMedida[2]));
-                    var ramMedida4 = Number(parseFloat(ramMedida[3]));
-                    var ramMedida5 = Number(parseFloat(ramMedida[4]));
-                    var ramMedida6 = Number(parseFloat(ramMedida[5]));
-                    var ramMedida7 = Number(parseFloat(ramMedida[6]));
-                    var ramMedida8 = Number(parseFloat(ramMedida[7]));
-                    var ramMedida9 = Number(parseFloat(ramMedida[8]));
-                    var ramMedida10 = Number(parseFloat(ramMedida[9]));
+        //             var ramMedida1 = Number(parseFloat(ramMedida[0]));
+        //             var ramMedida2 = Number(parseFloat(ramMedida[1]));
+        //             var ramMedida3 = Number(parseFloat(ramMedida[2]));
+        //             var ramMedida4 = Number(parseFloat(ramMedida[3]));
+        //             var ramMedida5 = Number(parseFloat(ramMedida[4]));
+        //             var ramMedida6 = Number(parseFloat(ramMedida[5]));
+        //             var ramMedida7 = Number(parseFloat(ramMedida[6]));
+        //             var ramMedida8 = Number(parseFloat(ramMedida[7]));
+        //             var ramMedida9 = Number(parseFloat(ramMedida[8]));
+        //             var ramMedida10 = Number(parseFloat(ramMedida[9]));
 
-                    const labels3 = [
-                        '',
-                        '',
-                        '',
-                        '',
-                        '',
-                        '',
-                    ];
+        //             const labels3 = [
+        //                 '',
+        //                 '',
+        //                 '',
+        //                 '',
+        //                 '',
+        //                 '',
+        //             ];
 
-                    const data3 = {
-                        labels: labels3,
-                        datasets: [{
-                            //RAM
-                            label: 'RAM',
-                            data: [ramMedida1, ramMedida2, ramMedida3, ramMedida4, ramMedida5, ramMedida6, ramMedida7, ramMedida8, ramMedida9, ramMedida10],
-                            fill: false,
-                            borderColor: 'rgb(75, 192, 192)',
-                            tension: 0.1
-                        }]
-                    };
+        //             const data3 = {
+        //                 labels: labels3,
+        //                 datasets: [{
+        //                     //RAM
+        //                     label: 'RAM',
+        //                     data: [ramMedida1, ramMedida2, ramMedida3, ramMedida4, ramMedida5, ramMedida6, ramMedida7, ramMedida8, ramMedida9, ramMedida10],
+        //                     fill: false,
+        //                     borderColor: 'rgb(75, 192, 192)',
+        //                     tension: 0.1
+        //                 }]
+        //             };
 
-                    const config3 = {
-                        type: 'line',
-                        data: data3,
-                        options: {
-                            plugins: {
-                                legend: {
-                                    display: false
-                                }
-                            }
-                        }
-                    };
+        //             const config3 = {
+        //                 type: 'line',
+        //                 data: data3,
+        //                 options: {
+        //                     plugins: {
+        //                         legend: {
+        //                             display: false
+        //                         }
+        //                     }
+        //                 }
+        //             };
 
-                    const myChart3 = new Chart(
-                        document.getElementById('myChart3'),
-                        config3
-                    );
+        //             const myChart3 = new Chart(
+        //                 document.getElementById('myChart3'),
+        //                 config3
+        //             );
 
-                })
-            }
-        })
+        //         })
+        //     }
+        // })
 
-        fetch(`/medidas/pegarRegistroFuncionario?idMaquina=1`).then(function (res) {
-            if (res.ok) {
-                res.json().then(RegistroFuncionario => {
-                    console.log(RegistroFuncionario)
+        // fetch(`/medidas/pegarRegistroFuncionario?idMaquina=1`).then(function (res) {
+        //     if (res.ok) {
+        //         res.json().then(RegistroFuncionario => {
+        //             console.log(RegistroFuncionario)
 
-                    var nomeFuncionario = RegistroFuncionario.map((object) => object.nome);
-                    var emailFuncionario = RegistroFuncionario.map((object) => object.email);
+        //             var nomeFuncionario = RegistroFuncionario.map((object) => object.nome);
+        //             var emailFuncionario = RegistroFuncionario.map((object) => object.email);
 
-                    nome.innerHTML = nomeFuncionario;
-                    mail.innerHTML = emailFuncionario
+        //             nome.innerHTML = nomeFuncionario;
+        //             mail.innerHTML = emailFuncionario
 
-                })
-            }
-        })
+        //         })
+        //     }
+        // })
+
+
     }
 
-    
+    function plotarGraficoCPU(cpuMedida) {
+        const labels = [
+            '',
+            '',
+            '',
+            '',
+            '',
+            '',
+            '',
+            '',
+            '',
+            ''
+        ];
+
+        const data = {
+            labels: labels,
+            datasets: [{
+                //CPU
+                label: 'CPU',
+                data: cpuMedida[0],
+                fill: true,
+                borderColor: 'rgb(75, 192, 192)',
+                tension: 0
+            }]
+        };
+
+        const config = {
+            type: 'line',
+            data: data,
+            options: {
+                plugins: {
+                    legend: {
+                        display: false
+                    },
+
+                    Animation: false
+                }
+            }
+            
+        };
+
+        window.graficoCPU = new Chart(
+            document.getElementById('graficoCPU').getContext("2d"),
+            config
+
+        );
+        setTimeout(() => {
+            atualizarGraficoCPU(document.getElementById('graficoCPU').getContext("2d"), data)
+        }, 500
+
+        )
+
+    }
+
+    function atualizarGraficoCPU(grafico, dados) {
+        fetch(`/medidas/pegarRegistroCPU?idMaquina=1`).then(function (res) {
+            if (res.ok) {
+                res.json().then(CPU => {
+
+
+
+                    cpuMedida = CPU.map((object) => object.valor);
+                    dados.datasets[0].data = cpuMedida
+                    window.graficoCPU.update();
+
+                    proximaAtualizacao = setTimeout(() => {
+                        atualizarGraficoCPU(grafico, dados)
+                    }, 500)
+
+                })
+            }
+        })
+        console.log("ta funcionando")
+    }
     recuperarDados()
+
 </script>
