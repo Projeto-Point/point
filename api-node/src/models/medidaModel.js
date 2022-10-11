@@ -18,7 +18,7 @@ function pegarRegistroDISCO(){
 
 function pegarRegistroRAM(){
     instrucaoSql = `select valor from (
-        SELECT valor, dataEhora FROM vw_registros WHERE tipo = 'RAM' order by dataEhora desc limit 0,6) AS sub 
+        SELECT valor, dataEhora FROM vw_registros WHERE tipo = 'RAM' order by dataEhora desc limit 0,10) AS sub 
         order by dataEhora asc;`;
     console.log("Executando a instrução SQL: \n" + instrucaoSql);
     return database.executar(instrucaoSql);

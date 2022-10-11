@@ -234,7 +234,7 @@ while True:
 
     try:
         ui.display()
-        sleep(3.00)
+        sleep(0.50)
     except KeyboardInterrupt:
         break
 

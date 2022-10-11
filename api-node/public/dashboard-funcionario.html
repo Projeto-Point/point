@@ -62,12 +62,12 @@
             </div>
             <div class="grafico" id="gfDisco">
                 <h3>Disco</h3>
-                <div><canvas id="myChart2" style="position: relative; width: 20vh"></canvas></div>
+                <div><canvas id="graficoDISCO" style="position: relative; width: 20vh"></canvas></div>
             </div>
             <div class="grafico" id="gfRam">
                 <h3>Memória RAM</h3>
                 <div>
-                    <div><canvas id="myChart3" style="position: relative;"></canvas></div>
+                    <div><canvas id="graficoRAM" style="position: relative;"></canvas></div>
                 </div>
             </div>
             <div class="tabela" id="tbProcessos">
@@ -127,7 +127,8 @@
 
 
     var cpuMedida = [];
-    var discoUtilizado = [];
+    var discoMedida = [];
+    var discoDisponivel= 0;
     var ramMedida = [];
 
     function recuperarDados() {
@@ -141,135 +142,51 @@
                     cpuMedida = CPU.map((object) => object.valor);
                     plotarGraficoCPU(cpuMedida);
 
+                })
+            }
+        })
 
+        fetch(`/medidas/pegarRegistroDISCO?idMaquina=1`).then(function (res) {
+            if (res.ok) {
+                res.json().then(DISCO => {
 
-
+                    console.log(DISCO)
+                    discoMedida = DISCO.map((object) => object.valor);
+                    discoDisponivel= 100 - discoMedida[0];
+                    plotarGraficoDISCO(discoMedida);
 
                 })
             }
         })
 
-        
-
-        // fetch(`/medidas/pegarRegistroDISCO?idMaquina=1`).then(function (res) {
-        //     if (res.ok) {
-        //         res.json().then(DISCO => {
 
 
-        //             discoUtilizado = DISCO.map((object) => object.valor);
-        //             discoLivre = 100 - discoUtilizado;
+        fetch(`/medidas/pegarRegistroRAM?idMaquina=1`).then(function (res) {
+            if (res.ok) {
+                res.json().then(RAM => {
 
-        //             const labels2 = [
-        //                 'Livre',
-        //                 'Ocupado',
-        //             ];
+                    console.log(RAM)
+                    ramMedida = RAM.map((object) => object.valor);
+                    plotarGraficoRAM(ramMedida);
 
-        //             const data2 = {
-        //                 labels: labels2,
-        //                 datasets: [{
-        //                     // Armazenamento 
-        //                     label: 'Armazenamento',
-        //                     backgroundColor: ['rgb(255, 000, 000)', 'rgb(75, 192, 192)'],
-        //                     borderColor: ['rgb(255, 000, 000)', 'rgb(75, 192, 192)'],
-        //                     data: [discoUtilizado, discoLivre]
-        //                 }
-        //                 ]
-        //             };
+                })
+            }
+        })
 
-        //             const config2 = {
-        //                 type: 'pie',
-        //                 data: data2,
-        //                 options: {
-        //                     plugins: {
-        //                         legend: {
-        //                             display: false
-        //                         }
-        //                     },
-        //                     responsive: false,
-        //                 }
-        //             };
+        fetch(`/medidas/pegarRegistroFuncionario?idMaquina=1`).then(function (res) {
+            if (res.ok) {
+                res.json().then(RegistroFuncionario => {
+                    console.log(RegistroFuncionario)
 
-        //             const myChart2 = new Chart(
-        //                 document.getElementById('myChart2'),
-        //                 config2
-        //             );
-        //         })
-        //     }
-        // })
+                    var nomeFuncionario = RegistroFuncionario.map((object) => object.nome);
+                    var emailFuncionario = RegistroFuncionario.map((object) => object.email);
 
-        // fetch(`/medidas/pegarRegistroRAM?idMaquina=1`).then(function (res) {
-        //     if (res.ok) {
-        //         res.json().then(RAM => {
+                    nome.innerHTML = nomeFuncionario;
+                    mail.innerHTML = emailFuncionario
 
-        //             ramMedida = RAM.map((object) => object.valor);
-
-        //             var ramMedida1 = Number(parseFloat(ramMedida[0]));
-        //             var ramMedida2 = Number(parseFloat(ramMedida[1]));
-        //             var ramMedida3 = Number(parseFloat(ramMedida[2]));
-        //             var ramMedida4 = Number(parseFloat(ramMedida[3]));
-        //             var ramMedida5 = Number(parseFloat(ramMedida[4]));
-        //             var ramMedida6 = Number(parseFloat(ramMedida[5]));
-        //             var ramMedida7 = Number(parseFloat(ramMedida[6]));
-        //             var ramMedida8 = Number(parseFloat(ramMedida[7]));
-        //             var ramMedida9 = Number(parseFloat(ramMedida[8]));
-        //             var ramMedida10 = Number(parseFloat(ramMedida[9]));
-
-        //             const labels3 = [
-        //                 '',
-        //                 '',
-        //                 '',
-        //                 '',
-        //                 '',
-        //                 '',
-        //             ];
-
-        //             const data3 = {
-        //                 labels: labels3,
-        //                 datasets: [{
-        //                     //RAM
-        //                     label: 'RAM',
-        //                     data: [ramMedida1, ramMedida2, ramMedida3, ramMedida4, ramMedida5, ramMedida6, ramMedida7, ramMedida8, ramMedida9, ramMedida10],
-        //                     fill: false,
-        //                     borderColor: 'rgb(75, 192, 192)',
-        //                     tension: 0.1
-        //                 }]
-        //             };
-
-        //             const config3 = {
-        //                 type: 'line',
-        //                 data: data3,
-        //                 options: {
-        //                     plugins: {
-        //                         legend: {
-        //                             display: false
-        //                         }
-        //                     }
-        //                 }
-        //             };
-
-        //             const myChart3 = new Chart(
-        //                 document.getElementById('myChart3'),
-        //                 config3
-        //             );
-
-        //         })
-        //     }
-        // })
-
-        // fetch(`/medidas/pegarRegistroFuncionario?idMaquina=1`).then(function (res) {
-        //     if (res.ok) {
-        //         res.json().then(RegistroFuncionario => {
-        //             console.log(RegistroFuncionario)
-
-        //             var nomeFuncionario = RegistroFuncionario.map((object) => object.nome);
-        //             var emailFuncionario = RegistroFuncionario.map((object) => object.email);
-
-        //             nome.innerHTML = nomeFuncionario;
-        //             mail.innerHTML = emailFuncionario
-
-        //         })
-        //     }
-        // })
+                })
+            }
+        })
 
 
     }
@@ -293,10 +210,10 @@
             datasets: [{
                 //CPU
                 label: 'CPU',
-                data: cpuMedida[0],
+                data: cpuMedida,
                 fill: true,
                 borderColor: 'rgb(75, 192, 192)',
-                tension: 0
+               
             }]
         };
 
@@ -312,7 +229,7 @@
                     Animation: false
                 }
             }
-            
+
         };
 
         window.graficoCPU = new Chart(
@@ -346,7 +263,151 @@
                 })
             }
         })
-        console.log("ta funcionando")
+        // console.log("ta funcionando")
+    }
+
+    function plotarGraficoDISCO(discoMedida) {
+        const labels = [
+            'Ocupado',
+            'Livre'
+
+        ];
+
+        const data = {
+            labels: labels,
+            datasets: [{
+                //DISCO
+                label: 'DISCO',
+                data: [discoMedida[0], discoDisponivel],
+                fill: true,
+                borderColor: 'rgb(75, 192, 192)',
+
+            }]
+        };
+
+        const config = {
+            type: 'doughnut',
+            data: data,
+            options: {
+                plugins: {
+                    legend: {
+                        display: false
+                    },
+
+                    Animation: false
+                }
+            }
+
+        };
+
+        window.graficoDISCO = new Chart(
+            document.getElementById('graficoDISCO').getContext("2d"),
+            config
+
+        );
+        setTimeout(() => {
+            atualizarGraficoDISCO(document.getElementById('graficoDISCO').getContext("2d"), data)
+        }, 500
+
+        )
+
+    }
+
+    function atualizarGraficoDISCO(grafico, dados) {
+        fetch(`/medidas/pegarRegistroDISCO?idMaquina=1`).then(function (res) {
+            if (res.ok) {
+                res.json().then(DISCO => {
+
+
+
+                    discoMedida = DISCO.map((object) => object.valor);
+                    discoDisponivel = 100 - discoMedida[0];
+                    dados.datasets[0].data = discoMedida;
+                    dados.datasets[1].data = discoDisponivel;
+                    window.graficoDISCO.update();
+
+                    proximaAtualizacao = setTimeout(() => {
+                        atualizarGraficoDISCO(grafico, dados)
+                    }, 500)
+
+                })
+            }
+        })
+        // console.log("ta funcionando")
+    }
+
+    function plotarGraficoRAM(ramMedida) {
+        const labels = [
+            '',
+            '',
+            '',
+            '',
+            '',
+            '',
+            '',
+            '',
+            '',
+            ''
+        ];
+
+        const data = {
+            labels: labels,
+            datasets: [{
+                //RAM
+                label: 'RAM',
+                data: ramMedida,
+                fill: true,
+                borderColor: 'rgb(75, 192, 192)',
+            }]
+        };
+
+        const config = {
+            type: 'line',
+            data: data,
+            options: {
+                plugins: {
+                    legend: {
+                        display: false
+                    },
+
+                    Animation: false
+                }
+            }
+
+        };
+
+        window.graficoRAM = new Chart(
+            document.getElementById('graficoRAM').getContext("2d"),
+            config
+
+        );
+        setTimeout(() => {
+            atualizarGraficoRAM(document.getElementById('graficoRAM').getContext("2d"), data)
+        }, 500
+
+        )
+
+    }
+
+    function atualizarGraficoRAM(grafico, dados) {
+        fetch(`/medidas/pegarRegistroRAM?idMaquina=1`).then(function (res) {
+            if (res.ok) {
+                res.json().then(RAM => {
+
+
+
+                    ramMedida = RAM.map((object) => object.valor);
+                    dados.datasets[0].data = ramMedida
+                    window.graficoRAM.update();
+
+                    proximaAtualizacao = setTimeout(() => {
+                        atualizarGraficoRAM(grafico, dados)
+                    }, 500)
+
+                })
+            }
+        })
+        // console.log("ta funcionando")
     }
     recuperarDados()
 
