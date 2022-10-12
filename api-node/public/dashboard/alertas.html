@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard maquina | Pardalis</title>
+    <title>Alertas | Point</title>
     <link rel="stylesheet" href="css/styleDash.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -16,41 +16,55 @@
 
 <body>
     <header>
-        <nav>
-            <a href="#">
-                <img src="assets/imgs/download.png" height="50px" width="50px">
-                <span></span>
+        <nav id="menu">
+            <a href="maquinas.html" class="logo">
+                <img src="../assets/imgs/Point.png">
+            </a>
+            <hr>
+            <a href="alertas.html">
+                <img src="../assets/imgs/alfinete 1.png">
+                <span>Alertas</span>
+            </a>
+            <a href="funcionarios.html">
+                <img src="../assets/imgs/alfinete 1.png">
+                <span>Funcionários</span>
+            </a>
+            <a href="maquinas.html">
+                <img src="../assets/imgs/alfinete 1.png">
+                <span>Máquinas</span>
+            </a>
+            <a href="configuracoes.html">
+                <img src="../assets/imgs/alfinete 1.png">
+                <span>Configurações</span>
+            </a>
+            <hr>
+            <a href="../index.html">
+                <img src="../assets/imgs/alfinete 1.png">
+                <span>Sair</span>
             </a>
         </nav>
-
+        <nav id="menu-mobile"><img src="../assets/imgs/alfinete 1.png"></nav>
     </header>
-
     <main>
         <section class="top">
             <div class="top-esq">
                 <div class="top-esq-maquina">
-
-              
                     <p>Ordenar por:</p>
-        
-
-                <select id="id_texto">
-                    <option value="">Mais recente</option>
-                    <option value>Mais antigos</option>
-                    <option value>Resolução</option>
+                    <select id="id_texto">
+                        <option value="">Mais recente</option>
+                        <option value>Mais antigos</option>
+                        <option value>Resolução</option>
                     </select>
-                
-            </div>
+                </div>
                 <br> <br> <br><br>
                 <div class="top-esq-maq">
                     <p>Resoluçao:</p>
-        
-                <select id="id_texto">
-                    <option value="Ordenar por:">Aberto</option>
-                    <option value>Andamento</option>
-                    <option value>Concluido</option>
-                </select>
-            </div>
+                    <select id="id_texto">
+                        <option value="Ordenar por:">Aberto</option>
+                        <option value>Andamento</option>
+                        <option value>Concluido</option>
+                    </select>
+                </div>
                 <br> <br> <br><br>
                 <div class="top-esq-maq"></div>
                 <p>Componente:</p>

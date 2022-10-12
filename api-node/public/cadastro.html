@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="pt-br">
-
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -10,12 +9,9 @@
     <link rel="stylesheet" href="css/styleLogin_Cadastro.css">
     <title>Cadastro | Point</title>
 </head>
-
 <body id="form_cadastro">
     <div id="cadastro" class="container">
         <div class="cadastro">
-
-
             <div class="banner_cadastro">
                 <a href="index.html">
                     <img src="assets/imgs/arrow.png" alt="" class="icon">
@@ -32,15 +28,14 @@
                     </div>
 
                     <div class="inputs">
-                        <span class="span_text">CNPJ:</CNPKspan> <br>
-                            <input class="input" type="email" id="cnpj_input" placeholder="Somente números">
+                        <span class="span_text">CNPJ:</span> <br>
+                        <input class="input" type="text" id="cnpj_input" placeholder="Somente números">
 
                     </div>
 
                     <div class="botao_cadastro">
                         <button class="btnEntrar" onclick="proximo()">Próximo</button>
                     </div>
-
                 </span>
 
                 <span id="spnGerente" class="banner_cadastro" style="display: none;">
@@ -52,29 +47,28 @@
                     <div class="inputs">
                         <span class="span_text">E-mail:</span> <br>
                         <input class="input" type="email" id="email_input" placeholder="seuEmail@email.com">
-
                     </div>
                     <div class="inputs">
-                        <span class="span_text">CPF:</CNPKspan> <br>
-                            <input class="input" type="email" id="cpf_input" placeholder="Somente números">
-
+                        <span class="span_text">CPF:</span> <br>
+                        <input class="input" id="cpf_input" placeholder="Somente números">
                     </div>
 
                     <div class="inputs">
                         <span class="span_text">Sua senha:</span> <br>
                         <input class="input" type="password" id="senha_input" placeholder="********">
-
                     </div>
+
                     <div class="inputs">
                         <span class="span_text">Confirme sua senha:</span> <br>
                         <input class="input" type="password" id="confirmacao_senha_input" placeholder="********">
-
                     </div>
 
                     <div class="botao_cadastro">
                         <button class="btnEntrar" onclick="cadastrar()">Cadastrar-se</button>
                     </div>
                 </span>
+
+                <p class="alerta" id="alerta"></p>
 
                 <div class="sem_login">
                     <span class="span_text_scad">Já possui um cadastro?</span> <a href="login.html">Clique aqui.</a>
@@ -83,36 +77,35 @@
             </div>
         </div>
     </div>
-
 </body>
-
 </html>
 
 <script>
+
+    function mostrarAlerta(msg){
+        alerta.innerHTML = msg;
+        alerta.style.display = "block";
+    }
 
     function proximo() {
         var nomeEmpresa = nomeEmpresa_input.value;
         var cnpjVar = cnpj_input.value;
 
         if (nomeEmpresa == "" || cnpjVar == "") {
-            alert("Preencha todos os campos para prosseguir!")
-
+            mostrarAlerta("Preencha todos os campos para prosseguir!");
             return false;
         } else if (cnpjVar != Number(cnpjVar)) {
-            alert("CNPJ deve conter apenas números.")
-
+            mostrarAlerta("CNPJ deve conter apenas números.");
             return false;
         } else if (cnpjVar.length != 14) {
-            alert("O CNPJ deve conter 14 dígitos.")
-
+            mostrarAlerta("O CNPJ deve conter 14 dígitos.");
             return false;
         } else {
+            alerta.style.display = "none";
             spnEmpresa.style.display = 'none';
             spnGerente.style.display = 'flex';
         }
-
     }
-
 
     function cadastrar() {
         var nomeEmpresa = nomeEmpresa_input.value;
@@ -126,31 +119,24 @@
         var idEmpresa = 0;
 
         if (nomeGerenteVar == "" || emailVar == "" || senhaVar == "" || confirmacaoSenhaVar == "" || cpfVar == "") {
-            alert("Preencha todos os campos para prosseguir!")
-
+            mostrarAlerta("Preencha todos os campos para prosseguir!");
             return false;
         }
-
-
-        if (emailVar.indexOf("@") == -1 || emailVar.indexOf(".com") == -1) {
-            alert("E-mail inválido! Verifique e tente novamente.")
-
+        if (emailVar.indexOf("@") == -1) {
+            mostrarAlerta("E-mail inválido! Verifique e tente novamente.");
             return false;
         } else if (cpfVar != Number(cpfVar)) {
-            alert("CPF deve conter apenas números.")
-
+            mostrarAlerta("CPF deve conter apenas números.");
             return false;
         } else if (cpfVar.length != 11) {
-            alert("CPF deve conter 11 dígitos.")
-
+            mostrarAlerta("CPF deve conter 11 dígitos.");
             return false;
         } else if (senhaVar != confirmacaoSenhaVar) {
-            cardErro.style.display = "block"
-            mensagem_erro.innerHTML = "As senhas inseridas devem ser iguais para prosseguir!";
-
+            mostrarAlerta("As senhas inseridas devem ser iguais para prosseguir!");
             return false;
         }
 
+        alerta.style.display = "none";
 
         // Enviando o valor da nova input
         fetch("/usuarios/cadastrarEmpresa", {

@@ -1,0 +1,255 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Advent Pro";
+  text-decoration: none;
+}
+
+:root {
+  --cor1: #00CA43;
+  --cor2: #00A219;
+  --cor3: #007B00;
+  --radius: 10px;
+}
+
+input, select {
+  height: 50px;
+  border: 2px solid var(--cor3);
+  border-radius: var(--radius);
+}
+
+body {
+  display: flex;
+}
+
+header nav#menu {
+  max-width: 300px;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  position: -webkit-sticky;
+  position: sticky;
+  top: 0;
+  box-shadow: 5px 0px 5px rgba(0, 0, 0, 0.3);
+  padding: 10px 30px;
+}
+header nav#menu .logo {
+  display: flex;
+  justify-content: center;
+}
+header nav#menu .logo img {
+  width: 60%;
+}
+header nav#menu hr {
+  opacity: 0.5;
+  margin: 15px 0;
+}
+header nav#menu a {
+  color: black;
+  display: flex;
+  align-items: center;
+  margin: 10px 0;
+  font-size: 1.3rem;
+}
+header nav#menu a img {
+  margin-right: 5px;
+}
+header nav#menu-mobile {
+  display: none;
+  position: -webkit-sticky;
+  position: sticky;
+  top: 0;
+  box-shadow: 5px 0px 5px rgba(0, 0, 0, 0.3);
+  width: 70px;
+  height: 100vh;
+  justify-content: center;
+  padding: 15px 0;
+}
+header nav#menu-mobile img {
+  width: 50px;
+  height: -webkit-fit-content;
+  height: -moz-fit-content;
+  height: fit-content;
+  cursor: pointer;
+}
+
+main {
+  width: 100%;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background: var(--cor1);
+  background-image: url("../../assets/dash/dash.png");
+  background-repeat: no-repeat;
+  background-size: contain;
+  color: white;
+  padding: 30px 2%;
+}
+main section.top {
+  display: flex;
+  justify-content: space-between;
+}
+main section.top .top-esq p.titulo {
+  font-size: 1.3rem;
+}
+main section.top .top-esq p.subtitulo {
+  font-size: 1rem;
+  color: #eee;
+}
+main section.top .top-esq select {
+  width: 200px;
+}
+main section.top .top-meio input {
+  border: none;
+  width: 400px;
+  padding: 0 15px;
+  outline: none;
+}
+main section.top .top-dir {
+  display: flex;
+  align-items: center;
+}
+main section.top .top-dir button {
+  width: 40px;
+  height: 40px;
+  border-radius: var(--radius);
+}
+main section.top .top-dir button img {
+  width: 85%;
+  height: 85%;
+}
+main section.top .top-dir .nome {
+  margin-left: 15px;
+  margin-right: 10px;
+  font-size: 1.5rem;
+}
+main section.top .top-dir img {
+  width: 55px;
+  height: 55px;
+  border-radius: var(--radius);
+}
+main section#maquinas {
+  display: grid;
+  justify-content: center;
+  grid-template-columns: repeat(3, minmax(50px, 400px));
+  gap: 50px;
+  margin-top: 30px;
+}
+main section#maquinas .box-maquina {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background: #eee;
+  color: black;
+  border-radius: var(--radius);
+  padding: 30px 0;
+  box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.3);
+  position: relative;
+}
+main section#maquinas .box-maquina img {
+  width: 50%;
+  max-width: 80px;
+  margin-bottom: 15px;
+}
+main section#maquinas .box-maquina h3 {
+  margin-bottom: 5px;
+  font-size: 1.4rem;
+}
+main section#maquinas .box-maquina .botoes {
+  margin: 15px;
+}
+main section#maquinas .box-maquina .botoes a {
+  background: var(--cor1);
+  padding: 7px 10px;
+  border-radius: var(--radius);
+  color: white;
+  margin: 0 5px;
+}
+main section#maquinas .box-maquina.alerta::after {
+  content: "!";
+  font-family: "Arial";
+  color: white;
+  font-size: 2.4rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #D0342C;
+  border: 5px solid black;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  position: absolute;
+  top: -25px;
+  right: -25px;
+}
+main section.dashboard {
+  height: 100%;
+  margin-top: 30px;
+  display: grid;
+  gap: 25px;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+  grid-template-rows: 1fr 1fr 1fr 1fr;
+  grid-template-areas: "g1 g2 g3 t3" "t1 t1 t1 t3" "t1 t1 t1 t4" "t2 t2 t2 t4";
+}
+main section.dashboard #gfCpu {
+  grid-area: g1;
+}
+main section.dashboard #gfDisco {
+  grid-area: g2;
+}
+main section.dashboard #gfRam {
+  grid-area: g3;
+}
+main section.dashboard #tbProcessos {
+  grid-area: t1;
+}
+main section.dashboard #tbHistorico {
+  grid-area: t2;
+}
+main section.dashboard #tbHorario {
+  grid-area: t3;
+}
+main section.dashboard #tbFuncionario {
+  grid-area: t4;
+}
+main section.dashboard .grafico, main section.dashboard .tabela {
+  color: black;
+  background: #eee;
+  border-radius: var(--radius);
+  padding: 15px;
+}
+main section.dashboard .grafico div, main section.dashboard .tabela div {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+main section.dashboard .grafico h3, main section.dashboard .tabela h3 {
+  font-size: 1.3rem;
+}
+
+@media screen and (max-width: 1400px) {
+  header nav#menu {
+    display: none;
+    transform: translateX(-100%);
+  }
+  header nav#menu-mobile {
+    display: flex;
+  }
+}
+@media screen and (max-width: 1100px) {
+  header nav {
+    padding: 10px 5px;
+  }
+  header nav a {
+    font-size: 1.1rem;
+  }
+  #inp-pesquisar-funcionario {
+    display: none;
+  }
+  main section.dashboard {
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-rows: 1fr 1fr 1fr;
+    grid-template-areas: "g1 g2 g3" "t1 t1 t3" "t2 t2 t4";
+  }
+}/*# sourceMappingURL=styleDash.css.map */
