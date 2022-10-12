@@ -46,74 +46,73 @@
         <nav id="menu-mobile"><img src="../assets/imgs/alfinete 1.png"></nav>
     </header>
     <main>
-        <section class="top">
-            <div class="top-esq">
-                <div class="top-esq-maquina">
+        <section id="alertas">
+            <div class="menu-lateral">
+                <div class="filtro box">
                     <p>Ordenar por:</p>
-                    <select id="id_texto">
-                        <option value="">Mais recente</option>
-                        <option value>Mais antigos</option>
-                        <option value>Resolução</option>
+                    <select id="">
+                        <option value="">Mais recentes</option>
+                        <option value="">Mais antigos</option>
                     </select>
                 </div>
-                <br> <br> <br><br>
-                <div class="top-esq-maq">
-                    <p>Resoluçao:</p>
-                    <select id="id_texto">
-                        <option value="Ordenar por:">Aberto</option>
-                        <option value>Andamento</option>
-                        <option value>Concluido</option>
-                    </select>
+                <div class="filtro box">
+                    <p>Resolução:</p>
+                    <div class="opcao">
+                        <input type="checkbox" id="aberto" value="aberto"><label for="aberto">Aberto</label>
+                    </div>
+                    <div class="opcao">
+                        <input type="checkbox" id="andamento" value="em-andamento"><label for="andamento">Em andamento</label>
+                    </div>
+                    <div class="opcao">
+                        <input type="checkbox" id="concluido" value="concluido"><label for="concluido">Concluído</label>
+                    </div>
                 </div>
-                <br> <br> <br><br>
-                <div class="top-esq-maq"></div>
-                <p>Componente:</p>
-                <select id="id_texto">
-                    <option value="Ordenar por:">CPU</option>
-                    <option value>Ram</option>
-                    <option value>Disco</option>
-                </select>
-                <br><br><br><br>
-                <div class="top-esq-maq"></div>
-                <p>Tipo de máquina:</p>
-                <select id="id_texto">
-                    <option value="Ordenar por:">Servidor</option>
-                    <option value>Desktop</option>
-                </select>
+                <div class="filtro box">
+                    <p>Componente:</p>
+                    <div class="opcao"><input type="checkbox" id="" value="cpu"><label for="">CPU</label></div>
+                    <div class="opcao"><input type="checkbox" id="" value="ram"><label for="">RAM</label></div>
+                    <div class="opcao"><input type="checkbox" id="" value="disco"><label for="">DISCO</label></div>
+                </div>
+                <div class="filtro box">
+                    <p>Tipo de máquina:</p>
+                    <div class="opcao"><input type="checkbox" id="" value="servidor"><label for="">Servidor</label></div>
+                    <div class="opcao"><input type="checkbox" id="" value="desktop"><label for="">Desktop</label></div>
+                </div>
             </div>
-            <div class="top-meio-m">
-                <input id="inp-pesquisar-funcionario" type="search" placeholder="Pesquise por uma máquina">
-
-            </div>
-        </section>
-
-        <section class="dashboard">
-            <div class="grafico" id="gfCpu">
-
-                <h3>CPU 93% - Ubuntu 2042</h3>
-                <h4>Responsavel pela máquina: Ivan Miranda</h4>
-                <h4>Resoluçao: Aberta</h4>
-                <h5>15/03/22 ás 15:36</h5>
-                <button class="btn" onclick="entrar()">Ver Mais</button>
-                <div></div>
-            </div>
-            <div class="grafico" id="gfDisco">
-
-                <h3>Ram 100% - Ubuntu 1243</h3>
-                <h4>Responsavel pela máquina: Gabriel Yuuzo</h4>
-                <h4>Resoluçao: Concluido</h4>
-                <h5>15/03/22 ás 15:36</h5>
-                <button class="btn" onclick="entrar()">Ver Mais</button>
-                <div></div>
-            </div>
-            <div class="grafico" id="gfRam">
-
-                <h3>CPU 93% - Ubuntu 1111</h3>
-                <h4>Responsavel pela máquina: Guilherme Augusto</h4>
-                <h4>Resoluçao: Em andamento</h4>
-                <h5>15/03/22 ás 15:36</h5>
-                <button class="btn" onclick="entrar()">Ver Mais</button>
-                <div></div>
+            <div class="main">
+                <section class="top">
+                    <div class="top-meio">
+                        <input id="inp-pesquisar-maquina" type="search" placeholder="Pesquise por máquina">
+                    </div>
+                    <div class="top-dir">
+                        <button><img src="../assets/dash/bell.png"></button>
+                        <p class="nome">Agda Taniguchi</p>
+                        <img src="../assets/dash/pessoa.jpeg">
+                    </div>
+                </section>
+                <div id="lista-alertas">
+                    <div class="alerta box">
+                        <h3 id="titulo-alerta">CPU 93% - UBUNTU 2042</h3>
+                        <p id="data-alerta">15/03/2022 às 15:36</p>
+                        <p id="responsavel-alerta"><span>Responsável pela máquina: </span>Ivan Miranda</p>
+                        <p id="resolucao-alerta"><span>Resolução: </span>Aberto<span class="bolinha bol-aberto"></span></p>
+                        <a class="btn-link" href="#" id="btn-alerta">Ver mais</a>
+                    </div>
+                    <div class="alerta box">
+                        <h3 id="titulo-alerta">RAM 87% - UBUNTU 1255</h3>
+                        <p id="data-alerta">15/03/2022 às 15:36</p>
+                        <p id="responsavel-alerta"><span>Responsável pela máquina: </span>Ivan Miranda</p>
+                        <p id="resolucao-alerta"><span>Resolução: </span>Aberto<span class="bolinha bol-aberto"></span></p>
+                        <a class="btn-link" href="#" id="btn-alerta">Ver mais</a>
+                    </div>
+                    <div class="alerta box">
+                        <h3 id="titulo-alerta">CPU 93% - UBUNTU 2042</h3>
+                        <p id="data-alerta">15/03/2022 às 15:36</p>
+                        <p id="responsavel-alerta"><span>Responsável pela máquina: </span>Ivan Miranda</p>
+                        <p id="resolucao-alerta"><span>Resolução: </span>Aberto<span class="bolinha bol-aberto"></span></p>
+                        <a class="btn-link" href="#" id="btn-alerta">Ver mais</a>
+                    </div>
+                </div>
             </div>
         </section>
     </main>

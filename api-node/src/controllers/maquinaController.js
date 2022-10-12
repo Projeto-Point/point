@@ -16,6 +16,23 @@ function listar(req, res) {
     });
 }
 
+function listarAlertas(req, res){
+    maquinaModel.listarAlertas()
+    .then(function(resultado) {
+        if(resultado.length > 0){
+            res.status(200).json(resultado);
+        }
+        else{
+            res.status(204).send("Nenhum alerta encontrado!");
+        }
+    })
+    .catch(function(erro) {
+        console.log(erro);
+        res.status(500).json(erro.sqlMessage);
+    });
+}
+
 module.exports = {
     listar,
+    listarAlertas,
 }
