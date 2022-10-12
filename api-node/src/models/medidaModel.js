@@ -25,7 +25,7 @@ function pegarRegistroRAM(){
 }
 
 function pegarRegistroFuncionario(){
-    instrucaoSql = `SELECT nome, email FROM Funcionario;`;
+    instrucaoSql = `SELECT nome, email, cargo, telefone FROM Funcionario, Telefone where idFuncionario = fkFuncionario;`;
     console.log("Executando a instrução SQL: \n" + instrucaoSql);
     return database.executar(instrucaoSql);
 }
