@@ -282,6 +282,60 @@ main section.funcionarios #lista-funcionarios .funcionario p {
 main section.funcionarios #lista-funcionarios .funcionario a.btn-link {
   margin: 7px;
 }
+main section.dashboard-analise {
+  margin-top: 30px;
+  display: grid;
+  gap: 30px;
+  grid-template-columns: 1fr 1fr 1fr;
+  grid-template-rows: 1fr repeat(3, 250px);
+  grid-template-areas: "k1 k2 k3" "g1 g1 i1" "g2 g2 i2" "g3 g3 i3";
+}
+main section.dashboard-analise .kpi-horas {
+  grid-area: k1;
+}
+main section.dashboard-analise .kpi-mediaProc {
+  grid-area: k2;
+}
+main section.dashboard-analise .kpi-mediaRam {
+  grid-area: k3;
+}
+main section.dashboard-analise .grafico-processador {
+  grid-area: g1;
+}
+main section.dashboard-analise .grafico-ram {
+  grid-area: g2;
+}
+main section.dashboard-analise .grafico-disco {
+  grid-area: g3;
+}
+main section.dashboard-analise .info-alertas {
+  grid-area: i1;
+}
+main section.dashboard-analise .info-funcionario {
+  grid-area: i2;
+}
+main section.dashboard-analise .info-maquina {
+  grid-area: i3;
+}
+main section.dashboard-analise .box {
+  padding: 15px;
+  display: block;
+}
+main section.dashboard-analise .box-kpi h1 {
+  text-align: center;
+  font-size: 3rem;
+  margin: 15px 0;
+}
+main section.dashboard-analise .grafico .header {
+  display: flex;
+  justify-content: space-between;
+  padding: 7px;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.3);
+}
+main section.dashboard-analise .grafico .header select {
+  height: 30px;
+  padding-left: 10px;
+}
 main section.dashboard {
   height: 100%;
   margin-top: 30px;

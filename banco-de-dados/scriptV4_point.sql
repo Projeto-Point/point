@@ -19,7 +19,7 @@ create table Funcionario (
     cpf char(11) unique not null,
     senha varchar(45) not null,
     email varchar(45) unique not null,
-    cargo varchar (45) not null,
+    cargo varchar (45) not null default 'gestor',
     fkGestor int,
     fkEmpresa int,
     foreign key (fkGestor) references funcionario (idFuncionario),
@@ -102,7 +102,6 @@ SELECT E.nome AS 'empresa', E.cnpj,
     C.tipo,
     atributo, valor, unidadeMedida
 FROM Empresa E
-
 INNER JOIN Endereco ON Endereco.fkEmpresa = idEmpresa
 INNER JOIN Funcionario F ON F.fkEmpresa = idEmpresa AND Endereco.fkFuncionario = idFuncionario
 INNER JOIN Maquina ON Maquina.fkFuncionario = idFuncionario
@@ -122,37 +121,4 @@ INNER JOIN Funcionario F ON F.fkEmpresa = idEmpresa AND Endereco.fkFuncionario =
 INNER JOIN Maquina ON Maquina.fkFuncionario = idFuncionario
 INNER JOIN Componente C ON fkMaquina = idMaquina
 INNER JOIN Registro ON fkComponente = idComponente;
-
-
--- Dados Fake para teste -- Dados Funcionario
--- INSERT INTO Empresa VALUES (null, "Google", "21625996000109", 1, "Tecnologia");
--- INSERT INTO Funcionario VALUES (null, "Ir","3700421409d","123", "iva@.com", null, 1);
--- INSERT INTO Telefone VALUES(null, "11992015034", 1);
--- INSERT INTO Endereco VALUES(null, "Rua armando", 131, "Jardim Holanda", "São Paulo", "SP","Brasil", 1,1);
--- Select para verificar se bate
-
--- SELECT f.nome as "Nome Funcionario", t.telefone as "Telefone Funcionario", ed.rua as "Rua Funcionario", ep.nome as "Nome Empresa"
--- FROM Funcionario as f
--- INNER JOIN Telefone as t ON t.fkFuncionario = f.idFuncionario
--- INNER JOIN Empresa as ep ON f.fkEmpresa = ep.idEmpresa
--- INNER JOIN Endereco as ed ON ed.fkFuncionario = f.idFuncionario
--- AND ed.fkEmpresa = ep.idEmpresa;
-
-
--- Dados Maquina Fake 
-
-SELECT * FROM Funcionario; 
-select * from Maquina;
-SELECT idMaquina, sistemaOperacional, Funcionario.idFuncionario, fkFuncionario FROM Maquina 
-INNER JOIN Funcionario ON idFuncionario = fkFuncionario
-WHERE idFuncionario = 2;
-
-SELECT c.tipo, f.nome, f.idFuncionario 
-FROM Componente as c
-INNER JOIN Maquina as m 
-ON m.idMaquina = c.fkMaquina
-INNER JOIN Funcionario as f
-ON m.fkFuncionario = f.idFuncionario
-WHERE idMaquina = 1;
-
 
