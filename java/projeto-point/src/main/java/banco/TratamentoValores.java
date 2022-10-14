@@ -4,15 +4,11 @@
  */
 package banco;
 
-import com.github.britooo.looca.api.core.Looca;
-
 /**
  *
  * @author ivanm
  */
-public class Componentes {
-
-    Looca looca = new Looca();
+public class TratamentoValores {
     
     
     public Double converterBytesParaGiga(Long valorEmBytes){
@@ -36,11 +32,7 @@ public class Componentes {
         return valorEmBytes;
     }
     
-    
-    public void listarComponentes(){
-        
-        
-        
+    public Double limitarDuasCasasDecimais(Double valorDouble){
+        return (double) Math.round(valorDouble * 100) / 100;
     }
-    
 }
