@@ -29,8 +29,7 @@ public class Main {
         Componente componentes = new Componente();
         Atributo atributo = new Atributo();
       
-        
-        
+       
 //        System.out.println(looca.getGrupoDeDiscos().getQuantidadeDeDiscos());
         
 //        System.out.println(componentes.getTamanhoDiscoTotal());
@@ -50,14 +49,8 @@ public class Main {
             System.out.println("Funcionário não encontrado");
         }
         
-        componentes.insertDiscos(maquina);
-        componentes.insertProcessadoresFisicos(maquina);
-        componentes.insertMemoriaVirtual(maquina);
-        atributo.getFksComponente(maquina, "HD");
-        
-        
-        
-        
+         
+        componentes.insertComponentesTotal(maquina);
         
     }
 }

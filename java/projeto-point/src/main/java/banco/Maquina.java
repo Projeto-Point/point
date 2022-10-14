@@ -24,6 +24,8 @@ public class Maquina {
     Database database = new Database();
 
     JdbcTemplate connection = database.getConnection();
+    
+    Componente componente = new Componente();
 
     private Integer id;
     private String SistemaOperacional;
@@ -43,6 +45,24 @@ public class Maquina {
     public void setSistemaOperacional(String SistemaOperacional) {
         this.SistemaOperacional = SistemaOperacional;
     }
+    
+    public int selectIdMaquina(Funcionario funcionario){
+        
+        try{
+            
+         List<Map<String, Object>> resultado = connection.queryForList("SELECT idMaquina, FROM Maquina INNER JOIN Funcionario ON idFuncionario = fkFuncionario WHERE idFuncionario = " + funcionario.getId() + ";");
+            JSONObject jsonResultado = new JSONObject(resultado.get(0));
+            int idMaquina = jsonResultado.getInt("idMaquina");
+            System.out.println(idMaquina);
+            return idMaquina;
+        }catch(Exception e){
+            System.out.println(e);
+            System.out.println("Não encontrou nada");
+            return 0;
+        }
+         
+        
+    }
 
     public Boolean isMaquinaCadastrada(Funcionario funcionario) {
 
@@ -51,7 +71,6 @@ public class Maquina {
             List<Map<String, Object>> resultado = connection.queryForList("SELECT idMaquina, sistemaOperacional FROM Maquina INNER JOIN Funcionario ON idFuncionario = fkFuncionario WHERE idFuncionario = " + funcionario.getId() + ";");
 
             JSONObject jsonResultado = new JSONObject(resultado.get(0));
-            System.out.println(jsonResultado);
             int idMaquina = jsonResultado.getInt("idMaquina");
             String so = jsonResultado.getString("sistemaOperacional");
 
@@ -76,10 +95,16 @@ public class Maquina {
                     null,
                     so,
                     getNomeMaquina(),
-                    null,
+                    "DESKTOP",
                     funcionario.getId()
                     
             );
+            
+            System.out.println("Cadastrou");
+            
+            this.id = selectIdMaquina(funcionario);
+            
+            componente.insertComponentesTotal(this);
 
             return true;
 

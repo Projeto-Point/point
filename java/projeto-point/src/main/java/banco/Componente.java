@@ -97,6 +97,14 @@ public class Componente {
         System.out.println("Memória Ram cadastrada");
     }
     
+    
+    public void insertComponentesTotal(Maquina maquina){
+        
+        insertDiscos(maquina);
+        insertMemoriaVirtual(maquina);
+        insertProcessadoresFisicos(maquina);
+        
+    }
         
 }
 

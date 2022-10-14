@@ -19,6 +19,13 @@ public class Atributo {
     Looca looca = new Looca();
     Database database = new Database();
     JdbcTemplate connection = database.getConnection();
+    
+    
+    // É aqui Agda -- Oq pensei foi, como vamos trabalhar com diversos tipos de máquina 
+    // eleas podem ter mais de um do mesmo componte. Como por exemplo uma maquina tem varios
+    // hds e isso faz com que tenha varios ids. AI queria retornar em um array todos os ids ai na hora 
+    // de pegar os atributos ia colocar os atributos nos FkCompontes respesctivos. Porem não estou conseguindo
+    // Retornar isso em um array. :( Desculpa! Não me tira do grupo pf
 
     public int [] getFksComponente(Maquina maquina, String nomeComponente) {
         
@@ -52,4 +59,19 @@ public class Atributo {
         }
 
     }
+    
+
+    private void insertTodosAtributos(Maquina maquina){
+        
+        int[] fksCompontentes = getFksComponente(maquina, "Nome Componente");
+        
+        int numeroDeComponentes = fksCompontentes.length;
+        
+        fksCompontentes = new int[numeroDeComponentes];
+        
+        
+        
+    }
+    
+    
 }
