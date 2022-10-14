@@ -198,6 +198,10 @@ nav li:last-child {
     color: white;
 }
 
+.service-card a{
+    width: 90%;
+}
+
 .melhor {
     width: 500;
     height: 400;

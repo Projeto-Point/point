@@ -389,6 +389,11 @@ main section.dashboard .grafico h3, main section.dashboard .tabela h3 {
   header nav#menu-mobile {
     display: flex;
   }
+  main section.dashboard {
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-rows: 1fr 1fr 1fr;
+    grid-template-areas: "g1 g2 g3" "t1 t1 t3" "t2 t2 t4";
+  }
 }
 @media screen and (max-width: 1100px) {
   header nav {
@@ -399,10 +404,5 @@ main section.dashboard .grafico h3, main section.dashboard .tabela h3 {
   }
   #inp-pesquisar-funcionario {
     display: none;
-  }
-  main section.dashboard {
-    grid-template-columns: 1fr 1fr 1fr;
-    grid-template-rows: 1fr 1fr 1fr;
-    grid-template-areas: "g1 g2 g3" "t1 t1 t3" "t2 t2 t4";
   }
 }/*# sourceMappingURL=styleDash.css.map */
