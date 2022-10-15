@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cadastrar funcionarios | Point</title>
+    <link rel="stylesheet" href="css/styleDashCadaFunc.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Advent+Pro:wght@100;200;300;400;500;600;700&display=swap"
+        rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+
+<body>
+    <header>
+        <nav id="menu">
+            <a href="maquinas.html" class="logo">
+                <img src="../assets/imgs/Point.png">
+            </a>
+            <hr>
+            <a href="alertas.html">
+                <img src="../assets/imgs/alfinete 1.png">
+                <span>Alertas</span>
+            </a>
+            <a href="funcionarios.html">
+                <img src="../assets/imgs/alfinete 1.png">
+                <span>Funcionários</span>
+            </a>
+            <a href="maquinas.html">
+                <img src="../assets/imgs/alfinete 1.png">
+                <span>Máquinas</span>
+            </a>
+            <a href="configuracoes.html">
+                <img src="../assets/imgs/alfinete 1.png">
+                <span>Configurações</span>
+            </a>
+            <hr>
+            <a href="../index.html">
+                <img src="../assets/imgs/alfinete 1.png">
+                <span>Sair</span>
+            </a>
+        </nav>
+        <nav id="menu-mobile"><img src="../assets/imgs/alfinete 1.png"></nav>
+    </header>
+    <main>
+        <section class="funcionarios">
+            <section class="top">
+                <div class="top-esq">
+                    <a href="cadastrar-funcionario.html" class="btn-link">Cadastrar funcionário</a>
+                </div>
+                <div class="top-meio">
+                    <input id="inp-pesquisar-funcionario" type="search" placeholder="Pesquise por funcionário">
+                </div>
+                <div class="top-dir">
+                    
+                    <p class="nome"><span id="nomeGerente"></span></p>
+                    <img src="../assets/dash/pessoa.jpeg">
+                </div>
+            </section>
+
+            <section class="under">
+                <section class="cad_func">
+                    <div class="box_cad">
+                        <div class="inputs">
+                            <span class="span_text">Nome:</span> <br>
+                            <input class="input" id="nome_input" placeholder="Seu nome">
+                        </div>
+    
+                        <div class="inputs">
+                            <span class="span_text">E-mail:</span> <br>
+                            <input class="input" type="email" id="email_input" placeholder="seuEmail@email.com">
+                        </div>
+                        <div class="inputs">
+                            <span class="span_text">CPF:</span> <br>
+                            <input class="input" id="cpf_input" placeholder="Somente números">
+                        </div>
+    
+                        <div class="inputs">
+                            <span class="span_text">Cargo:</span> <br>
+                            <input class="input" id="cargo_input" placeholder="Seu cargo">
+                        </div>
+                    </div>
+    
+                    <div class="box_cad">
+    
+                        <div class="inputs">
+                            <span class="span_text">Telefone:</span> <br>
+                            <input class="input" id="tel_input" placeholder="(11) 9999-99999">
+                        </div>
+    
+                        <div class="inputs">
+                            <span class="span_text">Senha:</span> <br>
+                            <input class="input" type="password" id="senha_input" placeholder="********">
+                        </div>
+    
+                        <div class="inputs">
+                            <span class="span_text">Confirme a senha:</span> <br>
+                            <input class="input" type="password" id="confirmacao_senha_input" placeholder="********">
+                        </div>
+    
+                        <div class="botao_cadastro">
+                            <button class="btnEntrar" onclick="cadastrar()">Cadastrar-se</button>
+                        </div>
+                    </div>
+    
+                </section>
+            </section>
+
+        </section>
+    </main>
+
+
+    <script>
+        nomeGerente.innerHTML=sessionStorage.NOME_USUARIO;
+        function cadastrar() {
+
+        var nomeFuncVar = nome_input.value;
+        var emailVar = email_input.value;
+        var telVar = tel_input.value;
+        var cpfVar = cpf_input.value;
+        var senhaVar = senha_input.value;
+        var confirmacaoSenhaVar = confirmacao_senha_input.value;
+
+        var idEmpresa = 1;
+
+        // if (nomeFuncVar == "" || emailVar == "" || senhaVar == "" || confirmacaoSenhaVar == "" || cpfVar == "" || telVar == "") {
+        //     mostrarAlerta("Preencha todos os campos para prosseguir!");
+        //     return false;
+        // }
+        // if (emailVar.indexOf("@") == -1) {
+        //     mostrarAlerta("E-mail inválido! Verifique e tente novamente.");
+        //     return false;
+        // } else if (cpfVar != Number(cpfVar)) {
+        //     mostrarAlerta("CPF deve conter apenas números.");
+        //     return false;
+        // } else if (cpfVar.length != 11) {
+        //     mostrarAlerta("CPF deve conter 11 dígitos.");
+        //     return false;
+        // } else if (senhaVar != confirmacaoSenhaVar) {
+        //     mostrarAlerta("As senhas inseridas devem ser iguais para prosseguir!");
+        //     return false;
+        // }else if (telVar != 11 || telVar != Number(telVar)) {
+        //     mostrarAlerta("Telefone deve conter 11 digitos e apenas números.");
+        //     return false;
+        // }
+
+        // alerta.style.display = "none";
+
+        // Enviando o valor da nova input
+        // fetch("/usuarios/cadastrarFuncionario", {
+        //     method: "POST",
+        //     headers: {
+        //         "Content-Type": "application/json"
+        //     },
+        //     body: JSON.stringify({
+        //         // crie um atributo que recebe o valor recuperado aqui
+        //         // Agora vá para o arquivo routes/usuario.js
+        //         nomeEmpresaServer: nomeEmpresa,
+        //         cnpjServer: cnpjVar
+        //     })
+        // }).then(function (resposta) {
+
+        //     console.log("resposta: ", resposta);
+
+        //     if (resposta.ok) {
+
+        //         resposta.json().then(json => {
+        //             idEmpresa = json.insertId;
+                    //fetch do gestor
+                    fetch("/usuarios/cadastrarFuncionario", {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json"
+                        },
+                        body: JSON.stringify({
+                            // crie um atributo que recebe o valor recuperado aqui
+                            // Agora vá para o arquivo routes/usuario.js
+                            nomeFuncServer: nomeFuncVar,
+                            cpfServer: cpfVar,
+                            emailServer: emailVar,
+                            senhaServer: senhaVar,
+                            telServer: telVar,
+                            idEmpresaServer: idEmpresa
+                        })
+                    }).then(function (resposta) {
+
+                        console.log("resposta: ", resposta);
+
+                        if (resposta.ok) {
+
+                            setTimeout(() => {
+                                console.log("entrou")
+                                window.location = "funcionarios.html";
+                            }, 1000)
+
+                            limparFormulario();
+
+                        } else {
+                            alert("Não foi possível realizar o login")
+                            throw ("Houve um erro ao tentar realizar o cadastro!");
+                        }
+                    }).catch(function (resposta) {
+                        console.log(`#ERRO: ${resposta}`);
+
+                    });
+                // });
+
+
+
+    //         } else {
+    //             alert("Não foi possível realizar o login")
+    //             throw ("Houve um erro ao tentar realizar o cadastro!");
+    //         }
+    //     }).catch(function (resposta) {
+    //         console.log(`#ERRO: ${resposta}`);
+
+    //     });
+
+    //     return false;
+    }
+    </script>

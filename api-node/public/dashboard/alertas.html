@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang=pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Alertas | Point</title>
+    <link rel="stylesheet" href="css/styleDash.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Advent+Pro:wght@100;200;300;400;500;600;700&display=swap"
+        rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.4/moment.min.js"></script>
+</head>
+
+<body>
+    <header>
+        <nav id="menu">
+            <a href="maquinas.html" class="logo">
+                <img src="../assets/imgs/Point.png">
+            </a>
+            <hr>
+            <a href="alertas.html">
+                <img src="../assets/imgs/alfinete 1.png">
+                <span>Alertas</span>
+            </a>
+            <a href="funcionarios.html">
+                <img src="../assets/imgs/alfinete 1.png">
+                <span>Funcionários</span>
+            </a>
+            <a href="maquinas.html">
+                <img src="../assets/imgs/alfinete 1.png">
+                <span>Máquinas</span>
+            </a>
+            <a href="configuracoes.html">
+                <img src="../assets/imgs/alfinete 1.png">
+                <span>Configurações</span>
+            </a>
+            <hr>
+            <a href="../index.html">
+                <img src="../assets/imgs/alfinete 1.png">
+                <span>Sair</span>
+            </a>
+        </nav>
+        <nav id="menu-mobile"><img src="../assets/imgs/alfinete 1.png"></nav>
+    </header>
+    <main>
+        <section id="alertas">
+            <div class="menu-lateral">
+                <div class="filtro box">
+                    <p>Ordenar por:</p>
+                    <select id="">
+                        <option value="">Mais recentes</option>
+                        <option value="">Mais antigos</option>
+                    </select>
+                </div>
+                <div class="filtro box">
+                    <p>Resolução:</p>
+                    <div class="opcao">
+                        <input type="checkbox" id="aberto" value="aberto"><label for="aberto">Aberto</label>
+                    </div>
+                    <div class="opcao">
+                        <input type="checkbox" id="andamento" value="em-andamento"><label for="andamento">Em andamento</label>
+                    </div>
+                    <div class="opcao">
+                        <input type="checkbox" id="concluido" value="concluido"><label for="concluido">Concluído</label>
+                    </div>
+                </div>
+                <div class="filtro box">
+                    <p>Componente:</p>
+                    <div class="opcao"><input type="checkbox" id="" value="cpu"><label for="">CPU</label></div>
+                    <div class="opcao"><input type="checkbox" id="" value="ram"><label for="">RAM</label></div>
+                    <div class="opcao"><input type="checkbox" id="" value="disco"><label for="">DISCO</label></div>
+                </div>
+                <div class="filtro box">
+                    <p>Tipo de máquina:</p>
+                    <div class="opcao"><input type="checkbox" id="" value="servidor"><label for="">Servidor</label></div>
+                    <div class="opcao"><input type="checkbox" id="" value="desktop"><label for="">Desktop</label></div>
+                </div>
+            </div>
+            <div class="main">
+                <section class="top">
+                    <div class="top-meio">
+                        <input id="inp-pesquisar-maquina" type="search" placeholder="Pesquise por máquina">
+                    </div>
+                    <div class="top-dir">
+                       
+                        <p class="nome"><span id="nomeGerente"></span></p>
+                        <img src="../assets/dash/pessoa.jpeg">
+                    </div>
+                </section>
+                <div id="lista-alertas">
+                    <!-- <div class="alerta box">
+                        <h3 id="titulo-alerta">CPU 93% - UBUNTU 2042</h3>
+                        <p id="data-alerta">15/03/2022 às 15:36</p>
+                        <p id="responsavel-alerta"><span>Responsável pela máquina: </span>Ivan Miranda</p>
+                        <p id="resolucao-alerta"><span>Resolução: </span>Aberto<span class="bolinha bol-aberto"></span></p>
+                        <a class="btn-link" href="#" id="btn-alerta">Ver mais</a>
+                    </div> -->
+                </div>
+            </div>
+        </section>
+    </main>
+    <script>
+
+        nomeGerente.innerHTML=sessionStorage.NOME_USUARIO;
+
+        fetch(`/maquinas/listarAlertas`)
+        .then((res) => {
+            if(res.ok){
+                res.json().then((resposta) => {
+                    for (let i = 0; i < resposta.length; i++) {
+                        document.getElementById("lista-alertas").innerHTML += `
+                        <div class="alerta box">
+                            <h3 id="titulo-alerta">${resposta[i].titulo}</h3>
+                            <p id="data-alerta">${moment(resposta[i].dataEhora).format("DD/MM/YYYY [às] HH:mm")}</p>
+                            <p id="responsavel-alerta"><span>Responsável pela máquina: </span>${resposta[i].nome}</p>
+                            <p id="resolucao-alerta"><span>Resolução: </span>${resposta[i].resolucao}<span class="bolinha bol-aberto"></span></p>
+                            <a class="btn-link" href="${resposta[i].link}" id="btn-alerta">Ver mais</a>
+                        </div>`;
+                    }
+                });
+            }
+        })
+        .catch((erro) => {
+            console.log(erro);
+        });
+    </script>
