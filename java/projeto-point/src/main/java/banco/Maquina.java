@@ -28,9 +28,11 @@ public class Maquina {
     Componente componente = new Componente();
     Atributo atributo = new Atributo();
     Utilitarios utilitarios = new Utilitarios();
+   
 
     private Integer id;
     private String SistemaOperacional;
+    private String nomeMaquina;
 
     public Integer getId() {
         return id;
@@ -46,6 +48,22 @@ public class Maquina {
 
     public void setSistemaOperacional(String SistemaOperacional) {
         this.SistemaOperacional = SistemaOperacional;
+    }
+    
+    public String getNomeMaquina()
+    {
+        try {
+ 
+            // get system name
+            String SystemName
+                = InetAddress.getLocalHost().getHostName();
+ 
+           return SystemName;
+        }
+        catch (Exception E) {
+            System.err.println(E.getMessage());
+            return "Indefinido";
+        }
     }
     
     public int selectIdMaquina(Funcionario funcionario){
@@ -121,20 +139,6 @@ public class Maquina {
 
     }
 
-    public String getNomeMaquina()
-    {
-        try {
- 
-            // get system name
-            String SystemName
-                = InetAddress.getLocalHost().getHostName();
- 
-           return SystemName;
-        }
-        catch (Exception E) {
-            System.err.println(E.getMessage());
-            return "Indefinido";
-        }
-    }
+    
 
 }

@@ -50,7 +50,7 @@ public class Componente {
         
     }
 
-    public void insertDiscos(Maquina maquina) {
+    private void insertDiscos(Maquina maquina) {
 
         if (maquina.getId() != null) {
             
@@ -71,7 +71,7 @@ public class Componente {
         
     }
     
-    public void insertProcessadoresFisicos(Maquina maquina){
+    private void insertProcessadoresFisicos(Maquina maquina){
         
         if (maquina.getId() != null) {
             
@@ -91,7 +91,7 @@ public class Componente {
         
     }
     
-    public void insertMemoriaVirtual(Maquina maquina){
+    private void insertMemoriaVirtual(Maquina maquina){
         
         insertsComponentes(maquina, "Memória RAM");
         System.out.println("Memória Ram cadastrada");

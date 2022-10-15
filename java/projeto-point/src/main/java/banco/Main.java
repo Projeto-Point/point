@@ -29,7 +29,6 @@ public class Main {
         Componente componentes = new Componente();
         Atributo atributo = new Atributo();
         
-        System.out.println(looca.getMemoria().getTotal());
      
         
        
@@ -37,21 +36,21 @@ public class Main {
         
 //        System.out.println(componentes.getTamanhoDiscoTotal());
 
-        if(func.isFuncionarioCadastrado("ivan@.com", "123")){
-           
-            System.out.println(maquina.isMaquinaCadastrada(func));
-            
-            if (maquina.isMaquinaCadastrada(func)) {
-                System.out.println("Máquina já cadastrada");
-            }else if (maquina.isCadastrarMaquina(func)){
-                System.out.println("Máquina Cadastrada");
-            }else{
-                System.out.println("Não foi possível encontrar máquina/cadastar máquina");
-            }
-        }else{
-            System.out.println("Funcionário não encontrado");
-        }
-        
+//        if(func.isFuncionarioCadastrado("ivan@.com", "123")){
+//           
+//            System.out.println(maquina.isMaquinaCadastrada(func));
+//            
+//            if (maquina.isMaquinaCadastrada(func)) {
+//                System.out.println("Máquina já cadastrada");
+//            }else if (maquina.isCadastrarMaquina(func)){
+//                System.out.println("Máquina Cadastrada");
+//            }else{
+//                System.out.println("Não foi possível encontrar máquina/cadastar máquina");
+//            }
+//        }else{
+//            System.out.println("Funcionário não encontrado");
+//        }
+//        
         
     }
 }
