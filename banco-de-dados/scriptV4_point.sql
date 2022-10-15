@@ -19,18 +19,12 @@ create table Funcionario (
     cpf char(11) unique not null,
     senha varchar(45) not null,
     email varchar(45) unique not null,
-    cargo varchar (45) not null,
+    cargo varchar (45) not null default 'gestor',
+    telefone char(11),
     fkGestor int,
     fkEmpresa int,
     foreign key (fkGestor) references funcionario (idFuncionario),
     foreign key (fkEmpresa) references empresa (idEmpresa)
-);
-
-create table Telefone (
-	idTelefone int primary key auto_increment,
-    telefone char(11),
-    fkFuncionario int,
-    foreign key (fkFuncionario) references funcionario (idFuncionario)
 );
 
 create table Endereco (
@@ -97,14 +91,11 @@ create table Registro(
 CREATE VIEW `vw_componentes` AS
 SELECT E.nome AS 'empresa', E.cnpj,
 	F.email,
-    Endereco.cidade, Endereco.estado, Endereco.pais,
     idMaquina, nomeMaquina, sistemaOperacional,
     C.tipo,
     atributo, valor, unidadeMedida
 FROM Empresa E
-
-INNER JOIN Endereco ON Endereco.fkEmpresa = idEmpresa
-INNER JOIN Funcionario F ON F.fkEmpresa = idEmpresa AND Endereco.fkFuncionario = idFuncionario
+INNER JOIN Funcionario F ON F.fkEmpresa = idEmpresa
 INNER JOIN Maquina ON Maquina.fkFuncionario = idFuncionario
 INNER JOIN Componente C ON fkMaquina = idMaquina
 INNER JOIN Atributo ON fkComponente = idComponente;
@@ -112,28 +103,11 @@ INNER JOIN Atributo ON fkComponente = idComponente;
 CREATE VIEW `vw_registros` AS
 SELECT  E.nome AS 'empresa', E.cnpj,
 		email,
-        Endereco.cidade, Endereco.estado, Endereco.pais,
         idMaquina, nomeMaquina, sistemaOperacional,
         C.tipo,
         valor, unidadeMedida, dataEhora
 FROM Empresa E
-INNER JOIN Endereco ON Endereco.fkEmpresa = idEmpresa
-INNER JOIN Funcionario F ON F.fkEmpresa = idEmpresa AND Endereco.fkFuncionario = idFuncionario
+INNER JOIN Funcionario F ON F.fkEmpresa = idEmpresa
 INNER JOIN Maquina ON Maquina.fkFuncionario = idFuncionario
 INNER JOIN Componente C ON fkMaquina = idMaquina
 INNER JOIN Registro ON fkComponente = idComponente;
-
-
--- Dados Fake para teste -- Dados Funcionario
-INSERT INTO Empresa VALUES (null, "Google", "21625996000109", 1, "Tecnologia");
-INSERT INTO Funcionario VALUES (null, "Ivan Freire","37004214093","123", "ivan@.com", "gestor", 1, 1);
-INSERT INTO Telefone VALUES(null, "11992015034", 1);
-INSERT INTO Endereco VALUES(null, "Rua armando", 131, "Jardim Holanda", "São Paulo", "SP","Brasil", 1,1);
--- Select para verificar se bate
-
-
-
-
-
-
-

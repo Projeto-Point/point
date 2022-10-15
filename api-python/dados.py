@@ -58,7 +58,7 @@ while verificaLogin == False:
     senha = input('Digite a senha do funcionário: ')
 
     # Conecta com o banco, passando o usuário, e o banco desejado
-    conexao = pymysql.connect(db='bd_point', user='root', passwd='GuilhermeAugusto123')
+    conexao = pymysql.connect(db='bd_point', user='root', passwd='1234', port=3307)
 
     # AGDDAAAAA
     cursor = conexao.cursor()
@@ -72,7 +72,7 @@ while verificaLogin == False:
 
 
 nome = platform.node()
-conexao = pymysql.connect(db='bd_point', user='root', passwd='GuilhermeAugusto123')
+conexao = pymysql.connect(db='bd_point', user='root', passwd='1234', port=3307)
 cursor = conexao.cursor()
 verificarCadastro = cursor.execute(("SELECT nomeMaquina FROM Maquina WHERE nomeMaquina = '{}'").format(nome))
 
@@ -94,38 +94,35 @@ else:
     memoriaTotal = bytes_para_giga(virtual_memory().total)
     discoTotal = bytes_para_giga(disk_usage("/").total)
 
-    conexao = pymysql.connect(db='bd_point', user='root', passwd='GuilhermeAugusto123')
+    conexao = pymysql.connect(db='bd_point', user='root', passwd='1234', port=3307)
 
     cursor = conexao.cursor()
 
-    fkFuncionario = cursor.execute((f"""SELECT idFuncionario FROM Funcionario WHERE email = '{login}' and senha = '{senha}'"""))
+    cursor.execute((f"""SELECT idFuncionario FROM Funcionario WHERE email = '{login}' and senha = '{senha}'"""))
 
+    fkFuncionario = cursor.fetchall()[0][0]
     
     cursor.execute(f"""INSERT INTO Maquina VALUES (null, '{platform.system()}', '{platform.node()}', null, {fkFuncionario})""")
-    
-    id = cursor.execute((f"""SELECT idMaquina FROM Maquina WHERE nomeMaquina = '{nome}'"""))
-    
-    idComponente = cursor.execute((f"SELECT max(C.idComponente) as id FROM Componente C INNER JOIN Maquina M ON M.idMaquina = C.fkMaquina WHERE idMaquina = {id}"))
+
+    cursor.execute((f"""SELECT idMaquina FROM Maquina WHERE nomeMaquina = '{nome}'"""))
+
+    # idComponente = cursor.execute((f"SELECT max(C.idComponente) as id FROM Componente C INNER JOIN Maquina M ON M.idMaquina = C.fkMaquina WHERE idMaquina = {id}"))
+
+    id = cursor.fetchall()[0][0]
 
     conexao.commit()
-    try:
-        cursor.execute(f"INSERT INTO Componente (idComponente, fkMaquina, tipo) VALUES (1, {id}, 'CPU')")
 
-        cursor.execute(f"""INSERT INTO Componente (idComponente, fkMaquina, tipo) VALUES (2, {id}, 'MemóriaRam')""")
+    cursor.execute(f"INSERT INTO Componente (idComponente, fkMaquina, tipo) VALUES (1, {id}, 'CPU')")
 
-        cursor.execute(f"""INSERT INTO Componente (idComponente, fkMaquina, tipo) VALUES (3, {id}, 'Disco')""")
-        
-        fkComponenteCpu = cursor.execute((f"SELECT idComponente FROM Componente WHERE tipo = 'CPU' and idComponente = {id}"))
-        fkComponenteRam = cursor.execute((f"SELECT idComponente FROM Componente WHERE tipo = 'MemóriaRam' and idComponente = {id}"))
-        fkComponenteDisco = cursor.execute((f"SELECT idComponente FROM Componente WHERE tipo = 'Disco' and idComponente = {id}"))
+    cursor.execute(f"""INSERT INTO Componente (idComponente, fkMaquina, tipo) VALUES (2, {id}, 'RAM')""")
 
-        cursor.execute(f"INSERT INTO Atributo (atributo, valor, unidadeMedida, fkMaquina, fkComponente) VALUES (null, {memoriaTotal}, 'GB', {id}, {fkComponenteRam})")
-        cursor.execute(f"INSERT INTO Atributo (atributo, valor, unidadeMedida, fkMaquina, fkComponente) VALUES (null, {discoTotal}, 'GB', {id}, {fkComponenteDisco})")
-    
-        conexao.commit()
-        conexao.close()
-    except:
-        print("f no chat")
+    cursor.execute(f"""INSERT INTO Componente (idComponente, fkMaquina, tipo) VALUES (3, {id}, 'Disco')""")
+
+    cursor.execute(f"INSERT INTO Atributo (atributo, valor, unidadeMedida, fkMaquina, fkComponente) VALUES (null, {memoriaTotal}, 'GB', {id}, 2)")
+    cursor.execute(f"INSERT INTO Atributo (atributo, valor, unidadeMedida, fkMaquina, fkComponente) VALUES (null, {discoTotal}, 'GB', {id}, 3)")
+
+    conexao.commit()
+    conexao.close()
     
 # Converte de bytes para giga 
 def bytes_para_giga(value):
@@ -223,7 +220,7 @@ while True:
 
     # Conexão BD
 
-    conexao = pymysql.connect(db='bd_point', user='root', passwd='GuilhermeAugusto123')
+    conexao = pymysql.connect(db='bd_point', user='root', passwd='1234', port=3307)
 
     cursor = conexao.cursor()
 
@@ -231,18 +228,11 @@ while True:
     
     identificador = cursor.fetchall()
     try:
-        idComponente = cursor.execute((f"SELECT max(C.idComponente) as id FROM Componente C INNER JOIN Maquina M ON M.idMaquina = C.fkMaquina WHERE idMaquina = {id}"))
+        cursor.execute(f"INSERT INTO Registro (valor, unidadeMedida, dataEhora, fkComponente, fkMaquina) VALUES ({cpu_percent()}, '%', NOW(), 1, {id})")
 
-        fkComponenteCpu = cursor.execute((f"SELECT idComponente FROM Componente WHERE tipo = 'CPU' and idComponente = 1"))
-        fkComponenteRam = cursor.execute((f"SELECT idComponente FROM Componente WHERE tipo = 'MemóriaRAM' and idComponente = 2"))
-        fkComponenteDisco = cursor.execute((f"SELECT idComponente FROM Componente WHERE tipo = 'Disco' and idComponente = 3"))
+        cursor.execute(f"INSERT INTO Registro (valor, unidadeMedida, dataEhora, fkComponente, fkMaquina) VALUES ({virtual_memory().percent}, '%', NOW(), 2, {id})")
 
-
-        cursor.execute(f"INSERT INTO Registro (valor, unidadeMedida, dataEhora, fkComponente, fkMaquina) VALUES ({cpu_percent()}, '%', NOW(), {fkComponenteCpu}, {id})")
-
-        cursor.execute(f"INSERT INTO Registro (valor, unidadeMedida, dataEhora, fkComponente, fkMaquina) VALUES ({virtual_memory().percent}, '%', NOW(), {fkComponenteRam}, {id})")
-
-        cursor.execute(f"INSERT INTO Registro (valor, unidadeMedida, dataEhora, fkComponente, fkMaquina) VALUES ({disk_usage('/').percent}, '%', NOW(), {fkComponenteDisco}, {id})")
+        cursor.execute(f"INSERT INTO Registro (valor, unidadeMedida, dataEhora, fkComponente, fkMaquina) VALUES ({disk_usage('/').percent}, '%', NOW(), 3, {id})")
 
         conexao.commit()
 
@@ -254,6 +244,6 @@ while True:
 
     try:
         ui.display()
-        sleep(0.50)
+        sleep(3)
     except KeyboardInterrupt:
         break

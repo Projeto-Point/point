@@ -21,10 +21,10 @@
                 <img src="../assets/imgs/Point.png">
             </a>
             <hr>
-            <a href="alertas.html">
+            <!-- <a href="alertas.html">
                 <img src="../assets/imgs/alfinete 1.png">
                 <span>Alertas</span>
-            </a>
+            </a> -->
             <a href="funcionarios.html">
                 <img src="../assets/imgs/alfinete 1.png">
                 <span>Funcionários</span>
@@ -66,24 +66,6 @@
                     <p>juan@gmail.com</p>
                     <p>(11) 98545-1265</p>
                     <a class="btn-link" href="#" id="btn-alerta">Ver mais</a>
-                </div>
-                <div class="funcionario box">
-                    <h3 id="nome-funcionario">Juan Cauã Silveira</h3>
-                    <p>juan@gmail.com</p>
-                    <p>(11) 98545-1265</p>
-                    <a class="btn-link" href="#" id="btn-alerta">Ver mais</a>
-                </div>
-                <div class="funcionario box">
-                    <h3 id="nome-funcionario">Juan Cauã Silveira</h3>
-                    <p>juan@gmail.com</p>
-                    <p>(11) 98545-1265</p>
-                    <a class="btn-link" href="#" id="btn-alerta">Ver mais</a>
-                </div>
-                <div class="funcionario box">
-                    <h3 id="nome-funcionario">Juan Cauã Silveira</h3>
-                    <p>juan@gmail.com</p>
-                    <p>(11) 98545-1265</p>
-                    <a class="btn-link" href="#" id="btn-alerta">Ver mais</a>
                 </div> -->
             </div>
         </section>
@@ -92,11 +74,10 @@
     <script>
         nomeGerente.innerHTML=sessionStorage.NOME_USUARIO;
 
-        fetch(`/medidas/pegarRegistroTelaFuncionario`).then(function (resposta) {
+        fetch(`/usuarios/listarFuncionarios?idEmpresa=${sessionStorage.ID_EMPRESA}`).then(function (resposta) {
             if (resposta.ok) {
                 resposta.json().then((resposta) => {
                     console.log(resposta)
-
 
                     for (let i = 0; i < resposta.length; i++) {
                         document.getElementById("lista-funcionarios").innerHTML += `
@@ -104,16 +85,10 @@
                             <h3 id="nome-funcionario">${resposta[i].nome}</h3>
                             <p id="email-funcionario">${(resposta[i].email)}</p>
                             <p id="telefone-funcionario">${resposta[i].telefone}</p>
-                            <p id="cargo-funcionario">${resposta[i].cargo}</p>
+                            <p style="text-transform: capitalize;" id="cargo-funcionario">${resposta[i].cargo}</p>
                         </div>`;
                     }
                 })
             }
-        })
-
-
-
-
-
-
+        });
     </script>

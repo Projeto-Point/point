@@ -28,4 +28,8 @@ router.post("/autenticar", function (req, res) {
     usuarioController.entrar(req, res);
 });
 
+router.get("/listarFuncionarios", function(req, res){
+    usuarioController.listarFuncionarios(req, res);
+});
+
 module.exports = router;

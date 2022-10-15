@@ -21,10 +21,10 @@
                 <img src="../assets/imgs/Point.png">
             </a>
             <hr>
-            <a href="alertas.html">
+            <!-- <a href="alertas.html">
                 <img src="../assets/imgs/alfinete 1.png">
                 <span>Alertas</span>
-            </a>
+            </a> -->
             <a href="funcionarios.html">
                 <img src="../assets/imgs/alfinete 1.png">
                 <span>Funcionários</span>
@@ -75,52 +75,17 @@
                     <div><canvas id="graficoRAM" style="position: relative;"></canvas></div>
                 </div>
             </div>
-            <div class="tabela" id="tbProcessos">
-                <h3>Aplicativos abertos</h3>
-                <table>
-                    <tr>
-                        <td>Algo</td>
-                        <td>Algo</td>
-                        <td>Algo</td>
-                        <td>Algo</td>
-                        <td>Algo</td>
-                    </tr>
-                    <tr>
-                        <td>Algo</td>
-                        <td>Algo</td>
-                        <td>Algo</td>
-                        <td>Algo</td>
-                        <td>Algo</td>
-                    </tr>
-                </table>
+            <div class="tabela" id="tbSobreFuncionario">
+                <h3>Informações do funcionário</h3>
+                <p><b>Nome: </b><span id="nome"></span></p>
+                <p><b>Cargo: </b><span id="cargo"></span></p>
+                <p><b>E-mail: </b><span id="mail"></span></p>
             </div>
-            <div class="tabela" id="tbHistorico">
-                <h3>Histórico</h3>
-                <table>
-                    <tr>
-                        <td>Algo</td>
-                        <td>Algo</td>
-                        <td>Algo</td>
-                        <td>Algo</td>
-                        <td>Algo</td>
-                    </tr>
-                    <tr>
-                        <td>Algo</td>
-                        <td>Algo</td>
-                        <td>Algo</td>
-                        <td>Algo</td>
-                        <td>Algo</td>
-                    </tr>
-                </table>
-            </div>
-            <div class="tabela" id="tbHorario">
-                <h3>Últimos alertas</h3>
-            </div>
-            <div class="tabela" id="tbFuncionario">
-                <h3>Sobre o funcionário</h3>
-                <p>Nome: <span id="nome"></span></p>
-                <p>Cargo:<span id="cargo"></span></p>
-                <p>E-mail:<span id="mail"></span></p>
+            <div class="tabela" id="tbSobreMaquina">
+                <h3>Informações da máquina</h3>
+                <!-- <p><b>Nome: </b><span id="nome"></span></p>
+                <p><b>Cargo: </b><span id="cargo"></span></p>
+                <p><b>E-mail: </b><span id="mail"></span></p> -->
             </div>
         </section>
     </main>
@@ -128,6 +93,7 @@
 
 </html>
 <script>
+    const tempoAtualizacao = 5000;
     var gerente= sessionStorage.NOME_USUARIO
 
     b_usuario.innerHTML= gerente;
@@ -143,17 +109,14 @@
 
 
     window.onload = () => {
-    const parametrosString = window.location.search;
-    const parametros = new URLSearchParams(parametrosString);
-    idMaquina = Number(parametros.get("idMaquina"));
+        const parametrosString = window.location.search;
+        const parametros = new URLSearchParams(parametrosString);
+        idMaquina = Number(parametros.get("idMaquina"));
 
-    recuperarDados();
+        recuperarDados();
     };
 
     function recuperarDados() {
-        
-
-
         fetch(`/medidas/pegarRegistroCPU?idMaquina=${idMaquina}`).then(function (res) {
             if (res.ok) {
                 res.json().then(CPU => {
@@ -243,6 +206,8 @@
             type: 'line',
             data: data,
             options: {
+                responsive: true,
+                maintainAspectRatio: false,
                 plugins: {
                     legend: {
                         display: false
@@ -261,7 +226,7 @@
         );
         setTimeout(() => {
             atualizarGraficoCPU(document.getElementById('graficoCPU').getContext("2d"), data)
-        }, 500
+        }, tempoAtualizacao
 
         )
 
@@ -280,7 +245,7 @@
 
                     proximaAtualizacao = setTimeout(() => {
                         atualizarGraficoCPU(grafico, dados)
-                    }, 500)
+                    }, tempoAtualizacao)
 
                 })
             }
@@ -311,6 +276,8 @@
             type: 'doughnut',
             data: data,
             options: {
+                responsive: true,
+                maintainAspectRatio: false,
                 plugins: {
                     legend: {
                         display: false
@@ -329,7 +296,7 @@
         );
         setTimeout(() => {
             atualizarGraficoDISCO(document.getElementById('graficoDISCO').getContext("2d"), data)
-        }, 500
+        }, tempoAtualizacao
 
         )
 
@@ -339,9 +306,6 @@
         fetch(`/medidas/pegarRegistroDISCO?idMaquina=${idMaquina}`).then(function (res) {
             if (res.ok) {
                 res.json().then(DISCO => {
-
-
-
                     discoMedida = DISCO.map((object) => object.valor);
                     discoDisponivel = 100 - discoMedida[0];
                     dados.datasets[0].data = discoMedida;
@@ -350,7 +314,7 @@
 
                     proximaAtualizacao = setTimeout(() => {
                         atualizarGraficoDISCO(grafico, dados)
-                    }, 500)
+                    }, tempoAtualizacao)
 
                 })
             }
@@ -387,6 +351,8 @@
             type: 'line',
             data: data,
             options: {
+                responsive: true,
+                maintainAspectRatio: false,
                 plugins: {
                     legend: {
                         display: false
@@ -405,7 +371,7 @@
         );
         setTimeout(() => {
             atualizarGraficoRAM(document.getElementById('graficoRAM').getContext("2d"), data)
-        }, 500
+        }, tempoAtualizacao
 
         )
 
@@ -424,7 +390,7 @@
 
                     proximaAtualizacao = setTimeout(() => {
                         atualizarGraficoRAM(grafico, dados)
-                    }, 500)
+                    }, tempoAtualizacao)
 
                 })
             }

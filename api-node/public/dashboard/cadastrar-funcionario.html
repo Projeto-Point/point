@@ -21,10 +21,10 @@
                 <img src="../assets/imgs/Point.png">
             </a>
             <hr>
-            <a href="alertas.html">
+            <!-- <a href="alertas.html">
                 <img src="../assets/imgs/alfinete 1.png">
                 <span>Alertas</span>
-            </a>
+            </a> -->
             <a href="funcionarios.html">
                 <img src="../assets/imgs/alfinete 1.png">
                 <span>Funcionários</span>
@@ -66,7 +66,7 @@
                     <div class="box_cad">
                         <div class="inputs">
                             <span class="span_text">Nome:</span> <br>
-                            <input class="input" id="nome_input" placeholder="Seu nome">
+                            <input class="input" id="nome_input" placeholder="Nome">
                         </div>
     
                         <div class="inputs">
@@ -119,12 +119,14 @@
 
         var nomeFuncVar = nome_input.value;
         var emailVar = email_input.value;
+        var cargoVar = cargo_input.value;
         var telVar = tel_input.value;
         var cpfVar = cpf_input.value;
         var senhaVar = senha_input.value;
         var confirmacaoSenhaVar = confirmacao_senha_input.value;
 
-        var idEmpresa = 1;
+        var idEmpresa = sessionStorage.ID_EMPRESA;
+        var idGestor = sessionStorage.ID_USUARIO;
 
         // if (nomeFuncVar == "" || emailVar == "" || senhaVar == "" || confirmacaoSenhaVar == "" || cpfVar == "" || telVar == "") {
         //     mostrarAlerta("Preencha todos os campos para prosseguir!");
@@ -182,7 +184,9 @@
                             cpfServer: cpfVar,
                             emailServer: emailVar,
                             senhaServer: senhaVar,
+                            cargoServer: cargoVar,
                             telServer: telVar,
+                            idGestorServer: idGestor,
                             idEmpresaServer: idEmpresa
                         })
                     }).then(function (resposta) {

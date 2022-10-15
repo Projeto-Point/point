@@ -49,6 +49,10 @@
                         <input class="input" type="email" id="email_input" placeholder="seuEmail@email.com">
                     </div>
                     <div class="inputs">
+                        <span class="span_text">Celular:</span> <br>
+                        <input class="input" type="text" id="telefone_input" placeholder="(11) 99621-3788">
+                    </div>
+                    <div class="inputs">
                         <span class="span_text">CPF:</span> <br>
                         <input class="input" id="cpf_input" placeholder="Somente números">
                     </div>
@@ -112,13 +116,14 @@
         var cnpjVar = cnpj_input.value;
         var nomeGerenteVar = nome_input.value;
         var emailVar = email_input.value;
+        var telefoneVar = telefone_input.value;
         var cpfVar = cpf_input.value;
         var senhaVar = senha_input.value;
         var confirmacaoSenhaVar = confirmacao_senha_input.value;
 
         var idEmpresa = 0;
 
-        if (nomeGerenteVar == "" || emailVar == "" || senhaVar == "" || confirmacaoSenhaVar == "" || cpfVar == "") {
+        if (nomeGerenteVar == "" || emailVar == "" || telefoneVar == "" || senhaVar == "" || confirmacaoSenhaVar == "" || cpfVar == "") {
             mostrarAlerta("Preencha todos os campos para prosseguir!");
             return false;
         }
@@ -170,6 +175,7 @@
                             nomeGerenteServer: nomeGerenteVar,
                             cpfServer: cpfVar,
                             emailServer: emailVar,
+                            telefoneServer : telefoneVar,
                             senhaServer: senhaVar,
                             idEmpresaServer: idEmpresa
                         })
@@ -187,7 +193,7 @@
                             limparFormulario();
 
                         } else {
-                            alert("Não foi possível realizar o login")
+                            mostrarAlerta("Não foi possível realizar o cadastro");
                             throw ("Houve um erro ao tentar realizar o cadastro!");
                         }
                     }).catch(function (resposta) {
@@ -199,7 +205,7 @@
 
 
             } else {
-                alert("Não foi possível realizar o login")
+                mostrarAlerta("Não foi possível realizar o cadastro");
                 throw ("Houve um erro ao tentar realizar o cadastro!");
             }
         }).catch(function (resposta) {

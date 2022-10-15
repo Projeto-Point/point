@@ -341,9 +341,8 @@ main section.dashboard {
   margin-top: 30px;
   display: grid;
   gap: 25px;
-  grid-template-columns: 1fr 1fr 1fr 1fr;
-  grid-template-rows: 1fr 1fr 1fr 1fr;
-  grid-template-areas: "g1 g2 g3 t3" "t1 t1 t1 t3" "t1 t1 t1 t4" "t2 t2 t2 t4";
+  grid-template-columns: 1fr 1fr 1fr;
+  grid-template-areas: "g1 g2 g3" "g1 g2 g3" "t1 t1 t1" "t2 t2 t2";
 }
 main section.dashboard #gfCpu {
   grid-area: g1;

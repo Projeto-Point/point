@@ -30,26 +30,32 @@ function cadastrarEmpresa(nomeEmpresa, cnpj) {
     console.log("Executando a instrução SQL: \n" + instrucao);
     return database.executar(instrucao);
 
-} function cadastrarUsuario(nomeGerente, cpf, email, senha, idEmpresa) {
+} function cadastrarUsuario(nomeGerente, cpf, email, telefone, senha, idEmpresa) {
     console.log("ACESSEI O USUARIO MODEL \n \n\t\t >> Se aqui der erro de 'Error: connect ECONNREFUSED',\n \t\t >> verifique suas credenciais de acesso ao banco\n \t\t >> e se o servidor de seu BD está rodando corretamente. \n\n function cadastrar():", nomeGerente, cpf, email, senha, idEmpresa);
     
     // Insira exatamente a query do banco aqui, lembrando da nomenclatura exata nos valores
     //  e na ordem de inserção dos dados.
     var instrucao = `
-        INSERT INTO Funcionario (nome, cpf, senha, email, fkEmpresa) VALUES ('${nomeGerente}', '${cpf}', '${senha}', '${email}', '${idEmpresa}');
+        INSERT INTO Funcionario (nome, cpf, senha, email, telefone, fkEmpresa) VALUES ('${nomeGerente}', '${cpf}', '${senha}', '${email}', '${telefone}', '${idEmpresa}');
     `;
     console.log("Executando a instrução SQL: \n" + instrucao);
     return database.executar(instrucao);
 }
 
-function cadastrarFuncionario(nomeFunc, cpf, email, senha, tel, idEmpresa) {
-    console.log("ACESSEI O USUARIO MODEL \n \n\t\t >> Se aqui der erro de 'Error: connect ECONNREFUSED',\n \t\t >> verifique suas credenciais de acesso ao banco\n \t\t >> e se o servidor de seu BD está rodando corretamente. \n\n function cadastrar():", nomeGerente, cpf, email, senha, idEmpresa);
+function cadastrarFuncionario(nome, cpf, email, senha, cargo, tel, idGestor, idEmpresa) {
+    console.log("ACESSEI O USUARIO MODEL \n \n\t\t >> Se aqui der erro de 'Error: connect ECONNREFUSED',\n \t\t >> verifique suas credenciais de acesso ao banco\n \t\t >> e se o servidor de seu BD está rodando corretamente. \n\n function cadastrar():", nome, cpf, email, senha, idGestor, idEmpresa);
     
     // Insira exatamente a query do banco aqui, lembrando da nomenclatura exata nos valores
     //  e na ordem de inserção dos dados.
     var instrucao = `
-        INSERT INTO Funcionario (nome, cpf, senha, email, fkEmpresa) VALUES ('${nomeFunc}', '${cpf}', '${senha}', '${email}','${tel}', '${idEmpresa}');
+        INSERT INTO Funcionario (nome, cpf, senha, email, telefone, cargo, fkGestor, fkEmpresa) VALUES ('${nome}', '${cpf}', '${senha}', '${email}','${tel}', '${cargo}', ${idGestor}, ${idEmpresa});
     `;
+    console.log("Executando a instrução SQL: \n" + instrucao);
+    return database.executar(instrucao);
+}
+
+function listarFuncionarios(idEmpresa){
+    var instrucao = `SELECT nome, email, telefone, cargo FROM Funcionario WHERE fkEmpresa = ${idEmpresa}`;
     console.log("Executando a instrução SQL: \n" + instrucao);
     return database.executar(instrucao);
 }
@@ -60,4 +66,5 @@ module.exports = {
     cadastrarUsuario,
     cadastrarFuncionario,
     listar,
+    listarFuncionarios,
 };

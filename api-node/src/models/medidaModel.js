@@ -1,35 +1,33 @@
 var database = require("../database/config");
 
 function pegarRegistroCPU(idMaquina){
-    instrucaoSql = `select M.idMaquina, A.valor FROM Maquina M
-    INNER JOIN Componente C ON C.fkMaquina = M.idMaquina
-    INNER JOIN Atributo A ON fkComponente = idComponente
-    WHERE C.tipo like "CPU" AND M.idMaquina = ${idMaquina} order by idAtributo desc limit 0,10;`;
+    // instrucaoSql = `select M.idMaquina, A.valor FROM Maquina M
+    // INNER JOIN Componente C ON C.fkMaquina = M.idMaquina
+    // INNER JOIN Atributo A ON fkComponente = idComponente
+    // WHERE C.tipo like "CPU" AND M.idMaquina = ${idMaquina} order by idAtributo desc limit 0,10;`;
+    instrucaoSql = `SELECT valor FROM vw_registros 
+    WHERE tipo like "CPU" AND idMaquina = ${idMaquina} order by dataEhora desc limit 0,10;`;
     console.log("Executando a instrução SQL: \n" + instrucaoSql);
     return database.executar(instrucaoSql);
 }
 
 function pegarRegistroDISCO(idMaquina){
-    instrucaoSql = `select M.idMaquina, A.valor FROM Maquina M
-    INNER JOIN Componente C ON C.fkMaquina = M.idMaquina
-    INNER JOIN Atributo A ON fkComponente = idComponente
-    WHERE C.tipo like "DISCO" AND M.idMaquina = ${idMaquina} order by idAtributo desc limit 0,10;`;
+    instrucaoSql = `SELECT valor FROM vw_registros 
+    WHERE tipo like "DISCO" AND idMaquina = ${idMaquina} order by dataEhora desc limit 0,10;`;
     console.log("Executando a instrução SQL: \n" + instrucaoSql);
     return database.executar(instrucaoSql);
 }
 
 function pegarRegistroRAM(idMaquina){
-    instrucaoSql = `select M.idMaquina, A.valor FROM Maquina M
-    INNER JOIN Componente C ON C.fkMaquina = M.idMaquina
-    INNER JOIN Atributo A ON fkComponente = idComponente
-    WHERE C.tipo like "RAM" AND M.idMaquina = ${idMaquina} order by idAtributo desc limit 0,10;`;
+    instrucaoSql = `SELECT valor FROM vw_registros 
+    WHERE tipo like "RAM" AND idMaquina = ${idMaquina} order by dataEhora desc limit 0,10;`;
     console.log("Executando a instrução SQL: \n" + instrucaoSql);
     return database.executar(instrucaoSql);
 }
 
 function pegarRegistroFuncionario(idMaquina){
-    instrucaoSql = `SELECT nome, email, cargo, telefone, idMaquina FROM Funcionario, Telefone, maquina 
-    where Funcionario.idFuncionario = Telefone.fkFuncionario and Funcionario.idFuncionario = Maquina.fkFuncionario AND Maquina.idMaquina = ${idMaquina};`;
+    instrucaoSql = `SELECT nome, email, cargo, telefone, idMaquina FROM Funcionario, Maquina 
+    where Funcionario.idFuncionario = Maquina.fkFuncionario AND Maquina.idMaquina = ${idMaquina};`;
     console.log("Executando a instrução SQL: \n" + instrucaoSql);
     return database.executar(instrucaoSql);
 }
