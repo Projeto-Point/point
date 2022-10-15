@@ -6,7 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cadastrar funcionarios | Point</title>
-    <link rel="stylesheet" href="css/styleDashCadaFunc.css">
+    <link rel="stylesheet" href="css/styleDashAlterFunc.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Advent+Pro:wght@100;200;300;400;500;600;700&display=swap"
@@ -71,41 +71,45 @@
                     <div class="formulario">
                         <div class="box_cad">
                             <div class="inputs">
-                                <span class="span_text">Nome:</span> <br>
-                                <input class="input" id="nome_input" placeholder="Nome">
+                                <span class="span_text">Nome atual:</span> <br>
+                                <div class="atual"><span id="nome_atual"></span></div>
                             </div>
 
                             <div class="inputs">
-                                <span class="span_text">E-mail:</span> <br>
-                                <input class="input" type="email" id="email_input" placeholder="seuEmail@email.com">
+                                <span class="span_text">Senha atual:</span> <br>
+                                <div class="atual"><span id="senha_atual"></span></div>
                             </div>
                             <div class="inputs">
-                                <span class="span_text">CPF:</span> <br>
-                                <input class="input" id="cpf_input" placeholder="Somente números">
+                                <span class="span_text">Telefone atual:</span> <br>
+                                <div class="atual"><span id="tel_atual"></span></div>
                             </div>
 
                             <div class="inputs">
-                                <span class="span_text">Cargo:</span> <br>
-                                <input class="input" id="cargo_input" placeholder="Seu cargo">
+                                <span class="span_text">Cargo atual:</span> <br>
+                                <div class="atual"><span id="cargo_atual"></span></div>
                             </div>
                         </div>
                         <div class="linha"></div>
                         <div class="box_cad">
 
                             <div class="inputs">
-                                <span class="span_text">Telefone:</span> <br>
-                                <input class="input" id="tel_input" placeholder="(11) 9999-99999">
+                                <span class="span_text">Novo Nome:</span> <br>
+                                <input class="input" id="newNome_input" placeholder="Insira seu novo nome">
                             </div>
 
                             <div class="inputs">
-                                <span class="span_text">Senha:</span> <br>
-                                <input class="input" type="password" id="senha_input" placeholder="********">
+                                <span class="span_text">Nova Senha:</span> <br>
+                                <input class="input" type="password" id="newSenha_input" placeholder="********">
                             </div>
 
                             <div class="inputs">
-                                <span class="span_text">Confirme a senha:</span> <br>
-                                <input class="input" type="password" id="confirmacao_senha_input"
-                                    placeholder="********">
+                                <span class="span_text">Novo Telefone:</span> <br>
+                                <input class="input" type="" id="newTel_input" placeholder="(11) 9999-99999">
+                            </div>
+
+                            <div class="inputs">
+                                <span class="span_text">Novo cargo:</span> <br>
+                                <input class="input" type="" id="newCargo_input" placeholder="Insira seu novo cargo">
                             </div>
 
                             <div class="botao_cadastro">
@@ -124,15 +128,24 @@
 
     <script>
         nomeGerente.innerHTML = sessionStorage.NOME_USUARIO;
+        var idFuncionario;
+
+        
+        const parametrosString = window.location.search;
+        const parametros = new URLSearchParams(parametrosString);
+        idFuncionario = Number(parametros.get("idFuncionario"));
+
+        dadosAtuais();
+   
+
+
         function alterar() {
 
-            var nomeFuncVar = nome_input.value;
-            var emailVar = email_input.value;
-            var cargoVar = cargo_input.value;
-            var telVar = tel_input.value;
-            var cpfVar = cpf_input.value;
-            var senhaVar = senha_input.value;
-            var confirmacaoSenhaVar = confirmacao_senha_input.value;
+            var nomeFuncVar = newNome_input.value;        
+            var cargoVar = newCargo_input.value;
+            var telVar = newTel_input.value;        
+            var senhaVar = newSenha_input.value;
+            var idFuncionarioVar = idFuncionario;
 
             var idEmpresa = sessionStorage.ID_EMPRESA;
             var idGestor = sessionStorage.ID_USUARIO;
@@ -181,7 +194,7 @@
             //         resposta.json().then(json => {
             //             idEmpresa = json.insertId;
             //fetch do gestor
-            fetch("/usuarios/cadastrarFuncionario", {
+            fetch(`/usuarios/alterarFuncionario?idFuncionario=${idFuncionario}`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json"
@@ -190,13 +203,10 @@
                     // crie um atributo que recebe o valor recuperado aqui
                     // Agora vá para o arquivo routes/usuario.js
                     nomeFuncServer: nomeFuncVar,
-                    cpfServer: cpfVar,
-                    emailServer: emailVar,
                     senhaServer: senhaVar,
                     cargoServer: cargoVar,
                     telServer: telVar,
-                    idGestorServer: idGestor,
-                    idEmpresaServer: idEmpresa
+                    idFuncionarioServer: idFuncionarioVar
                 })
             }).then(function (resposta) {
 
@@ -234,4 +244,23 @@
 
             //     return false;
         }
+
+
+        function dadosAtuais(){
+            fetch(`/usuarios/pegarDadosAtuais?idFuncionario=${idFuncionario}`).then(function (res) {
+            if (res.ok) {
+                res.json().then(RegistroFuncionario => {
+                    console.log(RegistroFuncionario);
+
+                    nome_atual.innerHTML= RegistroFuncionario[0].nome;
+                    senha_atual.innerHTML= RegistroFuncionario[0].senha;
+                    tel_atual.innerHTML= RegistroFuncionario[0].telefone;
+                    cargo_atual.innerHTML= RegistroFuncionario[0].cargo;
+                })
+            }
+        })
+
+
+    }
+
     </script>
