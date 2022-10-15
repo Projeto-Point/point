@@ -55,7 +55,6 @@
                 <input id="inp-pesquisar-funcionario" type="search" placeholder="Pesquise o nome de um funcionário...">
             </div>
             <div class="top-dir">
-                <button><img src="assets/dash/bell.png"></button>
                 <p class="nome"><span id="nome_gerente"></span></p>
                 <img src="assets/dash/pessoa.jpeg">
             </div>
@@ -65,27 +64,25 @@
                 <h3>Processador</h3>
                 <div> <canvas id="graficoCPU" style="position: relative;"></canvas></div>
             </div>
-            <div class="grafico" id="gfDisco">
+            <div class="grafico" id="gfDisco" data-content="0.0">
                 <h3>Disco</h3>
-                <div><canvas id="graficoDISCO" style="position: relative; width: 20vh"></canvas></div>
+                <div><canvas id="graficoDISCO" style="position: relative;"></canvas></div>
             </div>
             <div class="grafico" id="gfRam">
                 <h3>Memória RAM</h3>
                 <div>
-                    <div><canvas id="graficoRAM" style="position: relative;"></canvas></div>
+                    <canvas id="graficoRAM" style="position: relative;"></canvas>
                 </div>
             </div>
-            <div class="tabela" id="tbSobreFuncionario">
+            <div class="tabela" id="tbFuncionario">
                 <h3>Informações do funcionário</h3>
                 <p><b>Nome: </b><span id="nome"></span></p>
                 <p><b>Cargo: </b><span id="cargo"></span></p>
                 <p><b>E-mail: </b><span id="mail"></span></p>
+                <p><b>Telefone: </b><span id="telefone"></span></p>
             </div>
-            <div class="tabela" id="tbSobreMaquina">
+            <div class="tabela" id="tbMaquina">
                 <h3>Informações da máquina</h3>
-                <!-- <p><b>Nome: </b><span id="nome"></span></p>
-                <p><b>Cargo: </b><span id="cargo"></span></p>
-                <p><b>E-mail: </b><span id="mail"></span></p> -->
             </div>
         </section>
     </main>
@@ -93,7 +90,7 @@
 
 </html>
 <script>
-    const tempoAtualizacao = 5000;
+    const tempoAtualizacao = 5 * 60 * 1000;
     var gerente= sessionStorage.NOME_USUARIO
 
     b_usuario.innerHTML= gerente;
@@ -133,7 +130,7 @@
             if (res.ok) {
                 res.json().then(DISCO => {
 
-                    console.log(DISCO)
+                    // console.log(DISCO)
                     discoMedida = DISCO.map((object) => object.valor);
                     discoDisponivel= 100 - discoMedida[0];
                     plotarGraficoDISCO(discoMedida);
@@ -148,7 +145,7 @@
             if (res.ok) {
                 res.json().then(RAM => {
 
-                    console.log(RAM)
+                    // console.log(RAM)
                     ramMedida = RAM.map((object) => object.valor);
                     plotarGraficoRAM(ramMedida);
 
@@ -159,19 +156,39 @@
         fetch(`/medidas/pegarRegistroFuncionario?idMaquina=${idMaquina}`).then(function (res) {
             if (res.ok) {
                 res.json().then(RegistroFuncionario => {
-                    console.log(RegistroFuncionario)
+                    // console.log(RegistroFuncionario)
 
                     var nomeFuncionario = RegistroFuncionario.map((object) => object.nome);
                     var emailFuncionario = RegistroFuncionario.map((object) => object.email);
                     var cargoFuncionario = RegistroFuncionario.map((object) => object.cargo);
+                    var telefoneFuncionario = RegistroFuncionario.map((object) => object.telefone);
 
                     nome.innerHTML = nomeFuncionario;
                     mail.innerHTML = emailFuncionario
                     cargo.innerHTML = cargoFuncionario;
+                    telefone.innerHTML = telefoneFuncionario;
 
                 })
             }
-        })
+        });
+
+        fetch(`/medidas/pegarRegistroMaquina?idMaquina=${idMaquina}`).then((res) => {
+            if(res.ok){
+                res.json().then((resposta) => {
+                //     <p><b>Sistema operacional: </b><span><div id="sistemaOp"></div></span></p>
+                // <p><b>Sistema operacional: </b><span><div id="nomeMaquina"></div></span></p>
+                // <p><b>Sistema operacional: </b><span><div id="tipoMaquina"></div></span></p>
+
+                    document.getElementById("tbMaquina").innerHTML += `<p><b>Sistema operacional: </b><span>${resposta[0].sistemaOperacional}</span></p>`;
+                    document.getElementById("tbMaquina").innerHTML += `<p><b>Nome da máquina: </b><span>${resposta[0].nomeMaquina}</span></p>`;
+                    document.getElementById("tbMaquina").innerHTML += `<p><b>Tipo da máquina: </b><span>${resposta[0].tipoMaquina}</span></p>`;
+                    
+                    for (let index = 0; index < resposta.length; index++) {
+                        document.getElementById("tbMaquina").innerHTML += `<p><b>${resposta[index].tipoComponente}: </b><span>${resposta[index].valor} ${resposta[index].unidadeMedida}</span></p>`;
+                    }
+                });
+            }
+        });
 
 
     }
@@ -212,8 +229,7 @@
                     legend: {
                         display: false
                     },
-
-                    Animation: false
+                    Animation: false,
                 }
             }
 
@@ -236,15 +252,12 @@
         fetch(`/medidas/pegarRegistroCPU?idMaquina=${idMaquina}`).then(function (res) {
             if (res.ok) {
                 res.json().then(CPU => {
-
-
-
                     cpuMedida = CPU.map((object) => object.valor);
                     dados.datasets[0].data = cpuMedida
                     window.graficoCPU.update();
 
                     proximaAtualizacao = setTimeout(() => {
-                        atualizarGraficoCPU(grafico, dados)
+                        atualizarGraficoCPU(grafico, dados);
                     }, tempoAtualizacao)
 
                 })
@@ -257,8 +270,9 @@
         const labels = [
             'Ocupado',
             'Livre'
-
         ];
+
+        gfDisco.dataset.content = discoMedida[0] + "%";
 
         const data = {
             labels: labels,
@@ -266,8 +280,9 @@
                 //DISCO
                 label: 'DISCO',
                 data: [discoMedida[0], discoDisponivel],
+                backgroundColor: ['#D0342C', '#00CA43'],
+                borderColor: ['#D0342C', '#00CA43'],
                 fill: true,
-                borderColor: 'rgb(75, 192, 192)',
 
             }]
         };
@@ -286,7 +301,6 @@
                     Animation: false
                 }
             }
-
         };
 
         window.graficoDISCO = new Chart(
@@ -308,8 +322,8 @@
                 res.json().then(DISCO => {
                     discoMedida = DISCO.map((object) => object.valor);
                     discoDisponivel = 100 - discoMedida[0];
-                    dados.datasets[0].data = discoMedida;
-                    dados.datasets[1].data = discoDisponivel;
+                    dados.datasets[0].data[0] = discoMedida;
+                    dados.datasets[0].data[1] = discoDisponivel;
                     window.graficoDISCO.update();
 
                     proximaAtualizacao = setTimeout(() => {
@@ -319,7 +333,6 @@
                 })
             }
         })
-        // console.log("ta funcionando")
     }
 
     function plotarGraficoRAM(ramMedida) {
@@ -357,9 +370,8 @@
                     legend: {
                         display: false
                     },
-
-                    Animation: false
-                }
+                    Animation: false,
+                },
             }
 
         };

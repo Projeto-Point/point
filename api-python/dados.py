@@ -18,7 +18,9 @@ from dashing import (
     HGauge, 
     Text
 )
+import requests
 
+import json
 # Pega os dados das máquina 
 from psutil import (
     # Pega os dados da memória virtual (ram)
@@ -58,21 +60,32 @@ while verificaLogin == False:
     senha = input('Digite a senha do funcionário: ')
 
     # Conecta com o banco, passando o usuário, e o banco desejado
-    conexao = pymysql.connect(db='bd_point', user='root', passwd='1234', port=3307)
+    conexao = pymysql.connect(db='bd_point', user='root', passwd='', port=3307)
 
     # AGDDAAAAA
     cursor = conexao.cursor()
     
     #Executa o comando no banco que foi conectado 
     verificaLogin = cursor.execute(("SELECT email, senha FROM Funcionario WHERE email = '{}' and senha = '{}'").format(login, senha))
-
-    #Encerra o processo
+    omeFuncionario = cursor.execute(("SELECT nome FROM Funcionario WHERE email = '{}' and senha = '{}'").format(login, senha))
+    nomeFuncionario = cursor.fetchall()[0][0]
     conexao.close()
+webhook = "https://hooks.slack.com/services/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"
+if cpu_percent() > 1.00:
+    mensagem = { "text" : "A CPU do funcionario " + str(nomeFuncionario) + " está acima do comum"}
 
+    requests.post(webhook, data=json.dumps(mensagem))
+if virtual_memory().percent > 1.00: 
+    mensagem = { "text" : "A memória Ram do funcionario " + str(nomeFuncionario) + " está acima do comum com: " +  str(virtual_memory().percent) + "%"}
+
+    requests.post(webhook, data=json.dumps(mensagem))
+
+#85 ram
+#80 CPU
 
 
 nome = platform.node()
-conexao = pymysql.connect(db='bd_point', user='root', passwd='1234', port=3307)
+conexao = pymysql.connect(db='bd_point', user='root', passwd='', port=3307)
 cursor = conexao.cursor()
 verificarCadastro = cursor.execute(("SELECT nomeMaquina FROM Maquina WHERE nomeMaquina = '{}'").format(nome))
 
@@ -94,7 +107,7 @@ else:
     memoriaTotal = bytes_para_giga(virtual_memory().total)
     discoTotal = bytes_para_giga(disk_usage("/").total)
 
-    conexao = pymysql.connect(db='bd_point', user='root', passwd='1234', port=3307)
+    conexao = pymysql.connect(db='bd_point', user='root', passwd='', port=3307)
 
     cursor = conexao.cursor()
 
@@ -102,7 +115,7 @@ else:
 
     fkFuncionario = cursor.fetchall()[0][0]
     
-    cursor.execute(f"""INSERT INTO Maquina VALUES (null, '{platform.system()}', '{platform.node()}', null, {fkFuncionario})""")
+    cursor.execute(f"""INSERT INTO Maquina VALUES (null, '{platform.system()}', '{platform.node()}', 'Sistema', {fkFuncionario})""")
 
     cursor.execute((f"""SELECT idMaquina FROM Maquina WHERE nomeMaquina = '{nome}'"""))
 
@@ -220,7 +233,7 @@ while True:
 
     # Conexão BD
 
-    conexao = pymysql.connect(db='bd_point', user='root', passwd='1234', port=3307)
+    conexao = pymysql.connect(db='bd_point', user='root', passwd='', port=3307)
 
     cursor = conexao.cursor()
 
@@ -228,7 +241,7 @@ while True:
     
     identificador = cursor.fetchall()
     try:
-        cursor.execute(f"INSERT INTO Registro (valor, unidadeMedida, dataEhora, fkComponente, fkMaquina) VALUES ({cpu_percent()}, '%', NOW(), 1, {id})")
+        cursor.execute(f"INSERT INTO Registro (valor, unidadeMedida, dataEhora, fkComponente, fkMaquina) VALUES ({cpu_percent(interval=0.1)}, '%', NOW(), 1, {id})")
 
         cursor.execute(f"INSERT INTO Registro (valor, unidadeMedida, dataEhora, fkComponente, fkMaquina) VALUES ({virtual_memory().percent}, '%', NOW(), 2, {id})")
 

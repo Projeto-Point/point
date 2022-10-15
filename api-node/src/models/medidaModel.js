@@ -13,7 +13,7 @@ function pegarRegistroCPU(idMaquina){
 
 function pegarRegistroDISCO(idMaquina){
     instrucaoSql = `SELECT valor FROM vw_registros 
-    WHERE tipo like "DISCO" AND idMaquina = ${idMaquina} order by dataEhora desc limit 0,10;`;
+    WHERE tipo like "DISCO" AND idMaquina = ${idMaquina} order by dataEhora desc limit 0,1;`;
     console.log("Executando a instrução SQL: \n" + instrucaoSql);
     return database.executar(instrucaoSql);
 }
@@ -32,11 +32,17 @@ function pegarRegistroFuncionario(idMaquina){
     return database.executar(instrucaoSql);
 }
 
+function pegarRegistroMaquina(idMaquina){
+    instrucaoSql = `SELECT * FROM vw_infoMaquina WHERE idMaquina = ${idMaquina}`;
+    console.log("Executando a instrução SQL: \n" + instrucaoSql);
+    return database.executar(instrucaoSql);
+}
+
 
 module.exports = {
     pegarRegistroCPU,
     pegarRegistroDISCO,
     pegarRegistroRAM,
-    pegarRegistroFuncionario
-
+    pegarRegistroFuncionario,
+    pegarRegistroMaquina,
 }
