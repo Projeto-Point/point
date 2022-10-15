@@ -46,41 +46,43 @@ public class Atributo {
         }
     }
         
-    public void inserirAtributo(String atributo, double valor, String unidadeDeMedida, Maquina maquina, int id){
+    private void inserirAtributo(String atributo, double valor, String unidadeDeMedida, Maquina maquina, int id){
         
-        connection.update("INSERT INTO Atributo VALUES(?, ?, ?, ?, ?);",
-                    null,
+        connection.update("INSERT INTO Atributo VALUES(null, ?, ?, ?, ?, ?);",
                     atributo,
                     valor,
                     unidadeDeMedida,
-                    maquina.getId(),
-                    id
+                    id,
+                    maquina.getId()
                     
             );
     }
     
-    public void inserirAtributo(String atributo, int valor, String unidadeDeMedida, Maquina maquina, int id){
+    private void inserirAtributo(String atributo, int valor, String unidadeDeMedida, Maquina maquina, int id){
         
-        connection.update("INSERT INTO Atributo VALUES(?, ?, ?, ?, ?);",
-                    null,
+        connection.update("INSERT INTO Atributo VALUES(null, ?, ?, ?, ?, ?);",
                     atributo,
                     valor,
                     unidadeDeMedida,
-                    maquina.getId(),
-                    id
+                    id,
+                    maquina.getId()
                     
             );
     }
     
     
-    public void insertQuantidadeDeCores(Maquina maquina){
+    private void insertQuantidadeDeCores(Maquina maquina){
+        
+        System.out.println("Inserindo Quantidade De Core");
         
         int core = looca.getProcessador().getNumeroCpusFisicas();
         
         inserirAtributo("CORE", core, "unidade", maquina, 3);
     }
     
-    public void insertQuantidadeDeThreads(Maquina maquina){
+    private void insertQuantidadeDeThreads(Maquina maquina){
+        
+         System.out.println("Inserindo Quantidade De Threads");
         
         int threads = looca.getProcessador().getNumeroCpusLogicas();
         
@@ -88,7 +90,9 @@ public class Atributo {
         
     }
     
-    public void insertTamanhoTotalHD(Maquina maquina){
+    private void insertTamanhoTotalHD(Maquina maquina){
+        
+         System.out.println("Inserindo Quantidade De HD");
         
         long threads = looca.getGrupoDeDiscos().getTamanhoTotal();
         Double threadsGiga = utilitarios.converterBytesParaGiga(threads);
@@ -99,7 +103,9 @@ public class Atributo {
         
     }
     
-    public void insertMemoriaRamTotal(Maquina maquina){
+    private void insertMemoriaRamTotal(Maquina maquina){
+        
+         System.out.println("Inserindo Quantidade De Ram");
         
         long memoriaRamTotal = looca.getMemoria().getTotal();
         Double memoriaRamTotalDouble = utilitarios.converterBytesParaGiga(memoriaRamTotal);
@@ -112,7 +118,13 @@ public class Atributo {
     
     public void inserirTodosValores(Maquina maquina){
         
-        
+        insertMemoriaRamTotal(maquina);
+        utilitarios.wait(5000);
+        insertQuantidadeDeCores(maquina);
+        utilitarios.wait(5000);
+        insertQuantidadeDeThreads(maquina);
+        utilitarios.wait(5000);
+        insertTamanhoTotalHD(maquina);
     }
  
     

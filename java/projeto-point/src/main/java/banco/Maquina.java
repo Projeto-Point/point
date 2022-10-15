@@ -26,7 +26,7 @@ public class Maquina {
     JdbcTemplate connection = database.getConnection();
     
     Componente componente = new Componente();
-    
+    Atributo atributo = new Atributo();
     Utilitarios utilitarios = new Utilitarios();
 
     private Integer id;
@@ -106,13 +106,16 @@ public class Maquina {
             
             utilitarios.wait(5000);
             this.id = selectIdMaquina(funcionario);
-            
             componente.insertComponentesTotal(this);
+            utilitarios.wait(5000);
+            atributo.inserirTodosValores(this);
 
             return true;
 
         } catch (Exception e) {
 
+            System.out.println("Não foi possível cadastrar Máquina");
+            System.out.println(e);
             return false;
         }
 
