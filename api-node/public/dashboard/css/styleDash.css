@@ -42,6 +42,7 @@ input, select {
 
 body {
   display: flex;
+  overflow-x: hidden;
 }
 
 header nav#menu {
@@ -49,8 +50,6 @@ header nav#menu {
   height: 100vh;
   display: flex;
   flex-direction: column;
-  position: -webkit-sticky;
-  position: sticky;
   top: 0;
   box-shadow: 5px 0px 5px rgba(0, 0, 0, 0.3);
   padding: 10px 30px;
@@ -78,8 +77,6 @@ header nav#menu a img {
 }
 header nav#menu-mobile {
   display: none;
-  position: -webkit-sticky;
-  position: sticky;
   top: 0;
   box-shadow: 5px 0px 5px rgba(0, 0, 0, 0.3);
   width: 70px;
@@ -96,7 +93,7 @@ header nav#menu-mobile img {
 }
 
 main {
-  width: 100%;
+  width: calc(100% - 300px);
   min-height: 100vh;
   display: flex;
   flex-direction: column;
@@ -105,7 +102,7 @@ main {
   background-repeat: no-repeat;
   background-size: contain;
   color: white;
-  padding: 30px 2%;
+  padding: 30px;
 }
 main section.top {
   display: flex;
@@ -288,7 +285,7 @@ main section.dashboard-analise {
   gap: 30px;
   grid-template-columns: 1fr 1fr 1fr;
   grid-template-rows: 1fr repeat(3, 250px);
-  grid-template-areas: "k1 k2 k3" "g1 g1 i1" "g2 g2 i2" "g3 g3 i3";
+  grid-template-areas: "k1 k2 k3" "g1 g1 i2" "g2 g2 i2" "g3 g3 i1";
 }
 main section.dashboard-analise .kpi-horas {
   grid-area: k1;
@@ -308,18 +305,20 @@ main section.dashboard-analise .grafico-ram {
 main section.dashboard-analise .grafico-disco {
   grid-area: g3;
 }
-main section.dashboard-analise .info-alertas {
+main section.dashboard-analise .info-funcionario {
   grid-area: i1;
 }
-main section.dashboard-analise .info-funcionario {
-  grid-area: i2;
-}
 main section.dashboard-analise .info-maquina {
-  grid-area: i3;
+  grid-area: i2;
 }
 main section.dashboard-analise .box {
   padding: 15px;
   display: block;
+  font-size: 20px;
+}
+main section.dashboard-analise .box hr {
+  margin: 10px 0;
+  opacity: 0.4;
 }
 main section.dashboard-analise .box-kpi h1 {
   text-align: center;
@@ -332,6 +331,25 @@ main section.dashboard-analise .grafico .header {
   padding: 7px;
   border-bottom: 1px solid rgba(0, 0, 0, 0.3);
 }
+main section.dashboard-analise .grafico .header .dir {
+  display: flex;
+  align-items: center;
+}
+main section.dashboard-analise .grafico .header .dir .legenda {
+  width: 45px;
+  height: 25px;
+  border-radius: 5px;
+}
+main section.dashboard-analise .grafico .header .dir span {
+  margin-right: 30px;
+  margin-left: 7px;
+}
+main section.dashboard-analise .grafico .header .dir .alto {
+  background: #D0342C;
+}
+main section.dashboard-analise .grafico .header .dir .normal {
+  background: #00CA43;
+}
 main section.dashboard-analise .grafico .header select {
   height: 30px;
   padding-left: 10px;
@@ -341,29 +359,37 @@ main section.dashboard {
   margin-top: 30px;
   display: grid;
   gap: 25px;
-  grid-template-columns: 1fr 1fr 1fr;
-  grid-template-areas: "g1 g2 g3" "g1 g2 g3" "t1 t1 t1" "t2 t2 t2";
+  font-size: 20px;
+  grid-template-columns: repeat(3, 32%);
+  grid-template-areas: "g1 g2 g3" "t1 t1 t1" "t2 t2 t2";
 }
 main section.dashboard #gfCpu {
   grid-area: g1;
 }
 main section.dashboard #gfDisco {
   grid-area: g2;
+  position: relative;
+}
+main section.dashboard #gfDisco div {
+  margin: 0 auto;
+  max-height: 200px;
+}
+main section.dashboard #gfDisco::after {
+  content: attr(data-content);
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 1.7rem;
 }
 main section.dashboard #gfRam {
   grid-area: g3;
 }
-main section.dashboard #tbProcessos {
+main section.dashboard #tbFuncionario {
   grid-area: t1;
 }
-main section.dashboard #tbHistorico {
+main section.dashboard #tbMaquina {
   grid-area: t2;
-}
-main section.dashboard #tbHorario {
-  grid-area: t3;
-}
-main section.dashboard #tbFuncionario {
-  grid-area: t4;
 }
 main section.dashboard .grafico, main section.dashboard .tabela {
   color: black;
@@ -377,7 +403,8 @@ main section.dashboard .grafico div, main section.dashboard .tabela div {
   align-items: center;
 }
 main section.dashboard .grafico h3, main section.dashboard .tabela h3 {
-  font-size: 1.3rem;
+  font-size: 1.5rem;
+  margin-bottom: 15px;
 }
 
 @media screen and (max-width: 1400px) {
@@ -386,12 +413,17 @@ main section.dashboard .grafico h3, main section.dashboard .tabela h3 {
     transform: translateX(-100%);
   }
   header nav#menu-mobile {
+    position: relative;
     display: flex;
   }
+  main {
+    width: calc(100% - 70px);
+  }
+}
+@media screen and (max-width: 1200px) {
   main section.dashboard {
-    grid-template-columns: 1fr 1fr 1fr;
-    grid-template-rows: 1fr 1fr 1fr;
-    grid-template-areas: "g1 g2 g3" "t1 t1 t3" "t2 t2 t4";
+    grid-template-columns: 100%;
+    grid-template-areas: "g1" "g2" "g3" "t1" "t2";
   }
 }
 @media screen and (max-width: 1100px) {

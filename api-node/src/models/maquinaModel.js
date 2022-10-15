@@ -19,10 +19,11 @@ function analiseComponente(tipoComponente, idMaquina, dataInicio, dataFinal){
 }
 
 function pegarKpis(idMaquina, dataInicio, dataFinal){
-    instrucaoSql = `SELECT COUNT(*) * 10 AS 'qtdMinutos',
+    instrucaoSql = `SELECT COUNT(*) * 10 / 3 AS 'qtdMinutos',
         (SELECT ROUND(AVG(valor), 2) FROM vw_registros WHERE tipo = 'CPU' AND idMaquina = ${idMaquina} AND CAST(dataEhora AS DATE) BETWEEN '${dataInicio}' AND '${dataFinal}') AS 'mediaProcessador',
         (SELECT ROUND(AVG(valor), 2) FROM vw_registros WHERE tipo = 'RAM' AND idMaquina = ${idMaquina} AND CAST(dataEhora AS DATE) BETWEEN '${dataInicio}' AND '${dataFinal}') AS 'mediaRAM'
     FROM vw_registros WHERE idMaquina = ${idMaquina} AND CAST(dataEhora AS DATE) BETWEEN '${dataInicio}' AND '${dataFinal}';`;
+    console.log(instrucaoSql)
     return database.executar(instrucaoSql);
 }
 
