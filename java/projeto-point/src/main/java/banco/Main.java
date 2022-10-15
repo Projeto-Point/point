@@ -11,6 +11,9 @@ import javax.swing.Timer;
 import org.apache.commons.logging.Log;
 import org.springframework.jdbc.core.JdbcTemplate;
 import java.net.InetAddress;
+import java.util.List;
+import java.util.Map;
+import org.json.JSONObject;
 /**
  *
  * @author ivanm
@@ -22,35 +25,44 @@ public class Main {
         Looca looca = new Looca();
         
         Database database = new Database();
+        Utilitarios utilitarios = new Utilitarios();
     
         
         Funcionario func = new Funcionario();
         Maquina maquina = new Maquina();
         Componente componentes = new Componente();
         Atributo atributo = new Atributo();
+        Registros registro = new Registros();
         
+      
+        if(func.isFuncionarioCadastrado("agda@.com", "123")){
+           
+            System.out.println(maquina.isMaquinaCadastrada(func));
+            
+            if (maquina.isMaquinaCadastrada(func)) {
+                System.out.println("Máquina já cadastrada");
+            }else if (maquina.isCadastrarMaquina(func)){
+                System.out.println("Máquina Cadastrada");
+            }else{
+                System.out.println("Não foi possível encontrar máquina/cadastar máquina");
+            }
+        }else{
+            System.out.println("Funcionário não encontrado");
+        }
+        
+        
+        System.out.println("Agora vamos inserir os dados no banco");
+        
+        int count = 0;
+        
+        while(true){
+            utilitarios.wait(2000);
+            registro.inserirRegistros(maquina);
+            count++;
+            System.out.println("Foram inseridos " + count + " Dados");
+        }
      
         
-       
-//        System.out.println(looca.getGrupoDeDiscos().getQuantidadeDeDiscos());
-        
-//        System.out.println(componentes.getTamanhoDiscoTotal());
-
-//        if(func.isFuncionarioCadastrado("ivan@.com", "123")){
-//           
-//            System.out.println(maquina.isMaquinaCadastrada(func));
-//            
-//            if (maquina.isMaquinaCadastrada(func)) {
-//                System.out.println("Máquina já cadastrada");
-//            }else if (maquina.isCadastrarMaquina(func)){
-//                System.out.println("Máquina Cadastrada");
-//            }else{
-//                System.out.println("Não foi possível encontrar máquina/cadastar máquina");
-//            }
-//        }else{
-//            System.out.println("Funcionário não encontrado");
-//        }
-//        
         
     }
 }

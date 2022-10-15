@@ -61,7 +61,7 @@ public class Componente {
             id ++;
 
             for (int i = 0; i < qtdDisco; i++) {
-                insertsComponentes(maquina, "HD");
+                insertsComponentes(maquina, "DISCO");
                 System.out.println("HD cadastrado");
             }
 
@@ -93,16 +93,16 @@ public class Componente {
     
     private void insertMemoriaVirtual(Maquina maquina){
         
-        insertsComponentes(maquina, "Memória RAM");
+        insertsComponentes(maquina, "RAM");
         System.out.println("Memória Ram cadastrada");
     }
     
     
     public void insertComponentesTotal(Maquina maquina){
         
-        insertDiscos(maquina);
-        insertMemoriaVirtual(maquina);
         insertProcessadoresFisicos(maquina);
+        insertMemoriaVirtual(maquina);
+        insertDiscos(maquina);
         
     }
         

@@ -15,6 +15,8 @@ import org.springframework.jdbc.core.JdbcTemplate;
  * @author ivanm
  */
 public class Atributo {
+    
+   
 
     Looca looca = new Looca();
     Database database = new Database();
@@ -45,6 +47,8 @@ public class Atributo {
             return 0;
         }
     }
+    
+    // Aqui nos inserts os ids Dos componentes é default - 1-CPU ; 2 - RAM ; 3 - HD
         
     private void inserirAtributo(String atributo, double valor, String unidadeDeMedida, Maquina maquina, int id){
         
@@ -77,7 +81,7 @@ public class Atributo {
         
         int core = looca.getProcessador().getNumeroCpusFisicas();
         
-        inserirAtributo("CORE", core, "unidade", maquina, 3);
+        inserirAtributo("CORE", core, "unidade", maquina, 1);
     }
     
     private void insertQuantidadeDeThreads(Maquina maquina){
@@ -86,7 +90,7 @@ public class Atributo {
         
         int threads = looca.getProcessador().getNumeroCpusLogicas();
         
-        inserirAtributo("THREADS", threads, "unidade", maquina, 3);
+        inserirAtributo("THREADS", threads, "unidade", maquina, 1);
         
     }
     
@@ -99,7 +103,7 @@ public class Atributo {
         threadsGiga = utilitarios.limitarDuasCasasDecimais(threadsGiga);
         
         
-        inserirAtributo("Tamanho", threadsGiga, "GB",maquina, 1);
+        inserirAtributo("Tamanho", threadsGiga, "GB",maquina, 3);
         
     }
     
