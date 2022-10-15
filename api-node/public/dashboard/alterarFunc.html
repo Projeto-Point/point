@@ -64,7 +64,7 @@
             <section class="under">
                 <section class="cad_func">
                     <div class="titulo">
-                        <h1>Cadastrar Funcionário</h1>
+                        <h1>Alterar Funcionário</h1>
                     </div>
 
 
@@ -109,7 +109,7 @@
                             </div>
 
                             <div class="botao_cadastro">
-                                <button class="btnEntrar" onclick="cadastrar()">Cadastrar-se</button>
+                                <button class="btnEntrar" onclick="alterar()">Alterar</button>
                             </div>
                         </div>
                     </div>
@@ -124,7 +124,7 @@
 
     <script>
         nomeGerente.innerHTML = sessionStorage.NOME_USUARIO;
-        function cadastrar() {
+        function alterar() {
 
             var nomeFuncVar = nome_input.value;
             var emailVar = email_input.value;
