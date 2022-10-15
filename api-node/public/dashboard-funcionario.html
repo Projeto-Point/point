@@ -323,7 +323,6 @@
                     discoMedida = DISCO.map((object) => object.valor);
                     discoDisponivel = 100 - discoMedida[0];
                     dados.datasets[0].data = discoMedida;
-                    dados.datasets[1].data = discoDisponivel;
                     window.graficoDISCO.update();
 
                     proximaAtualizacao = setTimeout(() => {
