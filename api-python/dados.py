@@ -71,14 +71,19 @@ while verificaLogin == False:
     nomeFuncionario = cursor.fetchall()[0][0]
     conexao.close()
 webhook = "https://hooks.slack.com/services/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"
-if cpu_percent() > 1.00:
-    mensagem = { "text" : "A CPU do funcionario " + str(nomeFuncionario) + " está acima do comum"}
+while cpu_percent() > 80.00:
+    if cpu_percent() > 80.00:
+        mensagem1 = { "text" : "A CPU do funcionario " + str(nomeFuncionario) + " está acima do comum com: " + str(cpu_percent()) + "%"}
 
-    requests.post(webhook, data=json.dumps(mensagem))
-if virtual_memory().percent > 1.00: 
-    mensagem = { "text" : "A memória Ram do funcionario " + str(nomeFuncionario) + " está acima do comum com: " +  str(virtual_memory().percent) + "%"}
+        requests.post(webhook, data=json.dumps(mensagem1))
+        break
+        
+while virtual_memory().percent > 85.00:
+    if virtual_memory().percent > 85.00: 
+        mensagem2= { "text" : "A memória Ram do funcionario " + str(nomeFuncionario) + " está acima do comum com: " +  str(virtual_memory().percent) + "%"}
 
-    requests.post(webhook, data=json.dumps(mensagem))
+        requests.post(webhook, data=json.dumps(mensagem2))
+        break
 
 #85 ram
 #80 CPU
