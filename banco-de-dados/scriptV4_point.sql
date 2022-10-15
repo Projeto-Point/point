@@ -125,8 +125,8 @@ INNER JOIN Registro ON fkComponente = idComponente;
 
 
 -- Dados Fake para teste -- Dados Funcionario
--- INSERT INTO Empresa VALUES (null, "Google", "21625996000109", 1, "Tecnologia");
--- INSERT INTO Funcionario VALUES (null, "Ir","3700421409d","123", "iva@.com", null, 1);
+INSERT INTO Empresa VALUES (null, "Google", "21625996000109", 1, "Tecnologia");
+INSERT INTO Funcionario VALUES (null, "Ivan Freire","37004214093","123", "ivan@.com", "gestor", 1, 1);
 -- INSERT INTO Telefone VALUES(null, "11992015034", 1);
 -- INSERT INTO Endereco VALUES(null, "Rua armando", 131, "Jardim Holanda", "São Paulo", "SP","Brasil", 1,1);
 -- Select para verificar se bate
@@ -138,14 +138,14 @@ INNER JOIN Registro ON fkComponente = idComponente;
 -- INNER JOIN Endereco as ed ON ed.fkFuncionario = f.idFuncionario
 -- AND ed.fkEmpresa = ep.idEmpresa;
 
-
+DESC Funcionario;
 -- Dados Maquina Fake 
 
 SELECT * FROM Funcionario; 
 select * from Maquina;
 SELECT idMaquina, sistemaOperacional, Funcionario.idFuncionario, fkFuncionario FROM Maquina 
 INNER JOIN Funcionario ON idFuncionario = fkFuncionario
-WHERE idFuncionario = 2;
+WHERE idFuncionario = 1;
 
 SELECT c.tipo, f.nome, f.idFuncionario 
 FROM Componente as c
@@ -155,4 +155,12 @@ INNER JOIN Funcionario as f
 ON m.fkFuncionario = f.idFuncionario
 WHERE idMaquina = 1;
 
+SELECT * FROM Maquina;
 
+DESC Componente;
+
+INSERT INTO Componente VALUES (2, 1, "CPU");
+
+SELECT max(C.idComponente) FROM Componente C
+INNER JOIN Maquina M ON M.idMaquina = C.fkMaquina
+WHERE idMaquina = 1;

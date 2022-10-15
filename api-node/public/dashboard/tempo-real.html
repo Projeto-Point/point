@@ -17,28 +17,33 @@
 <body>
     <header>
         <nav id="menu">
-            <a href="index.html" class="logo">
-                <img src="assets/imgs/Point.png">
+            <a href="maquinas.html" class="logo">
+                <img src="../assets/imgs/Point.png">
             </a>
             <hr>
-            <a href="#">
-                <img src="assets/imgs/alfinete 1.png">
-                <span>Dashboard</span>
-            </a>
-            <a href="#">
-                <img src="assets/imgs/alfinete 1.png">
+            <a href="alertas.html">
+                <img src="../assets/imgs/alfinete 1.png">
                 <span>Alertas</span>
             </a>
-            <a href="#">
-                <img src="assets/imgs/alfinete 1.png">
+            <a href="funcionarios.html">
+                <img src="../assets/imgs/alfinete 1.png">
                 <span>Funcionários</span>
             </a>
-            <a href="#">
-                <img src="assets/imgs/alfinete 1.png">
+            <a href="maquinas.html">
+                <img src="../assets/imgs/alfinete 1.png">
                 <span>Máquinas</span>
             </a>
+            <a href="configuracoes.html">
+                <img src="../assets/imgs/alfinete 1.png">
+                <span>Configurações</span>
+            </a>
+            <hr>
+            <a href="../index.html">
+                <img src="../assets/imgs/alfinete 1.png">
+                <span>Sair</span>
+            </a>
         </nav>
-        <nav id="menu-mobile"><img src="assets/imgs/alfinete 1.png"></nav>
+        <nav id="menu-mobile"><img src="../assets/imgs/alfinete 1.png"></nav>
     </header>
     <main>
         <section class="top">
@@ -51,7 +56,7 @@
             </div>
             <div class="top-dir">
                 <button><img src="assets/dash/bell.png"></button>
-                <p class="nome">Agda Taniguchi</p>
+                <p class="nome"><span id="nome_gerente"></span></p>
                 <img src="assets/dash/pessoa.jpeg">
             </div>
         </section>
@@ -114,7 +119,7 @@
             <div class="tabela" id="tbFuncionario">
                 <h3>Sobre o funcionário</h3>
                 <p>Nome: <span id="nome"></span></p>
-                <p>Cargo:</p>
+                <p>Cargo:<span id="cargo"></span></p>
                 <p>E-mail:<span id="mail"></span></p>
             </div>
         </section>
@@ -123,18 +128,31 @@
 
 </html>
 <script>
-    var proximaAtualizacao;
+    var gerente= sessionStorage.NOME_USUARIO
 
+    b_usuario.innerHTML= gerente;
+    nome_gerente.innerHTML= gerente;
+
+    var proximaAtualizacao;
 
     var cpuMedida = [];
     var discoMedida = [];
     var discoDisponivel= 0;
     var ramMedida = [];
+    var idMaquina;
+
+
+    window.onload = () => {
+    const parametrosString = window.location.search;
+    const parametros = new URLSearchParams(parametrosString);
+    idMaquina = Number(parametros.get("idMaquina"));
+    };
 
     function recuperarDados() {
+        
 
 
-        fetch(`/medidas/pegarRegistroCPU?idMaquina=1`).then(function (res) {
+        fetch(`/medidas/pegarRegistroCPU?idMaquina=${idMaquina}`).then(function (res) {
             if (res.ok) {
                 res.json().then(CPU => {
 
@@ -146,7 +164,7 @@
             }
         })
 
-        fetch(`/medidas/pegarRegistroDISCO?idMaquina=1`).then(function (res) {
+        fetch(`/medidas/pegarRegistroDISCO?idMaquina=${idMaquina}`).then(function (res) {
             if (res.ok) {
                 res.json().then(DISCO => {
 
@@ -161,7 +179,7 @@
 
 
 
-        fetch(`/medidas/pegarRegistroRAM?idMaquina=1`).then(function (res) {
+        fetch(`/medidas/pegarRegistroRAM?idMaquina=${idMaquina}`).then(function (res) {
             if (res.ok) {
                 res.json().then(RAM => {
 
@@ -173,16 +191,18 @@
             }
         })
 
-        fetch(`/medidas/pegarRegistroFuncionario?idMaquina=1`).then(function (res) {
+        fetch(`/medidas/pegarRegistroFuncionario?idMaquina=${idMaquina}`).then(function (res) {
             if (res.ok) {
                 res.json().then(RegistroFuncionario => {
                     console.log(RegistroFuncionario)
 
                     var nomeFuncionario = RegistroFuncionario.map((object) => object.nome);
                     var emailFuncionario = RegistroFuncionario.map((object) => object.email);
+                    var cargoFuncionario = RegistroFuncionario.map((object) => object.cargo);
 
                     nome.innerHTML = nomeFuncionario;
                     mail.innerHTML = emailFuncionario
+                    cargo.innerHTML = cargoFuncionario;
 
                 })
             }
@@ -246,7 +266,7 @@
     }
 
     function atualizarGraficoCPU(grafico, dados) {
-        fetch(`/medidas/pegarRegistroCPU?idMaquina=1`).then(function (res) {
+        fetch(`/medidas/pegarRegistroCPU?idMaquina=${idMaquina}`).then(function (res) {
             if (res.ok) {
                 res.json().then(CPU => {
 
@@ -314,7 +334,7 @@
     }
 
     function atualizarGraficoDISCO(grafico, dados) {
-        fetch(`/medidas/pegarRegistroDISCO?idMaquina=1`).then(function (res) {
+        fetch(`/medidas/pegarRegistroDISCO?idMaquina=${idMaquina}`).then(function (res) {
             if (res.ok) {
                 res.json().then(DISCO => {
 
@@ -389,7 +409,7 @@
     }
 
     function atualizarGraficoRAM(grafico, dados) {
-        fetch(`/medidas/pegarRegistroRAM?idMaquina=1`).then(function (res) {
+        fetch(`/medidas/pegarRegistroRAM?idMaquina=${idMaquina}`).then(function (res) {
             if (res.ok) {
                 res.json().then(RAM => {
 

@@ -5,11 +5,12 @@
 package banco;
 
 import com.github.britooo.looca.api.core.Looca;
+import java.io.InputStream;
 import java.net.InetAddress;
 import javax.swing.Timer;
 import org.apache.commons.logging.Log;
 import org.springframework.jdbc.core.JdbcTemplate;
-
+import java.net.InetAddress;
 /**
  *
  * @author ivanm
@@ -25,12 +26,15 @@ public class Main {
         
         Funcionario func = new Funcionario();
         Maquina maquina = new Maquina();
-        Componentes componentes = new Componentes();
-    
-        
+        Componente componentes = new Componente();
+        Atributo atributo = new Atributo();
+      
        
-//         Colocar como parâmetro o email do usuário criado + senha com aspas
-        if(func.isFuncionarioCadastrado("steh@.com", "123")){
+//        System.out.println(looca.getGrupoDeDiscos().getQuantidadeDeDiscos());
+        
+//        System.out.println(componentes.getTamanhoDiscoTotal());
+
+        if(func.isFuncionarioCadastrado("ivan@.com", "123")){
            
             System.out.println(maquina.isMaquinaCadastrada(func));
             
@@ -44,6 +48,10 @@ public class Main {
         }else{
             System.out.println("Funcionário não encontrado");
         }
+        
+         
+        componentes.insertComponentesTotal(maquina);
+        
     }
-
 }
+

@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Análise de máquina | Point</title>
+    <link rel="stylesheet" href="css/styleDash.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Advent+Pro:wght@100;200;300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.4/moment.min.js"></script>
+</head>
+<body>
+    <header>
+        <nav id="menu">
+            <a href="maquinas.html" class="logo">
+                <img src="../assets/imgs/Point.png">
+            </a>
+            <hr>
+            <a href="alertas.html">
+                <img src="../assets/imgs/alfinete 1.png">
+                <span>Alertas</span>
+            </a>
+            <a href="funcionarios.html">
+                <img src="../assets/imgs/alfinete 1.png">
+                <span>Funcionários</span>
+            </a>
+            <a href="maquinas.html">
+                <img src="../assets/imgs/alfinete 1.png">
+                <span>Máquinas</span>
+            </a>
+            <a href="configuracoes.html">
+                <img src="../assets/imgs/alfinete 1.png">
+                <span>Configurações</span>
+            </a>
+            <hr>
+            <a href="../index.html">
+                <img src="../assets/imgs/alfinete 1.png">
+                <span>Sair</span>
+            </a>
+        </nav>
+        <nav id="menu-mobile"><img src="../assets/imgs/alfinete 1.png"></nav>
+    </header>
+    <main>
+        <section class="top">
+            <div class="top-esq">
+                <p class="titulo">Olá, <span id="b_usuario"></span></p>
+                <p class="subtitulo">02/10/2022</p>
+            </div>
+            <div class="top-meio">
+                <input id="inp-pesquisar-funcionario" type="search" placeholder="Pesquise o nome de um funcionário...">
+            </div>
+            <div class="top-dir">
+                <button><img src="../assets/dash/bell.png"></button>
+                <p class="nome">Agda Taniguchi</p>
+                <img src="../assets/dash/pessoa.jpeg">
+            </div>
+        </section>
+        <section class="dashboard-analise">
+            <div class="box box-kpi kpi-horas">
+                <h3>Horas ativas</h3>
+                <h1 id="kpiHoras"></h1>
+            </div>
+            <div class="box box-kpi kpi-mediaProc">
+                <h3>Média do processador</h3>
+                <h1 id="kpiCPU">%</h1>
+            </div>
+            <div class="box box-kpi kpi-mediaRam">
+                <h3>Média da memória RAM</h3>
+                <h1 id="kpiRAM">%</h1>
+            </div>
+            <div class="grafico-processador grafico box">
+                <div class="header">
+                    <h3>Processador</h3>
+                    <select id="">
+                        <option value="ultimoMes">Último mês</option>
+                        <option value="ultimaSemana">Última semana</option>
+                        <option value="ultimoAno">Último ano</option>
+                    </select>
+                </div>
+                <div class="main-grafico">
+                    <canvas id="graficoCPU"></canvas>
+                </div>
+            </div>
+            <div class="grafico-ram grafico box">
+                <div class="header">
+                    <h3>Memória RAM</h3>
+                    <select id="">
+                        <option value="ultimoMes">Último mês</option>
+                        <option value="ultimaSemana">Última semana</option>
+                        <option value="ultimoAno">Último ano</option>
+                    </select>
+                </div>
+                <div class="main-grafico">
+                    <canvas id="graficoRAM"></canvas>
+                </div>
+            </div>
+            <div class="grafico-disco grafico box">
+                <div class="header">
+                    <h3>Disco</h3>
+                    <select id="">
+                        <option value="ultimoMes">Último mês</option>
+                        <option value="ultimaSemana">Última semana</option>
+                        <option value="ultimoAno">Último ano</option>
+                    </select>
+                </div>
+                <div class="main-grafico">
+                    <canvas id="graficoDisco"></canvas>
+                </div>
+            </div>
+            <div class="box info-alertas">
+                <h3>Últimos alertas</h3>
+            </div>
+            <div class="box info-funcionario">
+                <h3>Sobre o funcionário</h3>
+            </div>
+            <div class="box info-maquina">
+                <h3>Sobre a máquina</h3>
+            </div>
+        </section>
+    </main>
+</body>
+
+</html>
+
+<script>
+    fetch(`/maquinas/pegarKpis?idMaquina=1&dataInicio=${moment().subtract(30, 'days').format('YYYY-MM-DD')}&dataFinal=${moment().format('YYYY-MM-DD')}`)
+    .then((res) => {
+        if(res.ok){
+            res.json().then((resposta) => {
+                let tempoMinutos = resposta[0].qtdMinutos;
+                let qtdMinutos = tempoMinutos % 60;
+                let qtdHoras = Math.floor(tempoMinutos / 60);
+                let qtdDias = Math.floor(tempoMinutos / 1440);
+                let texto = "";
+
+                if(qtdDias > 0){
+                    texto += qtdDias + " dias e ";
+                }
+
+                if(qtdHoras > 0){
+                    texto += qtdDias + " horas e "
+                }
+
+                if(qtdMinutos > 0){
+                    texto += qtdMinutos + " minutos e "
+                }
+                
+                kpiHoras.innerHTML = texto.substring(0, texto.length - 3);
+                kpiCPU.innerHTML = resposta[0].mediaProcessador + "%";
+                kpiRAM.innerHTML = resposta[0].mediaRAM + "%";
+            });
+        }
+    })
+    .catch((erro) => {
+        console.log("Erro ao acessar /maquinas/pegarKpis");
+        console.log(erro);
+    })
+
+    pegarRegistros('graficoCPU', 'CPU', 1, moment().subtract(30, 'days').format('YYYY-MM-DD'), moment().format('YYYY-MM-DD'));
+    pegarRegistros('graficoRAM', 'RAM', 1, moment().subtract(30, 'days').format('YYYY-MM-DD'), moment().format('YYYY-MM-DD'));
+    pegarRegistros('graficoDisco', 'Disco', 1, moment().subtract(30, 'days').format('YYYY-MM-DD'), moment().format('YYYY-MM-DD'));
+
+    function pegarRegistros(idGrafico, tipoComponente, idMaquina, dataInicio, dataFinal){
+        fetch(`/maquinas/analiseComponente?tipoComponente=${tipoComponente}&idMaquina=${idMaquina}&dataInicio=${dataInicio}&dataFinal=${dataFinal}`)
+        .then((res) => {
+            if(res.ok){
+                res.json().then((resposta) => {
+                    // console.log(resposta);
+                    const labels = resposta.map((registro => moment(registro.dataEhora).format("DD/MM/YYYY")));
+                
+                    const data = {
+                        labels: labels,
+                        datasets: [{
+                            label: 'Valor médio',
+                            backgroundColor: '#007B00',
+                            borderColor: '#007B00',
+                            data: resposta.map((registro => registro.media)),
+                        }]
+                    };
+                
+                    const config = {
+                        type: 'line',
+                        data: data,
+                        options: {
+                            responsive: true,
+                            maintainAspectRatio: false,
+                            scales: {
+                                y: {
+                                    beginAtZero: true,
+                                }
+                            }
+                        }
+                    };
+
+                    const myChart = new Chart(
+                        document.getElementById(idGrafico),
+                        config
+                    );
+                });
+            }
+            else{
+                console.log("Erro ao conseguir os resultados!");
+            }
+        })
+        .catch((erro) => {
+            console.log("Erro ao acessar /maquinas/analiseComponente");
+        });
+    }
+  </script>

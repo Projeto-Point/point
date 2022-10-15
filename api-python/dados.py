@@ -58,13 +58,13 @@ while verificaLogin == False:
     senha = input('Digite a senha do funcionário: ')
 
     # Conecta com o banco, passando o usuário, e o banco desejado
-    conexao = pymysql.connect(db='bd_point', user='root', passwd='#Gf45297661870')
+    conexao = pymysql.connect(db='bd_point', user='root', passwd='GuilhermeAugusto123')
 
     # AGDDAAAAA
     cursor = conexao.cursor()
     
     #Executa o comando no banco que foi conectado 
-    verificaLogin = cursor.execute(("select email, senha from Funcionario where email = '{}' and senha = '{}'").format(login, senha))
+    verificaLogin = cursor.execute(("SELECT email, senha FROM Funcionario WHERE email = '{}' and senha = '{}'").format(login, senha))
 
     #Encerra o processo
     conexao.close()
@@ -72,10 +72,10 @@ while verificaLogin == False:
 
 
 nome = platform.node()
-conexao = pymysql.connect(db='bd_point', user='root', passwd='#Gf45297661870')
+conexao = pymysql.connect(db='bd_point', user='root', passwd='GuilhermeAugusto123')
 cursor = conexao.cursor()
 verificarCadastro = cursor.execute(("SELECT nomeMaquina FROM Maquina WHERE nomeMaquina = '{}'").format(nome))
-id = cursor.execute(("SELECT idMaquina FROM Maquina WHERE nomeMaquina = '{}'").format(nome))
+
 resultado = cursor.fetchall()
 
 conexao.close()
@@ -85,6 +85,7 @@ if verificarCadastro != 0:
 else:
 
     print("Cadastro feito")
+    
 
     def bytes_para_giga(value):
         return f'{value / 1024 / 1024 / 1024: .2f}'
@@ -93,25 +94,40 @@ else:
     memoriaTotal = bytes_para_giga(virtual_memory().total)
     discoTotal = bytes_para_giga(disk_usage("/").total)
 
-    conexao = pymysql.connect(db='bd_point', user='root', passwd='#Gf45297661870')
+    conexao = pymysql.connect(db='bd_point', user='root', passwd='GuilhermeAugusto123')
 
     cursor = conexao.cursor()
+
+    fkFuncionario = cursor.execute((f"""SELECT idFuncionario FROM Funcionario WHERE email = '{login}' and senha = '{senha}'"""))
+
     
-    #Executa o comando no banco que foi conectado 
-    cursor.execute(f"INSERT INTO Maquina (sistemaOperacional, nomeMaquina) VALUES ('{platform.system()}', '{platform.node()}')")
-
-    cursor.execute(f"INSERT INTO Componente VALUES (null, 'CPU', {id})")
-
-    cursor.execute(f"INSERT INTO Componente VALUES (null, 'MemóriaRAM', {id})")
-
-    cursor.execute(f"INSERT INTO Componente VALUES (null, 'Disco', {id})")
-
-    cursor.execute(f"INSERT INTO Atributo (atributo, valor, unidadeMedida, fkComponente) VALUES (null, {memoriaTotal}, 'GB', {id})")
-    cursor.execute(f"INSERT INTO Atributo (atributo, valor, unidadeMedida, fkComponente) VALUES (null, {discoTotal}, 'GB', {id})")
+    cursor.execute(f"""INSERT INTO Maquina VALUES (null, '{platform.system()}', '{platform.node()}', null, {fkFuncionario})""")
+    
+    id = cursor.execute((f"""SELECT idMaquina FROM Maquina WHERE nomeMaquina = '{nome}'"""))
+    
+    idComponente = cursor.execute((f"SELECT max(C.idComponente) as id FROM Componente C INNER JOIN Maquina M ON M.idMaquina = C.fkMaquina WHERE idMaquina = {id}"))
 
     conexao.commit()
+    try:
+        cursor.execute(f"INSERT INTO Componente (idComponente, fkMaquina, tipo) VALUES (1, {id}, 'CPU')")
 
-    # Converte de bytes para giga 
+        cursor.execute(f"""INSERT INTO Componente (idComponente, fkMaquina, tipo) VALUES (2, {id}, 'MemóriaRam')""")
+
+        cursor.execute(f"""INSERT INTO Componente (idComponente, fkMaquina, tipo) VALUES (3, {id}, 'Disco')""")
+        
+        fkComponenteCpu = cursor.execute((f"SELECT idComponente FROM Componente WHERE tipo = 'CPU' and idComponente = {id}"))
+        fkComponenteRam = cursor.execute((f"SELECT idComponente FROM Componente WHERE tipo = 'MemóriaRam' and idComponente = {id}"))
+        fkComponenteDisco = cursor.execute((f"SELECT idComponente FROM Componente WHERE tipo = 'Disco' and idComponente = {id}"))
+
+        cursor.execute(f"INSERT INTO Atributo (atributo, valor, unidadeMedida, fkMaquina, fkComponente) VALUES (null, {memoriaTotal}, 'GB', {id}, {fkComponenteRam})")
+        cursor.execute(f"INSERT INTO Atributo (atributo, valor, unidadeMedida, fkMaquina, fkComponente) VALUES (null, {discoTotal}, 'GB', {id}, {fkComponenteDisco})")
+    
+        conexao.commit()
+        conexao.close()
+    except:
+        print("f no chat")
+    
+# Converte de bytes para giga 
 def bytes_para_giga(value):
     return value / 1024 / 1024 / 1024
 
@@ -207,28 +223,32 @@ while True:
 
     # Conexão BD
 
-    conexao = pymysql.connect(db='bd_point', user='root', passwd='#Gf45297661870')
+    conexao = pymysql.connect(db='bd_point', user='root', passwd='GuilhermeAugusto123')
 
     cursor = conexao.cursor()
 
     cursor.execute(f"SELECT idMaquina FROM Maquina INNER JOIN Funcionario ON fkFuncionario = idFuncionario WHERE email = '{login}'")
-
+    
     identificador = cursor.fetchall()
+    try:
+        idComponente = cursor.execute((f"SELECT max(C.idComponente) as id FROM Componente C INNER JOIN Maquina M ON M.idMaquina = C.fkMaquina WHERE idMaquina = {id}"))
+
+        fkComponenteCpu = cursor.execute((f"SELECT idComponente FROM Componente WHERE tipo = 'CPU' and idComponente = 1"))
+        fkComponenteRam = cursor.execute((f"SELECT idComponente FROM Componente WHERE tipo = 'MemóriaRAM' and idComponente = 2"))
+        fkComponenteDisco = cursor.execute((f"SELECT idComponente FROM Componente WHERE tipo = 'Disco' and idComponente = 3"))
 
 
-    # Inserindo porcentagem da CPU
-    cursor.execute(f"INSERT INTO Registro (valor, unidadeMedida, dataEhora, fkComponente) VALUES ({cpu_percent()}, '%', NOW(), {id})")
+        cursor.execute(f"INSERT INTO Registro (valor, unidadeMedida, dataEhora, fkComponente, fkMaquina) VALUES ({cpu_percent()}, '%', NOW(), {fkComponenteCpu}, {id})")
 
-    
-    # Inserindo porcentagem da RAM
-    cursor.execute(f"INSERT INTO Registro (valor, unidadeMedida, dataEhora, fkComponente) VALUES ({virtual_memory().percent}, '%', NOW(), {id})")
-    
-    # Inserindo porcentagem do Disco
-    cursor.execute(f"INSERT INTO Registro (valor, unidadeMedida, dataEhora, fkComponente) VALUES ({disk_usage('/').percent}, '%', NOW(), {id})")
+        cursor.execute(f"INSERT INTO Registro (valor, unidadeMedida, dataEhora, fkComponente, fkMaquina) VALUES ({virtual_memory().percent}, '%', NOW(), {fkComponenteRam}, {id})")
 
-    conexao.commit()
+        cursor.execute(f"INSERT INTO Registro (valor, unidadeMedida, dataEhora, fkComponente, fkMaquina) VALUES ({disk_usage('/').percent}, '%', NOW(), {fkComponenteDisco}, {id})")
 
-    conexao.close()
+        conexao.commit()
+
+        conexao.close()
+    except:
+        print("F no chat aki")
 
     #Mostrar os dados de 3 em 3 segundos
 
@@ -237,8 +257,3 @@ while True:
         sleep(0.50)
     except KeyboardInterrupt:
         break
-
-
-           
-            
-

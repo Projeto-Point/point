@@ -1,0 +1,568 @@
+
+/* .body_login , #form_cadastro{
+  margin: 0;
+  padding: 0;
+  background-color: lightgray;
+  display: flex;
+  justify-items: center;
+  padding-bottom: 3rem;
+}
+
+.login, .cadastro {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  position: relative;
+
+}
+
+.span_text {
+  font-family: "Advent Pro";
+  font-size: 1.5rem;
+  font-weight: 600;
+}
+
+.span_text_scad {
+  font-family: "Advent Pro";
+  font-size: 1.1rem;
+  font-weight: 400;
+}
+
+#Login.container, #cadastro.container {
+  background-image: url("../assets/imgs/background_login_registro.jpg");
+}
+
+.icon{
+position: absolute;
+width: 30px;
+left: 55%;
+top: 5%;
+}
+#form_cadastro .icon{
+  left: 5%;
+}
+.container {
+  align-items: center;
+  align-content: center;
+  width: 80%;
+
+
+  display: flex;
+  box-shadow: 0px 0px 10px -1px rgba(0, 0, 0, 0.68);
+  margin: auto;
+  margin-top: 5%;
+}
+
+.input {
+  margin-bottom: 3%;
+  font-size: 100%;
+  border: none;
+  display: flex;
+  text-align: center;
+  background-color: transparent;
+  outline: none;
+  border-bottom: 2px solid black;
+  cursor: pointer;
+}
+
+.img_login,.img_cadastro {
+  width: 150px;
+  margin-top: 2rem;
+}
+
+
+
+.botao_login,.botao_cadastro {
+  padding-bottom: 10%;
+}
+
+.Point_fundo {
+  width: 50%;
+  height: 100%;
+}
+
+.banner_login, .banner_cadastro {
+  width: 50%;
+  padding-bottom: 2rem;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  background-color: #f6f6f6;
+  gap: 2rem;
+}
+.banner_cadastro{
+
+  position: relative;
+
+  gap: 1rem;
+}
+
+
+
+.btnEntrar:hover {
+  background-color: #25733f;
+  transform: scale(1.02);
+}
+
+.btnEntrar:active {
+  position: relative;
+  top: 1px;
+}
+a{
+  color: #04eb51;
+
+}
+a:hover{
+  color: #25733f;
+}
+
+@media(max-width: 768px) {
+  
+  .imagem_login , .imagem_cadastro{
+      display: none;
+  }
+
+  .banner_login, .banner_cadastro {
+      width: 100%;
+  }
+  .container{
+      height: min-content;
+  }
+  .sem_cadastro{
+      margin-bottom: 1rem;
+  }
+  .icon{
+      left: 5%;
+
+  }
+  
+}
+
+@media(max-width: 425px) {
+  body{
+      margin: 0;
+  }
+  .container{
+      margin: 0;
+      width: 100vw;
+      height: 100vh;
+  }
+  .banner_login, .banner_cadastro {
+      height: 100vh;
+      width: 100vw;
+      margin: 0;
+  }
+  .icon{
+      left: 5%;
+
+  }
+} */
+
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Advent Pro";
+  text-decoration: none;
+}
+
+:root {
+  --cor1: #00CA43;
+  --cor2: #00A219;
+  --cor3: #007B00;
+  --radius: 10px;
+}
+
+a.btn-link {
+  background: var(--cor1);
+  padding: 7px 10px;
+  border-radius: var(--radius);
+  color: white;
+  margin: 0 5px;
+}
+
+input, select {
+  height: 50px;
+  border: 2px solid var(--cor3);
+  border-radius: var(--radius);
+  padding: 0 15px;
+  background: white;
+}
+
+.box {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background: white;
+  color: black;
+  border-radius: var(--radius);
+  padding: 30px 0;
+  box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.3);
+}
+
+body {
+  display: flex;
+}
+
+header nav#menu {
+  max-width: 300px;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  position: -webkit-sticky;
+  position: sticky;
+  top: 0;
+  box-shadow: 5px 0px 5px rgba(0, 0, 0, 0.3);
+  padding: 10px 30px;
+}
+header nav#menu .logo {
+  display: flex;
+  justify-content: center;
+}
+header nav#menu .logo img {
+  width: 60%;
+}
+header nav#menu hr {
+  opacity: 0.5;
+  margin: 15px 0;
+}
+header nav#menu a {
+  color: black;
+  display: flex;
+  align-items: center;
+  margin: 10px 0;
+  font-size: 1.3rem;
+}
+header nav#menu a img {
+  margin-right: 5px;
+}
+header nav#menu-mobile {
+  display: none;
+  position: -webkit-sticky;
+  position: sticky;
+  top: 0;
+  box-shadow: 5px 0px 5px rgba(0, 0, 0, 0.3);
+  width: 70px;
+  height: 100vh;
+  justify-content: center;
+  padding: 15px 0;
+}
+header nav#menu-mobile img {
+  width: 50px;
+  height: -webkit-fit-content;
+  height: -moz-fit-content;
+  height: fit-content;
+  cursor: pointer;
+}
+
+main {
+  width: 100%;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background: var(--cor1);
+  background-image: url("../../assets/dash/dash.png");
+  background-repeat: no-repeat;
+  background-size: contain;
+  color: white;
+  padding: 30px 2%;
+}
+main section.top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+main section.top .top-esq p.titulo {
+  font-size: 1.3rem;
+}
+main section.top .top-esq p.subtitulo {
+  font-size: 1rem;
+  color: #eee;
+}
+main section.top .top-esq select {
+  width: 200px;
+}
+main section.top .top-meio input {
+  border: none;
+  width: 400px;
+  outline: none;
+}
+main section.top .top-dir {
+  display: flex;
+  align-items: center;
+}
+main section.top .top-dir button {
+  width: 40px;
+  height: 40px;
+  border-radius: var(--radius);
+}
+main section.top .top-dir button img {
+  width: 85%;
+  height: 85%;
+}
+main section.top .top-dir .nome {
+  margin-left: 15px;
+  margin-right: 10px;
+  font-size: 1.5rem;
+}
+main section.top .top-dir img {
+  width: 55px;
+  height: 55px;
+  border-radius: var(--radius);
+}
+main section#maquinas {
+  display: grid;
+  justify-content: center;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 50px;
+  margin-top: 30px;
+}
+main section#maquinas .box-maquina {
+  position: relative;
+}
+main section#maquinas .box-maquina img {
+  width: 50%;
+  max-width: 80px;
+  margin-bottom: 15px;
+}
+main section#maquinas .box-maquina h3 {
+  margin-bottom: 5px;
+  font-size: 1.4rem;
+}
+main section#maquinas .box-maquina .botoes {
+  margin: 15px;
+}
+main section#maquinas .box-maquina.alerta::after {
+  content: "!";
+  font-family: "Arial";
+  color: white;
+  font-size: 2.4rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #D0342C;
+  border: 5px solid black;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  position: absolute;
+  top: -25px;
+  right: -25px;
+}
+main section#alertas {
+  display: grid;
+  grid-template-columns: minmax(300px, 1fr) 5fr;
+  gap: 30px;
+}
+main section#alertas select {
+  width: 100%;
+}
+main section#alertas .menu-lateral {
+  display: flex;
+  flex-direction: column;
+}
+main section#alertas .menu-lateral .box {
+  padding: 15px 30px;
+  align-items: flex-start;
+  margin: 7px 0;
+}
+main section#alertas .menu-lateral .box p {
+  font-size: 1.3rem;
+}
+main section#alertas .menu-lateral .box .opcao {
+  display: grid;
+  grid-template-columns: 35px 1fr;
+  align-items: center;
+  justify-items: start;
+  margin: 5px 0;
+}
+main section#alertas .menu-lateral .box .opcao input {
+  width: 25px;
+  height: 25px;
+}
+main section#alertas .main {
+  font-size: 20px;
+}
+main section#alertas .main input {
+  margin: 7px 0;
+}
+main section#alertas .main .alerta {
+  margin: 15px 0;
+  padding: 30px;
+  display: grid;
+  gap: 10px;
+  grid-template-columns: 70% 30%;
+  grid-template-rows: 1fr 1fr 1fr;
+  grid-template-areas: "titulo data" "info1 ." "info2 btn";
+}
+main section#alertas .main .alerta span {
+  font-weight: bold;
+}
+main section#alertas .main .alerta h3#titulo-alerta {
+  grid-area: titulo;
+}
+main section#alertas .main .alerta p#data-alerta {
+  grid-area: data;
+  text-align: right;
+  font-weight: bold;
+}
+main section#alertas .main .alerta p#resolucao-alerta {
+  grid-area: info2;
+}
+main section#alertas .main .alerta p#responsavel-alerta {
+  grid-area: info1;
+}
+main section#alertas .main .alerta a#btn-alerta {
+  grid-area: btn;
+  width: -webkit-fit-content;
+  width: -moz-fit-content;
+  width: fit-content;
+  justify-self: end;
+}
+main section.funcionarios .top {
+  margin-bottom: 30px;
+}
+main section.funcionarios .top a {
+  background-color: var(--cor2);
+  padding: 15px;
+}
+main section.funcionarios #lista-funcionarios {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 50px;
+  justify-content: center;
+  font-size: 20px;
+}
+main section.funcionarios #lista-funcionarios .funcionario h3 {
+  margin-bottom: 15px;
+}
+main section.funcionarios #lista-funcionarios .funcionario p {
+  margin: 5px 0;
+}
+main section.funcionarios #lista-funcionarios .funcionario a.btn-link {
+  margin: 7px;
+}
+main section.dashboard {
+  height: 100%;
+  margin-top: 30px;
+  display: grid;
+  gap: 25px;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+  grid-template-rows: 1fr 1fr 1fr 1fr;
+  grid-template-areas: "g1 g2 g3 t3" "t1 t1 t1 t3" "t1 t1 t1 t4" "t2 t2 t2 t4";
+}
+main section.dashboard #gfCpu {
+  grid-area: g1;
+}
+main section.dashboard #gfDisco {
+  grid-area: g2;
+}
+main section.dashboard #gfRam {
+  grid-area: g3;
+}
+main section.dashboard #tbProcessos {
+  grid-area: t1;
+}
+main section.dashboard #tbHistorico {
+  grid-area: t2;
+}
+main section.dashboard #tbHorario {
+  grid-area: t3;
+}
+main section.dashboard #tbFuncionario {
+  grid-area: t4;
+}
+main section.dashboard .grafico, main section.dashboard .tabela {
+  color: black;
+  background: #eee;
+  border-radius: var(--radius);
+  padding: 15px;
+}
+main section.dashboard .grafico div, main section.dashboard .tabela div {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+main section.dashboard .grafico h3, main section.dashboard .tabela h3 {
+  font-size: 1.3rem;
+}
+
+@media screen and (max-width: 1400px) {
+  header nav#menu {
+    display: none;
+    transform: translateX(-100%);
+  }
+  header nav#menu-mobile {
+    display: flex;
+  }
+}
+@media screen and (max-width: 1100px) {
+  header nav {
+    padding: 10px 5px;
+  }
+  header nav a {
+    font-size: 1.1rem;
+  }
+  #inp-pesquisar-funcionario {
+    display: none;
+  }
+  main section.dashboard {
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-rows: 1fr 1fr 1fr;
+    grid-template-areas: "g1 g2 g3" "t1 t1 t3" "t2 t2 t4";
+  }
+}
+
+.under{
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.cad_func {
+  width: 125vh;
+  height: 60vh;
+  display: flex;
+  align-items: center;
+  flex-direction: row;
+  justify-content: space-evenly;
+  position: relative;
+  background-color: white;
+  border-radius: 10px;
+
+}
+
+.inputs {
+  text-align: center;
+  padding-bottom: 3%;
+
+}
+.span_text{
+  color: black;
+}
+
+
+
+.btnEntrar {
+  background-color: #04eb51;
+  border-radius: 10px;
+  border: none;
+  cursor: pointer;
+  color: #ffffff;
+  font-family: Arial;
+  font-size: 1.25rem;
+  padding: .5rem 1rem;
+  text-decoration: none;
+  transition: .2s;
+  outline: none;
+  width: 190px;
+  margin-top: 27px;
+}
+
+
+

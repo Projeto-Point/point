@@ -44,7 +44,7 @@ function buscarMedidasEmTempoReal(req, res) {
 
 function pegarRegistroCPU(req, res){
     var idMaquina = req.query.idMaquina;
-    medidaModel.pegarRegistroCPU()
+    medidaModel.pegarRegistroCPU(idMaquina)
     .then(function (resposta) {
         res.status(200).json(resposta);
     })
@@ -58,7 +58,7 @@ function pegarRegistroCPU(req, res){
 
 function pegarRegistroDISCO(req, res){
     var idMaquina = req.query.idMaquina;
-    medidaModel.pegarRegistroDISCO()
+    medidaModel.pegarRegistroDISCO(idMaquina)
     .then(function (resposta) {
         res.status(200).json(resposta);
     })
@@ -72,7 +72,7 @@ function pegarRegistroDISCO(req, res){
 
 function pegarRegistroRAM(req, res){
     var idMaquina = req.query.idMaquina;
-    medidaModel.pegarRegistroRAM()
+    medidaModel.pegarRegistroRAM(idMaquina)
     .then(function (resposta) {
         res.status(200).json(resposta);
     })
@@ -86,7 +86,7 @@ function pegarRegistroRAM(req, res){
 
 function pegarRegistroFuncionario(req, res){
     var idMaquina = req.query.idMaquina;
-    medidaModel.pegarRegistroFuncionario()
+    medidaModel.pegarRegistroFuncionario(idMaquina)
     .then(function (resposta) {
         res.status(200).json(resposta);
     })

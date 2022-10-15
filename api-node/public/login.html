@@ -17,13 +17,13 @@
     <div id="Login" class="container">
         <div class="login">
 
-            
+
             <div class="banner_login">
                 <a href="index.html">
                     <img src="assets/imgs/arrow.png" alt="" class="icon">
 
                 </a>
-             
+
                 <img src="assets/imgs/Point.png" alt="Point Logo" class="img_login">
 
                 <div class="inputs">
@@ -41,6 +41,8 @@
                     <button class="btnEntrar" onclick="entrar()">Entrar</button>
                 </div>
 
+                <p class="alerta" id="alerta"></p>
+
                 <div class="sem_cadastro">
                     <span class="span_text_scad">Não possui cadastro?</span> <a href="cadastro.html">Clique aqui.</a>
                 </div>
@@ -53,22 +55,23 @@
 </html>
 
 <script>
-
+    function mostrarAlerta(msg) {
+        alerta.innerHTML = msg;
+        alerta.style.display = "block";
+    }
 
     function entrar() {
-
-
         var emailVar = email_input.value;
         var senhaVar = senha_input.value;
         if (emailVar == "" || senhaVar == "") {
-            alert("Preencha todos os campos para prosseguir!")
+            mostrarAlerta("Preencha todos os campos para prosseguir!")
 
             finalizarAguardar();
             return false;
         }
 
-        if (emailVar.indexOf("@") == -1 || emailVar.indexOf(".com") == -1) {
-            alert("E-mail inválido! Verifique e tente novamente.")
+        if (emailVar.indexOf("@") == -1) {
+            mostrarAlerta("E-mail inválido! Verifique e tente novamente.")
 
             finalizarAguardar();
             return false;
@@ -99,17 +102,19 @@
                     sessionStorage.EMAIL_USUARIO = json.email;
                     sessionStorage.NOME_USUARIO = json.nome;
                     sessionStorage.ID_USUARIO = json.id;
+                    sessionStorage.CARGO = json.cargo;
+                    sessionStorage.ID_EMPRESA = json.fkEmpresa;
 
                     setTimeout(function () {
-                        window.location = "dashboard-funcionario.html";
-                    }, 1000); // apenas para exibir o loading
+                        window.location = "dashboard/maquinas.html";
+                    }, 500); // apenas para exibir o loading
 
                 });
 
             } else {
 
                 console.log("Houve um erro ao tentar realizar o login!");
-                alert("Não foi possível realizar o login")
+                mostrarAlerta("O e-mail e a senha não coincidem!")
                 resposta.text().then(texto => {
                     console.error(texto);
                     finalizarAguardar(texto);

@@ -1,3 +1,15 @@
+body{
+    font-family: "Advent Pro";
+}
+
+p.alerta{
+    background: #D0342C;
+    color: white;
+    padding: 15px;
+    border-radius: 5px;
+    display: none;
+}
+
 .body_login , #form_cadastro{
     margin: 0;
     padding: 0;
@@ -18,13 +30,11 @@
 }
 
 .span_text {
-    font-family: "Advent Pro";
     font-size: 1.5rem;
     font-weight: 600;
 }
 
 .span_text_scad {
-    font-family: "Advent Pro";
     font-size: 1.1rem;
     font-weight: 400;
 }
