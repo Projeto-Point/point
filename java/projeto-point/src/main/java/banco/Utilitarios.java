@@ -8,7 +8,7 @@ package banco;
  *
  * @author ivanm
  */
-public class TratamentoValores {
+public class Utilitarios {
     
     
     public Double converterBytesParaGiga(Long valorEmBytes){
@@ -35,4 +35,17 @@ public class TratamentoValores {
     public Double limitarDuasCasasDecimais(Double valorDouble){
         return (double) Math.round(valorDouble * 100) / 100;
     }
+    
+    public static void wait(int ms)
+{
+    try
+    {
+        Thread.sleep(ms);
+    }
+    catch(InterruptedException ex)
+    {
+        Thread.currentThread().interrupt();
+    }
+}
+    
 }

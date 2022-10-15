@@ -26,6 +26,8 @@ public class Maquina {
     JdbcTemplate connection = database.getConnection();
     
     Componente componente = new Componente();
+    
+    Utilitarios utilitarios = new Utilitarios();
 
     private Integer id;
     private String SistemaOperacional;
@@ -50,7 +52,7 @@ public class Maquina {
         
         try{
             
-         List<Map<String, Object>> resultado = connection.queryForList("SELECT idMaquina, FROM Maquina INNER JOIN Funcionario ON idFuncionario = fkFuncionario WHERE idFuncionario = " + funcionario.getId() + ";");
+         List<Map<String, Object>> resultado = connection.queryForList("SELECT M.idMaquina FROM Maquina M INNER JOIN Funcionario F ON F.idFuncionario = M.fkFuncionario WHERE F.idFuncionario = " + funcionario.getId() + ";");
             JSONObject jsonResultado = new JSONObject(resultado.get(0));
             int idMaquina = jsonResultado.getInt("idMaquina");
             System.out.println(idMaquina);
@@ -102,6 +104,7 @@ public class Maquina {
             
             System.out.println("Cadastrou");
             
+            utilitarios.wait(5000);
             this.id = selectIdMaquina(funcionario);
             
             componente.insertComponentesTotal(this);

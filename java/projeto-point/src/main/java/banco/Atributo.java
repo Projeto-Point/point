@@ -19,6 +19,7 @@ public class Atributo {
     Looca looca = new Looca();
     Database database = new Database();
     JdbcTemplate connection = database.getConnection();
+    Utilitarios utilitarios = new Utilitarios();
     
     
     // É aqui Agda -- Oq pensei foi, como vamos trabalhar com diversos tipos de máquina 
@@ -27,51 +28,94 @@ public class Atributo {
     // de pegar os atributos ia colocar os atributos nos FkCompontes respesctivos. Porem não estou conseguindo
     // Retornar isso em um array. :( Desculpa! Não me tira do grupo pf
 
-    public int [] getFksComponente(Maquina maquina, String nomeComponente) {
+    public int getFksComponente(Maquina maquina, String nomeComponente) {
         
+    
         
-        JSONObject jsonResultado = new JSONObject();
+        List<Map<String, Object>> resultado = connection.queryForList("SELECT idComponente as fk FROM Componente C INNER JOIN Maquina M ON " + maquina.getId() + " = C.fkMaquina WHERE C.tipo like '" + nomeComponente + "';");
         
-        List<Map<String, Object>> resultado = connection.queryForList("SELECT idComponente as fk FROM Componente C INNER JOIN Maquina M ON M.idMaquina = C.fkMaquina WHERE C.tipo like '" + nomeComponente + "';");
-        
-        for (Map<String, Object> map : resultado)
-        {
-            jsonResultado.append("fk", map);
-        }
-        
-        
-        int[] arrFks;
-        arrFks = new int[jsonResultado.length()];
-        System.out.println("O tamanho do json é: " + jsonResultado.length());
-        if (jsonResultado.length() > 0) {
+        if(resultado.size() > 0){
             
-            for(int i=0; i<jsonResultado.length();i++){
-                
-                System.out.println(jsonResultado);
-                arrFks[i] = jsonResultado.getInt("fk");
-                
-            }
-            
-            return arrFks;
-        } else {
-
-            return null;
+        JSONObject jsonResultado = new JSONObject(resultado.get(0));
+        int idMaquina = jsonResultado.getInt("idMaquina");
+        return idMaquina;
+           
+        }else{
+            System.out.println("Não existe componentes");
+            return 0;
         }
-
+    }
+        
+    public void inserirAtributo(String atributo, double valor, String unidadeDeMedida, Maquina maquina, int id){
+        
+        connection.update("INSERT INTO Atributo VALUES(?, ?, ?, ?, ?);",
+                    null,
+                    atributo,
+                    valor,
+                    unidadeDeMedida,
+                    maquina.getId(),
+                    id
+                    
+            );
     }
     
-
-    private void insertTodosAtributos(Maquina maquina){
+    public void inserirAtributo(String atributo, int valor, String unidadeDeMedida, Maquina maquina, int id){
         
-        int[] fksCompontentes = getFksComponente(maquina, "Nome Componente");
+        connection.update("INSERT INTO Atributo VALUES(?, ?, ?, ?, ?);",
+                    null,
+                    atributo,
+                    valor,
+                    unidadeDeMedida,
+                    maquina.getId(),
+                    id
+                    
+            );
+    }
+    
+    
+    public void insertQuantidadeDeCores(Maquina maquina){
         
-        int numeroDeComponentes = fksCompontentes.length;
+        int core = looca.getProcessador().getNumeroCpusFisicas();
         
-        fksCompontentes = new int[numeroDeComponentes];
+        inserirAtributo("CORE", core, "unidade", maquina, 3);
+    }
+    
+    public void insertQuantidadeDeThreads(Maquina maquina){
+        
+        int threads = looca.getProcessador().getNumeroCpusLogicas();
+        
+        inserirAtributo("THREADS", threads, "unidade", maquina, 3);
+        
+    }
+    
+    public void insertTamanhoTotalHD(Maquina maquina){
+        
+        long threads = looca.getGrupoDeDiscos().getTamanhoTotal();
+        Double threadsGiga = utilitarios.converterBytesParaGiga(threads);
+        threadsGiga = utilitarios.limitarDuasCasasDecimais(threadsGiga);
         
         
+        inserirAtributo("Tamanho", threadsGiga, "GB",maquina, 1);
+        
+    }
+    
+    public void insertMemoriaRamTotal(Maquina maquina){
+        
+        long memoriaRamTotal = looca.getMemoria().getTotal();
+        Double memoriaRamTotalDouble = utilitarios.converterBytesParaGiga(memoriaRamTotal);
+        memoriaRamTotalDouble = utilitarios.limitarDuasCasasDecimais(memoriaRamTotalDouble);
+        
+        inserirAtributo("Tamanho", memoriaRamTotalDouble, "GB", maquina, 2);
         
     }
     
     
+    public void inserirTodosValores(Maquina maquina){
+        
+        
+    }
+ 
+    
+    
+
 }
