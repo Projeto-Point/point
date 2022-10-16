@@ -111,11 +111,15 @@
                                 <span class="span_text">Novo cargo:</span> <br>
                                 <input class="input" type="" id="newCargo_input" placeholder="Insira seu novo cargo">
                             </div>
-
-                            <div class="botao_cadastro">
-                                <button class="btnEntrar" onclick="alterar()">Alterar</button>
-                            </div>
                         </div>
+                    </div>
+                    <div class="inputs">
+                        <span class="span_text">Senha gerente:</span> <br>
+                        <input class="input_senhaGerente" type="password" id="senhaGerente_input" placeholder="Senha do gerente">
+                    </div>
+
+                    <div class="botao_cadastro">
+                        <button class="btnEntrar" onclick="alterar()">Alterar</button>
                     </div>
 
 
@@ -128,6 +132,7 @@
 
     <script>
         nomeGerente.innerHTML = sessionStorage.NOME_USUARIO;
+
         var idFuncionario;
 
         
