@@ -121,3 +121,4 @@ INNER JOIN Componente C ON C.fkMaquina = idMaquina
 INNER JOIN Atributo ON idComponente = fkComponente;
 
 SELECT * FROM vw_infoMaquina;
+

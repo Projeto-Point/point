@@ -18,6 +18,11 @@ body {
     #faffd1,
     #a1ffce
   );
+
+  display: grid;
+  place-items: center;
+
+  position: static;
 }
 
 p.alerta {

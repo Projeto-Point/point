@@ -1,7 +1,7 @@
 var database = require("../database/config");
 
 function listar(){
-    instrucaoSql = `SELECT idMaquina, nomeMaquina, nome FROM maquina INNER JOIN Funcionario ON fkFuncionario = idFuncionario`;
+    instrucaoSql = `SELECT idMaquina, nomeMaquina, nome FROM Maquina INNER JOIN Funcionario ON fkFuncionario = idFuncionario`;
     return database.executar(instrucaoSql);
 }
 
