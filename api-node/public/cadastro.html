@@ -22,12 +22,12 @@
 
                     <div class="inputs">
                         <span class="span_text">Empresa:</span> <br>
-                        <input class="input" id="nomeEmpresa_input" placeholder="Nome da empresa">
+                        <input class="input" id="nomeEmpresa_input" placeholder="Nome da empresa" onkeypress="key2()">
                     </div>
 
                     <div class="inputs">
                         <span class="span_text">CNPJ:</span> <br>
-                        <input class="input" type="text" id="cnpj_input" placeholder="Somente números" maxlength="14">
+                        <input class="input" type="text" id="cnpj_input" placeholder="Somente números" maxlength="14" onkeypress="key2()" >
 
                     </div>
 
@@ -39,30 +39,30 @@
                 <span id="spnGerente" class="banner_cadastro" style="display: none;">
                     <div class="inputs">
                         <span class="span_text">Nome:</span> <br>
-                        <input class="input" id="nome_input" placeholder="Seu nome">
+                        <input class="input" id="nome_input" placeholder="Seu nome" onkeypress="key()">
                     </div>
 
                     <div class="inputs">
                         <span class="span_text">E-mail:</span> <br>
-                        <input class="input" type="email" id="email_input" placeholder="seuEmail@email.com">
+                        <input class="input" type="email" id="email_input" placeholder="seuEmail@email.com" onkeypress="key()">
                     </div>
                     <div class="inputs">
                         <span class="span_text">Celular:</span> <br>
-                        <input class="input" type="text" id="telefone_input" placeholder="(11) 999999999" maxlength="11">
+                        <input class="input" type="text" id="telefone_input" placeholder="(11) 999999999" maxlength="11" onkeypress="key()">
                     </div>
                     <div class="inputs">
                         <span class="span_text">CPF:</span> <br>
-                        <input class="input" id="cpf_input" placeholder="Somente números" maxlength="11">
+                        <input class="input" id="cpf_input" placeholder="Somente números" maxlength="11" onkeypress="key()">
                     </div>
 
                     <div class="inputs">
                         <span class="span_text">Sua senha:</span> <br>
-                        <input class="input" type="password" id="senha_input" placeholder="********" maxlength="40">
+                        <input class="input" type="password" id="senha_input" placeholder="********" maxlength="40" onkeypress="key()">
                     </div>
 
                     <div class="inputs">
                         <span class="span_text">Confirme sua senha:</span> <br>
-                        <input class="input" type="password" id="confirmacao_senha_input" placeholder="********" maxlength="40">
+                        <input class="input" type="password" id="confirmacao_senha_input" placeholder="********" maxlength="40" onkeypress="key()">
                     </div>
 
                     <div class="botao_cadastro">
@@ -83,6 +83,19 @@
 </html>
 
 <script>
+
+function key2(){
+    if(event.key === 'Enter'){
+            return proximo()
+        }
+
+}
+
+function key(){
+        if(event.key === 'Enter'){
+            return cadastrar()
+        }
+    }
 
 function mostrarAlerta(msg) {
 
