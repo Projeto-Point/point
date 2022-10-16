@@ -19,6 +19,11 @@ import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import banco.Utilitarios;
+import banco.Funcionario;
+import banco.Maquina;
+import banco.Registros;
+
 public class TelaPrincipal extends javax.swing.JFrame {
 
     Looca looca = new Looca();
@@ -30,28 +35,45 @@ public class TelaPrincipal extends javax.swing.JFrame {
     Memoria memoria = looca.getMemoria();
     Processador processador = looca.getProcessador();
 
-    public TelaPrincipal() {
+    public TelaPrincipal(Funcionario func) {
         initComponents();
         this.setResizable(false);
         this.looca = new Looca();
         this.setUpOs();
 
-        cpu.setText(looca.getTemperatura().getTemperatura().toString());
-        usoRam.setText(looca.getMemoria().getEmUso().toString());
-        disponibilidadeRam.setText(looca.getMemoria().getDisponivel().toString());
-        totalRam.setText(looca.getMemoria().getTotal().toString());
+        Utilitarios utils = new Utilitarios();
+        Maquina maquina = new Maquina();
+        Registros registro = new Registros();
+        
+        if (maquina.isMaquinaCadastrada(func)) {
+            System.out.println("Máquina já cadastrada");
+        }else if (maquina.isCadastrarMaquina(func)){
+            System.out.println("Máquina Cadastrada");
+        }else{
+            System.out.println("Não foi possível encontrar máquina/cadastar máquina");
+        }
+        
+        cpu.setText(utils.limitarDuasCasasDecimais(looca.getProcessador().getUso()).toString() + "%");
+        usoRam.setText(utils.limitarDuasCasasDecimais(utils.converterBytesParaGiga(looca.getMemoria().getEmUso())).toString() + " GB ("
+            + (utils.limitarDuasCasasDecimais((double) looca.getMemoria().getEmUso() / looca.getMemoria().getTotal() * 100).toString()) + "%)");
+        totalRam.setText(utils.limitarDuasCasasDecimais(utils.converterBytesParaGiga(looca.getMemoria().getTotal())).toString() + " GB");
+        Double espacoUtilizado = registro.getVolumeTotal() - registro.getVolumeDisponivel();
+        grupoDeDisco.setText(utils.limitarDuasCasasDecimais(espacoUtilizado).toString() + " GB / " + registro.getVolumeTotal().toString() +
+            " GB (" + utils.limitarDuasCasasDecimais(registro.getPorcentagemVolume()) + "%)");
 
         int delay = 5000;
         int interval = 1000;
         Timer timer = new Timer();
         timer.scheduleAtFixedRate(new TimerTask() {
             public void run() {
-
-                cpu.setText(looca.getTemperatura().getTemperatura().toString());
-                usoRam.setText(looca.getMemoria().getEmUso().toString());
-                disponibilidadeRam.setText(looca.getMemoria().getDisponivel().toString());
-                totalRam.setText(looca.getMemoria().getTotal().toString());
-
+                usoRam.setText(utils.limitarDuasCasasDecimais(utils.converterBytesParaGiga(looca.getMemoria().getEmUso())).toString() + " GB ("
+                    + (utils.limitarDuasCasasDecimais((double) looca.getMemoria().getEmUso() / looca.getMemoria().getTotal() * 100).toString()) + "%)");
+                cpu.setText(utils.limitarDuasCasasDecimais(looca.getProcessador().getUso()).toString() + "%");
+                Double espacoUtilizado = registro.getVolumeTotal() - registro.getVolumeDisponivel();
+                grupoDeDisco.setText(utils.limitarDuasCasasDecimais(espacoUtilizado).toString() + " GB / " + registro.getVolumeTotal().toString() +
+                    " GB (" + utils.limitarDuasCasasDecimais(registro.getPorcentagemVolume()) + "%)");
+                
+                registro.inserirRegistros(maquina);
             }
         }, delay, interval);
 
@@ -81,16 +103,15 @@ public class TelaPrincipal extends javax.swing.JFrame {
         lblFabricanteValue = new javax.swing.JLabel();
         lblArquiteturaValue = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
-        jLabel5 = new javax.swing.JLabel();
         totalRam = new javax.swing.JLabel();
         cpu = new javax.swing.JLabel();
         jLabel7 = new javax.swing.JLabel();
         jLabel8 = new javax.swing.JLabel();
-        disponibilidadeRam = new javax.swing.JLabel();
         jLabel9 = new javax.swing.JLabel();
         usoRam = new javax.swing.JLabel();
         jLabel10 = new javax.swing.JLabel();
         grupoDeDisco = new javax.swing.JLabel();
+        jLabel5 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setBackground(new java.awt.Color(51, 255, 51));
@@ -120,12 +141,6 @@ public class TelaPrincipal extends javax.swing.JFrame {
         lblArquiteturaValue.setForeground(new java.awt.Color(0, 0, 0));
         lblArquiteturaValue.setText("--");
 
-        jLabel4.setIcon(new javax.swing.ImageIcon("C:\\Users\\corin\\OneDrive\\Documentos\\NetBeansProjects\\projeto-point\\src\\main\\java\\telas\\PointPoint.png")); // NOI18N
-
-        jLabel5.setFont(new java.awt.Font("sansserif", 1, 16)); // NOI18N
-        jLabel5.setForeground(new java.awt.Color(0, 0, 0));
-        jLabel5.setText("Disponibilidade RAM:");
-
         totalRam.setFont(new java.awt.Font("sansserif", 0, 15)); // NOI18N
         totalRam.setForeground(new java.awt.Color(0, 0, 0));
         totalRam.setText("--");
@@ -140,11 +155,7 @@ public class TelaPrincipal extends javax.swing.JFrame {
 
         jLabel8.setFont(new java.awt.Font("sansserif", 1, 16)); // NOI18N
         jLabel8.setForeground(new java.awt.Color(0, 0, 0));
-        jLabel8.setText("Memória RAM:");
-
-        disponibilidadeRam.setFont(new java.awt.Font("sansserif", 0, 15)); // NOI18N
-        disponibilidadeRam.setForeground(new java.awt.Color(0, 0, 0));
-        disponibilidadeRam.setText("--");
+        jLabel8.setText("Total da memória RAM:");
 
         jLabel9.setFont(new java.awt.Font("sansserif", 1, 16)); // NOI18N
         jLabel9.setForeground(new java.awt.Color(0, 0, 0));
@@ -162,48 +173,59 @@ public class TelaPrincipal extends javax.swing.JFrame {
         grupoDeDisco.setForeground(new java.awt.Color(0, 0, 0));
         grupoDeDisco.setText("--");
 
+        jLabel5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/assets/PointPequeno.png"))); // NOI18N
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 314, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 282, Short.MAX_VALUE))
+                .addGap(0, 0, Short.MAX_VALUE))
             .addGroup(layout.createSequentialGroup()
                 .addGap(16, 16, 16)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(grupoDeDisco)
-                    .addComponent(jLabel10)
-                    .addComponent(jLabel7)
-                    .addComponent(cpu)
-                    .addComponent(jLabel1)
-                    .addComponent(lblFabricanteValue)
-                    .addComponent(lblSistemaOperacionalValue)
-                    .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel3)
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel8)
-                            .addComponent(totalRam)
-                            .addComponent(lblArquiteturaValue))
-                        .addGap(45, 45, 45)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel8)
+                                    .addComponent(totalRam)
+                                    .addComponent(lblArquiteturaValue))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 91, Short.MAX_VALUE)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel9)
+                                    .addComponent(usoRam, javax.swing.GroupLayout.PREFERRED_SIZE, 290, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(grupoDeDisco)
+                                    .addComponent(jLabel10)
+                                    .addComponent(jLabel7)
+                                    .addComponent(cpu)
+                                    .addComponent(jLabel1)
+                                    .addComponent(lblFabricanteValue)
+                                    .addComponent(jLabel3))
+                                .addGap(0, 0, Short.MAX_VALUE)))
+                        .addContainerGap())
+                    .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel5)
-                            .addComponent(disponibilidadeRam, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(41, 41, 41)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel9)
-                            .addComponent(usoRam, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addComponent(lblSistemaOperacionalValue)
+                            .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jLabel5)
+                        .addGap(21, 21, 21))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addComponent(jLabel4)
                 .addGap(24, 24, 24)
-                .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(lblSistemaOperacionalValue)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(13, 13, 13)
+                        .addComponent(lblSistemaOperacionalValue))
+                    .addComponent(jLabel5))
                 .addGap(18, 18, 18)
                 .addComponent(jLabel1)
                 .addGap(18, 18, 18)
@@ -215,12 +237,10 @@ public class TelaPrincipal extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel8)
-                    .addComponent(jLabel5)
                     .addComponent(jLabel9))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(totalRam)
-                    .addComponent(disponibilidadeRam)
                     .addComponent(usoRam))
                 .addGap(18, 18, 18)
                 .addComponent(jLabel7)
@@ -230,7 +250,7 @@ public class TelaPrincipal extends javax.swing.JFrame {
                 .addComponent(jLabel10)
                 .addGap(18, 18, 18)
                 .addComponent(grupoDeDisco)
-                .addContainerGap(62, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pack();
@@ -261,18 +281,17 @@ public class TelaPrincipal extends javax.swing.JFrame {
         //</editor-fold>
 
         /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
+//        java.awt.EventQueue.invokeLater(new Runnable() {
 
-            public void run() {
-                new TelaPrincipal().setVisible(true);
-            }
-        });
+//            public void run() {
+//                new TelaPrincipal().setVisible(true);
+//            }
+//        });
     }
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel cpu;
-    private javax.swing.JLabel disponibilidadeRam;
     private javax.swing.JLabel grupoDeDisco;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;

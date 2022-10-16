@@ -21,7 +21,7 @@ public class Registros {
     JdbcTemplate connection = database.getConnection();
     Utilitarios utilitarios = new Utilitarios();
 
-    private Double getVolumeTotal() {
+    public Double getVolumeTotal() {
 
         String retornoTotal = looca.getGrupoDeDiscos().getVolumes().toString();
 
@@ -47,7 +47,7 @@ public class Registros {
 
     }
 
-    private Double getVolumeDisponivel() {
+    public Double getVolumeDisponivel() {
 
         String retornoTotal = looca.getGrupoDeDiscos().getVolumes().toString();
 
@@ -73,7 +73,7 @@ public class Registros {
 
     }
 
-    private Double getPorcentagemVolume() {
+    public Double getPorcentagemVolume() {
 
         Double total = getVolumeTotal();
         Double uso = getVolumeDisponivel();
