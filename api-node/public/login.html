@@ -56,8 +56,16 @@
 
 <script>
     function mostrarAlerta(msg) {
+
         alerta.innerHTML = msg;
-        alerta.style.display = "block";
+        alerta.style.visibility = "visible";
+
+        setTimeout(()=>{
+
+            alerta.style.visibility = "hidden";
+
+        }, 5000)
+
     }
 
     function entrar() {

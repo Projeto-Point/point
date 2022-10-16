@@ -34,8 +34,9 @@ public class Main {
         Atributo atributo = new Atributo();
         Registros registro = new Registros();
         
-      
-        if(func.isFuncionarioCadastrado("agda@.com", "123")){
+        
+//      
+        if(func.isFuncionarioCadastrado("ivan@.com", "123")){
            
             System.out.println(maquina.isMaquinaCadastrada(func));
             

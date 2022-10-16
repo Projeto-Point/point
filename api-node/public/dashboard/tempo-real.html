@@ -182,9 +182,23 @@
                     document.getElementById("tbMaquina").innerHTML += `<p><b>Sistema operacional: </b><span>${resposta[0].sistemaOperacional}</span></p>`;
                     document.getElementById("tbMaquina").innerHTML += `<p><b>Nome da máquina: </b><span>${resposta[0].nomeMaquina}</span></p>`;
                     document.getElementById("tbMaquina").innerHTML += `<p><b>Tipo da máquina: </b><span>${resposta[0].tipoMaquina}</span></p>`;
-                    
-                    for (let index = 0; index < resposta.length; index++) {
-                        document.getElementById("tbMaquina").innerHTML += `<p><b>${resposta[index].tipoComponente}: </b><span>${resposta[index].valor} ${resposta[index].unidadeMedida}</span></p>`;
+                    console.log(resposta[0])
+
+                    // Aqui tem uma gambiarra pra funcionar mas é recomendavel que troque isso. Tava repetindo valores e as labels nao faziam sentido
+                    for (let index = 1; index < resposta.length; index++) {
+
+                        
+                        if(index % 2 == 0 || index == 3){
+
+                            if(index == 4){
+                                resposta[index].atributo = "RAM"
+                            }
+                            if(index == 5){
+                                resposta[index].atributo = "DISCO"
+                            }
+                            document.getElementById("tbMaquina").innerHTML += `<p><b>${resposta[index].atributo}: </b><span>${resposta[index].valor} ${resposta[index].unidadeMedida}</span></p>`;
+                        }
+
                     }
                 });
             }

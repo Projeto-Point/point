@@ -40,7 +40,7 @@ DESC Atributo;
 
 INSERT INTO Atributo VALUES (null, "core", 6, "unidade", 3, 1);
 
-SELECT * FROM Atributo;
+SELECT * FROM Atributo where fkMaquina = 1;
 
 DESC Funcionario;
 

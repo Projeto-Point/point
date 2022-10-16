@@ -119,3 +119,5 @@ SELECT idMaquina, nomeMaquina, sistemaOperacional, M.tipo AS 'tipoMaquina',
 FROM Maquina M
 INNER JOIN Componente C ON C.fkMaquina = idMaquina
 INNER JOIN Atributo ON idComponente = fkComponente;
+
+SELECT * FROM vw_infoMaquina;

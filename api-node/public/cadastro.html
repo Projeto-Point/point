@@ -13,7 +13,7 @@
     <div id="cadastro" class="container">
         <div class="cadastro">
             <div class="banner_cadastro">
-                <a href="index.html">
+                <a href="login.html">
                     <img src="assets/imgs/arrow.png" alt="" class="icon">
 
                 </a>
@@ -29,7 +29,7 @@
 
                     <div class="inputs">
                         <span class="span_text">CNPJ:</span> <br>
-                        <input class="input" type="text" id="cnpj_input" placeholder="Somente números">
+                        <input class="input" type="text" id="cnpj_input" placeholder="Somente números" maxlength="14">
 
                     </div>
 
@@ -50,21 +50,21 @@
                     </div>
                     <div class="inputs">
                         <span class="span_text">Celular:</span> <br>
-                        <input class="input" type="text" id="telefone_input" placeholder="(11) 99621-3788">
+                        <input class="input" type="text" id="telefone_input" placeholder="(11) 999999999" maxlength="11">
                     </div>
                     <div class="inputs">
                         <span class="span_text">CPF:</span> <br>
-                        <input class="input" id="cpf_input" placeholder="Somente números">
+                        <input class="input" id="cpf_input" placeholder="Somente números" maxlength="11">
                     </div>
 
                     <div class="inputs">
                         <span class="span_text">Sua senha:</span> <br>
-                        <input class="input" type="password" id="senha_input" placeholder="********">
+                        <input class="input" type="password" id="senha_input" placeholder="********" maxlength="40">
                     </div>
 
                     <div class="inputs">
                         <span class="span_text">Confirme sua senha:</span> <br>
-                        <input class="input" type="password" id="confirmacao_senha_input" placeholder="********">
+                        <input class="input" type="password" id="confirmacao_senha_input" placeholder="********" maxlength="40">
                     </div>
 
                     <div class="botao_cadastro">
@@ -86,10 +86,18 @@
 
 <script>
 
-    function mostrarAlerta(msg){
-        alerta.innerHTML = msg;
-        alerta.style.display = "block";
-    }
+function mostrarAlerta(msg) {
+
+alerta.innerHTML = msg;
+alerta.style.visibility = "visible";
+
+setTimeout(()=>{
+
+    alerta.style.visibility = "hidden";
+
+}, 5000)
+
+}
 
     function proximo() {
         var nomeEmpresa = nomeEmpresa_input.value;
