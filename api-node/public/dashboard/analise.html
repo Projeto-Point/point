@@ -6,9 +6,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Análise de máquina | Point</title>
     <link rel="stylesheet" href="css/styleDash.css">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Advent+Pro:wght@100;200;300;400;500;600;700&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.4/moment.min.js"></script>
 </head>
@@ -23,21 +20,21 @@
                 <img src="../assets/imgs/alfinete 1.png">
                 <span>Alertas</span>
             </a> -->
-            <a href="funcionarios.html">
-                <img src="../assets/imgs/alfinete 1.png">
+            <a href="funcionarios.html" class="img-nav">
+                <img src="../assets/imgs/user.png" >
                 <span>Funcionários</span>
             </a>
-            <a href="maquinas.html">
-                <img src="../assets/imgs/alfinete 1.png">
+            <a href="maquinas.html" class="img-nav">
+                <img src="./assets/imgs/imac.png">
                 <span>Máquinas</span>
             </a>
-            <a href="configuracoes.html">
-                <img src="../assets/imgs/alfinete 1.png">
+            <a href="configuracoes.html" class="img-nav">
+                <img src="./assets/imgs/setting.png">
                 <span>Configurações</span>
             </a>
             <hr>
-            <a href="../index.html">
-                <img src="../assets/imgs/alfinete 1.png">
+            <a href="../index.html" class="img-nav">
+                <img src="../assets/imgs/x.png">
                 <span>Sair</span>
             </a>
         </nav>
@@ -60,16 +57,16 @@
         </section>
         <section class="dashboard-analise">
             <div class="box box-kpi kpi-horas">
-                <h3>Horas ativas</h3>
-                <h1 id="kpiHoras"></h1>
+                <h3>Horas ativas:</h3>
+                <p id="kpiHoras"></p>
             </div>
             <div class="box box-kpi kpi-mediaProc">
-                <h3>Média do processador</h3>
-                <h1 id="kpiCPU">%</h1>
+                <h3>Média do processador:</h3>
+                <p id="kpiCPU">%</p>
             </div>
             <div class="box box-kpi kpi-mediaRam">
-                <h3>Média da memória RAM</h3>
-                <h1 id="kpiRAM">%</h1>
+                <h3>Média da memória RAM:</h3>
+                <p id="kpiRAM">%</p>
             </div>
             <div class="grafico-processador grafico box">
                 <div class="header">

@@ -1,3 +1,31 @@
+
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300&display=swap');
+
+:root {
+    --color-verdeClaro: #23b052;
+    --color-verdeEscuro:#359d58;
+    --color-vermelhoAlerta:#d0342c;
+  }
+  *,
+  *::before,
+  *::after {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+  }
+  
+  /* Personalizando o scrool */
+  ::-webkit-scrollbar {
+      width: 0.3vw;
+    }
+    ::-webkit-scrollbar-track {
+      scrollbar-color: none;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: var(--color-verdeEscuro); 
+      border-radius: 10px;
+    }
+
 html{
     scroll-behavior: smooth;
 }
@@ -5,7 +33,7 @@ html{
 body {
     margin: 0;
     padding: 0;
-    font-family: 'Advent Pro';
+    font-family: 'Roboto', sans-serif;
     color: #1e1e1e;
 }
 
@@ -22,7 +50,7 @@ ul {
 }
 
 header {
-    background-color: #f0f0f0;
+    background-color: #ffffff;
     height: 5rem;
     position: fixed;
     display: flex;
@@ -70,7 +98,7 @@ ul {
 
 nav li {
     text-decoration: none;
-    border-bottom: 3px solid #00CA43;
+    border-bottom: 3px solid var(--color-verdeClaro);
     padding-bottom: 10px;
     display: inline-block;
     margin: 1rem;
@@ -146,7 +174,7 @@ nav li:last-child {
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    border-bottom: 3px solid #00CA43;
+    border-bottom: 3px solid var(--color-verdeClaro);
 }
 
 .service-containers {
@@ -191,7 +219,7 @@ nav li:last-child {
     width: 350px;
     height: 400px;
     position: relative;
-    background-color: #00CA43;
+    background-color: var(--color-verdeClaro);
     margin-top: 2rem;
     padding: 15px;
     gap: 1rem;
@@ -261,7 +289,7 @@ nav li:last-child {
     justify-content: center;
     text-align: justify;
     align-items: center;
-    border-bottom: 3px solid #00CA43;
+    border-bottom: 3px solid var(--color-verdeClaro);
 }
 
 .divisao {
@@ -300,7 +328,7 @@ iframe {
     justify-content: center;
     text-align: justify;
     align-items: center;
-    border-bottom: 3px solid #00CA43;
+    border-bottom: 3px solid var(--color-verdeClaro);
 }
 
 .conteudo {
@@ -336,21 +364,21 @@ form textarea {
     margin-bottom: 1rem;
     border-radius: 5px;
     padding: 5px 5px;
-    border: 2px solid #00CA43;
+    border: 2px solid rgba(227, 227, 227, 0.78);
     transition-duration: 0.2s;
     outline: none;
 }
 
 form input:focus,
 form textarea:focus {
-    border: 2px solid #00c241;
+    border: 2px solid var(--color-verdeClaro);
     transition-duration: 0.2s;
 }
 
 form button {
     outline: none;
     border: none;
-    background-color: #00CA43;
+    background-color: var(--color-verdeClaro);
     color: white;
     width: 40%;
     padding: 7px 0 7px 0;
@@ -360,7 +388,7 @@ form button {
 }
 
 footer {
-    background-color: #00CA43;
+    background-color: var(--color-verdeClaro);
     padding: 2rem;
     display: flex;
     justify-content: center;
@@ -578,7 +606,7 @@ button {
     }
 
     .formulario {
-        border-left: 3px solid #02b43d;
+        border-left: 3px solid var(--color-verdeClaro);
         height: 80%;
         margin-left: 3rem;
         padding: 3rem;

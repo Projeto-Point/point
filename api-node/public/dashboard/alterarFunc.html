@@ -7,10 +7,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cadastrar funcionarios | Point</title>
     <link rel="stylesheet" href="css/styleDashAlterFunc.css">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Advent+Pro:wght@100;200;300;400;500;600;700&display=swap"
-        rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 
@@ -25,21 +21,21 @@
                 <img src="../assets/imgs/alfinete 1.png">
                 <span>Alertas</span>
             </a> -->
-            <a href="funcionarios.html">
-                <img src="../assets/imgs/alfinete 1.png">
+            <a href="funcionarios.html" class="img-nav">
+                <img src="../assets/imgs/user.png" >
                 <span>Funcionários</span>
             </a>
-            <a href="maquinas.html">
-                <img src="../assets/imgs/alfinete 1.png">
+            <a href="maquinas.html" class="img-nav">
+                <img src="./assets/imgs/imac.png">
                 <span>Máquinas</span>
             </a>
-            <a href="configuracoes.html">
-                <img src="../assets/imgs/alfinete 1.png">
+            <a href="configuracoes.html" class="img-nav">
+                <img src="./assets/imgs/setting.png">
                 <span>Configurações</span>
             </a>
             <hr>
-            <a href="../index.html">
-                <img src="../assets/imgs/alfinete 1.png">
+            <a href="../index.html" class="img-nav">
+                <img src="../assets/imgs/x.png">
                 <span>Sair</span>
             </a>
         </nav>
@@ -113,7 +109,7 @@
                             </div>
 
                             <div class="botao_cadastro">
-                                <button class="btnEntrar" onclick="alterar()">Alterar</button>
+                                <button class="custom-btn btnEntrar " onclick="alterar()">Alterar</button>
                             </div>
                         </div>
                     </div>
@@ -150,26 +146,16 @@
             var idEmpresa = sessionStorage.ID_EMPRESA;
             var idGestor = sessionStorage.ID_USUARIO;
 
-            // if (nomeFuncVar == "" || emailVar == "" || senhaVar == "" || confirmacaoSenhaVar == "" || cpfVar == "" || telVar == "") {
-            //     mostrarAlerta("Preencha todos os campos para prosseguir!");
-            //     return false;
-            // }
-            // if (emailVar.indexOf("@") == -1) {
-            //     mostrarAlerta("E-mail inválido! Verifique e tente novamente.");
-            //     return false;
-            // } else if (cpfVar != Number(cpfVar)) {
-            //     mostrarAlerta("CPF deve conter apenas números.");
-            //     return false;
-            // } else if (cpfVar.length != 11) {
-            //     mostrarAlerta("CPF deve conter 11 dígitos.");
-            //     return false;
-            // } else if (senhaVar != confirmacaoSenhaVar) {
-            //     mostrarAlerta("As senhas inseridas devem ser iguais para prosseguir!");
-            //     return false;
-            // }else if (telVar != 11 || telVar != Number(telVar)) {
-            //     mostrarAlerta("Telefone deve conter 11 digitos e apenas números.");
-            //     return false;
-            // }
+            if (nomeFuncVar == "" || senhaVar == "" || telVar == "" || cargoVar == "") {
+                mostrarAlerta("Preencha todos os campos para prosseguir!");     
+            }
+            if (emailVar.indexOf("@") == -1) {
+                mostrarAlerta("E-mail inválido! Verifique e tente novamente.");
+            } else if (senhaVar != confirmacaoSenhaVar) {
+                mostrarAlerta("As senhas inseridas devem ser iguais para prosseguir!");
+            }else if (telVar != 11 || telVar != Number(telVar)) {
+                mostrarAlerta("Telefone deve conter 11 digitos e apenas números.");
+            }
 
             // alerta.style.display = "none";
 

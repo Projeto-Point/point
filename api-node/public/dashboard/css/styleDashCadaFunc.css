@@ -160,12 +160,15 @@ a:hover{
   }
 } */
 
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300&display=swap');
+
+
 
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  font-family: "Advent Pro";
+  font-family: 'Roboto', sans-serif;
   text-decoration: none;
 }
 
@@ -186,10 +189,19 @@ a.btn-link {
 
 input, select {
   height: 50px;
-  border: 2px solid var(--cor3);
+  border: 2px solid rgba(223, 223, 223, 0.632);
   border-radius: var(--radius);
   padding: 0 15px;
   background: white;
+}
+
+input:focus , select:focus {
+
+  outline: none;
+  border: 2px solid var(--cor3);
+  transition: all ease-in-out 200ms;
+
+
 }
 
 .box {
@@ -221,9 +233,23 @@ header nav#menu {
 header nav#menu .logo {
   display: flex;
   justify-content: center;
+  box-sizing: border-box;
 }
 header nav#menu .logo img {
   width: 60%;
+  height: auto;
+}
+
+.img-nav:hover{
+
+  filter: invert(38%) sepia(92%) saturate(1739%) hue-rotate(105deg) brightness(90%) contrast(103%);
+  transition: all ease-in-out 150ms;
+
+}
+.img-nav:last-child:hover{
+
+  filter: invert(20%) sepia(63%) saturate(1878%) hue-rotate(348deg) brightness(101%) contrast(94%);
+
 }
 header nav#menu hr {
   opacity: 0.5;
@@ -233,11 +259,14 @@ header nav#menu a {
   color: black;
   display: flex;
   align-items: center;
-  margin: 10px 0;
+  margin: 20px 0;
   font-size: 1.3rem;
 }
 header nav#menu a img {
-  margin-right: 5px;
+  margin-right: 10px;
+  height: 20px;
+  width: 20px;
+  
 }
 header nav#menu-mobile {
   display: none;
@@ -570,22 +599,58 @@ main section.dashboard .grafico h3, main section.dashboard .tabela h3 {
   height: 60vh;
 }
 
-
-.btnEntrar {
-  background-color: #04eb51;
-  border-radius: 10px;
-  border: none;
+.custom-btn {
+  width: 130px;
+  height: 40px;
+  color: #fff;
+  border-radius: 5px;
+  padding: 10px 25px;
+  font-family: 'Lato', sans-serif;
+  font-weight: 500;
+  background: transparent;
   cursor: pointer;
-  color: #ffffff;
-  font-family: Arial;
-  font-size: 1.25rem;
-  padding: .5rem 1rem;
-  text-decoration: none;
-  transition: .2s;
+  transition: all 0.3s ease;
+  position: relative;
+  display: inline-block;
+   box-shadow:inset 2px 2px 2px 0px rgba(255,255,255,.5),
+   7px 7px 20px 0px rgba(0,0,0,.1),
+   4px 4px 5px 0px rgba(0,0,0,.1);
   outline: none;
-  width: 190px;
-  margin-top: 27px;
 }
 
 
-
+.btnEntrar {
+  background: var(--cor2);
+  border: none;
+  z-index: 1;
+  margin-top: 27px;
+  width: 180px;
+  font-size: 1.1rem;
+  outline: none;
+  padding: .5rem 1rem;
+}
+.btnEntrar:after {
+  position: absolute;
+  content: "";
+  width: 0;
+  height: 100%;
+  top: 0;
+  right: 0;
+  z-index: -1;
+  background-color: var(--cor3);
+  border-radius: 5px;
+   box-shadow:inset 2px 2px 2px 0px rgba(255,255,255,.5),
+   7px 7px 20px 0px rgba(0,0,0,.1),
+   4px 4px 5px 0px rgba(0,0,0,.1);
+  transition: all 0.5s ease;
+}
+.btnEntrar:hover {
+  color: #fff;
+}
+.btnEntrar:hover:after {
+  left: 0;
+  width: 100%;
+}
+.btnEntrar:active {
+  top: 2px;
+}
