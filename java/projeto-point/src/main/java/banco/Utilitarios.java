@@ -36,6 +36,10 @@ public class Utilitarios {
         return (double) Math.round(valorDouble * 100) / 100;
     }
     
+    public Double limitarDuasCasasDecimais(Long valorDouble){
+        return (double) Math.round(valorDouble * 100) / 100;
+    }
+    
     public static void wait(int ms)
 {
     try

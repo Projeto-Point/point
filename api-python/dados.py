@@ -62,25 +62,24 @@ while verificaLogin == False:
     # Conecta com o banco, passando o usuário, e o banco desejado
     conexao = pymysql.connect(db='bd_point', user='root', passwd='', port=3307)
 
-    # AGDDAAAAA
     cursor = conexao.cursor()
     
     #Executa o comando no banco que foi conectado 
     verificaLogin = cursor.execute(("SELECT email, senha FROM Funcionario WHERE email = '{}' and senha = '{}'").format(login, senha))
-    omeFuncionario = cursor.execute(("SELECT nome FROM Funcionario WHERE email = '{}' and senha = '{}'").format(login, senha))
+    nomeFuncionario = cursor.execute(("SELECT nome FROM Funcionario WHERE email = '{}' and senha = '{}'").format(login, senha))
     nomeFuncionario = cursor.fetchall()[0][0]
     conexao.close()
 webhook = "https://hooks.slack.com/services/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"
 while cpu_percent() > 80.00:
     if cpu_percent() > 80.00:
-        mensagem1 = { "text" : "A CPU do funcionario " + str(nomeFuncionario) + " está acima do comum com: " + str(cpu_percent()) + "%"}
+        mensagem1 = { "text" : "A CPU do funcionario " + str(nomeFuncionario) + " está acima de 80%!"}
 
         requests.post(webhook, data=json.dumps(mensagem1))
         break
         
 while virtual_memory().percent > 85.00:
     if virtual_memory().percent > 85.00: 
-        mensagem2= { "text" : "A memória Ram do funcionario " + str(nomeFuncionario) + " está acima do comum com: " +  str(virtual_memory().percent) + "%"}
+        mensagem2= { "text" : "A memória Ram do funcionario " + str(nomeFuncionario) + " está acima de 85%! " + "com: " +  str(virtual_memory().percent) + "%"}
 
         requests.post(webhook, data=json.dumps(mensagem2))
         break

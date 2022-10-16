@@ -113,6 +113,14 @@
                             </div>
                         </div>
                     </div>
+                    <div class="inputs">
+                        <span class="span_text">Senha gerente:</span> <br>
+                        <input class="input_senhaGerente" type="password" id="senhaGerente_input" placeholder="Senha do gerente">
+                    </div>
+
+                    <div class="botao_cadastro">
+                        <button class="btnEntrar" onclick="alterar()">Alterar</button>
+                    </div>
 
 
                 </section>
@@ -124,6 +132,7 @@
 
     <script>
         nomeGerente.innerHTML = sessionStorage.NOME_USUARIO;
+
         var idFuncionario;
 
         
@@ -132,8 +141,6 @@
         idFuncionario = Number(parametros.get("idFuncionario"));
 
         dadosAtuais();
-   
-
 
         function alterar() {
 

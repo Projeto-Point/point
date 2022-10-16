@@ -18,6 +18,15 @@ function entrar(email, senha) {
     return database.executar(instrucao);
 }
 
+// function verificarGerente(idGerente, senha) {
+//     console.log("ACESSEI O USUARIO MODEL \n \n\t\t >> Se aqui der erro de 'Error: connect ECONNREFUSED',\n \t\t >> verifique suas credenciais de acesso ao banco\n \t\t >> e se o servidor de seu BD está rodando corretamente. \n\n function entrar(): ", idGerente, senha)
+//     var instrucao = `
+//         SELECT * FROM Funcionario WHERE email = '${idGerente}' AND senha = '${senha}';
+//     `;
+//     console.log("Executando a instrução SQL: \n" + instrucao);
+//     return database.executar(instrucao);
+// }
+
 // Coloque os mesmos parâmetros aqui. Vá para a var instrucao
 function cadastrarEmpresa(nomeEmpresa, cnpj) {
     console.log("ACESSEI O USUARIO MODEL \n \n\t\t >> Se aqui der erro de 'Error: connect ECONNREFUSED',\n \t\t >> verifique suas credenciais de acesso ao banco\n \t\t >> e se o servidor de seu BD está rodando corretamente. \n\n function cadastrar():", nomeEmpresa, cnpj);
@@ -87,5 +96,6 @@ module.exports = {
     listarFuncionarios,
     pegarDadosAtuais,
     alterarFuncionario,
+    // verificarGerente
 
 };
