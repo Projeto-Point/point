@@ -190,6 +190,20 @@
                         
                         if(index % 2 == 0 || index == 3){
 
+                            if(index == 2){
+                                resposta[index].valor *= 1
+                                Math.trunc(resposta[index].valor)
+                                resposta[index].unidadeMedida = ""
+                            }
+
+                            if(index == 3){
+                                
+                                resposta[index].valor *= 1
+                                Math.trunc(resposta[index].valor)
+                                resposta[index].unidadeMedida = ""
+                                
+                            }
+
                             if(index == 4){
                                 resposta[index].atributo = "RAM"
                             }
