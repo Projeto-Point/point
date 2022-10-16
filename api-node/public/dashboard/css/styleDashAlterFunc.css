@@ -265,20 +265,6 @@ a:hover{
     width: 20px;
     
   }
-  header nav#menu-mobile {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-  font-family: "Advent Pro";
-  text-decoration: none;
-}
-
-:root {
-  --cor1: #00CA43;
-  --cor2: #00A219;
-  --cor3: #007B00;
-  --radius: 10px;
-}
 
 a.btn-link {
   background: var(--cor1);
@@ -288,29 +274,7 @@ a.btn-link {
   margin: 0 5px;
 }
 
-input,
-select {
-  height: 50px;
-  border: 2px solid var(--cor3);
-  border-radius: var(--radius);
-  padding: 0 15px;
-  background: white;
-}
 
-.box {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  background: white;
-  color: black;
-  border-radius: var(--radius);
-  padding: 30px 0;
-  box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.3);
-}
-
-body {
-  display: flex;
-}
 
 header nav#menu {
   max-width: 300px;
@@ -324,31 +288,6 @@ header nav#menu {
   padding: 10px 30px;
 }
 
-header nav#menu .logo {
-  display: flex;
-  justify-content: center;
-}
-
-header nav#menu .logo img {
-  width: 60%;
-}
-
-header nav#menu hr {
-  opacity: 0.5;
-  margin: 15px 0;
-}
-
-header nav#menu a {
-  color: black;
-  display: flex;
-  align-items: center;
-  margin: 10px 0;
-  font-size: 1.3rem;
-}
-
-header nav#menu a img {
-  margin-right: 5px;
-}
 
 header nav#menu-mobile {
   display: none;
