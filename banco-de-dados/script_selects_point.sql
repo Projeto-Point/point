@@ -48,3 +48,5 @@ INSERT INTO Empresa VALUES (null, "Google", "72839999999999", 1, "Legal");
 INSERT INTO Funcionario VALUES (null, "Ivan", "33333333333", "123", "ivan.com", "Gerente", "11992015423", null, 1);
 INSERT INTO Funcionario VALUES (null, "Agda", "33332323333", "123", "agda.com", "Gerente", "11992015423", 2, 1);
 
+select * from Registro;
+
