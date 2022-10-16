@@ -32,10 +32,10 @@ public class Database {
     dataSource​.setUrl("jdbc:mysql://127.0.0.1:3306/bd_point");
     
     // Nome do usuário da conexão 
-    dataSource​.setUsername("root");
+    dataSource​.setUsername("aluno");
     
     // Senha da conexão 
-    dataSource​.setPassword("#Gf45297661870");
+    dataSource​.setPassword("sptech");
 
     this.connection = new JdbcTemplate(dataSource);
 
