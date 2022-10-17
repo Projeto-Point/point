@@ -121,4 +121,4 @@ INNER JOIN Atributo ON idComponente = fkComponente;
 
 INSERT INTO Empresa VALUES (NULL, 'Point', '12345678901234', 1, 'Monitoramento de hardware');
 INSERT INTO Funcionario VALUES (NULL, 'Fernando Brandão', '12345678901', '123456', 'brandao@point.com', DEFAULT, '11912345678', NULL, 1);
-INSERT INTO Funcionario VALUES (NULL, 'Cleber Machado', '12345678902', '1234', 'cleber@point.com', DEFAULT, '11912345679', 1, 1);
+INSERT INTO Funcionario VALUES (NULL, 'Cleber Machado', '12345678902', '1234', 'cleber@point.com', 'Desenvolvedor Júnior', '11912345679', 1, 1);
