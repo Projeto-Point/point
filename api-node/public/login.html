@@ -24,12 +24,12 @@
 
                 <div class="inputs">
                     <span class="span_text">Email</span> <br>
-                    <input class="input" type="email" id="email_input" placeholder="seuemail@email.com" onkeypress="key()">
+                    <input class="input" type="email" id="email_input" placeholder="seuemail@email.com" onkeypress="key()" value="brandao@point.com">
                 </div>
 
                 <div class="inputs">
                     <span class="span_text">Senha</span> <br>
-                    <input class="input" type="password" id="senha_input" placeholder="********" onkeypress="key()">
+                    <input class="input" type="password" id="senha_input" placeholder="********" onkeypress="key()" value="123456">
                     <small>Esqueceu sua senha?</small>
                 </div>
 
@@ -117,7 +117,7 @@ function key(){
                     sessionStorage.ID_EMPRESA = json.fkEmpresa;
 
                     setTimeout(function () {
-                        window.location = "dashboard/maquinas.html";
+                        window.location = "dashboard/cadastrar-funcionario.html";
                     }, 500); // apenas para exibir o loading
 
                 });

@@ -439,6 +439,7 @@ main section.dashboard {
   gap: 25px;
   font-size: 20px;
   grid-template-columns: repeat(3, 32%);
+  grid-template-rows: repeat(3, 300px);
   grid-template-areas: "g1 g2 g3" "t1 t1 t1" "t2 t2 t2";
 }
 main section.dashboard #gfCpu {
@@ -452,7 +453,7 @@ main section.dashboard #gfDisco div {
   margin: 0 auto;
   max-height: 200px;
 }
-main section.dashboard #gfDisco::after {
+main section.dashboard #gfDisco div::after {
   content: attr(data-content);
   position: absolute;
   top: 50%;

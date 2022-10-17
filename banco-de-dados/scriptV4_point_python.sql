@@ -1,8 +1,7 @@
 -- Script SQL Server
-DROP DATABASE bd_point;
-create database bd_point;
+create database bd_point_python;
 
-use bd_point;
+use bd_point_python;
 
 create table Empresa (
 	idEmpresa int primary key auto_increment,
@@ -19,7 +18,7 @@ create table Funcionario (
     cpf char(11) unique not null,
     senha varchar(45) not null,
     email varchar(45) unique not null,
-    cargo varchar (45) not null default 'Gestor',
+    cargo varchar (45) not null default 'gestor',
     telefone char(11),
     fkGestor int,
     fkEmpresa int,
@@ -120,5 +119,6 @@ FROM Maquina M
 INNER JOIN Componente C ON C.fkMaquina = idMaquina
 INNER JOIN Atributo ON idComponente = fkComponente;
 
-SELECT * FROM vw_infoMaquina;
-
+INSERT INTO Empresa VALUES (NULL, 'Point', '12345678901234', 1, 'Monitoramento de hardware');
+INSERT INTO Funcionario VALUES (NULL, 'Fernando Brandão', '12345678901', '123456', 'brandao@point.com', DEFAULT, '11912345678', NULL, 1);
+INSERT INTO Funcionario VALUES (NULL, 'Cleber Machado', '12345678902', '1234', 'cleber@point.com', DEFAULT, '11912345679', 1, 1);

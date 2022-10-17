@@ -39,13 +39,13 @@
                 <span>Sair</span>
             </a>
         </nav>
-        <nav id="menu-mobile"><img src="../assets/imgs/alfinete 1.png"></nav>
+        <nav id="menu-mobile"><img src="assets/dash/bars.svg"></nav>
     </header>
     <main>
         <section class="top">
             <div class="top-esq">
                 <p class="titulo">Olá, <span id="b_usuario"></span></p>
-                <p class="subtitulo">02/10/2022 - 13:56</p>
+                <p class="subtitulo">17/10/2022</p>
             </div>
             <div class="top-meio">
                 <input id="inp-pesquisar-funcionario" type="search" placeholder="Pesquise o nome de um funcionário...">
@@ -60,9 +60,9 @@
                 <h3>Processador</h3>
                 <div> <canvas id="graficoCPU" style="position: relative;"></canvas></div>
             </div>
-            <div class="grafico" id="gfDisco" data-content="0.0">
+            <div class="grafico" id="gfDisco">
                 <h3>Disco</h3>
-                <div><canvas id="graficoDISCO" style="position: relative;"></canvas></div>
+                <div id="div-disco" data-content="0.0"><canvas id="graficoDISCO" style="position: relative;"></canvas></div>
             </div>
             <div class="grafico" id="gfRam">
                 <h3>Memória RAM</h3>
@@ -283,7 +283,7 @@
             'Livre'
         ];
 
-        gfDisco.dataset.content = discoMedida[0] + "%";
+        document.getElementById("div-disco").dataset.content = discoMedida[0] + "%";
 
         const data = {
             labels: labels,
@@ -336,6 +336,9 @@
                     dados.datasets[0].data[0] = discoMedida;
                     dados.datasets[0].data[1] = discoDisponivel;
                     window.graficoDISCO.update();
+
+                    document.getElementById("div-disco").dataset.content = discoMedida[0] + "%";
+
 
                     proximaAtualizacao = setTimeout(() => {
                         atualizarGraficoDISCO(grafico, dados)

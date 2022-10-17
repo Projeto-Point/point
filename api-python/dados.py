@@ -1,5 +1,4 @@
 # Fazer a conexão com SQL 
-from pickle import NONE
 import pymysql
 # datetime é para pegar as datas e as horas com precisão exata e conseguir fazer contasa 
 import datetime
@@ -60,7 +59,7 @@ while verificaLogin == False:
     senha = input('Digite a senha do funcionário: ')
 
     # Conecta com o banco, passando o usuário, e o banco desejado
-    conexao = pymysql.connect(db='bd_point', user='root', passwd='', port=3307)
+    conexao = pymysql.connect(db='bd_point_python', user='aluno', passwd='sptech')
 
     cursor = conexao.cursor()
     
@@ -89,7 +88,7 @@ while virtual_memory().percent > 85.00:
 
 
 nome = platform.node()
-conexao = pymysql.connect(db='bd_point', user='root', passwd='', port=3307)
+conexao = pymysql.connect(db='bd_point_python', user='aluno', passwd='sptech')
 cursor = conexao.cursor()
 verificarCadastro = cursor.execute(("SELECT nomeMaquina FROM Maquina WHERE nomeMaquina = '{}'").format(nome))
 
@@ -111,7 +110,7 @@ else:
     memoriaTotal = bytes_para_giga(virtual_memory().total)
     discoTotal = bytes_para_giga(disk_usage("/").total)
 
-    conexao = pymysql.connect(db='bd_point', user='root', passwd='', port=3307)
+    conexao = pymysql.connect(db='bd_point_python', user='aluno', passwd='sptech')
 
     cursor = conexao.cursor()
 
@@ -237,7 +236,7 @@ while True:
 
     # Conexão BD
 
-    conexao = pymysql.connect(db='bd_point', user='root', passwd='', port=3307)
+    conexao = pymysql.connect(db='bd_point_python', user='aluno', passwd='sptech')
 
     cursor = conexao.cursor()
 

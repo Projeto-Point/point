@@ -1,6 +1,7 @@
 
+    console.log("a");
 function menu() {
-  var element = document.getElementById("navbar");
+  var element = document.getElementById("menu-mobile");
   element.classList.add("toggle");
 }
 function Fechamenu() {

@@ -189,7 +189,7 @@ nav li:last-child {
 }
 
 .service-card .titulo {
-    font: 800 2rem 'Advent Pro';
+    font: 800 2rem 'Roboto';
     display: flex;
     align-items: center;
 }
@@ -308,7 +308,7 @@ nav li:last-child {
 }
 
 .textoSobre .titulos {
-    font: 800 1.5rem 'Advent Pro';
+    font: 800 1.5rem 'Roboto';
 }
 
 .divisao img {
@@ -353,7 +353,7 @@ form div {
 }
 
 div label {
-    font: 600 1.35rem 'Advent Pro';
+    font: 600 1.35rem 'Roboto';
     margin-bottom: .5rem
 }
 

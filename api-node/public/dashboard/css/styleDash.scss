@@ -455,7 +455,7 @@ main{
         gap: 25px;
         font-size: 20px;
         grid-template-columns: repeat(3, 32%);
-        // grid-template-rows: 1fr 1fr 1fr;
+        grid-template-rows: repeat(3, 300px);
         grid-template-areas: "g1 g2 g3"
                              "t1 t1 t1"
                              "t2 t2 t2";
@@ -467,16 +467,16 @@ main{
             div{
                 margin: 0 auto;
                 max-height: 200px;
+                &::after{
+                    content: attr(data-content);
+                    position: absolute;
+                    top: 50%;
+                    left: 50%;
+                    transform: translate(-50%, -50%);
+                    font-size: 1.7rem;
+                }
             }
             position: relative;
-            &::after{
-                content: attr(data-content);
-                position: absolute;
-                top: 50%;
-                left: 50%;
-                transform: translate(-50%, -50%);
-                font-size: 1.7rem;
-            }
         }
         #gfRam{
             grid-area: g3;
