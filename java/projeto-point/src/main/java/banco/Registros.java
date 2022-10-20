@@ -88,7 +88,7 @@ public class Registros {
 
         int idMaquina = maquina.getId();
 
-        utilitarios.wait(5000);
+        utilitarios.wait(300000);
         connection.update("INSERT INTO Registro VALUES(?, ?, now(), ?, ?);",
                 idMaquina,
                 idComponente,

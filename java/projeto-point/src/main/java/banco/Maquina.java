@@ -33,6 +33,11 @@ public class Maquina {
     private Integer id;
     private String SistemaOperacional;
     private String nomeMaquina;
+    
+    public void setNomeMaquina(String nomeMaquina){
+        
+        this.nomeMaquina = nomeMaquina;
+    }
 
     public Integer getId() {
         return id;
@@ -57,7 +62,7 @@ public class Maquina {
             // get system name
             String SystemName
                 = InetAddress.getLocalHost().getHostName();
- 
+           this.nomeMaquina = SystemName;
            return SystemName;
         }
         catch (Exception E) {
@@ -68,41 +73,37 @@ public class Maquina {
     
     public int selectIdMaquina(Funcionario funcionario){
         
-        try{
-            
-         List<Map<String, Object>> resultado = connection.queryForList("SELECT M.idMaquina FROM Maquina M INNER JOIN Funcionario F ON F.idFuncionario = M.fkFuncionario WHERE F.idFuncionario = " + funcionario.getId() + ";");
+        List<Map<String, Object>> resultado = connection.queryForList("SELECT M.idMaquina FROM Maquina M INNER JOIN Funcionario F ON F.idFuncionario = M.fkFuncionario WHERE F.idFuncionario = " + funcionario.getId() + ";");
+        if (!resultado.isEmpty()) {
             JSONObject jsonResultado = new JSONObject(resultado.get(0));
             int idMaquina = jsonResultado.getInt("idMaquina");
             System.out.println(idMaquina);
             return idMaquina;
-        }catch(Exception e){
-            System.out.println(e);
-            System.out.println("Não encontrou nada");
-            return 0;
+        }else{
+             System.out.println("Não encontrou nada");
+             return 0;
         }
-         
-        
+       
+       
     }
 
     public Boolean isMaquinaCadastrada(Funcionario funcionario) {
-
-        try {
-
-            List<Map<String, Object>> resultado = connection.queryForList("SELECT idMaquina, sistemaOperacional FROM Maquina INNER JOIN Funcionario ON idFuncionario = fkFuncionario WHERE idFuncionario = " + funcionario.getId() + ";");
-
+        
+        
+        List<Map<String, Object>> resultado = connection.queryForList("SELECT idMaquina, sistemaOperacional FROM Maquina INNER JOIN Funcionario ON idFuncionario = fkFuncionario WHERE idFuncionario = " + funcionario.getId() + ";");
+        if (!resultado.isEmpty()) {
             JSONObject jsonResultado = new JSONObject(resultado.get(0));
             int idMaquina = jsonResultado.getInt("idMaquina");
             String so = jsonResultado.getString("sistemaOperacional");
-
             this.id = idMaquina;
             this.SistemaOperacional = so;
 
             return true;
-        } catch (Exception e) {
-
-            System.out.println(e);
-            return false;
+        }else{
+             System.out.println("Não encontrou nada");
+             return false;
         }
+        
     }
 
     public Boolean isCadastrarMaquina(Funcionario funcionario) {
@@ -122,10 +123,10 @@ public class Maquina {
             
             System.out.println("Cadastrou");
             
-            utilitarios.wait(5000);
+            Utilitarios.wait(1000);
             this.id = selectIdMaquina(funcionario);
             componente.insertComponentesTotal(this);
-            utilitarios.wait(5000);
+            Utilitarios.wait(1000);
             atributo.inserirTodosValores(this);
 
             return true;

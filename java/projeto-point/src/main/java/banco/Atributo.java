@@ -123,11 +123,11 @@ public class Atributo {
     public void inserirTodosValores(Maquina maquina){
         
         insertMemoriaRamTotal(maquina);
-        utilitarios.wait(5000);
+        utilitarios.wait(1500);
         insertQuantidadeDeCores(maquina);
-        utilitarios.wait(5000);
+        utilitarios.wait(1500);
         insertQuantidadeDeThreads(maquina);
-        utilitarios.wait(5000);
+        utilitarios.wait(1500);
         insertTamanhoTotalHD(maquina);
     }
  

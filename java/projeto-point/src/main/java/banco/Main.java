@@ -36,7 +36,7 @@ public class Main {
         
         
 //      
-        if(func.isFuncionarioCadastrado("fernando@gmail.com", "123")){
+        if(func.isFuncionarioCadastrado("ivan@.com", "123")){
            
             System.out.println(maquina.isMaquinaCadastrada(func));
             
@@ -57,7 +57,6 @@ public class Main {
         int count = 0;
         
         while(true){
-            utilitarios.wait(2000);
             registro.inserirRegistros(maquina);
             count++;
             System.out.println("Foram inseridos " + count + " Dados");
