@@ -133,9 +133,12 @@ nav li:last-child {
     transition: .3s;
 }
 
-#navbar.toggle {
+.toggle {
     visibility: visible;
     opacity: 1;
+    border: 2px solid red;
+    height: 100vh;
+    background-color: white;
 }
 
 .logo {
