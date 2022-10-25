@@ -15,46 +15,44 @@ create table Funcionario (
     cpf char(11) unique not null,
     senha varchar(45) not null,
     email varchar(45) unique,
+    cargo varchar (45) not null default 'Gestor',
+    telefone char(11),
     fkGestor int,
     fkEmpresa int,
     foreign key (fkGestor) references funcionario (idFuncionario),
     foreign key (fkEmpresa) references empresa (idEmpresa)
 );
 
-create table Telefone (
-	idTelefone int primary key identity(1,1),
-    telefone char(11),
-    fkFuncionario int,
-    foreign key (fkFuncionario) references funcionario (idFuncionario)
-);
 
-create table Endereco (
-	idEndereco int primary key identity(1,1),
-    rua varchar(45),
-    num int,
-    bairro varchar(45),
-    cidade VARCHAR(45) not null,
-    estado char(2) not null,
-    pais varchar(45) not null,
-    fkFuncionario int,
-    foreign key (fkFuncionario) references funcionario (idFuncionario),
-    fkEmpresa int,
-    foreign key (fkEmpresa) references empresa (idempresa)
-);
+-- create table Endereco (
+-- 	idEndereco int primary key identity(1,1),
+--     rua varchar(45),
+--     num int,
+--     bairro varchar(45),
+--     cidade VARCHAR(45) not null,
+--     estado char(2) not null,
+--     pais varchar(45) not null,
+--     fkFuncionario int,
+--     foreign key (fkFuncionario) references funcionario (idFuncionario),
+--     fkEmpresa int,
+--     foreign key (fkEmpresa) references empresa (idempresa)
+-- );
 
 create table Maquina (
     idMaquina int primary key identity(1,1),
     sistemaOperacional varchar(45) not null,
     nomeMaquina varchar(45),
+    tipo VARCHAR(30),
     fkfuncionario int,
     foreign key (fkFuncionario) references funcionario (idFuncionario)
 );
 
 create table Componente(
-    idComponente int primary key identity(1,1),
+    idComponente int,
     tipo varchar(50),
     fkMaquina int,
-    foreign key (fkMaquina) references maquina (idMaquina)
+    foreign key (fkMaquina) references maquina (idMaquina),
+    primary key(idComponente, fkMaquina)
 );
 
 create table Atributo(
@@ -63,53 +61,52 @@ create table Atributo(
     valor decimal(6,2),
     unidadeMedida varchar(30),
     fkComponente int,
-    foreign key (fkComponente) references componente (idComponente)
+    fkMaquina INT,
+    foreign key (fkComponente, fkMaquina) references componente (idComponente, fkMaquina)
 );
 
 create table Registro(
-    idRegistro int primary key IDENTITY(1,1),
-    valor decimal(6,2),
-    unidadeMedida varchar(5),
-    dataEhora datetime,
+    fkMaquina int,
     fkComponente int,
-    foreign key (fkComponente) references componente (idComponente)
+    dataEhora datetime,
+    valor decimal(6,2),
+    unidadeMedida VARCHAR(5),
+    foreign key (fkComponente, fkMaquina) references componente (idComponente, fkMaquina)
+   
 );
 
 GO
--- Views
-CREATE VIEW vw_componentes AS
+
+CREATE VIEW "vw_componentes" AS
 SELECT E.nome AS 'empresa', E.cnpj,
 	F.email,
-    Endereco.cidade, Endereco.estado, Endereco.pais,
     idMaquina, nomeMaquina, sistemaOperacional,
-    tipo,
+    C.tipo,
     atributo, valor, unidadeMedida
 FROM Empresa E
-
-INNER JOIN Endereco ON Endereco.fkEmpresa = idEmpresa
-INNER JOIN Funcionario F ON F.fkEmpresa = idEmpresa AND Endereco.fkFuncionario = idFuncionario
+INNER JOIN Funcionario F ON F.fkEmpresa = idEmpresa
 INNER JOIN Maquina ON Maquina.fkFuncionario = idFuncionario
-INNER JOIN Componente ON fkMaquina = idMaquina
+INNER JOIN Componente C ON fkMaquina = idMaquina
 INNER JOIN Atributo ON fkComponente = idComponente;
-
-
-SELECT * FROM vw_componentes;
 
 GO
 
-CREATE VIEW vw_registros AS
+CREATE VIEW "vw_registros" AS
 SELECT  E.nome AS 'empresa', E.cnpj,
 		email,
-        Endereco.cidade, Endereco.estado, Endereco.pais,
         idMaquina, nomeMaquina, sistemaOperacional,
-        tipo,
+        C.tipo,
         valor, unidadeMedida, dataEhora
 FROM Empresa E
-INNER JOIN Endereco ON Endereco.fkEmpresa = idEmpresa
-INNER JOIN Funcionario F ON F.fkEmpresa = idEmpresa AND Endereco.fkFuncionario = idFuncionario
+INNER JOIN Funcionario F ON F.fkEmpresa = idEmpresa
 INNER JOIN Maquina ON Maquina.fkFuncionario = idFuncionario
-INNER JOIN Componente ON fkMaquina = idMaquina
+INNER JOIN Componente C ON fkMaquina = idMaquina
 INNER JOIN Registro ON fkComponente = idComponente;
 
-
-SELECT * FROM vw_registros;
+CREATE VIEW "vw_infoMaquina" AS
+SELECT idMaquina, nomeMaquina, sistemaOperacional, M.tipo AS 'tipoMaquina',
+	   C.tipo AS 'tipoComponente',
+       atributo, valor, unidadeMedida
+FROM Maquina M
+INNER JOIN Componente C ON C.fkMaquina = idMaquina
+INNER JOIN Atributo ON idComponente = fkComponente;
