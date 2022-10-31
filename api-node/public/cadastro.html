@@ -163,78 +163,35 @@ setTimeout(()=>{
         alerta.style.display = "none";
 
         // Enviando o valor da nova input
-        fetch("/usuarios/cadastrarEmpresa", {
+        fetch("/usuarios/cadastrarEmpresaGerente", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
             },
             body: JSON.stringify({
-                // crie um atributo que recebe o valor recuperado aqui
-                // Agora vá para o arquivo routes/usuario.js
                 nomeEmpresaServer: nomeEmpresa,
-                cnpjServer: cnpjVar
+                cnpjServer: cnpjVar,
+                nomeGerenteServer: nomeGerenteVar,
+                cpfServer: cpfVar,
+                emailServer: emailVar,
+                telefoneServer: telefoneVar,
+                senhaServer: senhaVar
             })
         }).then(function (resposta) {
-
             console.log("resposta: ", resposta);
-
             if (resposta.ok) {
-
-                resposta.json().then(json => {
-                    idEmpresa = json.insertId;
-                    //fetch do gestor
-                    fetch("/usuarios/cadastrarUsuario", {
-                        method: "POST",
-                        headers: {
-                            "Content-Type": "application/json"
-                        },
-                        body: JSON.stringify({
-                            // crie um atributo que recebe o valor recuperado aqui
-                            // Agora vá para o arquivo routes/usuario.js
-                            nomeGerenteServer: nomeGerenteVar,
-                            cpfServer: cpfVar,
-                            emailServer: emailVar,
-                            telefoneServer : telefoneVar,
-                            senhaServer: senhaVar,
-                            idEmpresaServer: idEmpresa
-                        })
-                    }).then(function (resposta) {
-
-                        console.log("resposta: ", resposta);
-
-                        if (resposta.ok) {
-
-                            setTimeout(() => {
-                                console.log("entrou")
-                                window.location = "login.html";
-                            }, 1000)
-
-                            limparFormulario();
-
-                        } else {
-                            mostrarAlerta("Não foi possível realizar o cadastro");
-                            throw ("Houve um erro ao tentar realizar o cadastro!");
-                        }
-                    }).catch(function (resposta) {
-                        console.log(`#ERRO: ${resposta}`);
-
-                    });
-                });
-
-
-
-            } else {
+                setTimeout(() => {
+                    window.location = "login.html";
+                }, 1000)
+                limparFormulario();
+            }
+            else {
                 mostrarAlerta("Não foi possível realizar o cadastro");
                 throw ("Houve um erro ao tentar realizar o cadastro!");
             }
         }).catch(function (resposta) {
             console.log(`#ERRO: ${resposta}`);
-
         });
-
         return false;
     }
-
-
-
 </script>

@@ -8,21 +8,17 @@ router.get("/", function (req, res) {
 });
 
 //Recebendo os dados do html e direcionando para a função cadastrar de usuarioController.js
-router.post("/cadastrarEmpresa", function (req, res) {
-    usuarioController.cadastrarEmpresa(req, res);
-})
-
-router.post("/cadastrarUsuario", function (req, res) {
-    usuarioController.cadastrarUsuario(req, res);
-})
+router.post("/cadastrarEmpresaGerente", function (req, res) {
+    usuarioController.cadastrarEmpresaGerente(req, res);
+});
 
 router.post("/cadastrarFuncionario", function (req, res) {
     usuarioController.cadastrarFuncionario(req, res);
-})
+});
 
 router.post("/alterarFuncionario", function (req, res) {
     usuarioController.alterarFuncionario(req, res);
-})
+});
 
 router.post("/autenticar", function (req, res) {
     usuarioController.entrar(req, res);
