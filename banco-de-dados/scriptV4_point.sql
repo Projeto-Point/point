@@ -23,8 +23,8 @@ create table Funcionario (
     telefone char(11),
     fkGestor int,
     fkEmpresa int,
-    foreign key (fkGestor) references funcionario (idFuncionario),
-    foreign key (fkEmpresa) references empresa (idEmpresa)
+    foreign key (fkGestor) references Funcionario (idFuncionario),
+    foreign key (fkEmpresa) references Empresa (idEmpresa)
 );
 
 create table Endereco (
@@ -36,9 +36,9 @@ create table Endereco (
     estado char(2) not null,
     pais varchar(45) not null,
     fkFuncionario int,
-    foreign key (fkFuncionario) references funcionario (idFuncionario),
+    foreign key (fkFuncionario) references Funcionario (idFuncionario),
     fkEmpresa int,
-    foreign key (fkEmpresa) references empresa (idempresa)
+    foreign key (fkEmpresa) references Empresa (idempresa)
 );
 
 create table Maquina (
@@ -47,7 +47,7 @@ create table Maquina (
     nomeMaquina varchar(45),
     tipo VARCHAR(30),
     fkfuncionario int,
-    foreign key (fkFuncionario) references funcionario (idFuncionario)
+    foreign key (fkFuncionario) references Funcionario (idFuncionario)
 );
 
 CREATE TABLE Alerta (

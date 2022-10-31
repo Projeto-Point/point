@@ -1,10 +1,6 @@
 var database = require("../database/config");
 
 function pegarRegistroCPU(idMaquina){
-    // instrucaoSql = `select M.idMaquina, A.valor FROM Maquina M
-    // INNER JOIN Componente C ON C.fkMaquina = M.idMaquina
-    // INNER JOIN Atributo A ON fkComponente = idComponente
-    // WHERE C.tipo like "CPU" AND M.idMaquina = ${idMaquina} order by idAtributo desc limit 0,10;`;
     instrucaoSql = `SELECT valor FROM vw_registros 
     WHERE tipo like "CPU" AND idMaquina = ${idMaquina} order by dataEhora desc limit 0,10;`;
     console.log("Executando a instrução SQL: \n" + instrucaoSql);
@@ -37,7 +33,6 @@ function pegarRegistroMaquina(idMaquina){
     console.log("Executando a instrução SQL: \n" + instrucaoSql);
     return database.executar(instrucaoSql);
 }
-
 
 module.exports = {
     pegarRegistroCPU,

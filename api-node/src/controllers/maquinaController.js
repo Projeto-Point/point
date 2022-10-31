@@ -1,5 +1,6 @@
 var maquinaModel = require("../models/maquinaModel");
 
+// Página das máquinas
 function listar(req, res) {
     maquinaModel.listar()
     .then(function (resultado) {
@@ -16,6 +17,7 @@ function listar(req, res) {
     });
 }
 
+// Página de alertas
 function listarAlertas(req, res){
     maquinaModel.listarAlertas()
     .then(function(resultado) {
@@ -32,6 +34,7 @@ function listarAlertas(req, res){
     });
 }
 
+// Página da dashboard
 function analiseComponente(req, res){
     const tipoComponente = req.query.tipoComponente;
     const idMaquina = req.query.idMaquina;
