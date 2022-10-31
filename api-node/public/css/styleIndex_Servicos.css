@@ -109,7 +109,6 @@ nav li a {
     text-decoration: none;
     color: #1e1e1e;
     font-size: 1.30rem;
-    transition: .3s;
 }
 
 nav li a:hover {
@@ -130,7 +129,6 @@ nav li:last-child {
 #navbar {
     visibility: hidden;
     opacity: 0;
-    transition: .3s;
 }
 
 .toggle {
@@ -510,9 +508,7 @@ button {
 
 @media (min-width:997px) {
     header {
-
         display: block;
-
     }
 
     .header {
@@ -556,7 +552,6 @@ button {
     nav li {
         font-size: 1.30rem;
         padding-bottom: 22px;
-        transition: .3s;
     }
 
     nav li a:hover {
