@@ -110,3 +110,14 @@ SELECT idMaquina, nomeMaquina, sistemaOperacional, M.tipo AS 'tipoMaquina',
 FROM Maquina M
 INNER JOIN Componente C ON C.fkMaquina = idMaquina
 INNER JOIN Atributo ON idComponente = fkComponente;
+
+-- Insert 
+
+INSERT INTO dbo.Empresa (nome, cnpj, plano, descEmpresa) VALUES ('Itau', '12345678901232', 1, 'Banco brasileiro');
+INSERT INTO dbo.Empresa (nome, cnpj, plano, descEmpresa) VALUES ('VR', '24545675108032', 2, 'Fornecedora de benefícios PAT');
+INSERT INTO dbo.Empresa (nome, cnpj, plano, descEmpresa) VALUES ('Banco Caixa', '79905654108012', 2, 'Banco Mercado Empresarial');
+
+INSERT INTO dbo.Funcionario (nome, cpf, senha, email, cargo, telefone, fkGestor,fkEmpresa) values ('Fabio', '34578890212', '123', 'fabio@gmail.com','gestor','12345678922',1,1);
+INSERT INTO dbo.Funcionario (nome, cpf, senha, email, cargo, telefone, fkGestor,fkEmpresa) values ('Caio', '90573590267', '121', 'caio@gmail.com','analista','81342878945',1,1);
+INSERT INTO dbo.Funcionario (nome, cpf, senha, email, cargo, telefone, fkGestor,fkEmpresa) values ('Marcelo', '73565590202', '133', 'marcelo@gmail.com','desenvovedor','47342248912',1,1);
+

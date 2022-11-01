@@ -37,7 +37,7 @@ import pyodbc as pyo
         # sudo apt-get update
         # sudo ACCEPT_EULA=Y apt-get install -y msodbcsql18
 
-pyo.connect("Driver={ODBC Driver 18 for SQL Server};Server=bd-point.database.windows.net,1433;Database=script-sql-server.sql;Uid=admin-point;Pwd=1cco#grupo1;Encrypt=yes;TrustServerCertificate=no;Connection Timeout=30;")
+pyo.connect("Driver={ODBC Driver 18 for SQL Server};Server=bd-point.database.windows.net;Database=bd-point;Uid=adm-point;Pwd=1cco#grupo1;Encrypt=yes;TrustServerCertificate=no;Connection Timeout=30;")
 
 
 import json
@@ -284,6 +284,10 @@ while True:
         sleep(3)
     except KeyboardInterrupt:
         break
+    
+    
+    
+    
     
     # conectando no Azure
 import psycopg2
