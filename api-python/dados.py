@@ -290,23 +290,33 @@ while True:
     
     
     # conectando no Azure
-import psycopg2
+import pymssql
 
 # Update connection string information
+server = 'bd-point.database.windows.net'
+database = 'bd-point' 
+username = 'adm-point' 
+password = '1cco#grupo1'
 
-host = "<bd-point.database.windows.net>"
-dbname = "<script-sql-server.sql>"
-user = "<admin-point>"
-password = "<1cco#grupo1>"
-sslmode = "require"
+#host = "<bd-point.database.windows.net>"
+#dbname = "<script-sql-server.sql>"
+#user = "<admin-point>"
+#password = "<1cco#grupo1>"
+#sslmode = "require"
 
 # Construct connection string
-
-conn_string = "host={0} user={1} dbname={2} password={3} sslmode={4}".format(host, user, dbname, password, sslmode)
-conn = psycopg2.connect(conn_string)
-print("Connection established")
-
+conn = pymssql.connect (server='bd-point.database.windows.net', user='adm-point', password='1cco#grupo1', database='bd-point')
 cursor = conn.cursor()
+
+cursor.execute("SELECT * FROM Funcionario;")
+linha = cursor.fetchall()
+print(linha)
+
+#conn_string = "host={0} user={1} dbname={2} password={3} sslmode={4}".format(host, user, dbname, password, sslmode)
+#conn = psycopg2.connect(conn_string)
+#print("Connection established")
+
+#cursor = conn.cursor()
 
 # Drop previous table of same name if one exists
 
