@@ -3,6 +3,10 @@
     --color-verdeClaro: #23b052;
     --color-verdeEscuro:#359d58;
     --color-vermelhoAlerta:#d0342c;
+    --cor1: #00CA43;
+    --cor2: #00A219;
+    --cor3: #007B00;
+    --radius: 10px;
   }
 
 
@@ -138,36 +142,62 @@ p.alerta {
   gap: 1rem;
 }
 
-.btnEntrar {
-  background-color: var(--color-verdeClaro);
-  border-radius: 10px;
-  border: none;
+
+.custom-btn {
+  width: 130px;
+  height: 40px;
+  color: #fff;
+  border-radius: 5px;
+  padding: 10px 25px;
+  font-family: 'Lato', sans-serif;
+  font-weight: 500;
+  background: transparent;
   cursor: pointer;
-  color: #ffffff;
-  font-family: Arial;
-  font-size: 1.25rem;
-  padding: 0.5rem 1rem;
-  text-decoration: none;
-  transition: 0.2s;
+  transition: all 0.3s ease;
+  position: relative;
+  display: inline-block;
+   box-shadow:inset 2px 2px 2px 0px rgba(255,255,255,.5),
+   7px 7px 20px 0px rgba(0,0,0,.1),
+   4px 4px 5px 0px rgba(0,0,0,.1);
   outline: none;
 }
 
+
+.btnEntrar {
+  background: var(--cor2);
+  border: none;
+  z-index: 1;
+  margin-top: 27px;
+  width: 180px;
+  font-size: 1.1rem;
+  outline: none;
+  padding: .5rem 1rem;
+}
+.btnEntrar:after {
+  position: absolute;
+  content: "";
+  width: 0;
+  height: 100%;
+  top: 0;
+  right: 0;
+  z-index: -1;
+  background-color: var(--cor3);
+  border-radius: 5px;
+   box-shadow:inset 2px 2px 2px 0px rgba(255,255,255,.5),
+   7px 7px 20px 0px rgba(0,0,0,.1),
+   4px 4px 5px 0px rgba(0,0,0,.1);
+  transition: all 0.5s ease;
+}
 .btnEntrar:hover {
-  background-color: var(--color-verdeEscuro);
-  transform: scale(1.01);
+  color: #fff;
 }
-
+.btnEntrar:hover:after {
+  left: 0;
+  width: 100%;
+}
 .btnEntrar:active {
-  position: relative;
-  top: 1px;
+  top: 2px;
 }
-a {
-  color: var(--color-verdeClaro);
-}
-a:hover {
-  color: #25733f;
-}
-
 @media (max-width: 768px) {
   .imagem_login,
   .imagem_cadastro {

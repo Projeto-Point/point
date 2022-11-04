@@ -34,7 +34,7 @@
                 </div>
 
                 <div class="botao_login">
-                    <button class="btnEntrar" onclick="entrar()">Entrar</button>
+                    <button class="btnEntrar custom-btn" onclick="entrar()">Entrar</button>
                 </div>
 
                 <p class="alerta" id="alerta"></p>
@@ -115,6 +115,7 @@ function key(){
                     sessionStorage.ID_USUARIO = json.idFuncionario;
                     sessionStorage.CARGO = json.cargo;
                     sessionStorage.ID_EMPRESA = json.fkEmpresa;
+                    sessionStorage.SENHA_USUARIO = json.senha;
 
                     setTimeout(function () {
                         window.location = "dashboard/cadastrar-funcionario.html";
