@@ -15,4 +15,5 @@ telas\App.class
 banco\Funcionario.class
 telas\TelaPrincipal.class
 banco\Main.class
+banco\TratamentoValores.class
 telas\App$1.class

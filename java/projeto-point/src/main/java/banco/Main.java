@@ -5,65 +5,62 @@
 package banco;
 
 import com.github.britooo.looca.api.core.Looca;
-import java.io.InputStream;
-import java.net.InetAddress;
-import javax.swing.Timer;
-import org.apache.commons.logging.Log;
+import com.mashape.unirest.http.HttpResponse;
+import com.mashape.unirest.http.Unirest;
+import com.mashape.unirest.http.exceptions.UnirestException;
+import java.io.IOException;
 import org.springframework.jdbc.core.JdbcTemplate;
-import java.net.InetAddress;
+
 import java.util.List;
 import java.util.Map;
-import org.json.JSONObject;
+
 /**
  *
  * @author ivanm
  */
 public class Main {
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws UnirestException {
 
         Looca looca = new Looca();
-        
+
         Database database = new Database();
         Utilitarios utilitarios = new Utilitarios();
-    
-        
+
         Funcionario func = new Funcionario();
         Maquina maquina = new Maquina();
         Componente componentes = new Componente();
         Atributo atributo = new Atributo();
         Registros registro = new Registros();
-        
-        
+
+
+      
+
 //      
-        if(func.isFuncionarioCadastrado("ivan@.com", "123")){
-           
+        if (func.isFuncionarioCadastrado("ivan@.com", "123")) {
+
             System.out.println(maquina.isMaquinaCadastrada(func));
-            
+
             if (maquina.isMaquinaCadastrada(func)) {
                 System.out.println("Máquina já cadastrada");
-            }else if (maquina.isCadastrarMaquina(func)){
+            } else if (maquina.isCadastrarMaquina(func)) {
                 System.out.println("Máquina Cadastrada");
-            }else{
+            } else {
                 System.out.println("Não foi possível encontrar máquina/cadastar máquina");
             }
-        }else{
+        } else {
             System.out.println("Funcionário não encontrado");
         }
-        
-        
+
         System.out.println("Agora vamos inserir os dados no banco");
-        
+
         int count = 0;
-        
-        while(true){
+
+        while (true) {
             registro.inserirRegistros(maquina);
             count++;
             System.out.println("Foram inseridos " + count + " Dados");
         }
-     
-        
-        
+
     }
 }
-
