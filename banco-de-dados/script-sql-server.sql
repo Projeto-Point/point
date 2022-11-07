@@ -1,3 +1,5 @@
+-- exec sp_columns Localizacao; Desc Table
+
 use [bd-point];
 
 create table Empresa (
@@ -24,19 +26,18 @@ create table Funcionario (
 );
 
 
--- create table Endereco (
--- 	idEndereco int primary key identity(1,1),
---     rua varchar(45),
---     num int,
---     bairro varchar(45),
---     cidade VARCHAR(45) not null,
---     estado char(2) not null,
---     pais varchar(45) not null,
---     fkFuncionario int,
---     foreign key (fkFuncionario) references funcionario (idFuncionario),
---     fkEmpresa int,
---     foreign key (fkEmpresa) references empresa (idempresa)
--- );
+create table Localizacao (
+    idLocalizacao primary key int identity(1,1),
+    acao char(1),
+    dataEhora datetime,
+    ipAdress varchar(16),
+    longitude decimal(7,4),
+    latitude decimal(7,4),
+    cidade varchar(50),
+    pais char(2),
+    fkMaquina int,
+    foreign key (fkMaquina) references Maquina (idMaquina)
+);
 
 create table Maquina (
     idMaquina int primary key identity(1,1),

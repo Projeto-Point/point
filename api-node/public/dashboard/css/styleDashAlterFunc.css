@@ -314,7 +314,7 @@ main {
   min-height: 100vh;
   display: flex;
   flex-direction: column;
-  background: var(--cor1);
+  background: var(--cor2);
   background-image: url("../../assets/dash/dash.png");
   background-repeat: no-repeat;
   background-size: contain;
@@ -511,7 +511,7 @@ main section.funcionarios .top {
 }
 
 main section.funcionarios .top a {
-  background-color: var(--cor2);
+  background-color: var(--cor3);
   padding: 15px;
 }
 
