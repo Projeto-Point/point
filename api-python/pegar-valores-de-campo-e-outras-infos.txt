@@ -1,0 +1,264 @@
+https://developers.pipefy.com/reference/graphql-endpoint
+Site onde é possível pegar as infos como os id's. 
+Em ''query'' tem que inserir> {     allCards (pipeId:_seu_pipe_id){         edges{             node{                 title                 fields{                     field {                         id                         label                         description                     }                     name                     value                 }             }         }     } }
+
+"authorization"> Bearer seu_token_de_autorização
+
+''content-type''> o que tiver no campo com o mesmo nome  
+
+No caso do nosso pipefy, a gente pode pegar todas essas infos direto no arquivo pipefy.py 
+
+
+Isso retorna todos os cards e suas informações específicas. Abaixo tem um exemplo com os cards criados até o momento de criação desse txt. 
+
+O ''id'' mostra o campo que estamos alterando e usamos ele no código do pipefy.py para tratar cada campo do form do card.
+
+{
+  "data": {
+    "allCards": {
+      "edges": [
+        {
+          "node": {
+            "title": "Internet instável",
+            "fields": [
+              {
+                "field": {
+                  "id": "categoria",
+                  "label": "Categoria",
+                  "description": ""
+                },
+                "name": "Categoria",
+                "value": "[\"Problema\"]"
+              },
+              {
+                "field": {
+                  "id": "h_informa_es_faltando",
+                  "label": "Há informações faltando?",
+                  "description": ""
+                },
+                "name": "Há informações faltando?",
+                "value": ""
+              },
+              {
+                "field": {
+                  "id": "qual_o_assunto_do_seu_pedido",
+                  "label": "Qual o assunto do seu pedido?",
+                  "description": ""
+                },
+                "name": "Qual o assunto do seu pedido?",
+                "value": "Internet instável"
+              }
+            ]
+          }
+        },
+        {
+          "node": {
+            "title": "ram",
+            "fields": [
+              {
+                "field": {
+                  "id": "qual_o_assunto_do_seu_pedido",
+                  "label": "Qual o assunto do seu pedido?",
+                  "description": ""
+                },
+                "name": "Qual o assunto do seu pedido?",
+                "value": "ram"
+              },
+              {
+                "field": {
+                  "id": "email",
+                  "label": "Email_funcionario",
+                  "description": ""
+                },
+                "name": "Email_funcionario",
+                "value": "xxx.y@z.com"
+              },
+              {
+                "field": {
+                  "id": "nome_do_funcion_rio",
+                  "label": "Nome do funcionário",
+                  "description": ""
+                },
+                "name": "Nome do funcionário",
+                "value": "alberco"
+              },
+              {
+                "field": {
+                  "id": "data_e_hora",
+                  "label": "Data e hora",
+                  "description": ""
+                },
+                "name": "Data e hora",
+                "value": "17/11/2022 03:00"
+              },
+              {
+                "field": {
+                  "id": "respons_vel_1",
+                  "label": "Responsável",
+                  "description": ""
+                },
+                "name": "Responsável",
+                "value": "[\"Alessandra do Carmo Baccin\"]"
+              }
+            ]
+          }
+        },
+        {
+          "node": {
+            "title": "RAM em 85% - 10053: Máquina 1",
+            "fields": []
+          }
+        },
+        {
+          "node": {
+            "title": "RAM em 85% - 10053: Máquina 1",
+            "fields": []
+          }
+        },
+        {
+          "node": {
+            "title": "Telefone não está funcionando",
+            "fields": [
+              {
+                "field": {
+                  "id": "qual_o_assunto_do_seu_pedido",
+                  "label": "Qual o assunto do seu pedido?",
+                  "description": ""
+                },
+                "name": "Qual o assunto do seu pedido?",
+                "value": "Telefone não está funcionando"
+              }
+            ]
+          }
+        },
+        {
+          "node": {
+            "title": "Teclado não funciona",
+            "fields": [
+              {
+                "field": {
+                  "id": "qual_o_assunto_do_seu_pedido",
+                  "label": "Qual o assunto do seu pedido?",
+                  "description": ""
+                },
+                "name": "Qual o assunto do seu pedido?",
+                "value": "Teclado não funciona"
+              },
+              {
+                "field": {
+                  "id": "h_informa_es_faltando",
+                  "label": "Há informações faltando?",
+                  "description": ""
+                },
+                "name": "Há informações faltando?",
+                "value": "Não"
+              }
+            ]
+          }
+        },
+        {
+          "node": {
+            "title": "Notebook está muito lento e travando frequentemente",
+            "fields": [
+              {
+                "field": {
+                  "id": "qual_o_assunto_do_seu_pedido",
+                  "label": "Qual o assunto do seu pedido?",
+                  "description": ""
+                },
+                "name": "Qual o assunto do seu pedido?",
+                "value": "Notebook está muito lento e travando regularmente"
+              },
+              {
+                "field": {
+                  "id": "a_es_que_foram_tomadas",
+                  "label": "Ações que foram tomadas",
+                  "description": ""
+                },
+                "name": "Ações que foram tomadas",
+                "value": "Tentei resolver o problema remotamente, porém não consegui. Uma possível solução é fazer a formatação completa do computador, porém gostaria que o especialista dessa uma olhada antes. "
+              },
+              {
+                "field": {
+                  "id": "anexos",
+                  "label": "Anexos",
+                  "description": ""
+                },
+                "name": "Anexos",
+                "value": "[\"https://app-storage-service.pipefy.com/v1/signed/uploads/42176bd5-81ad-4723-80fb-e75b5296dc56/Anexo-Exemplo.pdf?expires_on=1667839063&signature=jEtsKbt%2FmEg6kEbP%2F%2B82Gcu9bpW9uO8EWYoFk0IW2uM%3D\"]"
+              },
+              {
+                "field": {
+                  "id": "o_atendente_pode_resolver_este_problema",
+                  "label": "O atendente pode resolver este problema?",
+                  "description": ""
+                },
+                "name": "O atendente pode resolver este problema?",
+                "value": "Não, é necessário designar um especialista de suporte"
+              }
+            ]
+          }
+        },
+        {
+          "node": {
+            "title": "Instalação de novo software",
+            "fields": [
+              {
+                "field": {
+                  "id": "o_atendente_pode_resolver_este_problema",
+                  "label": "O atendente pode resolver este problema?",
+                  "description": ""
+                },
+                "name": "O atendente pode resolver este problema?",
+                "value": "Sim"
+              },
+              {
+                "field": {
+                  "id": "a_es_que_foram_tomadas",
+                  "label": "Ações que foram tomadas",
+                  "description": ""
+                },
+                "name": "Ações que foram tomadas",
+                "value": "Eu realizei o acesso remoto no computador e instalei o software requisitado. "
+              },
+              {
+                "field": {
+                  "id": "anexos",
+                  "label": "Anexos",
+                  "description": ""
+                },
+                "name": "Anexos",
+                "value": "[\"https://app-storage-service.pipefy.com/v1/signed/uploads/5a32a01f-9692-4bea-9b1e-c1c434871d0a/Anexo-Exemplo.pdf?expires_on=1667839063&signature=RUobxya5PGFxNQ7iPFf6vsUH0cexclZY%2Bzl08VsZyKg%3D\"]"
+              },
+              {
+                "field": {
+                  "id": "qual_o_assunto_do_seu_pedido",
+                  "label": "Qual o assunto do seu pedido?",
+                  "description": ""
+                },
+                "name": "Qual o assunto do seu pedido?",
+                "value": "Instalação de novo software"
+              }
+            ]
+          }
+        },
+        {
+          "node": {
+            "title": "Renovação de licenças do Office",
+            "fields": [
+              {
+                "field": {
+                  "id": "qual_o_assunto_do_seu_pedido",
+                  "label": "Qual o assunto do seu pedido?",
+                  "description": ""
+                },
+                "name": "Qual o assunto do seu pedido?",
+                "value": "Renovação de licenças do Office"
+              }
+            ]
+          }
+        }
+      ]
+    }
+  }
+}
