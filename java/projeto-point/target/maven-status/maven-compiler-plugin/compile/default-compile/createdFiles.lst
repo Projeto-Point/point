@@ -3,6 +3,7 @@ telas\TelaLogin$2.class
 telas\TelaLogin$1.class
 banco\Registros.class
 telas\TelaPrincipal$1.class
+banco\ConexaoPipefySlack.class
 banco\Utilitarios.class
 telas\TelaLogin.class
 telas\Monitoramento.class

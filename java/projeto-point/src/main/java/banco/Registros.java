@@ -88,8 +88,8 @@ public class Registros {
 
         int idMaquina = maquina.getId();
 
-        utilitarios.wait(300000);
-        connection.update("INSERT INTO Registro VALUES(?, ?, now(), ?, ?);",
+        Utilitarios.wait(3600);
+        connection.update("INSERT INTO dbo.Registro (fkMaquina, fkComponente, dataEhora, valor, unidadeMedida) VALUES(?, ?, current_timestamp, ?, ?);",
                 idMaquina,
                 idComponente,
                 valor,

@@ -26,16 +26,16 @@ public class Database {
 
     BasicDataSource dataSource = new BasicDataSource();
 
-    dataSource​.setDriverClassName("com.mysql.cj.jdbc.Driver");
+    dataSource​.setDriverClassName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
     
     // Colocar aqui o caminho do banco e o nome do database -- padrão = localhost:3306
-    dataSource​.setUrl("jdbc:mysql://127.0.0.1:3306/bd_point");
+    dataSource​.setUrl("jdbc:sqlserver://bd-point.database.windows.net:1433;database=bd-point;user=adm-point@bd-point;password=1cco#grupo1;encrypt=true;trustServerCertificate=false;hostNameInCertificate=*.database.windows.net;loginTimeout=30;");
     
     // Nome do usuário da conexão 
-    dataSource​.setUsername("root");
+    dataSource​.setUsername("adm-point@bd-point");
     
     // Senha da conexão 
-    dataSource​.setPassword("sptech");
+    dataSource​.setPassword("1cco#grupo1");
 
     this.connection = new JdbcTemplate(dataSource);
 
