@@ -77,7 +77,7 @@
 
     nomeGerente.innerHTML=sessionStorage.NOME_USUARIO;
     // TO DO: incluir máquinas com alertas, verificar se é computador ou servidor
-    fetch(`/maquinas/listar`).then(function (res) {
+    fetch(`/maquinas/listar?idEmpresa=${sessionStorage.ID_EMPRESA}`).then(function (res) {
             if (res.ok) {
                 res.json().then(resposta => {
                     var lista = document.querySelector("#maquinas");

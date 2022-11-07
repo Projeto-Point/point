@@ -1,22 +1,22 @@
 var database = require("../database/config");
 
 function pegarRegistroCPU(idMaquina){
-    instrucaoSql = `SELECT valor FROM vw_registros 
-    WHERE tipo like "CPU" AND idMaquina = ${idMaquina} order by dataEhora desc limit 0,10;`;
+    instrucaoSql = `SELECT TOP 10 valor FROM vw_registros 
+    WHERE tipo like 'CPU' AND idMaquina = ${idMaquina} order by dataEhora desc;`;
     console.log("Executando a instrução SQL: \n" + instrucaoSql);
     return database.executar(instrucaoSql);
 }
 
 function pegarRegistroDISCO(idMaquina){
-    instrucaoSql = `SELECT valor FROM vw_registros 
-    WHERE tipo like "DISCO" AND idMaquina = ${idMaquina} order by dataEhora desc limit 0,1;`;
+    instrucaoSql = `SELECT TOP 1 valor FROM vw_registros 
+    WHERE tipo like 'DISCO' AND idMaquina = ${idMaquina} order by dataEhora desc;`;
     console.log("Executando a instrução SQL: \n" + instrucaoSql);
     return database.executar(instrucaoSql);
 }
 
 function pegarRegistroRAM(idMaquina){
-    instrucaoSql = `SELECT valor FROM vw_registros 
-    WHERE tipo like "RAM" AND idMaquina = ${idMaquina} order by dataEhora desc limit 0,10;`;
+    instrucaoSql = `SELECT TOP 10 valor FROM vw_registros 
+    WHERE tipo like 'RAM' AND idMaquina = ${idMaquina} order by dataEhora desc;`;
     console.log("Executando a instrução SQL: \n" + instrucaoSql);
     return database.executar(instrucaoSql);
 }
