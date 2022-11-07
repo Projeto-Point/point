@@ -36,6 +36,7 @@ from dashing import (
 
 import requests
 import pymssql
+import geocoder
 
 # Para usar na AWS
 # 1. sudo apt-get install unixodbc-dev
@@ -81,8 +82,9 @@ database = 'bd-point'
 username = 'adm-point'
 password = '1cco#grupo1'
 
-conn = pymssql.connect(server='bd-point.database.windows.net',
-                       user='adm-point', password='1cco#grupo1', database='bd-point')
+#conn = pymssql.connect(server='bd-point.database.windows.net',
+      #                 user='adm-point', password='1cco#grupo1', database='bd-point')
+conn = pymssql.connect(server=server, user=username, password=password, database=database)
 cursor = conn.cursor()
 
 verificaLogin = False
@@ -310,10 +312,10 @@ while True:
 
     # Conexão BD
 
-    conexao = pymysql.connect(db='bd_point_python',
-                              user='aluno', passwd='sptech')
+   # conexao = pymysql.connect(db='bd_point_python',
+            #                  user='aluno', passwd='sptech')
 
-    cursor = conexao.cursor()
+    #cursor = conexao.cursor()
 
     cursor.execute(
         f"SELECT idMaquina FROM Maquina INNER JOIN Funcionario ON fkFuncionario = idFuncionario WHERE email = '{login}'")
@@ -329,9 +331,9 @@ while True:
         cursor.execute(
             f"INSERT INTO Registro (valor, unidadeMedida, dataEhora, fkComponente, fkMaquina) VALUES ({disk_usage('/').percent}, '%', NOW(), 3, {id})")
 
-        conexao.commit()
+        #conexao.commit()
 
-        conexao.close()
+        #conexao.close()
     except:
         print("F no chat aki")
 
