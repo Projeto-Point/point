@@ -238,6 +238,18 @@ function pegarDadosAtuais(req, res) {
         });
 }
 
+function getSenhaGestor(req, res) {
+    const idGestor = req.query.idFuncionario;
+    usuarioModel.getSenhaGestor(idGestor)
+        .then(function (resposta) {
+            res.status(200).json(resposta);
+        })
+        .catch(function (erro) {
+            console.log(erro);
+            console.log("Houve um erro ao buscar os registroAtualFuncionario.", erro.sqlMessage);
+            res.status(500).json(erro.sqlMessage);
+        });
+}
 
 module.exports = {
     entrar,
@@ -246,5 +258,5 @@ module.exports = {
     alterarFuncionario,
     listarFuncionarios,
     pegarDadosAtuais,
-    // verificarGerente,
+    getSenhaGestor
 }

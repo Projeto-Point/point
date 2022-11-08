@@ -175,7 +175,7 @@
                 // <p><b>Sistema operacional: </b><span><div id="nomeMaquina"></div></span></p>
                 // <p><b>Sistema operacional: </b><span><div id="tipoMaquina"></div></span></p>
 
-                    document.getElementById("tbMaquina").innerHTML += `<p><b>Sistema operacional: </b><span>${resposta[0].sistemaOperacional}</span></p>`;
+                    document.getElementById("tbMaquina").innerHTML += `<p class='divider'><b>Sistema operacional: </b><span>${resposta[0].sistemaOperacional}</span></p>`;
                     document.getElementById("tbMaquina").innerHTML += `<p><b>Nome da máquina: </b><span>${resposta[0].nomeMaquina}</span></p>`;
                     document.getElementById("tbMaquina").innerHTML += `<p><b>Tipo da máquina: </b><span>${resposta[0].tipoMaquina}</span></p>`;
                     console.log(resposta)

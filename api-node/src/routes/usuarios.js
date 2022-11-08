@@ -36,4 +36,8 @@ router.get("/pegarDadosAtuais", function(req, res){
     usuarioController.pegarDadosAtuais(req, res);
 });
 
+router.get("/getSenhaGestor", function(req, res){
+    usuarioController.getSenhaGestor(req, res);
+});
+
 module.exports = router;

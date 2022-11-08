@@ -153,12 +153,28 @@
       nomeGerente.innerHTML = sessionStorage.NOME_USUARIO;
 
       var idFuncionario;
+      var senhaGestor;
 
       const parametrosString = window.location.search;
       const parametros = new URLSearchParams(parametrosString);
       idFuncionario = Number(parametros.get("idFuncionario"));
 
       dadosAtuais();
+
+      function getSenhaGestor() {
+        fetch(`/usuarios/getSenhaGestor?idFuncionario=${sessionStorage.ID_USUARIO}`).then(
+          function (res) {
+            if (res.ok) {
+              res.json().then((senha) => {
+                senhaGestor = senha[0].senha
+                return true; 
+              });
+            }
+          }
+        );
+      }
+
+      console.log(getSenhaGestor());
 
       function alterar() {
         var nomeFuncVar = newNome_input.value;
@@ -167,8 +183,6 @@
         var senhaVar = newSenha_input.value;
         var idFuncionarioVar = idFuncionario;
         var senhaGerente = senhaGerente_input.value;
-        var idEmpresa = sessionStorage.ID_EMPRESA;
-        var idGestor = sessionStorage.ID_USUARIO;
 
         // Validaçõoes Padrão
         if (
@@ -180,7 +194,7 @@
           alert("Preencha todos os campos para prosseguir!");
         } else if (telVar.length != 11) {
           alert("Telefone deve conter 11 digitos e apenas números.");
-        }else if(senhaGerente != sessionStorage.SENHA_USUARIO){
+        }else if(senhaGerente != senhaGestor){
             alert("Senha do Gestor não é válida")
         }else{
 
@@ -219,18 +233,6 @@
           });
         
         }
-        // });
-
-        //         } else {
-        //             alert("Não foi possível realizar o login")
-        //             throw ("Houve um erro ao tentar realizar o cadastro!");
-        //         }
-        //     }).catch(function (resposta) {
-        //         console.log(`#ERRO: ${resposta}`);
-
-        //     });
-
-        //     return false;
       }
 
       function dadosAtuais() {
