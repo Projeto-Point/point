@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang=pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Localizacao | Point</title>
+    <link rel="stylesheet" href="css/styleDash.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.4/moment.min.js"></script>
+</head>
+
+<body>
+    <header>
+        <nav id="menu">
+            <a href="maquinas.html" class="logo">
+                <img src="../assets/imgs/Point.png">
+            </a>
+            <hr>
+            <a href="funcionarios.html" class="img-nav">
+                <img src="../assets/imgs/user.png" >
+                <span>Funcionários</span>
+            </a>
+            <a href="maquinas.html" class="img-nav">
+                <img src="./assets/imgs/imac.png">
+                <span>Máquinas</span>
+            </a>
+            <a href="configuracoes.html" class="img-nav">
+                <img src="./assets/imgs/setting.png">
+                <span>Configurações</span>
+            </a>
+            <hr>
+            <a href="../index.html" class="img-nav">
+                <img src="../assets/imgs/x.png">
+                <span>Sair</span>
+            </a>
+        </nav>
+        <nav id="menu-mobile"><img src="assets/dash/bars.svg"></nav>
+    </header>
+    <main>
+        
+        <div style="border: 2px solid red; display: flex; height: 100%; width: 100%; justify-content: space-around;">
+
+            <div class="left-wid">
+
+                <div class="titulo">
+                    <p>HeatMap</p>
+                </div>
+
+                <div class="heatmap" style="border: 2px solid red; height: 60%; width: 100%;">
+
+                </div>
+            </div>
+
+
+            <div class="rigth-wid" style="border: 2px dashed white; width: 45%;">
+
+                <div class="wordcloud" id="map"></div>
+                
+                <div class="table"></div>
+            </div>
+        </div>
+
+    </main>
+
+    <script src="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.js"></script>
+    <script src="../../node_modules/heatmap.js"></script>
+    <script src="../../node_modules/heatmap.js/plugins/leaflet-heatmap/leaflet-heatmap.js"></script>
+    <script>
+
+
+        window.onload = function () {
+  
+         var jsonObj = [{}]
+          for (var i = 0; i < 5; i++) {
+  
+            let randLat = (Math.random() * (-20.882104 - -24.841340) + -24.841340).toFixed(5)
+            let randLng = (Math.random() * (-48.086846 - -51.126988) + -51.126988).toFixed(5)
+            jsonObj[i] = {lat:Number(randLat), lng:Number(randLng)}
+          }
+  
+  
+  
+          var testData = {
+            // Anotar no notion composicao não pode ser de muitos para muitos
+            
+            // Select pega todos os quando a latitude e a longitude são distint.
+            
+            // Quanto mais próximo do maximo fica com red dot
+            max: 8,
+            data: jsonObj
+          };
+  
+         
+          // Setando o mapa para ficar centralizado onde tem mais dados
+          
+          var mediaLat = 0;
+          var mediaLng = 0;
+          tamanhoData = jsonObj.length;
+  
+          for (let i = 0; i < tamanhoData; i++) {
+            mediaLat += Number(jsonObj[i]['lat']);
+            mediaLng += Number(jsonObj[i]["lng"]);
+          }
+  
+          mediaLat /= tamanhoData;
+          mediaLng /= tamanhoData;
+  
+  
+          var baseLayer = L.tileLayer(
+            "http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+            {
+              attribution:
+                'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="http://cloudmade.com">CloudMade</a>',
+              maxZoom: 10,
+            }
+          );
+  
+          var cfg = {
+            // radius should be small ONLY if scaleRadius is true (or small radius is intended)
+            radius: 2,
+            maxOpacity: 0.4,
+            // scales the radius based on map zoom
+            scaleRadius: true,
+            // if set to false the heatmap uses the global maximum for colorization
+            // if activated: uses the data maximum within the current map boundaries
+            //   (there will always be a red spot with useLocalExtremas true)
+            useLocalExtrema: false,
+            // which field name in your data represents the latitude - default "lat"
+            latField: "lat",
+            // which field name in your data represents the longitude - default "lng"
+            lngField: "lng",
+            // which field name in your data represents the data value - default "value"
+            valueField: "count",
+          };
+  
+          var heatmapLayer = new HeatmapOverlay(cfg);
+  
+          var map = new L.Map("map", {
+            center: new L.LatLng(mediaLat, mediaLng),
+            zoom: 3,
+            layers: [baseLayer, heatmapLayer],
+          });
+  
+          heatmapLayer.setData(testData);
+  
+          // make accessible for debugging
+          layer = heatmapLayer;
+        };
+      </script>

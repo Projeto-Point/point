@@ -182,6 +182,33 @@ main{
     background-size: contain;
     color: white;
     padding: 30px;
+
+
+    div.left-wid{
+
+        border: 2px dashed white;
+        width: 45%; display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        padding: 15px;
+
+
+        .titulo {
+
+            font-weight: bold;
+            font-size: 1.3rem;
+            border-bottom: 2px Solid white;
+            margin-top: 5%;
+            color: red;
+        }
+    }
+
+ 
+
+
+    
+
+
     section.top{
         display: flex;
         justify-content: space-between;
