@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="pt-br">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -7,6 +8,7 @@
     <link rel="stylesheet" href="css/styleLogin_Cadastro.css">
     <title>Cadastro | Point</title>
 </head>
+
 <body id="form_cadastro">
     <div id="cadastro" class="container">
         <div class="cadastro">
@@ -22,12 +24,14 @@
 
                     <div class="inputs">
                         <span class="span_text">Empresa:</span> <br>
-                        <input class="input" id="nomeEmpresa_input" placeholder="Nome da empresa" onkeypress="key2()" value="Point">
+                        <input class="input" id="nomeEmpresa_input" placeholder="Nome da empresa" onkeypress="key2()"
+                            value="Point">
                     </div>
 
                     <div class="inputs">
                         <span class="span_text">CNPJ:</span> <br>
-                        <input class="input" type="text" id="cnpj_input" placeholder="Somente números" maxlength="14" onkeypress="key2()" value="12345678901234">
+                        <input class="input" type="text" id="cnpj_input" placeholder="Somente números" maxlength="14"
+                            onkeypress="key2()" value="12345678901234">
 
                     </div>
 
@@ -39,36 +43,54 @@
                 <span id="spnGerente" class="banner_cadastro" style="display: none;">
                     <div class="inputs">
                         <span class="span_text">Nome:</span> <br>
-                        <input class="input" id="nome_input" placeholder="Seu nome" onkeypress="key()" value="Fernando Brandão">
+                        <input class="input" id="nome_input" placeholder="Seu nome" onkeypress="key()"
+                            value="Fernando Brandão">
                     </div>
 
                     <div class="inputs">
                         <span class="span_text">E-mail:</span> <br>
-                        <input class="input" type="email" id="email_input" placeholder="seuEmail@email.com" onkeypress="key()" value="brandao@point.com">
+                        <input class="input" type="email" id="email_input" placeholder="seuEmail@email.com"
+                            onkeypress="key()" value="brandao@point.com">
                     </div>
                     <div class="inputs">
                         <span class="span_text">Celular:</span> <br>
-                        <input class="input" type="text" id="telefone_input" placeholder="(11) 999999999" maxlength="11" onkeypress="key()" value="11912345678">
+                        <input class="input" type="text" id="telefone_input" placeholder="(11) 999999999" maxlength="11"
+                            onkeypress="key()" value="11912345678">
                     </div>
                     <div class="inputs">
                         <span class="span_text">CPF:</span> <br>
-                        <input class="input" id="cpf_input" placeholder="Somente números" maxlength="11" onkeypress="key()" value="12345678901">
+                        <input class="input" id="cpf_input" placeholder="Somente números" maxlength="11"
+                            onkeypress="key()" value="12345678901">
                     </div>
 
                     <div class="inputs">
                         <span class="span_text">Sua senha:</span> <br>
-                        <input class="input" type="password" id="senha_input" placeholder="********" maxlength="40" onkeypress="key()" value="123456">
+                        <input class="input" type="password" id="senha_input" placeholder="********" maxlength="40"
+                            onkeypress="key()" value="123456">
                     </div>
 
                     <div class="inputs">
                         <span class="span_text">Confirme sua senha:</span> <br>
-                        <input class="input" type="password" id="confirmacao_senha_input" placeholder="********" maxlength="40" onkeypress="key()" value="123456">
+                        <input class="input" type="password" id="confirmacao_senha_input" placeholder="********"
+                            maxlength="40" onkeypress="key()" value="123456">
                     </div>
 
                     <div class="botao_cadastro">
                         <button class="btnEntrar" onclick="cadastrar()">Cadastrar-se</button>
                     </div>
                 </span>
+
+                <div class="loader">
+                    <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+                        x="0px" y="0px" width="40px" height="40px" viewBox="0 0 50 50"
+                        style="enable-background:new 0 0 50 50;" xml:space="preserve">
+                        <path fill="#000"
+                            d="M43.935,25.145c0-10.318-8.364-18.683-18.683-18.683c-10.318,0-18.683,8.365-18.683,18.683h4.068c0-8.071,6.543-14.615,14.615-14.615c8.072,0,14.615,6.543,14.615,14.615H43.935z">
+                            <animateTransform attributeType="xml" attributeName="transform" type="rotate" from="0 25 25"
+                                to="360 25 25" dur="0.6s" repeatCount="indefinite" />
+                        </path>
+                    </svg>
+                </div>
 
                 <p class="alerta" id="alerta"></p>
 
@@ -80,35 +102,33 @@
         </div>
     </div>
 </body>
+
 </html>
 
 <script>
 
-function key2(){
-    if(event.key === 'Enter'){
-            return proximo()
-        }
-
-}
-
-function key(){
-        if(event.key === 'Enter'){
-            return cadastrar()
+    function key2() {
+        if (event.key === 'Enter') {
+            return proximo();
         }
     }
 
-function mostrarAlerta(msg) {
+    function key() {
+        if (event.key === 'Enter') {
+            return cadastrar();
+        }
+    }
 
-alerta.innerHTML = msg;
-alerta.style.visibility = "visible";
+    function mostrarAlerta(msg) {
+        document.querySelector('.loader').style.display = "none";
+        alerta.innerHTML = msg;
+        alerta.style.visibility = "visible";
 
-setTimeout(()=>{
+        setTimeout(() => {
+            alerta.style.visibility = "hidden";
+        }, 5000);
 
-    alerta.style.visibility = "hidden";
-
-}, 5000)
-
-}
+    }
 
     function proximo() {
         var nomeEmpresa = nomeEmpresa_input.value;
@@ -124,13 +144,16 @@ setTimeout(()=>{
             mostrarAlerta("O CNPJ deve conter 14 dígitos.");
             return false;
         } else {
-            alerta.style.display = "none";
+            alerta.style.visibility = "hidden";
             spnEmpresa.style.display = 'none';
             spnGerente.style.display = 'flex';
         }
     }
 
     function cadastrar() {
+        document.querySelector('.loader').style.display = "block";
+        alerta.style.visibility = "hidden";
+
         var nomeEmpresa = nomeEmpresa_input.value;
         var cnpjVar = cnpj_input.value;
         var nomeGerenteVar = nome_input.value;
@@ -160,7 +183,7 @@ setTimeout(()=>{
             return false;
         }
 
-        alerta.style.display = "none";
+        alerta.style.visibility = "hidden";
 
         // Enviando o valor da nova input
         fetch("/usuarios/cadastrarEmpresaGerente", {
