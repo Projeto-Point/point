@@ -74,7 +74,7 @@ function cadastrarEmpresaGerente(req, res) {
     // Empresa
     var nomeEmpresa = req.body.nomeEmpresaServer;
     var cnpj = req.body.cnpjServer;
-
+    var plano = req.body.planoServer;
     // Funcionário
     var nomeGerente = req.body.nomeGerenteServer;
     var cpf = req.body.cpfServer;
@@ -97,8 +97,11 @@ function cadastrarEmpresaGerente(req, res) {
         res.status(400).send("Sua senha está undefined!");
     } else if (telefone == undefined) {
         res.status(400).send("Seu telefone está undefined!");
-    } else {
-        usuarioModel.cadastrarEmpresa(nomeEmpresa, cnpj).then(function (resultado) {
+    } else if(plano == undefined){
+        res.status(400).send("Seu plano está undefined!");
+    }
+    else {
+        usuarioModel.cadastrarEmpresa(nomeEmpresa, cnpj, plano).then(function (resultado) {
             usuarioModel.cadastrarUsuario(nomeGerente, cpf, email, telefone, senha, resultado[0].idEmpresa).then(function (resultado2) {
                 res.json(resultado2);
             }).catch(

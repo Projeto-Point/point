@@ -35,6 +35,21 @@
                         <label>CNPJ</label>
                       </div>
 
+                      <div class="group" style="margin-top: 6%;">      
+                        <div class="dropdown">
+                            <div class="select">
+                              <span>Selecione o Plano</span>
+                              <i class="fa fa-chevron-left"></i>
+                            </div>
+                            <input type="hidden" name="gender" id="plano_input">
+                            <ul class="dropdown-menu">
+                                <li id="1">Basic</li>
+                                <li id="2">Pro</li>
+                                <li id="3">Premium</li>
+                            </ul>
+                        </div>
+                    </div>
+
                     <div class="botao_cadastro">
                         <button class="btnEntrar custom-btn" onclick="proximo()">Próximo</button>
                     </div>
@@ -87,6 +102,7 @@
                         <label>Confirmaçao de senha</label>
                       </div>
 
+
                     <div class="botao_cadastro">
                         <button class="custom-btn btnEntrar" onclick="cadastrar()">Cadastrar-se</button>
                     </div>
@@ -116,8 +132,10 @@
 </body>
 
 </html>
-
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+<script src="script.js"></script>
 <script>
+
 
     function key2() {
         if (event.key === 'Enter') {
@@ -143,11 +161,13 @@
     }
 
     function proximo() {
+
         var nomeEmpresa = nomeEmpresa_input.value;
         var cnpjVar = cnpj_input.value;
+        var planoVar = document.getElementById('plano_input').value;
 
         if (nomeEmpresa == "" || cnpjVar == "") {
-            mostrarAlerta("Preencha todos os campos para prosseguiddr!");
+            mostrarAlerta("Preencha todos os campos para prosseguir!");
             return false;
         } else if (cnpjVar != Number(cnpjVar)) {
             mostrarAlerta("CNPJ deve conter apenas números.");
@@ -155,7 +175,11 @@
         } else if (cnpjVar.length != 14) {
             mostrarAlerta("O CNPJ deve conter 14 dígitos.");
             return false;
-        } else {
+        }else if(planoVar == ''){
+            mostrarAlerta("Selecione um plano.");
+            return false;
+        }
+        else {
             alerta.style.visibility = "hidden";
             spnEmpresa.style.display = 'none';
             spnGerente.style.display = 'flex';
@@ -174,8 +198,8 @@
         var cpfVar = cpf_input.value;
         var senhaVar = senha_input.value;
         var confirmacaoSenhaVar = confirmacao_senha_input.value;
+        var planoVar = document.getElementById('plano_input').value;
 
-        var idEmpresa = 0;
 
         if (nomeGerenteVar == "" || emailVar == "" || telefoneVar == "" || senhaVar == "" || confirmacaoSenhaVar == "" || cpfVar == "") {
             mostrarAlerta("Preencha todos os campos para prosseguir!");
@@ -206,6 +230,7 @@
             body: JSON.stringify({
                 nomeEmpresaServer: nomeEmpresa,
                 cnpjServer: cnpjVar,
+                planoServer: planoVar,
                 nomeGerenteServer: nomeGerenteVar,
                 cpfServer: cpfVar,
                 emailServer: emailVar,
