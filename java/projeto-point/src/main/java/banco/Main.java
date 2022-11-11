@@ -37,7 +37,7 @@ public class Main {
       
 
 //      
-        if (func.isFuncionarioCadastrado("cleber@point.com", "1234")) {
+        if (func.isFuncionarioCadastrado("cleber@point.com", "123456")) {
 
             System.out.println(maquina.isMaquinaCadastrada(func));
 

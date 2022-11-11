@@ -29,7 +29,7 @@ public class Database {
     dataSource​.setDriverClassName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
     
     // Colocar aqui o caminho do banco e o nome do database -- padrão = localhost:3306
-    dataSource​.setUrl("jdbc:sqlserver://bd-point.database.windows.net:1433;database=bd-point;user=adm-point@bd-point;password=1cco#grupo1;encrypt=true;trustServerCertificate=false;hostNameInCertificate=*.database.windows.net;loginTimeout=30;");
+    dataSource​.setUrl("jdbc:sqlserver://bd-point.database.windows.net:1433;database=bd-point;user=adm-point@bd-point;password=1cco#grupo1;encrypt=true;trustServerCertificate=false;hostNameInCertificate=*.database.windows.net;");
     
     // Nome do usuário da conexão 
     dataSource​.setUsername("adm-point@bd-point");
