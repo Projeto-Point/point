@@ -15,25 +15,25 @@
             <div class="banner_cadastro">
                 <a href="login.html">
                     <img src="assets/imgs/arrow.png" alt="" class="icon">
-
                 </a>
                 <img src="assets/imgs/Point.png" alt="Point Logo" class="img_cadastro">
 
 
                 <span id="spnEmpresa" class="banner_cadastro">
 
-                    <div class="inputs">
-                        <span class="span_text">Empresa:</span> <br>
-                        <input class="input" id="nomeEmpresa_input" placeholder="Nome da empresa" onkeypress="key2()"
-                            value="Point">
-                    </div>
-
-                    <div class="inputs">
-                        <span class="span_text">CNPJ:</span> <br>
-                        <input class="input" type="text" id="cnpj_input" placeholder="Somente números" maxlength="14"
-                            onkeypress="key2()" value="12345678901234">
-
-                    </div>
+                    <div class="group">      
+                        <input type="text" required id="nomeEmpresa_input" maxlength="30" onkeypress="key2()">
+                        <span class="highlight"></span>
+                        <span class="bar"></span>
+                        <label>Nome Empresa</label>
+                      </div>
+                        
+                      <div class="group">      
+                        <input type="text" required id="cnpj_input" maxlength="14" onkeypress="key2()">
+                        <span class="highlight"></span>
+                        <span class="bar"></span>
+                        <label>CNPJ</label>
+                      </div>
 
                     <div class="botao_cadastro">
                         <button class="btnEntrar custom-btn" onclick="proximo()">Próximo</button>
@@ -41,39 +41,51 @@
                 </span>
 
                 <span id="spnGerente" class="banner_cadastro" style="display: none;">
-                    <div class="inputs">
-                        <span class="span_text">Nome:</span> <br>
-                        <input class="input" id="nome_input" placeholder="Seu nome" onkeypress="key()"
-                            value="Fernando Brandão">
-                    </div>
 
-                    <div class="inputs">
-                        <span class="span_text">E-mail:</span> <br>
-                        <input class="input" type="email" id="email_input" placeholder="seuEmail@email.com"
-                            onkeypress="key()" value="brandao@point.com">
-                    </div>
-                    <div class="inputs">
-                        <span class="span_text">Celular:</span> <br>
-                        <input class="input" type="text" id="telefone_input" placeholder="(11) 999999999" maxlength="11"
-                            onkeypress="key()" value="11912345678">
-                    </div>
-                    <div class="inputs">
-                        <span class="span_text">CPF:</span> <br>
-                        <input class="input" id="cpf_input" placeholder="Somente números" maxlength="11"
-                            onkeypress="key()" value="12345678901">
-                    </div>
 
-                    <div class="inputs">
-                        <span class="span_text">Sua senha:</span> <br>
-                        <input class="input" type="password" id="senha_input" placeholder="********" maxlength="40"
-                            onkeypress="key()" value="123456">
-                    </div>
+                    <div class="group">      
+                        <input type="text" required id="nome_input" onkeypress="key()">
+                        <span class="highlight"></span>
+                        <span class="bar"></span>
+                        <label>Nome</label>
+                      </div>
 
-                    <div class="inputs">
-                        <span class="span_text">Confirme sua senha:</span> <br>
-                        <input class="input" type="password" id="confirmacao_senha_input" placeholder="********"
-                            maxlength="40" onkeypress="key()" value="123456">
-                    </div>
+                      <div class="group">      
+                        <input type="email" required id="email_input" onkeypress="key()">
+                        <span class="highlight"></span>
+                        <span class="bar"></span>
+                        <label>E-mail</label>
+                      </div>
+
+
+                      <div class="group">      
+                        <input type="text" required id="telefone_input" maxlength="11" onkeypress="key()">
+                        <span class="highlight"></span>
+                        <span class="bar"></span>
+                        <label>Celular</label>
+                      </div>
+
+
+                      <div class="group">      
+                        <input type="text" required id="cpf_input" maxlength="11" onkeypress="key()">
+                        <span class="highlight"></span>
+                        <span class="bar"></span>
+                        <label>CPF</label>
+                      </div>
+
+                      <div class="group">      
+                        <input type="password" required id="senha_input" maxlength="40" onkeypress="key()">
+                        <span class="highlight"></span>
+                        <span class="bar"></span>
+                        <label>Senha</label>
+                      </div>
+
+                      <div class="group">      
+                        <input type="password" required id="confirmacao_senha_input" maxlength="40" onkeypress="key()">
+                        <span class="highlight"></span>
+                        <span class="bar"></span>
+                        <label>Confirmaçao de senha</label>
+                      </div>
 
                     <div class="botao_cadastro">
                         <button class="custom-btn btnEntrar" onclick="cadastrar()">Cadastrar-se</button>
@@ -135,7 +147,7 @@
         var cnpjVar = cnpj_input.value;
 
         if (nomeEmpresa == "" || cnpjVar == "") {
-            mostrarAlerta("Preencha todos os campos para prosseguir!");
+            mostrarAlerta("Preencha todos os campos para prosseguiddr!");
             return false;
         } else if (cnpjVar != Number(cnpjVar)) {
             mostrarAlerta("CNPJ deve conter apenas números.");

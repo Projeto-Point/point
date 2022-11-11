@@ -3,9 +3,17 @@ function abrirMenu() {
     navbar.style.opacity = 1;
 }
 
-function fecharMenu() {
-    navbar.style.visibility = "hidden";
-    navbar.style.opacity = 1;
+function fecharMenu(aba) {
+
+    if(aba == 'contato'){
+
+        if(window.innerWidth < 997){
+            navbar.style.visibility = "hidden";
+            navbar.style.opacity = 0;
+        }
+
+    }
+    
 }
 
 function voltarIndex(){

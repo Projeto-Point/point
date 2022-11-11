@@ -1,8 +1,6 @@
 @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300&display=swap');
 
 :root {
-    --color-verdeClaro: #23b052;
-    --color-verdeEscuro: #359d58;
     --color-vermelhoAlerta: #d0342c;
     --cor1: #00CA43;
     --cor2: #00A219;
@@ -57,7 +55,7 @@ p.alerta {
 }
 
 .span_text {
-    font-size: 1.5rem;
+    font-size: 1.2rem;
     font-weight: 600;
 }
 
@@ -94,7 +92,7 @@ p.alerta {
 }
 
 .input {
-    margin-bottom: 3%;
+    margin-top: 6%;
     font-size: 100%;
     border: none;
     display: flex;
@@ -133,7 +131,7 @@ p.alerta {
     display: flex;
     align-items: center;
     flex-direction: column;
-    background-color: #f6f6f6;
+    background-color: #F8F8F8;
     gap: 2rem;
 }
 
@@ -256,6 +254,137 @@ svg rect {
     fill: var(--cor1);
 }
 
-.loader{
+.loader {
     display: none;
+}
+
+
+/* Inputs */
+
+.group {
+    position: relative;
+    margin-bottom: 3%;
+    margin-top: 12%;
+}
+
+input {
+    font-size: 18px;
+    padding: 10px 10px 10px 5px;
+    display: block;
+    width: 235px;
+    border: none;
+    border-bottom: 1px solid #757575;
+    background-color: transparent;
+}
+
+input:focus {
+    outline: none;
+}
+
+/* LABEL ======================================= */
+label {
+    color: #999;
+    font-size: 1rem;
+    font-weight: normal;
+    position: absolute;
+    pointer-events: none;
+    left: 5px;
+    top: 10px;
+    transition: 0.2s ease all;
+    -moz-transition: 0.2s ease all;
+    -webkit-transition: 0.2s ease all;
+}
+
+/* active state */
+input:focus~label,
+input:valid~label {
+    top: -20px;
+    font-size: 14px;
+    color: var(--cor3);
+}
+
+/* BOTTOM BARS ================================= */
+.bar {
+    position: relative;
+    display: block;
+    width: 250px;
+}
+
+.bar:before,
+.bar:after {
+    content: '';
+    height: 2px;
+    width: 0;
+    bottom: 1px;
+    position: absolute;
+    background: var(--cor3);
+    transition: 0.2s ease all;
+    -moz-transition: 0.2s ease all;
+    -webkit-transition: 0.2s ease all;
+}
+
+.bar:before {
+    left: 50%;
+}
+
+.bar:after {
+    right: 50%;
+}
+
+/* active state */
+input:focus~.bar:before,
+input:focus~.bar:after {
+    width: 50%;
+}
+
+/* HIGHLIGHTER ================================== */
+.highlight {
+    position: absolute;
+    height: 60%;
+    width: 100%;
+    top: 25%;
+    left: 0;
+    pointer-events: none;
+    opacity: 0.5;
+}
+
+/* active state */
+input:focus~.highlight {
+    -webkit-animation: inputHighlighter 0.3s ease;
+    -moz-animation: inputHighlighter 0.3s ease;
+    animation: inputHighlighter 0.3s ease;
+}
+
+/* ANIMATIONS ================ */
+@-webkit-keyframes inputHighlighter {
+    from {
+        background: var(--cor3);
+    }
+
+    to {
+        width: 0;
+        background: transparent;
+    }
+}
+
+@-moz-keyframes inputHighlighter {
+    from {
+        background: var(--cor3);
+    }
+
+    to {
+        width: 0;
+        background: transparent;
+    }
+}
+
+@keyframes inputHighlighter {
+    from {
+        background: var(--cor3);
+    }
+
+    to {
+        width: 0;
+        background: transparent;
+    }
 }
