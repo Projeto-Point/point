@@ -6,7 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cadastrar funcionarios | Point</title>
-    <link rel="stylesheet" href="css/styleDashCadaFunc.css">
+    <link rel="stylesheet" href="css/styleDashAlterFunc.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 
@@ -44,11 +44,8 @@
     <main>
         <section class="funcionarios">
             <section class="top">
-                <div class="top-esq">
-                    
-                </div>
                 <div class="top-meio">
-                    <input id="inp-pesquisar-funcionario" type="search" placeholder="Pesquise por funcionário">
+                    <input style="visibility: hidden;" id="inp-pesquisar-funcionario" type="search" placeholder="Pesquise por funcionário">
                 </div>
                 <div class="top-dir">
                     
@@ -59,14 +56,97 @@
 
             <section class="under">
                 <section class="cad_func">
-                  <img src="assets/imgs/manutencao.png" alt="">
-    
+                    
+                    
+                    <div class="titulo">
+                        <h1>Atualizar Empresa</h1>
+                    </div>
+
+                    <div class="formulario">
+                        <div class="box_cad">
+                            <div class="inputs">
+                                <span class="span_text">Nome atual:</span> <br />
+                                <div class="atual"><span id="nome_atual"></span></div>
+                            </div>
+
+                            <div class="inputs">
+                                <span class="span_text">CNPJ atual:</span> <br />
+                                <div class="atual"><span id="cnpj_atual"></span></div>
+                            </div>
+
+                            <div class="inputs">
+                                <span class="span_text">Plano atual:</span> <br />
+                                <div class="atual"><span id="plano_atual"></span></div>
+                            </div>
+                            
+                            <div class="inputs">
+                                <span class="span_text">Quantidade Gestor:</span> <br />
+                                <div class="atual"><span id="qtd_atual"></span></div>
+                            </div>
+
+                        </div>
+                        <div class="linha"></div>
+                        <div class="box_cad">
+                            <div class="inputs">
+                                <span class="span_text">Novo Nome:</span> <br />
+                                <input class="input" id="newNome_input" placeholder="Insira novo nome" />
+                            </div>
+
+                            <div class="inputs">
+                                <span class="span_text">Alterar plano:</span> <br/>       
+                                <div class="dropdown">
+                                    <div class="select">
+                                      <span>Selecione o Plano</span>
+                                      <i class="fa fa-chevron-left"></i>
+                                    </div>
+                                    <input type="hidden" name="gender">
+                                    <ul class="dropdown-menu">
+                                        <li id="3">Basic</li>
+                                        <li id="2">Pro</li>
+                                        <li id="1">Premium</li>
+                                    </ul>
+                                  </div>
+                                  <a href="../index.html#contato"><small>Saiba mais...</small></a>
+                            </div>
+
+                            <div class="inputs">
+                                <button class="custom-btn btn-8"onclick="alterar()">Adicionar Gestor</button>
+                            </div>
+                        </div>
+
+                        
+                    </div>
+                    <div class="inputs" style="margin-top: 2%;">
+                        <span class="span_text">Senha gerente:</span> <br />
+                        <input class="input_senhaGerente" type="password" id="senhaGerente_input"
+                            placeholder="Senha do gerente" />
+                    </div>
+
+                    <div class="botao_cadastro">
+                        <button class="custom-btn btnEntrar" onclick="alterar()">
+                            Salvar
+                        </button>
+                    </div>
+
+                    <div class="loader">
+                        <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+                            x="0px" y="0px" width="40px" height="40px" viewBox="0 0 50 50"
+                            style="enable-background:new 0 0 50 50;" xml:space="preserve">
+                            <path fill="#000"
+                                d="M43.935,25.145c0-10.318-8.364-18.683-18.683-18.683c-10.318,0-18.683,8.365-18.683,18.683h4.068c0-8.071,6.543-14.615,14.615-14.615c8.072,0,14.615,6.543,14.615,14.615H43.935z">
+                                <animateTransform attributeType="xml" attributeName="transform" type="rotate"
+                                    from="0 25 25" to="360 25 25" dur="0.6s" repeatCount="indefinite" />
+                            </path>
+                        </svg>
+                    </div>
+              
                 </section>
             </section>
 
         </section>
     </main>
-
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+    <script src="select-box.js"></script>
 
     <script>
         nomeGerente.innerHTML=sessionStorage.NOME_USUARIO;
