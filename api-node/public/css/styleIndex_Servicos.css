@@ -1,11 +1,13 @@
 
 @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300&display=swap');
 
-:root {
-    --color-verdeClaro: #23b052;
-    --color-verdeEscuro:#359d58;
-    --color-vermelhoAlerta:#d0342c;
-  }
+
+:root{
+    --cor1: #13b348;
+    --cor2: #00A219;
+    --cor3: #007B00;
+    --radius: 10px;
+}
   *,
   *::before,
   *::after {
@@ -22,7 +24,7 @@
       scrollbar-color: none;
     }
     ::-webkit-scrollbar-thumb {
-      background: var(--color-verdeEscuro); 
+      background: var(--cor3); 
       border-radius: 10px;
     }
 
@@ -58,6 +60,7 @@ header {
     align-items: center;
     z-index: 999;
     width: 100vw;
+    border-bottom: 2px solid var(--cor3);
 }
 
 #PaginaServicos header {
@@ -87,6 +90,7 @@ header {
     width: 100vw;
     height: 100vh;
     z-index: 1000;
+   
 }
 
 ul {
@@ -98,33 +102,41 @@ ul {
 
 nav li {
     text-decoration: none;
-    border-bottom: 3px solid var(--color-verdeClaro);
     padding-bottom: 10px;
     display: inline-block;
     margin: 1rem;
     font-weight: 500;
+    transition: transform ease-in-out 50ms;
+}
+
+nav li:active{
+    transform: scale(0.95);
 }
 
 nav li a {
     text-decoration: none;
     color: #1e1e1e;
     font-size: 1.30rem;
+    transition: all ease-in-out 150ms;
 }
 
 nav li a:hover {
     text-decoration: none;
-}
-
-nav li a:hover {
-    font-size: 1.50rem;
-    font-weight: 600;
-    color: #1e1e1e;
+    color: var(--cor3);
 }
 
 nav li:last-child {
     border: none;
     margin-top: 1.25rem;
 }
+
+nav li:last-child:hover {
+    border: none;
+    margin-top: 1.25rem;    
+    filter: invert(38%) sepia(92%) saturate(1739%) hue-rotate(105deg) brightness(90%) contrast(103%);
+}
+
+
 
 #navbar {
     visibility: hidden;
@@ -175,7 +187,7 @@ nav li:last-child {
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    border-bottom: 3px solid var(--color-verdeClaro);
+    border-bottom: 3px solid var(--cor3);
 }
 
 .service-containers {
@@ -196,16 +208,16 @@ nav li:last-child {
 }
 
 .service-card:first-child {
-    background-color: #00CA43;
+    background-color: var(--cor1);
 }
 
 .service-card:nth-child(2) {
-    background-color: #02b43d;
+    background-color: var(--cor3);
 
 }
 
 .service-card:last-child {
-    background-color: #009431;
+    background-color: var(--cor2);
 }
 
 .beneficios {
@@ -220,7 +232,7 @@ nav li:last-child {
     width: 350px;
     height: 400px;
     position: relative;
-    background-color: var(--color-verdeClaro);
+    background-color: var(--cor2);
     margin-top: 2rem;
     padding: 15px;
     gap: 1rem;
@@ -248,11 +260,12 @@ nav li:last-child {
     width: 90%;
     border: none;
     outline: none;
-    background: #f4d800;
+    background: #ffe100;
     border-radius: 5px;
-    transition: 0.5s;
+    transition: 0.2s;
     cursor: pointer;
     color: black;
+    font-weight: 500;
 }
 
 .card-btn a {
@@ -266,7 +279,7 @@ nav li:last-child {
 }
 
 .card-btn:hover {
-    background-color: #fff945;
+    background-color: #f6ee0b;
 }
 
 .pre-btn {
@@ -290,7 +303,7 @@ nav li:last-child {
     justify-content: center;
     text-align: justify;
     align-items: center;
-    border-bottom: 3px solid var(--color-verdeClaro);
+    border-bottom: 3px solid var(--cor3);
 }
 
 .divisao {
@@ -329,7 +342,7 @@ iframe {
     justify-content: center;
     text-align: justify;
     align-items: center;
-    border-bottom: 3px solid var(--color-verdeClaro);
+ 
 }
 
 .conteudo {
@@ -372,14 +385,14 @@ form textarea {
 
 form input:focus,
 form textarea:focus {
-    border: 2px solid var(--color-verdeClaro);
+    border: 2px solid var(--cor2);
     transition-duration: 0.2s;
 }
 
 form button {
     outline: none;
     border: none;
-    background-color: var(--color-verdeClaro);
+    background-color: var(--cor2);
     color: white;
     width: 40%;
     padding: 7px 0 7px 0;
@@ -388,12 +401,24 @@ form button {
     font-size: 1.2rem;
 }
 
+form button:hover {
+    background-color: var(--cor3);
+    transition: all ease-in-out 200ms;
+}
+
+
+form button:active {
+    transition: all ease-in-out 200ms;
+    transform: scale(0.95);
+}
+
 footer {
-    background-color: var(--color-verdeClaro);
+    background: var(--cor1);
     padding: 2rem;
     display: flex;
     justify-content: center;
     align-items: center;
+    color: black
 }
 
 footer .conteudo {
@@ -554,11 +579,6 @@ button {
         padding-bottom: 22px;
     }
 
-    nav li a:hover {
-        font-size: 1.40rem;
-        color: #1e1e1e;
-    }
-
     .icon-menu-button {
         display: none;
     }
@@ -604,7 +624,7 @@ button {
     }
 
     .formulario {
-        border-left: 3px solid var(--color-verdeClaro);
+        border-left: 3px solid var(--cor2);
         height: 80%;
         margin-left: 3rem;
         padding: 3rem;

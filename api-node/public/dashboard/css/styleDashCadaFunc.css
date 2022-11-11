@@ -533,34 +533,7 @@ main section.dashboard .tabela h3 {
     padding: .5rem 1rem;
 }
 
-.btnEntrar:after {
-    position: absolute;
-    content: "";
-    width: 0;
-    height: 100%;
-    top: 0;
-    right: 0;
-    z-index: -1;
-    background-color: var(--cor3);
-    border-radius: 5px;
-    box-shadow: inset 2px 2px 2px 0px rgba(255, 255, 255, .5),
-        7px 7px 20px 0px rgba(0, 0, 0, .1),
-        4px 4px 5px 0px rgba(0, 0, 0, .1);
-    transition: all 0.5s ease;
-}
 
-.btnEntrar:hover {
-    color: #fff;
-}
-
-.btnEntrar:hover:after {
-    left: 0;
-    width: 100%;
-}
-
-.btnEntrar:active {
-    top: 2px;
-}
 
 svg path,
 svg rect {

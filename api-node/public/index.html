@@ -125,19 +125,19 @@
                     <div class="divisao">
                         <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3657.2862323672384!2d-46.66372668554319!3d-23.558161267358102!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x94ce59d2a5270055%3A0x3c7ea4f4c7d51fb6!2sRua%20Haddock%20Lobo%2C%20595%20-%20Cerqueira%20C%C3%A9sar%2C%20S%C3%A3o%20Paulo%20-%20SP%2C%2001414-001!5e0!3m2!1spt-BR!2sbr!4v1661718118590!5m2!1spt-BR!2sbr" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
                         <div class="formulario">
-                            <form action="https://formsubmit.co/agdatany@gmail.com" method="POST">
+                            <form onsubmit="sendEmail(); reset(); return false">
                                 <input type="hidden" name="_captcha" value="false" />
                                 <div>
                                     <label for="">Nome:</label>
-                                    <input type="text" placeholder="Seu nome" name="Nome" required>
+                                    <input type="text" placeholder="Seu nome" name="Nome" required id="nome">
                                 </div>
                                 <div>
                                     <label for="">E-mail:</label>
-                                    <input type="email" placeholder="Seu e-mail" name="Email" required>
+                                    <input type="email" placeholder="Seu e-mail" name="Email" required id="email">
                                 </div>
                                 <div>
                                     <label for="">Assunto:</label>
-                                    <textarea type="text" placeholder="Qual sua dúvida?" name="Duvida" required class="inputMaior"></textarea>
+                                    <textarea type="text" placeholder="Qual sua dúvida?" name="Duvida" required class="inputMaior" id="assunto"></textarea>
                                 </div>
                                 <button type="submit">Enviar</button>
                             </form>
@@ -156,11 +156,11 @@
                         </div>
                         <div class="miniconteudo">
                             <img src="assets/imgs/email.png" alt="" class="iconFooter">
-                            <p>project.point@gmail.com</p>
+                            <p>uspointenterprise@gmail.com</p>
                         </div>
                         <div class="miniconteudo">
                             <img src="assets/imgs/pin.png" alt="" class="iconFooter">
-                            <p>Rua Haddock Lobo, 595</p>
+                            <p>Rua Haddock Lobo, 595 - SP, São Paulo - Brasil</p>
                         </div>
                     </div>
                     <div class="logo">
@@ -174,5 +174,38 @@
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-A3rJD856KowSb7dwlZdYEkO39Gagi7vIsF0jrRAoQmDKKtQBHUuLZ9AsSv4jD4Xa" crossorigin="anonymous"></script>
         <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.5/dist/umd/popper.min.js" integrity="sha384-Xe+8cL9oJa6tN/veChSP7q+mnSPaj5Bcu9mPX5F5xIGE0DVittaqT5lorf0EI7Vk" crossorigin="anonymous"></script>
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.min.js" integrity="sha384-ODmDIVzN+pFdexxHEHFBQH3/9/vQ9uori45z4JjnFsRydbmQbmL5t1tQ0culUzyK" crossorigin="anonymous"></script>
+        <script src="https://smtpjs.com/v3/smtp.js"></script>
+<script>
+    
+
+
+            var today = new Date();
+            var mm = String(today.getMonth() + 1).padStart(2, '0');
+            var dd = String(today.getDate()).padStart(2);
+            var yyyy = today.getFullYear();
+    
+            hoje = mm + '/' + dd + '/' + yyyy;
+            
+    
+
+    function sendEmail() {
+
+        var text = document.getElementById("assunto").value
+        var nome = document.getElementById("nome").value
+        Email.send({
+            Host: "smtp.elasticemail.com",
+            port: 2525,
+            Username: "uspointenterprisee@gmail.com",
+            Password: "4129CF37FDD6DD824D6C42392983E5EA4DA5",
+            To: 'uspointenterprisee@gmail.com',
+            From: document.getElementById('email').value,
+            Subject: `Email formulário página home ${hoje}`,
+            Body: `Nome: ${nome}<br>
+            ${text}`
+        }).then(
+            // message => alert(message)
+        );
+    }
+</script>
     </body>
 </html>
