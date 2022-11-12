@@ -43,3 +43,19 @@ $('.dropdown .dropdown-menu li').click(function () {
     $(this).parents('.dropdown').find('span').text($(this).text());
     $(this).parents('.dropdown').find('input').attr('value', $(this).attr('id'));
 });
+
+import variables from './dashboard/css/styleDash.scss';
+module.exports = {
+    // ...
+    module: {
+     rules: [
+      {
+       test: /\.scss$/,
+       use: ["style-loader", "css-loader", "sass-loader"]
+      },
+      // ...
+     ]
+    }
+   };
+
+document.getElementById("app").style.padding = variables.padding;

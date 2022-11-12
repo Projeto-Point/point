@@ -526,12 +526,57 @@ main{
             h3{
                 font-size: 1.5rem;
                 margin-bottom: 15px;
+                border-bottom: 2px solid var(--cor3);
+            }
+
+            p{
+               
+                
+                margin-top: 8px;
+                font-size: 1.1rem;
+               
             }
 
             .diver{
                 background-color: var(--cor3);
             }
 
+            .container-info{
+
+                display: flex;
+                flex-direction: row;
+         
+                justify-content: space-evenly;
+                height: fit-content;
+              
+
+                .part{
+                    display: flex;
+                    flex-direction: column;
+                    width: 40%;
+                    align-self: start;
+                    place-items: start;
+                    padding: 5px;
+                    border-right: 1px solid rgba(209, 209, 209, 0.697);
+                
+                    p{
+                        margin-bottom: 5%;
+                    }
+                }
+
+              
+
+                
+            }
+
+    
+
+        }
+
+        .func{    
+            p{
+               margin-top: 1%;
+            }
         }
     }
 }
@@ -550,6 +595,15 @@ main{
     main{
         width: calc(100% - 70px);
     }
+
+    main section.top .top-esq p.titulo{
+        display: none;
+    }
+
+    main section.top .top-esq p.subtitulo{
+        display: none;
+    }
+
 }
 
 @media screen and (max-width: 1200px){
@@ -578,3 +632,135 @@ main{
         display: none;
     }
 }
+
+
+// @import url(https://fonts.googleapis.com/css?family=Lato:700);
+
+
+// $default-size: 1em;
+// $label-font-size: $default-size / 4;
+// $label-font-size-redo: $default-size * 4;
+// $progressValue: 0;
+// $color: white;
+
+// :export {
+//     progressValue: $primary-color;
+//     color: $background-color;
+//   }
+
+// // -- mixins
+// @mixin size($width, $height) {
+//   height: $height;
+//   width: $width;
+// }
+
+// @mixin draw-progress($progress, $color) {
+//   .pie {
+//     .half-circle {
+//       border-color: $color;
+//     }
+
+//     .left-side {
+//       transform: rotate($progress * 3.6deg);
+//     }
+
+//     @if $progress <= 50 {
+//       .right-side {
+//         display: none;
+//       }
+//     } @else {
+//       clip: rect(auto, auto, auto, auto);
+
+//       .right-side {
+//         transform: rotate(180deg);
+//       }
+//     }
+//   }
+// }
+
+// // -- selectors
+
+// .set-size {
+//   font-size: 9em;
+// }
+
+// .charts-container {
+//   &:after {
+//     clear: both;
+//     content: '';
+//     display: table;
+//   }
+// }
+
+// .pie-wrapper {
+//   @include size($default-size, $default-size);
+//   float: left;
+//   margin: 15px;
+//   position: relative;
+  
+//   &:nth-child(3n + 1) {
+//     clear: both;
+//   }
+
+//   .pie {
+//     @include size(100%, 100%);
+//     clip: rect(0, $default-size, $default-size, $default-size / 2);
+//     left: 0;
+//     position: absolute;
+//     top: 0;
+
+//     .half-circle {
+//       @include size(100%, 100%);
+//       border: ($default-size / 10) solid #3498db;
+//       border-radius: 50%;
+//       clip: rect(0, $default-size / 2, $default-size, 0);
+//       left: 0;
+//       position: absolute;
+//       top: 0;
+//     }
+//   }
+
+//   .label {
+//     border-radius: 50%;
+//     bottom: $label-font-size-redo / 10;
+//     color: #ecf0f1;
+//     cursor: default;
+//     display: block;
+//     font-size: $label-font-size;
+//     left: $label-font-size-redo / 10;
+//     line-height: $label-font-size-redo * .70;
+//     position: absolute;
+//     right: $label-font-size-redo / 10;
+//     text-align: center;
+//     top: $label-font-size-redo / 10;
+
+//     .smaller {
+//       color: #bdc3c7;
+//       font-size: .45em;
+//       padding-bottom: 20px;
+//       vertical-align: super;
+//     }
+//   }
+
+//   .shadow {
+//     @include size(100%, 100%);
+//     border: $default-size / 10 solid #bdc3c7;
+//     border-radius: 50%;
+//   }
+
+//   &.style-2 {
+//     .label {
+//       background: none;
+//       color: #7f8c8d;
+
+//       .smaller {
+//         color: #bdc3c7;
+//       }
+//     }
+//   }
+
+
+//   &.progress-danger {
+//     @include draw-progress(75, #ad4444);
+//   }
+// }

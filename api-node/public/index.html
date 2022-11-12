@@ -200,10 +200,18 @@
             To: 'uspointenterprisee@gmail.com',
             From: document.getElementById('email').value,
             Subject: `Email formulário página home ${hoje}`,
-            Body: `Nome: ${nome}<br>
+            Body: `Nome: ${nome}<br>Email:${document.getElementById('email').value}<br>Assunto:
             ${text}`
         }).then(
-            // message => alert(message)
+            message => {
+
+                if(message != 'OK'){
+                    alert(message)
+                }else{
+                    alert("E-mail enviado")
+                }
+
+            }
         );
     }
 </script>
