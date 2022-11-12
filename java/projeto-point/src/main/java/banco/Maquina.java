@@ -112,13 +112,11 @@ public class Maquina {
 
         try {
 
-            connection.update("INSERT INTO Maquina VALUES(?, ?, ?, ?, ?);",
-                    null,
+            connection.update("INSERT INTO Maquina (sistemaOperacional, nomeMaquina, tipo, fkFuncionario) VALUES(?, ?, ?, ?);",
                     so,
                     getNomeMaquina(),
                     "DESKTOP",
                     funcionario.getId()
-                    
             );
             
             System.out.println("Cadastrou");

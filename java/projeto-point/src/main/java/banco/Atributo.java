@@ -50,27 +50,23 @@ public class Atributo {
     
     // Aqui nos inserts os ids Dos componentes é default - 1-CPU ; 2 - RAM ; 3 - HD
         
-    private void inserirAtributo(String atributo, double valor, String unidadeDeMedida, Maquina maquina, int id){
-        
-        connection.update("INSERT INTO Atributo VALUES(null, ?, ?, ?, ?, ?);",
+    private void inserirAtributo(Integer idAtributo, String atributo, double valor, String unidadeDeMedida, Maquina maquina, int id){
+        connection.update("INSERT INTO Atributo (atributo, valor, unidadeMedida, fkComponente, fkMaquina) VALUES(?, ?, ?, ?, ?);",
                     atributo,
                     valor,
                     unidadeDeMedida,
                     id,
                     maquina.getId()
-                    
             );
     }
     
-    private void inserirAtributo(String atributo, int valor, String unidadeDeMedida, Maquina maquina, int id){
-        
-        connection.update("INSERT INTO Atributo VALUES(null, ?, ?, ?, ?, ?);",
+    private void inserirAtributo(Integer idAtributo, String atributo, int valor, String unidadeDeMedida, Maquina maquina, int id){
+        connection.update("INSERT INTO Atributo (atributo, valor, unidadeMedida, fkComponente, fkMaquina) VALUES(?, ?, ?, ?, ?);",
                     atributo,
                     valor,
                     unidadeDeMedida,
                     id,
                     maquina.getId()
-                    
             );
     }
     
@@ -81,7 +77,7 @@ public class Atributo {
         
         int core = looca.getProcessador().getNumeroCpusFisicas();
         
-        inserirAtributo("CORE", core, "unidade", maquina, 1);
+        inserirAtributo(1, "CORE", core, "unidade", maquina, 1);
     }
     
     private void insertQuantidadeDeThreads(Maquina maquina){
@@ -90,7 +86,7 @@ public class Atributo {
         
         int threads = looca.getProcessador().getNumeroCpusLogicas();
         
-        inserirAtributo("THREADS", threads, "unidade", maquina, 1);
+        inserirAtributo(1, "THREADS", threads, "unidade", maquina, 1);
         
     }
     
@@ -103,7 +99,7 @@ public class Atributo {
         threadsGiga = utilitarios.limitarDuasCasasDecimais(threadsGiga);
         
         
-        inserirAtributo("Tamanho", threadsGiga, "GB",maquina, 3);
+        inserirAtributo(3, "Tamanho", threadsGiga, "GB",maquina, 3);
         
     }
     
@@ -115,7 +111,7 @@ public class Atributo {
         Double memoriaRamTotalDouble = utilitarios.converterBytesParaGiga(memoriaRamTotal);
         memoriaRamTotalDouble = utilitarios.limitarDuasCasasDecimais(memoriaRamTotalDouble);
         
-        inserirAtributo("Tamanho", memoriaRamTotalDouble, "GB", maquina, 2);
+        inserirAtributo(2, "Tamanho", memoriaRamTotalDouble, "GB", maquina, 2);
         
     }
     

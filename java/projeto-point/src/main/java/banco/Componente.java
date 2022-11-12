@@ -42,10 +42,10 @@ public class Componente {
         Integer id = getMaxId(maquina);
         id++;
         
-         connection.update("INSERT INTO Componente VALUES (?,?,?)",
+         connection.update("INSERT INTO Componente (idComponente, tipo, fkMaquina) VALUES (?,?,?)",
                         id,
-                        maquina.getId(),
-                        nomeComponte
+                        nomeComponte,
+                        maquina.getId()
                 );
         
     }
@@ -54,11 +54,7 @@ public class Componente {
 
         if (maquina.getId() != null) {
             
-            
-            
             Integer qtdDisco = looca.getGrupoDeDiscos().getQuantidadeDeDiscos();
-            Integer id = getMaxId(maquina);
-            id ++;
 
             for (int i = 0; i < qtdDisco; i++) {
                 insertsComponentes(maquina, "DISCO");
