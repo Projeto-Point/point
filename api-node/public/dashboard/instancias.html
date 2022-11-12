@@ -85,7 +85,8 @@
                     var lista = document.querySelector("#maquinas");
                     console.log(resposta);
                     for(let maquina = 0; maquina < resposta.length; maquina++){
-                        lista.innerHTML += `<div class="box box-maquina">
+                        if (resposta[maquina].tipo== 'Servidor') {
+                            lista.innerHTML += `<div class="box box-maquina">
                             <img src="../assets/dash/computer.png">
                             <h3>${resposta[maquina].nome}</h3>
                             <p>${resposta[maquina].nomeMaquina}</p>
@@ -95,6 +96,7 @@
                             </div>
                         </div>`;
                     }
+                        }
                 });
             }
         });

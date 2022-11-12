@@ -28,7 +28,7 @@
                     <span>Máquinas</span>
                 </a>
                 <a href="instancias.html" class="img-nav">
-                    <img src="C:\Users\Felipe Grossi\Desktop\point\api-node\public\dashboard\assets\dash\instancia.png">
+                    <img src="assets/dash/server.png">
                     <span>Instâncias</span>
                 </a>
                 <a href="configuracoes.html" class="img-nav">
@@ -85,7 +85,8 @@
                     var lista = document.querySelector("#maquinas");
                     console.log(resposta);
                     for(let maquina = 0; maquina < resposta.length; maquina++){
-                        lista.innerHTML += `<div class="box box-maquina">
+                        if (resposta[maquina].tipo== 'DESKTOP') {
+                            lista.innerHTML += `<div class="box box-maquina">
                             <img src="../assets/dash/computer.png">
                             <h3>${resposta[maquina].nome}</h3>
                             <p>${resposta[maquina].nomeMaquina}</p>
@@ -95,6 +96,8 @@
                             </div>
                         </div>`;
                     }
+                        }
+                        
                 });
             }
         });
