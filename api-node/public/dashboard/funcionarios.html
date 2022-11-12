@@ -2,11 +2,11 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Funcionários | Point</title>
-    <link rel="stylesheet" href="css/styleDash.css">
+    <link rel="stylesheet" href="css/styleDash.css" />
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 
@@ -14,36 +14,36 @@
     <header>
         <nav id="menu">
             <a href="maquinas.html" class="logo">
-                <img src="../assets/imgs/Point.png">
+                <img src="../assets/imgs/Point.png" />
             </a>
-            <hr>
+            <hr />
             <!-- <a href="alertas.html">
                 <img src="../assets/imgs/alfinete 1.png">
                 <span>Alertas</span>
             </a> -->
             <a href="funcionarios.html" class="img-nav">
-                <img src="../assets/imgs/user.png" >
+                <img src="../assets/imgs/user.png" />
                 <span>Funcionários</span>
             </a>
             <a href="maquinas.html" class="img-nav">
-                <img src="./assets/imgs/imac.png">
+                <img src="./assets/imgs/imac.png" />
                 <span>Máquinas</span>
             </a>
             <a href="instancias.html" class="img-nav">
-                <img src="assets/dash/server.png">
+                <img src="assets/dash/server.png" />
                 <span>Instâncias</span>
             </a>
             <a href="configuracoes.html" class="img-nav">
-                <img src="./assets/imgs/setting.png">
+                <img src="./assets/imgs/setting.png" />
                 <span>Configurações</span>
             </a>
-            <hr>
+            <hr />
             <a href="../index.html" class="img-nav">
-                <img src="../assets/imgs/x.png">
+                <img src="../assets/imgs/x.png" />
                 <span>Sair</span>
             </a>
         </nav>
-        <nav id="menu-mobile"><img src="assets/dash/bars.svg"></nav>
+        <nav id="menu-mobile"><img src="assets/dash/bars.svg" /></nav>
     </header>
     <main>
         <section class="funcionarios">
@@ -52,12 +52,12 @@
                     <a href="cadastrar-funcionario.html" class="btn-link">Cadastrar funcionário</a>
                 </div>
                 <div class="top-meio">
-                    <input id="inp-pesquisar-funcionario" type="search" placeholder="Pesquise por funcionário">
+                    <input id="inp-pesquisar-funcionario" type="search" placeholder="Pesquise por funcionário"
+                        onkeyup="listarFuncionarios()" />
                 </div>
                 <div class="top-dir">
-
                     <p class="nome"><span id="nomeGerente"></span></p>
-                    <img src="../assets/dash/icons8-user-64.png">
+                    <img src="../assets/dash/icons8-user-64.png" />
                 </div>
             </section>
             <div id="lista-funcionarios">
@@ -75,16 +75,32 @@
         </section>
     </main>
 
+    <script src="../script.js"></script>
+
     <script>
+
         nomeGerente.innerHTML = sessionStorage.NOME_USUARIO;
 
-        fetch(`/usuarios/listarFuncionarios?idEmpresa=${sessionStorage.ID_EMPRESA}`).then(function (resposta) {
-            if (resposta.ok) {
-                resposta.json().then((resposta) => {
-                    console.log(resposta)
+        
 
-                    for (let i = 0; i < resposta.length; i++) {
-                        document.getElementById("lista-funcionarios").innerHTML += `
+        function listarFuncionarios() {
+            
+
+            var pesquisaFuncionarioVar = document.getElementById(
+                "inp-pesquisar-funcionario"
+            ).value;
+
+            fetch(
+                `/usuarios/listarFuncionarios?idEmpresa=${sessionStorage.ID_EMPRESA}`
+            ).then(function (resposta) {
+                if (resposta.ok) {
+                    resposta.json().then((resposta) => {
+                        console.log(resposta);
+
+                        if(pesquisaFuncionarioVar == ''){
+                            document.getElementById("lista-funcionarios").innerHTML = ''
+                            for (let i = 0; i < resposta.length; i++) {
+                            document.getElementById("lista-funcionarios").innerHTML += `
                         <div class="funcionario box">
                           <div class="alinhamento">
                              <h3 id="nome-funcionario">${resposta[i].nome}</h3>
@@ -96,9 +112,92 @@
                          <p>${resposta[i].email}</p>
                          <p>${resposta[i].telefone}</p>
                          
-                </div>`;
+                        </div>`;
+                        }
+                
+                    }else{
+
+                        document.getElementById("lista-funcionarios").innerHTML = ''
+                        for (let i = 0; i < resposta.length; i++) {
+                            
+                            if ((resposta[i].nome).toUpperCase().indexOf(pesquisaFuncionarioVar.toUpperCase()) != -1 || (resposta[i].cargo).toUpperCase().indexOf(pesquisaFuncionarioVar.toUpperCase()) != -1){
+
+                                document.getElementById("lista-funcionarios").innerHTML += `
+                        <div class="funcionario box">
+                          <div class="alinhamento">
+                             <h3 id="nome-funcionario">${resposta[i].nome}</h3>
+                             <a href="alterarFunc.html?idFuncionario=${resposta[i].idFuncionario}">
+                            <div class="box-gear"><img src="assets/dash/gear.png" class="gear" alt=""></div>
+                        </a>
+                             </div>
+                             <p>${resposta[i].cargo}</p>
+                         <p>${resposta[i].email}</p>
+                         <p>${resposta[i].telefone}</p>
+                         
+                        </div>`;
+
+                            }
+                            
+                        }
+
                     }
-                })
-            }
-        });
+                      
+                    });
+                }
+            });
+
+        }
+
+        listarFuncionarios()
+
+
+        // function pesquisaFuncionario() {
+
+        //     var pesquisaFuncionarioVar = document.getElementById(
+        //         "inp-pesquisar-funcionario"
+        //     ).value;
+
+        //     console.log(pesquisaFuncionarioVar == '')
+        //     if(pesquisaFuncionario == ''){
+        //         listarFuncionarios()
+        //         return false;
+        //     }
+
+        //     fetch(
+        //         `/usuarios/listarFuncionarios?idEmpresa=${sessionStorage.ID_EMPRESA}`
+        //     ).then(function (resposta) {
+        //         if (resposta.ok) {
+        //             resposta.json().then((resposta) => {
+                       
+
+        //                 for (let i = 0; i < resposta.length; i++) {
+
+        //                     if ((resposta[i].nome).toUpperCase().indexOf(pesquisaFuncionarioVar.toUpperCase()) != -1) {
+
+        //                         document.getElementById("lista-funcionarios").innerHTML += `
+        //                 <div class="funcionario box">
+        //                   <div class="alinhamento">
+        //                      <h3 id="nome-funcionario">${resposta[i].nome}</h3>
+        //                      <a href="alterarFunc.html?idFuncionario=${resposta[i].idFuncionario}">
+        //                     <div class="box-gear"><img src="assets/dash/gear.png" class="gear" alt=""></div>
+        //                 </a>
+        //                      </div>
+        //                      <p>${resposta[i].cargo}</p>
+        //                  <p>${resposta[i].email}</p>
+        //                  <p>${resposta[i].telefone}</p>
+                         
+        //              </div>`;
+
+        //                     }
+
+        //                 }
+        //             });
+        //         }
+        //     });
+
+
+        // }
     </script>
+</body>
+
+</html>
