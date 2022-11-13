@@ -3,17 +3,9 @@ function abrirMenu() {
     navbar.style.opacity = 1;
 }
 
-function fecharMenu(aba) {
-
-    if(aba == 'contato'){
-
-        if(window.innerWidth < 997){
-            navbar.style.visibility = "hidden";
-            navbar.style.opacity = 0;
-        }
-
-    }
-    
+function fecharMenu() {
+    navbar.style.visibility = "hidden";
+    navbar.style.opacity = 0;
 }
 
 function voltarIndex(){
@@ -42,13 +34,6 @@ $('.dropdown').focusout(function () {
 $('.dropdown .dropdown-menu li').click(function () {
     $(this).parents('.dropdown').find('span').text($(this).text());
     $(this).parents('.dropdown').find('input').attr('value', $(this).attr('id'));
-});
-
-
-$("#sair").on('click', function(event) {
-    event.preventDefault();
-    sessionStorage.clear();
-    window.location = "../index.html";
 });
 
 // pesquisa
