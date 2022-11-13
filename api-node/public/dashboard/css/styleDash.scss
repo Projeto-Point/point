@@ -68,8 +68,18 @@ main section.funcionarios .top {
     margin-bottom: 30px;
   }
   main section.funcionarios .top a {
-    background-color: var(--cor2);
+    
+    background-color: rgb(255, 255, 255);
     padding: 15px;
+    color: black;
+  }
+
+  main section.funcionarios .top a:hover {
+    background-color: var(--cor3);
+    border: 2px solid white;
+    color: white;
+    font-weight: bold;
+    transition: all ease-in-out 100ms;
   }
   main section.funcionarios #lista-funcionarios {
     display: grid;
@@ -370,7 +380,7 @@ main{
         .top{
             margin-bottom: 30px;
             a{
-                background-color: var(--cor2);
+                
                 padding: 15px;
             }
         }
@@ -424,18 +434,28 @@ main{
         }
         .info-funcionario{
             grid-area: i1;
+            p{
+                margin-top: 15px;
+            }
+
+            h3{
+                border-bottom: 2px solid var(--cor3);
+            }
         }
         .info-maquina{
             grid-area: i2;
+            p{
+                margin-top: 7%;
+                padding-left: 9px;
+            }
+            h3{
+                border-bottom: 2px solid var(--cor3);
+            }
         }
         .box{
             padding: 15px;
             display: block;
             font-size: 20px;
-            hr{
-                margin: 10px 0;
-                opacity: 0.4;
-            }
         }
         .box-kpi{
             h1{
@@ -544,6 +564,7 @@ main{
             }
 
             .container-info{
+                grid-template-columns: 100%;
 
                 display: flex;
                 flex-direction: row;
@@ -570,7 +591,7 @@ main{
 
                 
             }
-
+        
     
 
         }

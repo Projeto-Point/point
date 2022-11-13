@@ -335,9 +335,20 @@ main section.funcionarios .top {
 }
 
 main section.funcionarios .top a {
+    background-color: white;
+    color: black;
+    padding: 8px;
+    padding-inline-start: 13px;
+    padding-inline-end: 13px;
+    width: 180px !important;
+}
+
+main section.funcionarios .top a:hover {
     background-color: var(--cor3);
-    padding: 15px;
-    width: 150px;
+    color: white;
+    font-weight: bold;
+    transition: all ease-in-out 100ms;
+    border: 2px solid white;
 }
 
 main section.funcionarios #lista-funcionarios {

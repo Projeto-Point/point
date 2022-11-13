@@ -51,7 +51,7 @@
               id="inp-pesquisar-funcionario"
               type="search"
               placeholder="Pesquise por funcionário"
-              style="visibility: hidden"
+              style="display: none;"
             />
           </div>
           <div class="top-dir">
@@ -249,7 +249,7 @@
               if (resposta.ok) {
                 setTimeout(() => {
                   window.location = "funcionarios.html";
-                }, 1500);
+                }, 1800);
   
                 limparFormulario();
               } else {

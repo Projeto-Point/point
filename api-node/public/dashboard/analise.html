@@ -135,11 +135,9 @@
         </div>
         <div class="box info-funcionario" id="sobreFuncionario">
           <h3>Sobre o funcionário</h3>
-          <hr />
         </div>
         <div class="box info-maquina" id="sobreMaquina">
           <h3>Sobre a máquina</h3>
-          <hr />
         </div>
       </section>
     </main>
@@ -168,7 +166,6 @@
           "sobreMaquina"
         ).innerHTML += `<p><b>Tipo da máquina: </b><span>${resposta[0].tipoMaquina}</span></p>`;
 
-        document.getElementById("sobreMaquina").innerHTML += `<hr>`;
 
         for (let index = 0; index < resposta.length; index++) {
           if (resposta[index].atributo == "CORE") {

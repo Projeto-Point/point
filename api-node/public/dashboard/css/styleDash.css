@@ -69,8 +69,17 @@ main section.funcionarios .top {
 }
 
 main section.funcionarios .top a {
-  background-color: var(--cor2);
+  background-color: rgb(255, 255, 255);
   padding: 15px;
+  color: black;
+}
+
+main section.funcionarios .top a:hover {
+  background-color: var(--cor3);
+  border: 2px solid white;
+  color: white;
+  font-weight: bold;
+  transition: all ease-in-out 100ms;
 }
 
 main section.funcionarios #lista-funcionarios {
@@ -353,7 +362,6 @@ main section.funcionarios .top {
   margin-bottom: 30px;
 }
 main section.funcionarios .top a {
-  background-color: var(--cor2);
   padding: 15px;
 }
 main section.funcionarios #lista-funcionarios {
@@ -401,17 +409,26 @@ main section.dashboard-analise .grafico-disco {
 main section.dashboard-analise .info-funcionario {
   grid-area: i1;
 }
+main section.dashboard-analise .info-funcionario p {
+  margin-top: 15px;
+}
+main section.dashboard-analise .info-funcionario h3 {
+  border-bottom: 2px solid var(--cor3);
+}
 main section.dashboard-analise .info-maquina {
   grid-area: i2;
+}
+main section.dashboard-analise .info-maquina p {
+  margin-top: 7%;
+  padding-left: 9px;
+}
+main section.dashboard-analise .info-maquina h3 {
+  border-bottom: 2px solid var(--cor3);
 }
 main section.dashboard-analise .box {
   padding: 15px;
   display: block;
   font-size: 20px;
-}
-main section.dashboard-analise .box hr {
-  margin: 10px 0;
-  opacity: 0.4;
 }
 main section.dashboard-analise .box-kpi h1 {
   text-align: center;
@@ -509,6 +526,7 @@ main section.dashboard .grafico .diver, main section.dashboard .tabela .diver {
   background-color: var(--cor3);
 }
 main section.dashboard .grafico .container-info, main section.dashboard .tabela .container-info {
+  grid-template-columns: 100%;
   display: flex;
   flex-direction: row;
   justify-content: space-evenly;
