@@ -12,7 +12,7 @@
 body {
     font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
     margin: 0;
-    background-color: #ebf3f3;
+    overflow: hidden;
 }
   
   
@@ -161,9 +161,7 @@ header nav#menu-mobile {
 
 header nav#menu-mobile img {
     width: 50px;
-    height: -webkit-fit-content;
-    height: -moz-fit-content;
-    height: fit-content;
+    height: 25px;
     cursor: pointer;
 }
 
@@ -799,4 +797,18 @@ svg rect {
 }
 .dropdown .dropdown-menu li:active {
     background-color: #e2e2e2
+}
+
+@media screen and (max-width: 1400px){
+    header nav#menu{
+            display: none;
+            transform: translateX(-100%);
+        }
+    header nav#menu-mobile{
+        position: relative;
+        display: flex;
+    }
+    main{
+        width: calc(100% - 70px);
+    }
 }

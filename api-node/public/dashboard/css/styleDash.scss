@@ -117,7 +117,7 @@ main section.funcionarios .top {
 header{
     // Aqui está a largura do navbar
     nav#menu{
-        max-width: 300px;
+    max-width: 300px;
     height: 100vh;
     display: flex;
     flex-direction: column;
@@ -167,6 +167,7 @@ header{
         }
     }
     nav#menu-mobile{
+        position: sticky;
         display: none;
         top: 0;
         box-shadow: 5px 0px 5px rgba(0, 0, 0, 0.3);
@@ -585,17 +586,9 @@ main{
                     p{
                         margin-bottom: 5%;
                     }
-                }
-
-              
-
-                
+                }   
             }
-        
-    
-
         }
-
         .func{    
             p{
                margin-top: 1%;
@@ -611,22 +604,18 @@ main{
             transform: translateX(-100%);
         }
         nav#menu-mobile{
-            position: relative;
             display: flex;
         }
     }
     main{
         width: calc(100% - 70px);
     }
-
     main section.top .top-esq p.titulo{
         display: none;
     }
-
     main section.top .top-esq p.subtitulo{
         display: none;
     }
-
 }
 
 @media screen and (max-width: 1200px){
@@ -638,6 +627,24 @@ main{
                                  "g3"
                                  "t1"
                                  "t2";
+        }
+        section.dashboard-analise{
+            .legenda + span {
+                display: none;
+            }
+            .legenda {
+                display: none;
+            }
+            grid-template-columns: 100%;
+            grid-template-areas: "k1" 
+                                 "k2"
+                                 "k3"
+                                 "g1"
+                                 "g2"
+                                 "g3"
+                                 "i1"
+                                 "i2";
+            grid-template-rows: auto;
         }
     }
 }
@@ -653,5 +660,18 @@ main{
     }
     #inp-pesquisar-funcionario{
         display: none;
+    }
+    #inp-pesquisar-maquina{
+        display: none;
+    }
+    main{
+        section.funcionarios{
+            #lista-funcionarios{
+                grid-template-columns: 1fr;
+            }
+        }
+        section#maquinas{
+            grid-template-columns: 1fr;
+        }
     }
 }

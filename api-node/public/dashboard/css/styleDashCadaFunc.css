@@ -126,9 +126,7 @@ header nav#menu-mobile {
 
 header nav#menu-mobile img {
     width: 50px;
-    height: -webkit-fit-content;
-    height: -moz-fit-content;
-    height: fit-content;
+    height: 25px;
     cursor: pointer;
 }
 
@@ -483,7 +481,7 @@ main section.dashboard .tabela h3 {
 }
 
 .cad_func {
-    width: 125vh;
+    width: 80vw;
     height: 60vh;
     min-height: 500px;
     display: flex;
@@ -575,8 +573,6 @@ main section.dashboard .tabela h3 {
     top: 2px;
 }
 
-
-
 svg path,
 svg rect {
     fill: var(--cor1);
@@ -585,4 +581,18 @@ svg rect {
 .loader{
     margin: 30px 0;
     display: none;
+}
+
+@media screen and (max-width: 1400px){
+    header nav#menu{
+            display: none;
+            transform: translateX(-100%);
+        }
+    header nav#menu-mobile{
+        position: relative;
+        display: flex;
+    }
+    main{
+        width: calc(100% - 70px);
+    }
 }

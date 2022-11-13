@@ -163,6 +163,8 @@ header nav#menu a img {
   width: 20px;
 }
 header nav#menu-mobile {
+  position: -webkit-sticky;
+  position: sticky;
   display: none;
   top: 0;
   box-shadow: 5px 0px 5px rgba(0, 0, 0, 0.3);
@@ -556,7 +558,6 @@ main section.dashboard .func p {
     transform: translateX(-100%);
   }
   header nav#menu-mobile {
-    position: relative;
     display: flex;
   }
   main {
@@ -574,6 +575,17 @@ main section.dashboard .func p {
     grid-template-columns: 100%;
     grid-template-areas: "g1" "g2" "g3" "t1" "t2";
   }
+  main section.dashboard-analise {
+    grid-template-columns: 100%;
+    grid-template-areas: "k1" "k2" "k3" "g1" "g2" "g3" "i1" "i2";
+    grid-template-rows: auto;
+  }
+  main section.dashboard-analise .legenda + span {
+    display: none;
+  }
+  main section.dashboard-analise .legenda {
+    display: none;
+  }
 }
 @media screen and (max-width: 1100px) {
   header nav {
@@ -584,5 +596,14 @@ main section.dashboard .func p {
   }
   #inp-pesquisar-funcionario {
     display: none;
+  }
+  #inp-pesquisar-maquina {
+    display: none;
+  }
+  main section.funcionarios #lista-funcionarios {
+    grid-template-columns: 1fr;
+  }
+  main section#maquinas {
+    grid-template-columns: 1fr;
   }
 }/*# sourceMappingURL=styleDash.css.map */
