@@ -150,53 +150,6 @@
 
         listarFuncionarios()
 
-
-        // function pesquisaFuncionario() {
-
-        //     var pesquisaFuncionarioVar = document.getElementById(
-        //         "inp-pesquisar-funcionario"
-        //     ).value;
-
-        //     console.log(pesquisaFuncionarioVar == '')
-        //     if(pesquisaFuncionario == ''){
-        //         listarFuncionarios()
-        //         return false;
-        //     }
-
-        //     fetch(
-        //         `/usuarios/listarFuncionarios?idEmpresa=${sessionStorage.ID_EMPRESA}`
-        //     ).then(function (resposta) {
-        //         if (resposta.ok) {
-        //             resposta.json().then((resposta) => {
-                       
-
-        //                 for (let i = 0; i < resposta.length; i++) {
-
-        //                     if ((resposta[i].nome).toUpperCase().indexOf(pesquisaFuncionarioVar.toUpperCase()) != -1) {
-
-        //                         document.getElementById("lista-funcionarios").innerHTML += `
-        //                 <div class="funcionario box">
-        //                   <div class="alinhamento">
-        //                      <h3 id="nome-funcionario">${resposta[i].nome}</h3>
-        //                      <a href="alterarFunc.html?idFuncionario=${resposta[i].idFuncionario}">
-        //                     <div class="box-gear"><img src="assets/dash/gear.png" class="gear" alt=""></div>
-        //                 </a>
-        //                      </div>
-        //                      <p>${resposta[i].cargo}</p>
-        //                  <p>${resposta[i].email}</p>
-        //                  <p>${resposta[i].telefone}</p>
-                         
-        //              </div>`;
-
-        //                     }
-
-        //                 }
-        //             });
-        //         }
-        //     });
-
-
-        // }
     </script>
 </body>
 

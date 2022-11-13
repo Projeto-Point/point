@@ -47,11 +47,3 @@ $('.dropdown .dropdown-menu li').click(function () {
 
 
 // pesquisa
-function pesquisaFuncionario(){
-
-    var pesquisaFuncionario = document.getElementById('inp-pesquisar-funcionario').value
-
-    
-
-
-}

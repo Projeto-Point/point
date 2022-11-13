@@ -11,7 +11,6 @@
 
 body {
     font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-    padding-bottom: 100px;
     margin: 0;
     background-color: #ebf3f3;
 }
@@ -22,10 +21,10 @@ body {
   }
 
 :root {
-    --cor1: #00CA43;
+    --cor1: #13b348;
     --cor2: #00A219;
     --cor3: #007B00;
-    --radius: 10px;
+    --radius: 4px;
 }
 
 a.btn-link {
@@ -172,7 +171,7 @@ main {
     min-height: 100vh;
     display: flex;
     flex-direction: column;
-    background: var(--cor2);
+    background: var(--cor1);
     background-image: url("../../assets/dash/dash.png");
     background-repeat: no-repeat;
     background-size: contain;
