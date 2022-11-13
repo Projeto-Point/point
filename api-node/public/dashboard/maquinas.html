@@ -36,10 +36,10 @@
           <span>Configurações</span>
         </a>
         <hr />
-        <a href="../index.html" class="img-nav">
+        <a class="img-nav" id="sair">
           <img src="../assets/imgs/x.png" />
           <span>Sair</span>
-        </a>
+      </a>
       </nav>
       <nav id="menu-mobile"><img src="assets/dash/bars.svg" /></nav>
     </header>
@@ -71,6 +71,9 @@
     </main>
   </body>
 </html>
+
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+<script src="../script.js"></script>
 <script>
   nomeGerente.innerHTML = sessionStorage.NOME_USUARIO;
   // TO DO: incluir máquinas com alertas, verificar se é computador ou servidor

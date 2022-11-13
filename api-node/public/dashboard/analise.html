@@ -1,149 +1,152 @@
 <!DOCTYPE html>
 <html lang="pt-br">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Análise de máquina | Point</title>
+    <link rel="stylesheet" href="css/styleDash.css" />
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.4/moment.min.js"></script>
+  </head>
 
-<head>
-  <meta charset="UTF-8" />
-  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Análise de máquina | Point</title>
-  <link rel="stylesheet" href="css/styleDash.css" />
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.4/moment.min.js"></script>
-</head>
-
-<body>
-  <header>
-    <nav id="menu">
-      <a href="maquinas.html" class="logo">
-        <img src="../assets/imgs/Point.png">
-    </a>
-    <hr>
-    <!-- <a href="alertas.html">
+  <body>
+    <header>
+      <nav id="menu">
+        <a href="maquinas.html" class="logo">
+          <img src="../assets/imgs/Point.png" />
+        </a>
+        <hr />
+        <!-- <a href="alertas.html">
         <img src="../assets/imgs/alfinete 1.png">
         <span>Alertas</span>
     </a> -->
-    <a href="funcionarios.html" class="img-nav">
-        <img src="../assets/imgs/user.png" >
-        <span>Funcionários</span>
-    </a>
-    <a href="maquinas.html" class="img-nav">
-        <img src="./assets/imgs/imac.png">
-        <span>Máquinas</span>
-    </a>
-    <a href="instancias.html" class="img-nav">
-        <img src="assets/dash/server.png">
-        <span>Instâncias</span>
-    </a>
-    <a href="configuracoes.html" class="img-nav">
-        <img src="./assets/imgs/setting.png">
-        <span>Configurações</span>
-    </a>
-    <hr>
-    <a href="../index.html" class="img-nav">
-        <img src="../assets/imgs/x.png">
-        <span>Sair</span>
-    </a>
-    </nav>
-    <nav id="menu-mobile"><img src="assets/dash/bars.svg"></nav>
-  </header>
-  <main>
-    <section class="top">
-      <div class="top-esq">
-        <p class="titulo">Olá, <span id="nome_gerente"></span></p>
-        <p class="subtitulo">17/10/2022</p>
-      </div>
-      <div class="top-meio" style="visibility: hidden;">
-        <input id="inp-pesquisar-funcionario" type="search" placeholder="Pesquise o nome de um funcionário..." />
-      </div>
-      <div class="top-dir">
-        <p class="nome"><span id="nomeGerente"></span></p>
-        <img src="../assets/dash/icons8-user-64.png">
-      </div>
-    </section>
-    <section class="dashboard-analise">
-      <div class="box box-kpi kpi-horas">
-        <h3>Horas ativas:</h3>
-        <p id="kpiHoras"></p>
-      </div>
-      <div class="box box-kpi kpi-mediaProc">
-        <h3>Média do processador:</h3>
-        <p id="kpiCPU">%</p>
-      </div>
-      <div class="box box-kpi kpi-mediaRam">
-        <h3>Média da memória RAM:</h3>
-        <p id="kpiRAM">%</p>
-      </div>
-      <div class="grafico-processador grafico box">
-        <div class="header">
-          <h3>Processador</h3>
-          <div class="dir">
-            <div class="legenda alto"></div>
-            <span>Maior que 80%</span>
-            <div class="legenda normal"></div>
-            <span>Menor que 80%</span>
-            <select id="">
-              <option value="ultimoMes">Último mês</option>
-              <option value="ultimaSemana">Última semana</option>
-              <option value="ultimoAno">Último ano</option>
-            </select>
-          </div>
-        </div>
-        <div class="main-grafico">
-          <canvas id="graficoCPU"></canvas>
-        </div>
-      </div>
-      <div class="grafico-ram grafico box">
-        <div class="header">
-          <h3>Memória RAM</h3>
-          <div class="dir">
-            <div class="legenda alto"></div>
-            <span>Maior que 85%</span>
-            <div class="legenda normal"></div>
-            <span>Menor que 85%</span>
-            <select id="">
-              <option value="ultimoMes">Último mês</option>
-              <option value="ultimaSemana">Última semana</option>
-              <option value="ultimoAno">Último ano</option>
-            </select>
-          </div>
-        </div>
-        <div class="main-grafico">
-          <canvas id="graficoRAM"></canvas>
-        </div>
-      </div>
-      <div class="grafico-disco grafico box">
-        <div class="header">
-          <h3>Disco</h3>
-          <div class="dir">
-            <div class="legenda alto"></div>
-            <span>Maior que 90%</span>
-            <div class="legenda normal"></div>
-            <span>Menor que 90%</span>
-            <select id="">
-              <option value="ultimoMes">Último mês</option>
-              <option value="ultimaSemana">Última semana</option>
-              <option value="ultimoAno">Último ano</option>
-            </select>
-          </div>
-        </div>
-        <div class="main-grafico">
-          <canvas id="graficoDisco"></canvas>
-        </div>
-      </div>
-      <div class="box info-funcionario" id="sobreFuncionario">
-        <h3>Sobre o funcionário</h3>
+        <a href="funcionarios.html" class="img-nav">
+          <img src="../assets/imgs/user.png" />
+          <span>Funcionários</span>
+        </a>
+        <a href="maquinas.html" class="img-nav">
+          <img src="./assets/imgs/imac.png" />
+          <span>Máquinas</span>
+        </a>
+        <a href="instancias.html" class="img-nav">
+          <img src="assets/dash/server.png" />
+          <span>Instâncias</span>
+        </a>
+        <a href="configuracoes.html" class="img-nav">
+          <img src="./assets/imgs/setting.png" />
+          <span>Configurações</span>
+        </a>
         <hr />
-      </div>
-      <div class="box info-maquina" id="sobreMaquina">
-        <h3>Sobre a máquina</h3>
-        <hr />
-      </div>
-    </section>
-  </main>
-</body>
-
+        <a class="img-nav" id="sair">
+          <img src="../assets/imgs/x.png" />
+          <span>Sair</span>
+        </a>
+      </nav>
+      <nav id="menu-mobile"><img src="assets/dash/bars.svg" /></nav>
+    </header>
+    <main>
+      <section class="top">
+        <div class="top-esq">
+          <p class="titulo">Olá, <span id="nome_gerente"></span></p>
+          <p class="subtitulo">17/10/2022</p>
+        </div>
+        <div class="top-meio" style="visibility: hidden">
+          <input
+            id="inp-pesquisar-funcionario"
+            type="search"
+            placeholder="Pesquise o nome de um funcionário..."
+          />
+        </div>
+        <div class="top-dir">
+          <p class="nome"><span id="nomeGerente"></span></p>
+          <img src="../assets/dash/icons8-user-64.png" />
+        </div>
+      </section>
+      <section class="dashboard-analise">
+        <div class="box box-kpi kpi-horas">
+          <h3>Horas ativas:</h3>
+          <p id="kpiHoras"></p>
+        </div>
+        <div class="box box-kpi kpi-mediaProc">
+          <h3>Média do processador:</h3>
+          <p id="kpiCPU">%</p>
+        </div>
+        <div class="box box-kpi kpi-mediaRam">
+          <h3>Média da memória RAM:</h3>
+          <p id="kpiRAM">%</p>
+        </div>
+        <div class="grafico-processador grafico box">
+          <div class="header">
+            <h3>Processador</h3>
+            <div class="dir">
+              <div class="legenda alto"></div>
+              <span>Maior que 80%</span>
+              <div class="legenda normal"></div>
+              <span>Menor que 80%</span>
+              <select id="">
+                <option value="ultimoMes">Último mês</option>
+                <option value="ultimaSemana">Última semana</option>
+                <option value="ultimoAno">Último ano</option>
+              </select>
+            </div>
+          </div>
+          <div class="main-grafico">
+            <canvas id="graficoCPU"></canvas>
+          </div>
+        </div>
+        <div class="grafico-ram grafico box">
+          <div class="header">
+            <h3>Memória RAM</h3>
+            <div class="dir">
+              <div class="legenda alto"></div>
+              <span>Maior que 85%</span>
+              <div class="legenda normal"></div>
+              <span>Menor que 85%</span>
+              <select id="">
+                <option value="ultimoMes">Último mês</option>
+                <option value="ultimaSemana">Última semana</option>
+                <option value="ultimoAno">Último ano</option>
+              </select>
+            </div>
+          </div>
+          <div class="main-grafico">
+            <canvas id="graficoRAM"></canvas>
+          </div>
+        </div>
+        <div class="grafico-disco grafico box">
+          <div class="header">
+            <h3>Disco</h3>
+            <div class="dir">
+              <div class="legenda alto"></div>
+              <span>Maior que 90%</span>
+              <div class="legenda normal"></div>
+              <span>Menor que 90%</span>
+              <select id="">
+                <option value="ultimoMes">Último mês</option>
+                <option value="ultimaSemana">Última semana</option>
+                <option value="ultimoAno">Último ano</option>
+              </select>
+            </div>
+          </div>
+          <div class="main-grafico">
+            <canvas id="graficoDisco"></canvas>
+          </div>
+        </div>
+        <div class="box info-funcionario" id="sobreFuncionario">
+          <h3>Sobre o funcionário</h3>
+          <hr />
+        </div>
+        <div class="box info-maquina" id="sobreMaquina">
+          <h3>Sobre a máquina</h3>
+          <hr />
+        </div>
+      </section>
+    </main>
+  </body>
 </html>
-
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+<script src="../script.js"></script>
 <script>
   nomeGerente.innerHTML = sessionStorage.NOME_USUARIO;
   nome_gerente.innerHTML = sessionStorage.NOME_USUARIO;
@@ -217,20 +220,20 @@
             qtdDias > 1
               ? qtdDias + " dias e "
               : qtdDias == 1
-                ? qtdDias + " dia e "
-                : "";
+              ? qtdDias + " dia e "
+              : "";
           texto +=
             qtdHoras > 1
               ? qtdHoras + " horas e "
               : qtdHoras == 1
-                ? qtdHoras + " hora e "
-                : "";
+              ? qtdHoras + " hora e "
+              : "";
           texto +=
             qtdMinutos > 1
               ? qtdMinutos + " minutos e "
               : qtdMinutos == 1
-                ? qtdMinutos + " minuto e "
-                : "";
+              ? qtdMinutos + " minuto e "
+              : "";
 
           kpiHoras.innerHTML = texto.substring(0, texto.length - 3);
           kpiCPU.innerHTML = resposta[0].mediaProcessador + "%";

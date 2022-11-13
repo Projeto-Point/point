@@ -114,6 +114,7 @@ header nav#menu a {
     align-items: center;
     margin: 20px 0;
     font-size: 1.3rem;
+    cursor: pointer;
 }
 
 header nav#menu a img {

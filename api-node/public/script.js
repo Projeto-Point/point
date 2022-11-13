@@ -45,5 +45,10 @@ $('.dropdown .dropdown-menu li').click(function () {
 });
 
 
+$("#sair").on('click', function(event) {
+    event.preventDefault();
+    sessionStorage.clear();
+    window.location = "../index.html";
+});
 
 // pesquisa
