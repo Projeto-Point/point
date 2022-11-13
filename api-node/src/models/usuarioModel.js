@@ -78,6 +78,14 @@ function pegarDadosAtuais(idFuncionario){
     return database.executar(instrucao);
 }
 
+function pegarDadosAtuaisEmpresa(idEmpresa){
+    var instrucao = `SELECT E.nome,E.cnpj, E.plano FROM [dbo].[Empresa] E
+    INNER JOIN [dbo].[Funcionario] F ON idEmpresa = fkEmpresa
+    WHERE idEmpresa = ${idEmpresa};`;
+    console.log("Executando a instrução SQL: \n" + instrucao);
+    return database.executar(instrucao);
+}
+
 function getSenhaGestor(idGestor){
 
     var instrucao = `SELECT nome, senha FROM Funcionario WHERE idFuncionario = ${idGestor}`;
@@ -94,5 +102,6 @@ module.exports = {
     listarFuncionarios,
     pegarDadosAtuais,
     alterarFuncionario,
-    getSenhaGestor
+    getSenhaGestor,
+    pegarDadosAtuaisEmpresa
 };

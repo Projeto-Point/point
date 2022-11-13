@@ -40,4 +40,8 @@ router.get("/getSenhaGestor", function(req, res){
     usuarioController.getSenhaGestor(req, res);
 });
 
+router.get("/pegarDadosAtuaisEmpresa", function(req, res){
+    usuarioController.pegarDadosAtuaisEmpresa(req, res);
+});
+
 module.exports = router;

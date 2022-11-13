@@ -241,6 +241,20 @@ function pegarDadosAtuais(req, res) {
         });
 }
 
+function pegarDadosAtuaisEmpresa(req, res) {
+    const idEmpresa = req.query.idEmpresa;
+    usuarioModel.pegarDadosAtuaisEmpresa(idEmpresa)
+        .then(function (resposta) {
+            res.status(200).json(resposta);
+        })
+        .catch(function (erro) {
+            console.log(erro);
+            console.log("Houve um erro ao buscar os registroAtualFuncionario.", erro.sqlMessage);
+            res.status(500).json(erro.sqlMessage);
+        });
+}
+
+
 function getSenhaGestor(req, res) {
     const idGestor = req.query.idFuncionario;
     usuarioModel.getSenhaGestor(idGestor)
@@ -261,5 +275,6 @@ module.exports = {
     alterarFuncionario,
     listarFuncionarios,
     pegarDadosAtuais,
-    getSenhaGestor
+    getSenhaGestor,
+    pegarDadosAtuaisEmpresa
 }

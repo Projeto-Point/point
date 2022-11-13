@@ -84,7 +84,7 @@
                             </div>
                             
                             <div class="inputs">
-                                <span class="span_text">Quantidade Gestor:</span> <br />
+                                <span class="span_text">Quantidade Funcionários:</span> <br />
                                 <div class="atual"><span id="qtd_atual"></span></div>
                             </div>
 
@@ -100,10 +100,10 @@
                                 <span class="span_text">Alterar plano:</span> <br/>       
                                 <div class="dropdown">
                                     <div class="select">
-                                      <span>Selecione o Plano</span>
+                                      <span>Mantenha plano</span>
                                       <i class="fa fa-chevron-left"></i>
                                     </div>
-                                    <input type="hidden" name="gender">
+                                    <input type="hidden" name="gender" id="new_plano">
                                     <ul class="dropdown-menu">
                                         <li id="3">Basic</li>
                                         <li id="2">Pro</li>
@@ -114,7 +114,7 @@
                             </div>
 
                             <div class="inputs">
-                                <button class="custom-btn btn-8"onclick="alterar()">Adicionar Gestor</button>
+                                <button class="custom-btn btn-8"onclick="addFuncionario()">Adicionar Funcionário</button>
                             </div>
                         </div>
 
@@ -127,7 +127,7 @@
                     </div>
 
                     <div class="botao_cadastro">
-                        <button class="custom-btn btnEntrar" onclick="alterar()">
+                        <button class="custom-btn btnEntrar" onclick="atualizarDadosEmpresa()">
                             Salvar
                         </button>
                     </div>
@@ -151,18 +151,131 @@
     </main>
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
     <script src="../script.js"></script>
-
+    
     <script>
+        
         nomeGerente.innerHTML = sessionStorage.NOME_USUARIO;
-        function cadastrar() {
+        idEmpresa = sessionStorage.ID_EMPRESA;
+        var plano;
+        var senhaGestor;
 
-            //nome empresa
-            //cnpj
-            // plano
-            //quantidadeGestores
+        function getSenhaGestor() {
+            fetch(`/usuarios/getSenhaGestor?idFuncionario=${sessionStorage.ID_USUARIO}`).then(
+                function (res) {
+                    if (res.ok) {
+                        res.json().then((senha) => {
+                            return `${senha[0].senha}`
+                        });
+                    }
+                }
+            );
+        }
+
+        function charIsLetter(char) {
+        if (typeof char !== 'string') {
+         return false;
+        }
+        return /^[a-zA-Z]+$/.test(char);
+        }
+
+
+
+        function dadosAtuaisEmpresa() {
+
+            fetch(`/usuarios/pegarDadosAtuaisEmpresa?idEmpresa=${idEmpresa}`).then(
+                function (res) {
+                    if (res.ok) {
+                        res.json().then((registroEmpresa) => {
+                            // Os planos são (1 - Basic) (2 - Pro) (3 - Premium)
+                            switch (plano_atual.innerHTML= registroEmpresa[0].plano) {
+                                case 1:
+                                    plano_atual.innerHTML = "Basic"
+                                    plano = 1
+                                    break;
+                                case 2:
+                                    plano_atual.innerHTML = "Pro"
+                                    plano = 2
+                                    break;
+                                case 3:
+                                    plano = 3
+                                    plano_atual.innerHTML = "Premium"
+                                    break;
+                                default:
+                                    plano_atual.innerHTML = "Premium"
+                                    break;
+                            }
+
+                            console.log(registroEmpresa);
+                            newNome_input.value = registroEmpresa[0].nome;
+                            nome_atual.innerHTML = registroEmpresa[0].nome;
+                            cnpj_atual.innerHTML = registroEmpresa[0].cnpj;
+                            qtd_atual.innerHTML = registroEmpresa.length;
+                        });
+                    }
+                }
+            );
+
+        }
+
+        dadosAtuaisEmpresa()
+
+
+        function addFuncionario(){
+            window.location = './cadastrar-funcionario.html';
+        }
+
+        function atualizarDadosEmpresa(){
+
+            // Validacões 
+            var novoNomeEmpresa = document.getElementById('newNome_input').value;
+            var novoPlano = document.getElementById('new_plano').value;
+            var senhaGerente = document.getElementById('senhaGerente_input').value;
+
+            if(!charIsLetter(novoNomeEmpresa)){
+                alert("Nome da empresa está inválido")
+                console.log(senhaGestor)
+            }
+            else if(senhaGerente != senhaGestor){
+                alert("Senha inválida")
+            }
             
-            idEmpresa = sessionStorage.ID_EMPRESA;
+          
+    
+            // fetch(`/usuarios/alterarEmpresa?idEmpresa=${idEmpresa}`, {
+            //         method: "POST",
+            //         headers: {
+            //             "Content-Type": "application/json",
+            //         },
+            //         body: JSON.stringify({
+            //             // crie um atributo que recebe o valor recuperado aqui
+            //             // Agora vá para o arquivo routes/usuario.js
+            //             nomeFuncServer: nomeFuncVar,
+            //             senhaServer: senhaVar,
+            //             cargoServer: cargoVar,
+            //             telServer: telVar,
+            //             idFuncionarioServer: idFuncionarioVar,
+            //         }),
+            //     })
+            //         .then(function (resposta) {
+            //             console.log("resposta: ", resposta);
 
+            //             if (resposta.ok) {
+            //                 setTimeout(() => {
+            //                     console.log("entrou");
+            //                     window.location = "funcionarios.html";
+            //                 }, 1000);
 
-    }
+            //                 limparFormulario();
+            //             } else {
+            //                 alert("Não foi possível mudar as informações");
+            //                 throw "Houve um erro ao tentar realizar o cadastro!";
+            //             }
+            //         })
+            //         .catch(function (resposta) {
+            //             console.log(`#ERRO: ${resposta}`);
+            //         });
+
+            
+        }
+
     </script>
