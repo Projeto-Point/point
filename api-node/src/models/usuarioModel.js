@@ -20,7 +20,7 @@ function entrar(email, senha) {
 
 // Coloque os mesmos parâmetros aqui. Vá para a var instrucao
 function cadastrarEmpresa(nomeEmpresa, cnpj, plano) {
-    console.log("ACESSEI O USUARIO MODEL \n \n\t\t >> Se aqui der erro de 'Error: connect ECONNREFUSED',\n \t\t >> verifique suas credenciais de acesso ao banco\n \t\t >> e se o servidor de seu BD está rodando corretamente. \n\n function cadastrar():", nomeEmpresa, cnpj);
+    console.log("ACESSEI O USUARIO MODEL \n \n\t\t >> Se aqui der erro de 'Error: connect ECONNREFUSED',\n \t\t >> verifique suas credenciais de acesso ao banco\n \t\t >> e se o servidor de seu BD está rodando corretamente. \n\n function cadastrar():", nomeEmpresa, cnpj, plano);
     
     // Insira exatamente a query do banco aqui, lembrando da nomenclatura exata nos valores
     //  e na ordem de inserção dos dados.
@@ -66,6 +66,15 @@ function alterarFuncionario(nome, senha, cargo, tel, idFuncionario) {
     return database.executar(instrucao);
 }
 
+
+function alterarEmpresa(nome, plano, idEmpresa) {
+    var instrucao = `
+    update Empresa set nome='${nome}', plano='${plano}' where idEmpresa = ${idEmpresa};
+    `;
+    console.log("Executando a instrução SQL: \n" + instrucao);
+    return database.executar(instrucao);
+}
+
 function listarFuncionarios(idEmpresa){
     var instrucao = `SELECT idFuncionario, nome, email, telefone, cargo FROM Funcionario WHERE fkEmpresa = ${idEmpresa}`;
     console.log("Executando a instrução SQL: \n" + instrucao);
@@ -87,11 +96,9 @@ function pegarDadosAtuaisEmpresa(idEmpresa){
 }
 
 function getSenhaGestor(idGestor){
-
     var instrucao = `SELECT nome, senha FROM Funcionario WHERE idFuncionario = ${idGestor}`;
     console.log("Executando a instrução SQL: \n" + instrucao);
     return database.executar(instrucao);
-
 }
 
 module.exports = {
@@ -103,5 +110,6 @@ module.exports = {
     pegarDadosAtuais,
     alterarFuncionario,
     getSenhaGestor,
-    pegarDadosAtuaisEmpresa
+    pegarDadosAtuaisEmpresa,
+    alterarEmpresa
 };

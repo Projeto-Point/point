@@ -22,7 +22,7 @@
                 <span>Alertas</span>
             </a> -->
             <a href="funcionarios.html" class="img-nav">
-                <img src="../assets/imgs/user.png" >
+                <img src="../assets/imgs/user.png">
                 <span>Funcionários</span>
             </a>
             <a href="maquinas.html" class="img-nav">
@@ -49,10 +49,11 @@
         <section class="funcionarios">
             <section class="top">
                 <div class="top-meio">
-                    <input style="visibility: hidden;" id="inp-pesquisar-funcionario" type="search" placeholder="Pesquise por funcionário">
+                    <input style="visibility: hidden;" id="inp-pesquisar-funcionario" type="search"
+                        placeholder="Pesquise por funcionário">
                 </div>
                 <div class="top-dir">
-                    
+
                     <p class="nome"><span id="nomeGerente"></span></p>
                     <img src="../assets/dash/icons8-user-64.png">
                 </div>
@@ -60,8 +61,8 @@
 
             <section class="under">
                 <section class="cad_func">
-                    
-                    
+
+
                     <div class="titulo">
                         <h1>Atualizar Empresa</h1>
                     </div>
@@ -82,7 +83,7 @@
                                 <span class="span_text">Plano atual:</span> <br />
                                 <div class="atual"><span id="plano_atual"></span></div>
                             </div>
-                            
+
                             <div class="inputs">
                                 <span class="span_text">Quantidade Funcionários:</span> <br />
                                 <div class="atual"><span id="qtd_atual"></span></div>
@@ -97,11 +98,11 @@
                             </div>
 
                             <div class="inputs">
-                                <span class="span_text">Alterar plano:</span> <br/>       
+                                <span class="span_text">Alterar plano:</span> <br />
                                 <div class="dropdown">
                                     <div class="select">
-                                      <span>Mantenha plano</span>
-                                      <i class="fa fa-chevron-left"></i>
+                                        <span>Mantenha plano</span>
+                                        <i class="fa fa-chevron-left"></i>
                                     </div>
                                     <input type="hidden" name="gender" id="new_plano">
                                     <ul class="dropdown-menu">
@@ -109,16 +110,17 @@
                                         <li id="2">Pro</li>
                                         <li id="1">Premium</li>
                                     </ul>
-                                  </div>
-                                  <a href="../servicos.html#tabela"><small>Saiba mais...</small></a>
+                                </div>
+                                <a href="../servicos.html#tabela"><small>Saiba mais...</small></a>
                             </div>
 
                             <div class="inputs">
-                                <button class="custom-btn btn-8"onclick="addFuncionario()">Adicionar Funcionário</button>
+                                <button class="custom-btn btn-8" onclick="addFuncionario()">Adicionar
+                                    Funcionário</button>
                             </div>
                         </div>
 
-                        
+
                     </div>
                     <div class="inputs" style="margin-top: 2%;">
                         <span class="span_text">Senha gerente:</span> <br />
@@ -143,7 +145,7 @@
                             </path>
                         </svg>
                     </div>
-              
+
                 </section>
             </section>
 
@@ -151,33 +153,32 @@
     </main>
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
     <script src="../script.js"></script>
-    
+
     <script>
-        
+
         nomeGerente.innerHTML = sessionStorage.NOME_USUARIO;
         idEmpresa = sessionStorage.ID_EMPRESA;
         var plano;
         var senhaGestor;
 
-        function getSenhaGestor() {
-            fetch(`/usuarios/getSenhaGestor?idFuncionario=${sessionStorage.ID_USUARIO}`).then(
+        fetch(`/usuarios/getSenhaGestor?idFuncionario=${sessionStorage.ID_USUARIO}`).then(
                 function (res) {
                     if (res.ok) {
-                        res.json().then((senha) => {
-                            return `${senha[0].senha}`
-                        });
+                        (res.json().then((senha)=>{
+                            senhaGestor = senha[0].senha
+                        }))
                     }
                 }
-            );
-        }
+                );
+            
 
-        function charIsLetter(char) {
-        if (typeof char !== 'string') {
-         return false;
-        }
-        return /^[a-zA-Z]+$/.test(char);
-        }
-
+            function charIsLetter(char) {
+                if (typeof char !== 'string') {
+                    return false;
+                }
+                return /^[a-zA-Z]+$/.test(char);
+            }
+            
 
 
         function dadosAtuaisEmpresa() {
@@ -187,7 +188,7 @@
                     if (res.ok) {
                         res.json().then((registroEmpresa) => {
                             // Os planos são (1 - Basic) (2 - Pro) (3 - Premium)
-                            switch (plano_atual.innerHTML= registroEmpresa[0].plano) {
+                            switch (plano_atual.innerHTML = registroEmpresa[0].plano) {
                                 case 1:
                                     plano_atual.innerHTML = "Basic"
                                     plano = 1
@@ -201,6 +202,8 @@
                                     plano_atual.innerHTML = "Premium"
                                     break;
                                 default:
+                                    // Como a gente não estava setando o valor do plano coloquei um aleatorio só pra preencher
+                                    plano = Math.ceil(Math.random() * (3-1) + 1);
                                     plano_atual.innerHTML = "Premium"
                                     break;
                             }
@@ -220,62 +223,60 @@
         dadosAtuaisEmpresa()
 
 
-        function addFuncionario(){
+        function addFuncionario() {
             window.location = './cadastrar-funcionario.html';
         }
 
-        function atualizarDadosEmpresa(){
+        function atualizarDadosEmpresa() {
 
             // Validacões 
             var novoNomeEmpresa = document.getElementById('newNome_input').value;
             var novoPlano = document.getElementById('new_plano').value;
             var senhaGerente = document.getElementById('senhaGerente_input').value;
 
-            if(!charIsLetter(novoNomeEmpresa)){
+            if (!charIsLetter(novoNomeEmpresa)) {
                 alert("Nome da empresa está inválido")
                 console.log(senhaGestor)
+            }else if(senhaGerente == ''){
+                alert("Campo de senha deve ser preenchido")    
             }
-            else if(senhaGerente != senhaGestor){
+            else if (senhaGerente != senhaGestor) {
                 alert("Senha inválida")
+            }else{
+
+                if(novoPlano == ''){
+                    novoPlano = plano;
+                }
+     
+            fetch(`/usuarios/alterarEmpresa?idEmpresa=${idEmpresa}`, {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify({
+                        // crie um atributo que recebe o valor recuperado aqui
+                        // Agora vá para o arquivo routes/usuario.js
+                        novoNomeEmpresaServer: novoNomeEmpresa,
+                        novoPlanoServer : novoPlano,
+                    }),
+                })
+                    .then(function (resposta) {
+                        console.log("resposta: ", resposta);
+                        if (resposta.ok) {
+                            document.querySelector('.loader').style.display = "block";
+                            setTimeout(() => {
+                                location. reload()
+                            }, 1500);
+                        } else {
+                            alert("Não foi possível mudar as informações");
+                            throw "Houve um erro ao tentar realizar o cadastro!";
+                        }
+                    })
+                    .catch(function (resposta) {
+                        console.log(`#ERRO: ${resposta}`);
+                    });
+
             }
-            
-          
-    
-            // fetch(`/usuarios/alterarEmpresa?idEmpresa=${idEmpresa}`, {
-            //         method: "POST",
-            //         headers: {
-            //             "Content-Type": "application/json",
-            //         },
-            //         body: JSON.stringify({
-            //             // crie um atributo que recebe o valor recuperado aqui
-            //             // Agora vá para o arquivo routes/usuario.js
-            //             nomeFuncServer: nomeFuncVar,
-            //             senhaServer: senhaVar,
-            //             cargoServer: cargoVar,
-            //             telServer: telVar,
-            //             idFuncionarioServer: idFuncionarioVar,
-            //         }),
-            //     })
-            //         .then(function (resposta) {
-            //             console.log("resposta: ", resposta);
-
-            //             if (resposta.ok) {
-            //                 setTimeout(() => {
-            //                     console.log("entrou");
-            //                     window.location = "funcionarios.html";
-            //                 }, 1000);
-
-            //                 limparFormulario();
-            //             } else {
-            //                 alert("Não foi possível mudar as informações");
-            //                 throw "Houve um erro ao tentar realizar o cadastro!";
-            //             }
-            //         })
-            //         .catch(function (resposta) {
-            //             console.log(`#ERRO: ${resposta}`);
-            //         });
-
-            
         }
     </script>
     <script src="script-dash.js"></script>
