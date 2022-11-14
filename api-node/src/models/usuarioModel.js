@@ -81,6 +81,11 @@ function listarFuncionarios(idEmpresa){
     return database.executar(instrucao);
 }
 
+function removerFuncionario(idFuncionario){
+    var instrucao = `DELETE FROM [dbo].[Funcionario] WHERE idFuncionario = ${idFuncionario};`
+    return database.executar(instrucao)
+}
+
 function pegarDadosAtuais(idFuncionario){
     var instrucao = `SELECT idFuncionario, nome, email, telefone, cargo, senha FROM Funcionario WHERE idFuncionario = ${idFuncionario}`;
     console.log("Executando a instrução SQL: \n" + instrucao);
@@ -111,5 +116,6 @@ module.exports = {
     alterarFuncionario,
     getSenhaGestor,
     pegarDadosAtuaisEmpresa,
-    alterarEmpresa
+    alterarEmpresa,
+    removerFuncionario
 };

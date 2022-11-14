@@ -199,12 +199,42 @@ function alterarFuncionario(req, res) {
                 function (erro) {
                     console.log(erro);
                     console.log(
-                        "\nHouve um erro ao realizar o cadastro! Erro: ",
+                        "\nHouve um erro ao alterar o Funcionario! Erro: ",
                         erro.sqlMessage
                     );
                     res.status(500).json(erro.sqlMessage);
                 }
             );
+    }
+}
+
+
+function removerFuncionario(req, res){
+
+    const idFuncionario = req.query.idFuncionario;
+
+    if(idFuncionario == undefined || idFuncionario == null){
+        res.status(400).send("O idFuncionario está undefined!");
+    }else{
+
+        usuarioModel.removerFuncionario(idFuncionario)
+            .then(
+
+                function(resultado){
+                    res.json(resultado);
+                }
+            ).catch(
+
+                function(erro){
+
+                    console.log(erro)
+                    console.log(
+                        "\nHouve um erro ao alterar o Funcionario! Erro: ",
+                        erro.sqlMessage
+                    );
+                    res.status(500).json(erro.sqlMessage);
+                }
+            )
     }
 }
 
@@ -287,7 +317,6 @@ function pegarDadosAtuaisEmpresa(req, res) {
         });
 }
 
-
 function getSenhaGestor(req, res) {
     const idGestor = req.query.idFuncionario;
     usuarioModel.getSenhaGestor(idGestor)
@@ -301,6 +330,7 @@ function getSenhaGestor(req, res) {
         });
 }
 
+
 module.exports = {
     entrar,
     cadastrarEmpresaGerente,
@@ -310,5 +340,6 @@ module.exports = {
     pegarDadosAtuais,
     getSenhaGestor,
     pegarDadosAtuaisEmpresa,
-    alterarEmpresa
+    alterarEmpresa,
+    removerFuncionario
 }

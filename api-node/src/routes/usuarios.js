@@ -48,4 +48,8 @@ router.get("/pegarDadosAtuaisEmpresa", function(req, res){
     usuarioController.pegarDadosAtuaisEmpresa(req, res);
 });
 
+router.get('/removerFuncionario', function(req, res){
+    usuarioController.removerFuncionario(req,res);
+});
+
 module.exports = router;

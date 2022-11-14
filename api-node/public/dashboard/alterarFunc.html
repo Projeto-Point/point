@@ -62,6 +62,7 @@
                 <section class="cad_func">
                     <div class="titulo">
                         <h1>Alterar Funcionário</h1>
+                        <button onclick="removerFuncionario()">Remover</button>
                     </div>
 
                     <div class="formulario">
@@ -240,6 +241,43 @@
                     }
                 }
             );
+        }
+
+
+
+        async function removerFuncionario(){
+
+
+
+            senhaGerente = document.getElementById('senhaGerente_input').value;
+
+            // Tem que fazer
+            if(senhaGerente == ''){
+                alert("Você precisa colocar sua senha para remover o funcionário");
+
+            }else if(senhaGestor != senhaGerente){
+                alert('Senha inválida');
+            }else{
+
+                fetch(`/usuarios/removerFuncionario?idFuncionario=${idFuncionario}`).then(
+
+                function(res){
+                    console.log(res)
+                    if(res.ok){
+
+                        document.querySelector(".loader").style.display = "block";
+                        // mostrar a animação
+                        setTimeout(() =>{
+                            window.location = './funcionarios.html'
+                        }, 2000)
+                    }else{
+                        alert('Não foi possível remover o usuário.')
+                    }
+
+                    }   
+                )
+            }
+
         }
     </script>
 </body>

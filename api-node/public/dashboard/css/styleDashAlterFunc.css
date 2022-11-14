@@ -511,11 +511,33 @@ main section.dashboard .tabela h3 {
 
 .titulo {
     color: black;
+    display: grid;
+    place-items: center;
+    width: 100%;
+    height: min-content;
 }
 
 .titulo h1 {
     font-size: 24px;
-    margin: 20px 0;
+}
+
+.titulo button{
+    margin-left: auto;
+    padding: 8px 20px;
+    background: rgb(223, 13, 13);
+    border: none;
+    color: whitesmoke;
+    font-weight: bolder;
+    border-radius: var(--radius);
+    cursor: pointer;
+}
+
+.titulo button:hover{
+    background: rgb(172, 14, 14);
+}
+
+.titulo button:active{
+    transform: scale(0.98)
 }
 
 .cad_func {
