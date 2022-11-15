@@ -56,11 +56,11 @@
     <main>
         <section class="top">
             <div class="top-esq">
-                <label for="">Ordenar por:</label>
-                <select id="">
-                    <option value="">Estado de alerta</option>
-                    <option value="">Nome da máquina</option>
-                    <option value="">Nome do funcionário</option>
+                <label for="ordenarPor">Ordenar por:</label>
+                <select id="ordenarPor" onchange="listar()">
+                    <option value="alerta">Estado de alerta</option>
+                    <option value="maquina">Nome da máquina</option>
+                    <option value="funcionario">Nome do funcionário</option>
                 </select>
             </div>
             <div class="top-meio">
@@ -92,27 +92,32 @@
 <script>
     nomeGerente.innerHTML = sessionStorage.NOME_USUARIO;
     // TO DO: incluir máquinas com alertas, verificar se é computador ou servidor
-    fetch(`/maquinas/listar?idEmpresa=${sessionStorage.ID_EMPRESA}`).then(function (res) {
-        if (res.ok) {
-            res.json().then(resposta => {
-                var lista = document.querySelector("#maquinas");
-                console.log(resposta);
-                for (let maquina = 0; maquina < resposta.length; maquina++) {
-                    if (resposta[maquina].tipo == 'Servidor') {
-                        lista.innerHTML += `<div class="box box-maquina">
-                                <img src="assets/dash/instancia.png">
-                            <h3>${resposta[maquina].nome}</h3>
-                            <p>${resposta[maquina].nomeMaquina}</p>
-                            <div class="botoes">
-                                <a class="btn-link" href="tempo-real.html?idMaquina=${resposta[maquina].idMaquina}">Tempo real</a>
-                                <a class="btn-link" href="analise.html?idMaquina=${resposta[maquina].idMaquina}">Analisar</a>
-                                <a class="btn-link" href="custos.html?idMaquina=${resposta[maquina].idMaquina}">Custos</a>
-                            </div>
-                        </div>`;
+    function listar(){
+        fetch(`/maquinas/listar?idEmpresa=${sessionStorage.ID_EMPRESA}&ordenarPor=${ordenarPor.value}`).then(function (res) {
+            if (res.ok) {
+                res.json().then(resposta => {
+                    var lista = document.querySelector("#maquinas");
+                    lista.innerHTML = "";
+                    console.log(resposta);
+                    for (let maquina = 0; maquina < resposta.length; maquina++) {
+                        if (resposta[maquina].tipo == 'Servidor') {
+                            lista.innerHTML += `<div class="box box-maquina">
+                                    <img src="assets/dash/instancia.png">
+                                <h3>${resposta[maquina].nome}</h3>
+                                <p>${resposta[maquina].nomeMaquina}</p>
+                                <div class="botoes">
+                                    <a class="btn-link" href="tempo-real.html?idMaquina=${resposta[maquina].idMaquina}">Tempo real</a>
+                                    <a class="btn-link" href="analise.html?idMaquina=${resposta[maquina].idMaquina}">Analisar</a>
+                                    <a class="btn-link" href="custos.html?idMaquina=${resposta[maquina].idMaquina}">Custos</a>
+                                </div>
+                            </div>`;
+                        }
                     }
-                }
-            });
-        }
-    });
+                });
+            }
+        });
+    }
+
+    listar();
 </script>
 <script src="./jsDash/script-dash.js"></script>
