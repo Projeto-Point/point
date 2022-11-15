@@ -61,21 +61,27 @@
     </header>
     <main>
         
-        <div style="border: 2px solid red; display: flex; height: 100%; width: 100%; justify-content: space-around;">
+        <div  class="main-localizacao">
 
             <div class="left-wid">
 
                 <div class="titulo">
-                    <p>HeatMap</p>
+                    <p>Mapa de Calor das máquinas</p>
                 </div>
 
-                <div class="heatmap" style="border: 2px solid red; height: 60%; width: 100%;"  id="map">
+                <div class="texto">
+                  <p>Aqui você pode observar os lugares onde seus funcionarios
+                    estão localizados ao redor do mundo.
+                  </p>
+                </div>
+
+                <div class="heatmap" id="map">
 
                 </div>
             </div>
 
 
-            <div class="rigth-wid" style="border: 2px dashed white; width: 45%;">
+            <div class="rigth-wid">
 
                 <div class="wordcloud"></div>
                 
@@ -89,7 +95,8 @@
     <script src="../script.js"></script>
     <script>
 
-
+const position = [51.505, -0.09]
+        
         window.onload = function () {
   
          var jsonObj = [{}]
@@ -108,7 +115,7 @@
             // Select pega todos os quando a latitude e a longitude são distint.
             
             // Quanto mais próximo do maximo fica com red dot
-            max: 8,
+            max: 4,
             data: jsonObj
           };
   
@@ -134,6 +141,7 @@
               attribution:
                 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="http://cloudmade.com">CloudMade</a>',
               maxZoom: 10,
+    
             }
           );
   
@@ -161,7 +169,7 @@
             zoom: 3,
             layers: [baseLayer, heatmapLayer],
           });
-  
+
           heatmapLayer.setData(testData);
           // make accessible for debugging
           layer = heatmapLayer;

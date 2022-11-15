@@ -194,20 +194,66 @@ main {
   color: white;
   padding: 30px;
 }
-main div.left-wid {
-  border: 2px dashed white;
+main .main-localizacao {
+  display: flex;
+  height: 100%;
+  width: 100%;
+  justify-content: space-around;
+  background: white;
+  border-radius: var(--radius);
+}
+main .main-localizacao .left-wid {
   width: 45%;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
-  padding: 15px;
+  justify-content: space-evenly;
+  align-items: center;
 }
-main div.left-wid .titulo {
+main .main-localizacao .left-wid .titulo {
   font-weight: bold;
   font-size: 1.3rem;
-  border-bottom: 2px Solid white;
+  color: white;
+  background: var(--cor3);
+  padding: 10px;
+  border-radius: var(--radius);
+  margin-bottom: 0%;
+  width: 100%;
+  text-align: center;
+}
+main .main-localizacao .left-wid .texto {
+  margin-bottom: 10%;
+  font-size: 0.9rem;
+  background: rgba(255, 255, 255, 0.82);
+  color: rgb(62, 62, 62);
+  padding: 15px;
+  border-radius: var(--radius);
+  font-weight: 600;
+}
+main .main-localizacao .left-wid .heatmap {
   margin-top: 5%;
-  color: red;
+  margin-bottom: 3%;
+  border-radius: var(--radius);
+  height: 60%;
+  width: 100%;
+}
+main .main-localizacao .rigth-wid {
+  width: 45%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  border: 2px solid white;
+  align-items: center;
+}
+main .main-localizacao .rigth-wid .wordcloud {
+  border: 2px dashed red;
+  height: 40%;
+  width: 80%;
+}
+main .main-localizacao .rigth-wid .table {
+  height: 30%;
+  border: 5px solid var(--cor1);
+  border-radius: var(--radius);
+  width: 60%;
 }
 main section.top {
   display: flex;
