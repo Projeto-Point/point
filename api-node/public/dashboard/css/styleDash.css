@@ -606,4 +606,12 @@ main section.dashboard .func p {
   main section#maquinas {
     grid-template-columns: 1fr;
   }
+}
+svg path,
+svg rect {
+  fill: var(--cor1);
+}
+
+.loader {
+  display: none;
 }/*# sourceMappingURL=styleDash.css.map */

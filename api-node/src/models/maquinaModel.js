@@ -28,9 +28,16 @@ function pegarKpis(idMaquina, dataInicio, dataFinal){
     return database.executar(instrucaoSql);
 }
 
+function verificarAtividade(idMaquina){
+    instrucaoSql = `SELECT TOP 1 dataEhora, acao FROM Localizacao WHERE fkMaquina = ${idMaquina} ORDER BY dataEhora DESC;`
+    console.log(instrucaoSql)
+    return database.executar(instrucaoSql);
+}
+
 module.exports = {
     listar,
     listarAlertas,
     analiseComponente,
     pegarKpis,
+    verificarAtividade,
 }

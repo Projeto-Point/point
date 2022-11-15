@@ -75,9 +75,27 @@ function pegarKpis(req, res){
     });
 }
 
+function verificarAtividade(req, res){
+    const idMaquina = req.query.idMaquina;
+    maquinaModel.verificarAtividade(idMaquina)
+    .then((resultado) => {
+        if(resultado.length > 0){
+            res.status(200).json(resultado);
+        }
+        else{
+            res.status(204).send("Nenhum registro encontrado!");
+        }
+    })
+    .catch((erro) => {
+        console.log(erro);
+        res.status(500).json(erro.sqlMessage);
+    });
+}
+
 module.exports = {
     listar,
     listarAlertas,
     analiseComponente,
     pegarKpis,
+    verificarAtividade,
 }
