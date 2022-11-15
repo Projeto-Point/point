@@ -8,6 +8,7 @@
     <title>Dashboard Tempo Real | Point</title>
     <link rel="stylesheet" href="css/styleDash.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.4/moment.min.js"></script>
 </head>
 
 <body>
@@ -154,8 +155,19 @@
         const parametros = new URLSearchParams(parametrosString);
         idMaquina = Number(parametros.get("idMaquina"));
 
+        fetch(`/maquinas/verificarAtividade?idMaquina=${idMaquina}`).then(function (res) {
+            if (res.ok) {
+                res.json().then(resposta => {
+                    if(resposta[0].acao == "S"){
+                        document.querySelector('.dashboard').innerHTML = `<p style="grid-column-start: 1; grid-column-end: 4; display: flex; justify-content: center; align-items: center; font-weight: bold; font-size: 1.3rem;">Máquina desligada desde o dia ${moment(resposta[0].dataEhora).format("DD/MM/YYYY [às] HH:mm")}</p>`;
+                    }
+                });
+            }
+        });
+        
         recuperarDados();
     };
+
 
     function recuperarDados() {
         fetch(`/medidas/pegarRegistroCPU?idMaquina=${idMaquina}`).then(function (res) {

@@ -675,3 +675,12 @@ main{
         }
     }
 }
+
+svg path,
+svg rect {
+    fill: var(--cor1);
+}
+
+.loader {
+    display: none;
+}

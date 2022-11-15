@@ -1,21 +1,23 @@
 <!DOCTYPE html>
 <html lang="pt-br">
-  <head>
+
+<head>
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Máquinas | Point</title>
     <link rel="stylesheet" href="css/styleDash.css" />
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-  </head>
-  <body>
+</head>
+
+<body>
     <header>
-      <nav id="menu">
-        <a href="maquinas.html" class="logo">
-          <img src="../assets/imgs/Point.png" />
-        </a>
-        <hr />
-        <!-- <a href="alertas.html">
+        <nav id="menu">
+            <a href="maquinas.html" class="logo">
+                <img src="../assets/imgs/Point.png" />
+            </a>
+            <hr />
+            <!-- <a href="alertas.html">
                     <img src="../assets/imgs/alfinete 1.png">
                     <span>Alertas</span>
                 </a> -->
@@ -52,58 +54,65 @@
       <nav id="menu-mobile"><img src="assets/dash/bars.svg" /></nav>
     </header>
     <main>
-      <section class="top">
-        <div class="top-esq">
-          <label for="">Ordenar por:</label>
-          <select id="">
-            <option value="">Estado de alerta</option>
-            <option value="">Nome da máquina</option>
-            <option value="">Nome do funcionário</option>
-          </select>
-        </div>
-        <div class="top-meio">
-          <input
-            id="inp-pesquisar-maquina"
-            type="search"
-            placeholder="Pesquise por funcionário ou por máquina"
-            onkeyup="listarMaquina()"
-          />
-        </div>
-        <div class="top-dir">
-          <p class="nome"><span id="nomeGerente"></span></p>
-          <img src="../assets/dash/icons8-user-64.png" />
-        </div>
-      </section>
-      <section id="maquinas">
-      </section>
+        <section class="top">
+            <div class="top-esq">
+                <label for="">Ordenar por:</label>
+                <select id="">
+                    <option value="">Estado de alerta</option>
+                    <option value="">Nome da máquina</option>
+                    <option value="">Nome do funcionário</option>
+                </select>
+            </div>
+            <div class="top-meio">
+                <input id="inp-pesquisar-maquina" type="search" placeholder="Pesquise por funcionário ou por máquina"
+                    onkeyup="listarMaquina()" />
+            </div>
+            <div class="top-dir">
+                <p class="nome"><span id="nomeGerente"></span></p>
+                <img src="../assets/dash/icons8-user-64.png" />
+            </div>
+        </section>
+        <section id="maquinas">
+            <div class="loader" style="display: block; grid-column: 2; grid-row: 2; justify-self: center;">
+                <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px"
+                    y="0px" width="40px" height="40px" viewBox="0 0 50 50" style="enable-background:new 0 0 50 50;"
+                    xml:space="preserve" style="fill: var(--cor3);">
+                    <path style="fill: var(--cor3);"
+                        d="M43.935,25.145c0-10.318-8.364-18.683-18.683-18.683c-10.318,0-18.683,8.365-18.683,18.683h4.068c0-8.071,6.543-14.615,14.615-14.615c8.072,0,14.615,6.543,14.615,14.615H43.935z">
+                        <animateTransform attributeType="xml" attributeName="transform" type="rotate" from="0 25 25"
+                            to="360 25 25" dur="0.6s" repeatCount="indefinite" />
+                    </path>
+                </svg>
+            </div>
+        </section>
     </main>
-  </body>
+</body>
+
 </html>
 
 <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
 <script>
-  nomeGerente.innerHTML = sessionStorage.NOME_USUARIO;
-  // TO DO: incluir máquinas com alertas, verificar se é computador ou servidor
+    nomeGerente.innerHTML = sessionStorage.NOME_USUARIO;
+    // TO DO: incluir máquinas com alertas, verificar se é computador ou servidor
 
-  function listarMaquina() {
-    var pesquisaMaquinaVar = document.getElementById(
-      "inp-pesquisar-maquina"
-    ).value;
+    function listarMaquina() {
+        var pesquisaMaquinaVar = document.getElementById(
+            "inp-pesquisar-maquina"
+        ).value;
 
-    fetch(
-      `/maquinas/listar?idEmpresa=${sessionStorage.ID_EMPRESA}`
-    ).then(function (resposta) {
-      if (resposta.ok) {
-        resposta.json().then((resposta) => {
-          console.log(resposta);
-          if (pesquisaMaquinaVar == "") {
-            var lista = document.querySelector("#maquinas");
-            console.log(resposta);
-            lista.innerHTML = ''
-          for (let maquina = 0; maquina < resposta.length; maquina++) {
-            if (resposta[maquina].tipo == "DESKTOP")
-             {
-              lista.innerHTML += `<div class="box box-maquina">
+        fetch(
+            `/maquinas/listar?idEmpresa=${sessionStorage.ID_EMPRESA}`
+        ).then(function (resposta) {
+            if (resposta.ok) {
+                resposta.json().then((resposta) => {
+                    console.log(resposta);
+                    if (pesquisaMaquinaVar == "") {
+                        var lista = document.querySelector("#maquinas");
+                        console.log(resposta);
+                        lista.innerHTML = ''
+                        for (let maquina = 0; maquina < resposta.length; maquina++) {
+                            if (resposta[maquina].tipo == "DESKTOP") {
+                                lista.innerHTML += `<div class="box box-maquina">
                             <img src="../assets/dash/computer.png">
                             <h3>${resposta[maquina].nome}</h3>
                             <p>${resposta[maquina].nomeMaquina}</p>
@@ -112,19 +121,19 @@
                                 <a class="btn-link" href="analise.html?idMaquina=${resposta[maquina].idMaquina}">Analisar</a>
                             </div>
                         </div>`;
-            }
-          }
-          } else {
-            
-            var lista = document.querySelector("#maquinas");
-            console.log(resposta);
-            lista.innerHTML = ''
-          for (let maquina = 0; maquina < resposta.length; maquina++) {
-            if (resposta[maquina].tipo == "DESKTOP"){
+                            }
+                        }
+                    } else {
 
-                if((resposta[maquina].nome).toUpperCase().indexOf(pesquisaMaquinaVar.toUpperCase()) != -1 || (resposta[maquina].nomeMaquina).toUpperCase().indexOf(pesquisaMaquinaVar.toUpperCase()) != -1){
-             {
-              lista.innerHTML += `<div class="box box-maquina">
+                        var lista = document.querySelector("#maquinas");
+                        console.log(resposta);
+                        lista.innerHTML = ''
+                        for (let maquina = 0; maquina < resposta.length; maquina++) {
+                            if (resposta[maquina].tipo == "DESKTOP") {
+
+                                if ((resposta[maquina].nome).toUpperCase().indexOf(pesquisaMaquinaVar.toUpperCase()) != -1 || (resposta[maquina].nomeMaquina).toUpperCase().indexOf(pesquisaMaquinaVar.toUpperCase()) != -1) {
+                                    {
+                                        lista.innerHTML += `<div class="box box-maquina">
                             <img src="../assets/dash/computer.png">
                             <h3>${resposta[maquina].nome}</h3>
                             <p>${resposta[maquina].nomeMaquina}</p>
@@ -133,16 +142,16 @@
                                 <a class="btn-link" href="analise.html?idMaquina=${resposta[maquina].idMaquina}">Analisar</a>
                             </div>
                         </div>`;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                });
             }
-            }
-          }
-          }
-        }
         });
-      }
-    });
-  }
+    }
 
-  listarMaquina()
+    listarMaquina();
 </script>
 <script src="./jsDash/script-dash.js"></script>
