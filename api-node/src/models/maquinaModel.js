@@ -1,8 +1,17 @@
 var database = require("../database/config");
 
-function listar(idEmpresa){
-    instrucaoSql = `SELECT idMaquina, nomeMaquina, Funcionario.nome, tipo FROM Maquina INNER JOIN Funcionario ON fkFuncionario = idFuncionario
-    INNER JOIN Empresa on idEmpresa = [dbo].[Funcionario].fkEmpresa WHERE idEmpresa = ${idEmpresa};`;
+function listar(idEmpresa, ordenarPor){
+    let instrucaoSql;
+
+    if(ordenarPor == "alerta"){
+        instrucaoSql = `SELECT idMaquina, nomeMaquina, Funcionario.nome, tipo FROM Maquina INNER JOIN Funcionario ON fkFuncionario = idFuncionario INNER JOIN Empresa on idEmpresa = [dbo].[Funcionario].fkEmpresa WHERE idEmpresa = ${idEmpresa};`;
+    }
+    else if(ordenarPor == "maquina"){
+        instrucaoSql = `SELECT idMaquina, nomeMaquina, Funcionario.nome, tipo FROM Maquina INNER JOIN Funcionario ON fkFuncionario = idFuncionario INNER JOIN Empresa on idEmpresa = [dbo].[Funcionario].fkEmpresa WHERE idEmpresa = ${idEmpresa} ORDER BY nomeMaquina;`;
+    }
+    else if(ordenarPor == "funcionario"){
+        instrucaoSql = `SELECT idMaquina, nomeMaquina, Funcionario.nome, tipo FROM Maquina INNER JOIN Funcionario ON fkFuncionario = idFuncionario INNER JOIN Empresa on idEmpresa = [dbo].[Funcionario].fkEmpresa WHERE idEmpresa = ${idEmpresa} ORDER BY Funcionario.nome;`;
+    }
     return database.executar(instrucaoSql);
 }
 

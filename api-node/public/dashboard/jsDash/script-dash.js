@@ -6,6 +6,10 @@ document.querySelector("#menu-mobile").addEventListener('click', () => {
     document.querySelector("#menu-mobile").style.display = "none";
 });
 
+if(!(sessionStorage['CARGO'] == 'Gestor') || sessionStorage['ID_USUARIO'] == undefined){
+    window.location = "../login.html";
+}
+
 function fecharMenu(){
     document.querySelector("#menu").style.display = "none";
     document.querySelector("#menu-mobile").style.display = "flex";

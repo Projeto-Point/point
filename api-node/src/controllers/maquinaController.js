@@ -3,8 +3,9 @@ var maquinaModel = require("../models/maquinaModel");
 // Página das máquinas
 function listar(req, res) {
     const idEmpresa = req.query.idEmpresa;
-    maquinaModel.listar(idEmpresa)
-    .then(function (resultado) {
+    const ordenarPor = req.query.ordenarPor;
+    console.log(ordenarPor)
+    maquinaModel.listar(idEmpresa, ordenarPor).then(function (resultado) {
         if (resultado.length > 0) {
             res.status(200).json(resultado);
         }
