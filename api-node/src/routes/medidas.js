@@ -23,4 +23,8 @@ router.get("/pegarRegistroMaquina", function(req, res){
     medidaController.pegarRegistroMaquina(req, res);
 });
 
+router.get("/pegarRegistroInstancia", function(req, res){ 
+    medidaController.pegarRegistroInstancia(req, res);
+});
+
 module.exports = router;

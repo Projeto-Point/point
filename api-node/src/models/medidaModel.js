@@ -34,10 +34,16 @@ function pegarRegistroMaquina(idMaquina){
     return database.executar(instrucaoSql);
 }
 
+function pegarRegistroInstancia(idMaquina){
+    instrucaoSql = `SELECT * FROM [dbo].[Maquina], instancia WHERE idMaquina = ${idMaquina} AND nomeMaquina = nomeInstancia;`;
+    console.log("Executando a instrução SQL: \n" + instrucaoSql);
+    return database.executar(instrucaoSql);
+}
 module.exports = {
     pegarRegistroCPU,
     pegarRegistroDISCO,
     pegarRegistroRAM,
     pegarRegistroFuncionario,
     pegarRegistroMaquina,
+    pegarRegistroInstancia
 }
