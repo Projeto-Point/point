@@ -199,7 +199,70 @@ function alterarFuncionario(req, res) {
                 function (erro) {
                     console.log(erro);
                     console.log(
-                        "\nHouve um erro ao realizar o cadastro! Erro: ",
+                        "\nHouve um erro ao alterar o Funcionario! Erro: ",
+                        erro.sqlMessage
+                    );
+                    res.status(500).json(erro.sqlMessage);
+                }
+            );
+    }
+}
+
+
+function removerFuncionario(req, res){
+
+    const idFuncionario = req.query.idFuncionario;
+
+    if(idFuncionario == undefined || idFuncionario == null){
+        res.status(400).send("O idFuncionario está undefined!");
+    }else{
+
+        usuarioModel.removerFuncionario(idFuncionario)
+            .then(
+
+                function(resultado){
+                    res.json(resultado);
+                }
+            ).catch(
+
+                function(erro){
+
+                    console.log(erro)
+                    console.log(
+                        "\nHouve um erro ao alterar o Funcionario! Erro: ",
+                        erro.sqlMessage
+                    );
+                    res.status(500).json(erro.sqlMessage);
+                }
+            )
+    }
+}
+
+function alterarEmpresa(req, res) {
+    // Crie uma variável que vá recuperar os valores do arquivo cadastro.html
+    const idEmpresa = req.query.idEmpresa;
+    const nome = req.body.novoNomeEmpresaServer;
+    const plano = req.body.novoPlanoServer;
+
+    // Faça as validações dos valores
+    if (nome == undefined) {
+        res.status(400).send("O nome está undefined!");
+    } else if (plano == undefined) {
+        res.status(400).send("O plano está undefined!");
+    }else if(idEmpresa == undefined){
+        res.status(400).send("O idEmpresa está undefined!");
+    }else{
+        // Passe os valores como parâmetro e vá para o arquivo usuarioModel.js
+        usuarioModel.alterarEmpresa(nome, plano, idEmpresa)
+            .then(
+                function (resultado) {
+                    res.json(resultado);
+                }
+            ).catch(
+                function (erro) {
+                    console.log(erro);
+                    console.log(
+                        "\nHouve um erro ao realizar ao atualizar empresa! Erro: ",
                         erro.sqlMessage
                     );
                     res.status(500).json(erro.sqlMessage);
@@ -241,6 +304,19 @@ function pegarDadosAtuais(req, res) {
         });
 }
 
+function pegarDadosAtuaisEmpresa(req, res) {
+    const idEmpresa = req.query.idEmpresa;
+    usuarioModel.pegarDadosAtuaisEmpresa(idEmpresa)
+        .then(function (resposta) {
+            res.status(200).json(resposta);
+        })
+        .catch(function (erro) {
+            console.log(erro);
+            console.log("Houve um erro ao buscar os registroAtualFuncionario.", erro.sqlMessage);
+            res.status(500).json(erro.sqlMessage);
+        });
+}
+
 function getSenhaGestor(req, res) {
     const idGestor = req.query.idFuncionario;
     usuarioModel.getSenhaGestor(idGestor)
@@ -254,6 +330,7 @@ function getSenhaGestor(req, res) {
         });
 }
 
+
 module.exports = {
     entrar,
     cadastrarEmpresaGerente,
@@ -261,5 +338,8 @@ module.exports = {
     alterarFuncionario,
     listarFuncionarios,
     pegarDadosAtuais,
-    getSenhaGestor
+    getSenhaGestor,
+    pegarDadosAtuaisEmpresa,
+    alterarEmpresa,
+    removerFuncionario
 }

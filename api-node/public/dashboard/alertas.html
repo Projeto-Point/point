@@ -11,6 +11,8 @@
 
 <body>
     <header>
+
+        <nav id="menu">
         <a href="maquinas.html" class="logo">
             <img src="../assets/imgs/Point.png">
         </a>
@@ -31,13 +33,21 @@
             <img src="assets/dash/server.png">
             <span>Instâncias</span>
         </a>
+        <a href="alertas.html" class="img-nav">
+            <img src="assets/dash/server.png">
+            <span>Alertas</span>
+        </a>
+        <a href="localizacao.html" class="img-nav">
+            <img src="assets/imgs/pin.png">
+            <span>Localização</span>
+        </a>
         <a href="configuracoes.html" class="img-nav">
             <img src="./assets/imgs/setting.png">
             <span>Configurações</span>
         </a>
         <hr>
-        <a href="../index.html" class="img-nav">
-            <img src="../assets/imgs/x.png">
+        <a class="img-nav" id="sair">
+            <img src="../assets/imgs/x.png" />
             <span>Sair</span>
         </a>
         </nav>
@@ -100,6 +110,8 @@
             </div>
         </section>
     </main>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+    <script src="../script.js"></script>
     <script>
 
         nomeGerente.innerHTML=sessionStorage.NOME_USUARIO;
@@ -125,3 +137,4 @@
             console.log(erro);
         });
     </script>
+    <script src="./jsDash/script-dash.js"></script>

@@ -7,6 +7,13 @@
     <title>Localizacao | Point</title>
     <link rel="stylesheet" href="css/styleDash.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.4/moment.min.js"></script>
+    <link
+      rel="stylesheet"
+      href="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.css"
+    />
+    <script src="./jsDash/leaftlet.js"></script>
+    <script src="./jsDash/heatmap.js"></script>
+    <script src="./jsDash/leaflet-heat.js"></script>
 </head>
 
 <body>
@@ -32,37 +39,51 @@
             <img src="assets/dash/server.png">
             <span>Instâncias</span>
         </a>
+        <a href="alertas.html" class="img-nav">
+          <img src="assets/dash/server.png">
+          <span>Alertas</span>
+      </a>
+      <a href="localizacao.html" class="img-nav">
+          <img src="assets/imgs/pin.png">
+          <span>Localização</span>
+      </a>
         <a href="configuracoes.html" class="img-nav">
             <img src="./assets/imgs/setting.png">
             <span>Configurações</span>
         </a>
         <hr>
-        <a href="../index.html" class="img-nav">
-            <img src="../assets/imgs/x.png">
-            <span>Sair</span>
-        </a>
+        <a class="img-nav" id="sair">
+          <img src="../assets/imgs/x.png" />
+          <span>Sair</span>
+      </a>
         </nav>
         <nav id="menu-mobile"><img src="assets/dash/bars.svg"></nav>
     </header>
     <main>
         
-        <div style="border: 2px solid red; display: flex; height: 100%; width: 100%; justify-content: space-around;">
+        <div  class="main-localizacao">
 
             <div class="left-wid">
 
                 <div class="titulo">
-                    <p>HeatMap</p>
+                    <p>Mapa de Calor das máquinas</p>
                 </div>
 
-                <div class="heatmap" style="border: 2px solid red; height: 60%; width: 100%;">
+                <div class="texto">
+                  <p>Aqui você pode observar os lugares onde seus funcionarios
+                    estão localizados ao redor do mundo.
+                  </p>
+                </div>
+
+                <div class="heatmap" id="map">
 
                 </div>
             </div>
 
 
-            <div class="rigth-wid" style="border: 2px dashed white; width: 45%;">
+            <div class="rigth-wid">
 
-                <div class="wordcloud" id="map"></div>
+                <div class="wordcloud"></div>
                 
                 <div class="table"></div>
             </div>
@@ -70,12 +91,12 @@
 
     </main>
 
-    <script src="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.js"></script>
-    <script src="../../node_modules/heatmap.js"></script>
-    <script src="../../node_modules/heatmap.js/plugins/leaflet-heatmap/leaflet-heatmap.js"></script>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+    <script src="../script.js"></script>
     <script>
 
-
+const position = [51.505, -0.09]
+        
         window.onload = function () {
   
          var jsonObj = [{}]
@@ -94,7 +115,7 @@
             // Select pega todos os quando a latitude e a longitude são distint.
             
             // Quanto mais próximo do maximo fica com red dot
-            max: 8,
+            max: 4,
             data: jsonObj
           };
   
@@ -120,6 +141,7 @@
               attribution:
                 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="http://cloudmade.com">CloudMade</a>',
               maxZoom: 10,
+    
             }
           );
   
@@ -140,18 +162,17 @@
             // which field name in your data represents the data value - default "value"
             valueField: "count",
           };
-  
+
           var heatmapLayer = new HeatmapOverlay(cfg);
-  
           var map = new L.Map("map", {
             center: new L.LatLng(mediaLat, mediaLng),
             zoom: 3,
             layers: [baseLayer, heatmapLayer],
           });
-  
+
           heatmapLayer.setData(testData);
-  
           // make accessible for debugging
           layer = heatmapLayer;
         };
       </script>
+      <script src="./jsDash/script-dash.js"></script>

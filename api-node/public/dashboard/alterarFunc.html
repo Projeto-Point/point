@@ -12,35 +12,42 @@
 
 <body>
     <header>
-        <a href="maquinas.html" class="logo">
-            <img src="../assets/imgs/Point.png">
-        </a>
-        <hr>
-        <!-- <a href="alertas.html">
-            <img src="../assets/imgs/alfinete 1.png">
-            <span>Alertas</span>
-        </a> -->
-        <a href="funcionarios.html" class="img-nav">
-            <img src="../assets/imgs/user.png" >
-            <span>Funcionários</span>
-        </a>
-        <a href="maquinas.html" class="img-nav">
-            <img src="./assets/imgs/imac.png">
-            <span>Máquinas</span>
-        </a>
-        <a href="instancias.html" class="img-nav">
-            <img src="assets/dash/server.png">
-            <span>Instâncias</span>
-        </a>
-        <a href="configuracoes.html" class="img-nav">
-            <img src="./assets/imgs/setting.png">
-            <span>Configurações</span>
-        </a>
-        <hr>
-        <a href="../index.html" class="img-nav">
-            <img src="../assets/imgs/x.png">
-            <span>Sair</span>
-        </a>
+
+
+        <nav id="menu">
+            <a href="maquinas.html" class="logo">
+                <img src="../assets/imgs/Point.png" />
+            </a>
+            <hr />
+            <a href="funcionarios.html" class="img-nav">
+                <img src="../assets/imgs/user.png" />
+                <span>Funcionários</span>
+            </a>
+            <a href="maquinas.html" class="img-nav">
+                <img src="./assets/imgs/imac.png" />
+                <span>Máquinas</span>
+            </a>
+            <a href="instancias.html" class="img-nav">
+                <img src="./assets/dash/server.png" />
+                <span>Instâncias</span>
+            </a>
+            <a href="alertas.html" class="img-nav">
+                <img src="assets/dash/server.png">
+                <span>Alertas</span>
+            </a>
+            <a href="localizacao.html" class="img-nav">
+                <img src="assets/imgs/pin.png">
+                <span>Localização</span>
+            </a>
+            <a href="configuracoes.html" class="img-nav">
+                <img src="./assets/imgs/setting.png" />
+                <span>Configurações</span>
+            </a>
+            <hr />
+            <a class="img-nav" id="sair">
+                <img src="../assets/imgs/x.png" />
+                <span>Sair</span>
+            </a>
         </nav>
         <nav id="menu-mobile"><img src="assets/dash/bars.svg" /></nav>
     </header>
@@ -63,6 +70,7 @@
                 <section class="cad_func">
                     <div class="titulo">
                         <h1>Alterar Funcionário</h1>
+                        <button onclick="removerFuncionario()">Remover</button>
                     </div>
 
                     <div class="formulario">
@@ -138,6 +146,8 @@
         </section>
     </main>
 
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+    <script src="../script.js"></script>
     <script>
         nomeGerente.innerHTML = sessionStorage.NOME_USUARIO;
 
@@ -240,7 +250,45 @@
                 }
             );
         }
+
+
+
+        async function removerFuncionario(){
+
+
+
+            senhaGerente = document.getElementById('senhaGerente_input').value;
+
+            // Tem que fazer
+            if(senhaGerente == ''){
+                alert("Você precisa colocar sua senha para remover o funcionário");
+
+            }else if(senhaGestor != senhaGerente){
+                alert('Senha inválida');
+            }else{
+
+                fetch(`/usuarios/removerFuncionario?idFuncionario=${idFuncionario}`).then(
+
+                function(res){
+                    console.log(res)
+                    if(res.ok){
+
+                        document.querySelector(".loader").style.display = "block";
+                        // mostrar a animação
+                        setTimeout(() =>{
+                            window.location = './funcionarios.html'
+                        }, 2000)
+                    }else{
+                        alert('Não foi possível remover o usuário.')
+                    }
+
+                    }   
+                )
+            }
+
+        }
     </script>
 </body>
 
 </html>
+<script src="./jsDash/script-dash.js"></script>

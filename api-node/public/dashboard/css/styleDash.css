@@ -11,7 +11,7 @@
   --cor1: #13b348;
   --cor2: #00A219;
   --cor3: #007B00;
-  --radius: 10px;
+  --radius: 4px;
 }
 
 ::-webkit-scrollbar {
@@ -69,8 +69,17 @@ main section.funcionarios .top {
 }
 
 main section.funcionarios .top a {
-  background-color: var(--cor2);
+  background-color: rgb(255, 255, 255);
   padding: 15px;
+  color: black;
+}
+
+main section.funcionarios .top a:hover {
+  background-color: var(--cor3);
+  border: 2px solid white;
+  color: white;
+  font-weight: bold;
+  transition: all ease-in-out 100ms;
 }
 
 main section.funcionarios #lista-funcionarios {
@@ -146,6 +155,7 @@ header nav#menu a {
   align-items: center;
   margin: 23px 0;
   font-size: 1.3rem;
+  cursor: pointer;
 }
 header nav#menu a img {
   margin-right: 15px;
@@ -153,6 +163,8 @@ header nav#menu a img {
   width: 20px;
 }
 header nav#menu-mobile {
+  position: -webkit-sticky;
+  position: sticky;
   display: none;
   top: 0;
   box-shadow: 5px 0px 5px rgba(0, 0, 0, 0.3);
@@ -182,20 +194,66 @@ main {
   color: white;
   padding: 30px;
 }
-main div.left-wid {
-  border: 2px dashed white;
+main .main-localizacao {
+  display: flex;
+  height: 100%;
+  width: 100%;
+  justify-content: space-around;
+  background: white;
+  border-radius: var(--radius);
+}
+main .main-localizacao .left-wid {
   width: 45%;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
-  padding: 15px;
+  justify-content: space-evenly;
+  align-items: center;
 }
-main div.left-wid .titulo {
+main .main-localizacao .left-wid .titulo {
   font-weight: bold;
   font-size: 1.3rem;
-  border-bottom: 2px Solid white;
+  color: white;
+  background: var(--cor3);
+  padding: 10px;
+  border-radius: var(--radius);
+  margin-bottom: 0%;
+  width: 100%;
+  text-align: center;
+}
+main .main-localizacao .left-wid .texto {
+  margin-bottom: 10%;
+  font-size: 0.9rem;
+  background: rgba(255, 255, 255, 0.82);
+  color: rgb(62, 62, 62);
+  padding: 15px;
+  border-radius: var(--radius);
+  font-weight: 600;
+}
+main .main-localizacao .left-wid .heatmap {
   margin-top: 5%;
-  color: red;
+  margin-bottom: 3%;
+  border-radius: var(--radius);
+  height: 60%;
+  width: 100%;
+}
+main .main-localizacao .rigth-wid {
+  width: 45%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  border: 2px solid white;
+  align-items: center;
+}
+main .main-localizacao .rigth-wid .wordcloud {
+  border: 2px dashed red;
+  height: 40%;
+  width: 80%;
+}
+main .main-localizacao .rigth-wid .table {
+  height: 30%;
+  border: 5px solid var(--cor1);
+  border-radius: var(--radius);
+  width: 60%;
 }
 main section.top {
   display: flex;
@@ -352,7 +410,6 @@ main section.funcionarios .top {
   margin-bottom: 30px;
 }
 main section.funcionarios .top a {
-  background-color: var(--cor2);
   padding: 15px;
 }
 main section.funcionarios #lista-funcionarios {
@@ -400,17 +457,26 @@ main section.dashboard-analise .grafico-disco {
 main section.dashboard-analise .info-funcionario {
   grid-area: i1;
 }
+main section.dashboard-analise .info-funcionario p {
+  margin-top: 15px;
+}
+main section.dashboard-analise .info-funcionario h3 {
+  border-bottom: 2px solid var(--cor3);
+}
 main section.dashboard-analise .info-maquina {
   grid-area: i2;
+}
+main section.dashboard-analise .info-maquina p {
+  margin-top: 7%;
+  padding-left: 9px;
+}
+main section.dashboard-analise .info-maquina h3 {
+  border-bottom: 2px solid var(--cor3);
 }
 main section.dashboard-analise .box {
   padding: 15px;
   display: block;
   font-size: 20px;
-}
-main section.dashboard-analise .box hr {
-  margin: 10px 0;
-  opacity: 0.4;
 }
 main section.dashboard-analise .box-kpi h1 {
   text-align: center;
@@ -508,6 +574,7 @@ main section.dashboard .grafico .diver, main section.dashboard .tabela .diver {
   background-color: var(--cor3);
 }
 main section.dashboard .grafico .container-info, main section.dashboard .tabela .container-info {
+  grid-template-columns: 100%;
   display: flex;
   flex-direction: row;
   justify-content: space-evenly;
@@ -537,7 +604,6 @@ main section.dashboard .func p {
     transform: translateX(-100%);
   }
   header nav#menu-mobile {
-    position: relative;
     display: flex;
   }
   main {
@@ -555,6 +621,17 @@ main section.dashboard .func p {
     grid-template-columns: 100%;
     grid-template-areas: "g1" "g2" "g3" "t1" "t2";
   }
+  main section.dashboard-analise {
+    grid-template-columns: 100%;
+    grid-template-areas: "k1" "k2" "k3" "g1" "g2" "g3" "i1" "i2";
+    grid-template-rows: auto;
+  }
+  main section.dashboard-analise .legenda + span {
+    display: none;
+  }
+  main section.dashboard-analise .legenda {
+    display: none;
+  }
 }
 @media screen and (max-width: 1100px) {
   header nav {
@@ -566,4 +643,21 @@ main section.dashboard .func p {
   #inp-pesquisar-funcionario {
     display: none;
   }
+  #inp-pesquisar-maquina {
+    display: none;
+  }
+  main section.funcionarios #lista-funcionarios {
+    grid-template-columns: 1fr;
+  }
+  main section#maquinas {
+    grid-template-columns: 1fr;
+  }
+}
+svg path,
+svg rect {
+  fill: var(--cor1);
+}
+
+.loader {
+  display: none;
 }/*# sourceMappingURL=styleDash.css.map */

@@ -3,7 +3,7 @@ var database = require("../database/config")
 function entrar(email, senha) {
     console.log("ACESSEI O USUARIO MODEL \n \n\t\t >> Se aqui der erro de 'Error: connect ECONNREFUSED',\n \t\t >> verifique suas credenciais de acesso ao banco\n \t\t >> e se o servidor de seu BD está rodando corretamente. \n\n function entrar(): ", email, senha)
     var instrucao = `
-        SELECT * FROM Funcionario WHERE email = '${email}' AND senha = '${senha}';
+        SELECT * FROM Funcionario WHERE email = '${email}' AND senha = '${senha}' AND cargo = 'Gestor';
     `;
     console.log("Executando a instrução SQL: \n" + instrucao);
     return database.executar(instrucao);
@@ -20,7 +20,7 @@ function entrar(email, senha) {
 
 // Coloque os mesmos parâmetros aqui. Vá para a var instrucao
 function cadastrarEmpresa(nomeEmpresa, cnpj, plano) {
-    console.log("ACESSEI O USUARIO MODEL \n \n\t\t >> Se aqui der erro de 'Error: connect ECONNREFUSED',\n \t\t >> verifique suas credenciais de acesso ao banco\n \t\t >> e se o servidor de seu BD está rodando corretamente. \n\n function cadastrar():", nomeEmpresa, cnpj);
+    console.log("ACESSEI O USUARIO MODEL \n \n\t\t >> Se aqui der erro de 'Error: connect ECONNREFUSED',\n \t\t >> verifique suas credenciais de acesso ao banco\n \t\t >> e se o servidor de seu BD está rodando corretamente. \n\n function cadastrar():", nomeEmpresa, cnpj, plano);
     
     // Insira exatamente a query do banco aqui, lembrando da nomenclatura exata nos valores
     //  e na ordem de inserção dos dados.
@@ -66,10 +66,24 @@ function alterarFuncionario(nome, senha, cargo, tel, idFuncionario) {
     return database.executar(instrucao);
 }
 
+
+function alterarEmpresa(nome, plano, idEmpresa) {
+    var instrucao = `
+    update Empresa set nome='${nome}', plano='${plano}' where idEmpresa = ${idEmpresa};
+    `;
+    console.log("Executando a instrução SQL: \n" + instrucao);
+    return database.executar(instrucao);
+}
+
 function listarFuncionarios(idEmpresa){
     var instrucao = `SELECT idFuncionario, nome, email, telefone, cargo FROM Funcionario WHERE fkEmpresa = ${idEmpresa}`;
     console.log("Executando a instrução SQL: \n" + instrucao);
     return database.executar(instrucao);
+}
+
+function removerFuncionario(idFuncionario){
+    var instrucao = `DELETE FROM [dbo].[Funcionario] WHERE idFuncionario = ${idFuncionario};`
+    return database.executar(instrucao)
 }
 
 function pegarDadosAtuais(idFuncionario){
@@ -78,12 +92,18 @@ function pegarDadosAtuais(idFuncionario){
     return database.executar(instrucao);
 }
 
-function getSenhaGestor(idGestor){
+function pegarDadosAtuaisEmpresa(idEmpresa){
+    var instrucao = `SELECT E.nome,E.cnpj, E.plano FROM [dbo].[Empresa] E
+    INNER JOIN [dbo].[Funcionario] F ON idEmpresa = fkEmpresa
+    WHERE idEmpresa = ${idEmpresa};`;
+    console.log("Executando a instrução SQL: \n" + instrucao);
+    return database.executar(instrucao);
+}
 
+function getSenhaGestor(idGestor){
     var instrucao = `SELECT nome, senha FROM Funcionario WHERE idFuncionario = ${idGestor}`;
     console.log("Executando a instrução SQL: \n" + instrucao);
     return database.executar(instrucao);
-
 }
 
 module.exports = {
@@ -94,5 +114,8 @@ module.exports = {
     listarFuncionarios,
     pegarDadosAtuais,
     alterarFuncionario,
-    getSenhaGestor
+    getSenhaGestor,
+    pegarDadosAtuaisEmpresa,
+    alterarEmpresa,
+    removerFuncionario
 };

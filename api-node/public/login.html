@@ -34,7 +34,8 @@
                     <span class="highlight"></span>
                     <span class="bar"></span>
                     <label>Senha</label>
-                  </div>
+                </div>
+                <a href="index.html#contato" style="color: rgba(101, 101, 101, 0.66);"><small>Esqueceu a senha? Entre em contato</small></a>
 
                 <div class="botao_login">
                     <button class="btnEntrar custom-btn" onclick="entrar()">Entrar</button>
@@ -130,8 +131,8 @@
                     sessionStorage.ID_EMPRESA = json.fkEmpresa;
 
                     setTimeout(function () {
-                        window.location = "dashboard/cadastrar-funcionario.html";
-                    }, 500); // apenas para exibir o loading
+                        window.location = "./dashboard/funcionarios.html";
+                    }, 3300); // apenas para exibir o loading
 
                 });
 

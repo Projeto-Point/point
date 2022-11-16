@@ -1,14 +1,12 @@
-# import geocoder
-# import pymysql
-
 ## Esse código é da Camarada Agdas. Temos que refatorar o código python 
 import datetime
 import os
 import platform
 from time import sleep
 from dashing import (HSplit, VSplit, VGauge, HGauge, Text)
-from psutil import (virtual_memory, cpu_percent, disk_usage, users, pids, process_iter)
+from psutil import (virtual_memory, cpu_percent, disk_usage, users, pids, process_iter, cpu_count)
 import pymssql
+import geocoder
 
 # print(geocoder.ip("me").city)
 # print(geocoder.ip("me").country)
@@ -36,7 +34,6 @@ while verificaLogin == False:
     login = input('Bem vindo ao Point! \nDigite o login do funcionário: ')
     senha = input('Digite a senha do funcionário: ')
     
-    #Executa o comando no banco que foi conectado 
     nomeFuncionario = cursor.execute(("SELECT nome FROM Funcionario WHERE email = '{}' and senha = '{}'").format(login, senha))
     if(len(cursor.fetchall()) > 0):
         verificaLogin = True
@@ -65,21 +62,29 @@ else:
     cursor.execute(f"""INSERT INTO Maquina (sistemaOperacional, nomeMaquina, tipo, fkFuncionario) VALUES ('{platform.system()}', '{platform.node()}', 'Servidor', {fkFuncionario})""")
 
     cursor.execute((f"""SELECT idMaquina FROM Maquina WHERE nomeMaquina = '{nome}'"""))
-
     id = cursor.fetchall()[0][0]
 
     conn.commit()
 
+    # Inserindo componentes
     cursor.execute(f"INSERT INTO Componente (idComponente, fkMaquina, tipo) VALUES (1, {id}, 'CPU')")
-
     cursor.execute(f"""INSERT INTO Componente (idComponente, fkMaquina, tipo) VALUES (2, {id}, 'RAM')""")
-
     cursor.execute(f"""INSERT INTO Componente (idComponente, fkMaquina, tipo) VALUES (3, {id}, 'Disco')""")
 
-    cursor.execute(f"INSERT INTO Atributo (atributo, valor, unidadeMedida, fkMaquina, fkComponente) VALUES ('Capacidade', {memoriaTotal}, 'GB', {id}, 2)")
-    cursor.execute(f"INSERT INTO Atributo (atributo, valor, unidadeMedida, fkMaquina, fkComponente) VALUES ('Capacidade', {discoTotal}, 'GB', {id}, 3)")
+    # Inserindo atributo dos componentes
+    cursor.execute(f"INSERT INTO Atributo (atributo, valor, unidadeMedida, fkMaquina, fkComponente) VALUES ('CORE', {cpu_count(logical=False)}, 'unidade', {id}, 1)")
+    cursor.execute(f"INSERT INTO Atributo (atributo, valor, unidadeMedida, fkMaquina, fkComponente) VALUES ('THREADS', {cpu_count(logical=True)}, 'unidade', {id}, 1)")
+    cursor.execute(f"INSERT INTO Atributo (atributo, valor, unidadeMedida, fkMaquina, fkComponente) VALUES ('Tamanho', {memoriaTotal}, 'GB', {id}, 2)")
+    cursor.execute(f"INSERT INTO Atributo (atributo, valor, unidadeMedida, fkMaquina, fkComponente) VALUES ('Tamanho', {discoTotal}, 'GB', {id}, 3)")
 
     conn.commit()
+
+# Inserindo entrada com localização
+cursor.execute((f"""SELECT idMaquina FROM Maquina WHERE nomeMaquina = '{nome}'"""))
+idMaquina = cursor.fetchall()[0][0]
+
+ip = geocoder.ip('me')
+cursor.execute(f"INSERT INTO Localizacao (acao, dataEhora, ipAdress, longitude, latitude, cidade, pais, fkMaquina) VALUES ('E', GETDATE(), '{ip.ip}', {ip.latlng[0]}, {ip.latlng[1]}, '{ip.city}', '{ip.country}', {idMaquina})")
 
 # Personalizando o terminal 
 ui = HSplit(
@@ -114,15 +119,15 @@ ui = HSplit(
     ),
 )
 while True:
-    #Processos
-    #Pega os processos que foram executados na máquina e coloca na caixa [0] do terminal 
-    proc_tui = ui.items[0].items[0]
-    p_list = []
-    #mostra todos os processos
-    for proc in process_iter():
-        proc_info = proc.as_dict(['name', 'cpu_percent'])
-        if proc_info['cpu_percent'] > 0:
-            p_list.append(proc_info)
+    # #Processos
+    # #Pega os processos que foram executados na máquina e coloca na caixa [0] do terminal 
+    # proc_tui = ui.items[0].items[0]
+    # p_list = []
+    # #mostra todos os processos
+    # for proc in process_iter():
+    #     proc_info = proc.as_dict(['name', 'cpu_percent'])
+    #     if proc_info['cpu_percent'] > 0:
+    #         p_list.append(proc_info)
 
     #Memória RAM
     mem_tui = ui.items[2].items[0]
@@ -162,7 +167,6 @@ while True:
     disk_tui.title = f'Disco {disk_tui.value}%'
 
     # Tempo real
-
     agora = datetime.datetime.now()
     agora_string = agora.strftime("%A %d %B %y %I:%M")
 
@@ -190,5 +194,12 @@ while True:
         ui.display()
         sleep(3)
     except KeyboardInterrupt:
+        # Inserindo entrada com localização
+        cursor.execute((f"SELECT idMaquina FROM Maquina WHERE nomeMaquina = '{nome}'"))
+        idMaquina = cursor.fetchall()[0][0]
+
+        cursor.execute(f"INSERT INTO Localizacao (acao, dataEhora, ipAdress, longitude, latitude, cidade, pais, fkMaquina) VALUES ('S', GETDATE(), '{ip.ip}', {ip.latlng[0]}, {ip.latlng[1]}, '{ip.city}', '{ip.country}', {idMaquina})")
+        conn.commit()
+
         conn.close()
         break

@@ -8,6 +8,7 @@
     <title>Dashboard Tempo Real | Point</title>
     <link rel="stylesheet" href="css/styleDash.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.4/moment.min.js"></script>
 </head>
 
 <body>
@@ -33,13 +34,21 @@
                 <img src="assets/dash/server.png">
                 <span>Instâncias</span>
             </a>
+            <a href="alertas.html" class="img-nav">
+                <img src="assets/dash/server.png">
+                <span>Alertas</span>
+            </a>
+            <a href="localizacao.html" class="img-nav">
+                <img src="assets/imgs/pin.png">
+                <span>Localização</span>
+            </a>
             <a href="configuracoes.html" class="img-nav">
                 <img src="./assets/imgs/setting.png">
                 <span>Configurações</span>
             </a>
             <hr>
-            <a href="../index.html" class="img-nav">
-                <img src="../assets/imgs/x.png">
+            <a class="img-nav" id="sair">
+                <img src="../assets/imgs/x.png" />
                 <span>Sair</span>
             </a>
         </nav>
@@ -66,16 +75,6 @@
             </div>
             <div class="grafico" id="gfDisco">
                 <h3>Disco</h3>
-                <!-- <div class="set-size charts-container">
-                    <div class="pie-wrapper progress-danger style-2">
-                        <span class="label">100<span class="smaller">%</span></span>
-                        <div class="pie">
-                          <div class="left-side half-circle"></div>
-                          <div class="right-side half-circle"></div>
-                        </div>
-                        <div class="shadow"></div>
-                      </div>
-                </div> -->
                 <div id="div-disco" data-content="0.0"><canvas id="graficoDISCO" style="position: relative;"></canvas></div>
             </div>
             <div class="grafico" id="gfRam">
@@ -84,17 +83,18 @@
                     <canvas id="graficoRAM" style="position: relative;"></canvas>
                 </div>
             </div>
-            <div class="tabela" id="tbFuncionario">
+        <div class="tabela" id="tbFuncionario">
 
                 <h3>Informações do funcionário</h3>
 
                 
-                <div class="container-info">
+            <div class="container-info">
+
                 <div class="part">
-                <p><b>Nome: </b><span id="nome"></span></p>
-                <p><b>Cargo: </b><span id="cargo"></span></p>
-                <p><b>E-mail: </b><span id="mail"></span></p>
-                <p><b>Telefone: </b><span id="telefone"></span></p>
+                    <p><b>Nome: </b><span id="nome"></span></p>
+                    <p><b>Cargo: </b><span id="cargo"></span></p>
+                    <p><b>E-mail: </b><span id="mail"></span></p>
+                    <p><b>Telefone: </b><span id="telefone"></span></p>
                 </div>
 
                 <div class="part">
@@ -102,17 +102,38 @@
                     <p><b>Cidade: </b><span id="cargod">São Paulo</span></p>
                     <p><b>E-mail:</b><span id="maild"></span></p>
                     <p><b>Telefone:</b><span id="telefoned"></span></p>
-                    </div>
+                </div>
+
+            </div>
+
+        </div>
+        <div class="tabela" id="tbMaquina">
+
+            <h3>Informações da Máquina</h3>
+
+            
+        <div class="container-info">
+
+            <div class="part" id="tbMaquina-first">
+               
+            </div>
+
+            <div class="part" id="tbMaquina-sec">
+     
             </div>
         </div>
-            <div class="tabela" id="tbMaquina">
-                <h3>Informações da máquina</h3>
-            </div>
+
+    </div>
+
+        
+
         </section>
     </main>
 </body>
 
 </html>
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+<script src="../script.js"></script>
 <script>
     const tempoAtualizacao = 10 * 1000;
     var gerente= sessionStorage.NOME_USUARIO
@@ -134,8 +155,19 @@
         const parametros = new URLSearchParams(parametrosString);
         idMaquina = Number(parametros.get("idMaquina"));
 
+        fetch(`/maquinas/verificarAtividade?idMaquina=${idMaquina}`).then(function (res) {
+            if (res.ok) {
+                res.json().then(resposta => {
+                    if(resposta[0].acao == "S"){
+                        document.querySelector('.dashboard').innerHTML = `<p style="grid-column-start: 1; grid-column-end: 4; display: flex; justify-content: center; align-items: center; font-weight: bold; font-size: 1.3rem;">Máquina desligada desde o dia ${moment(resposta[0].dataEhora).format("DD/MM/YYYY [às] HH:mm")}</p>`;
+                    }
+                });
+            }
+        });
+        
         recuperarDados();
     };
+
 
     function recuperarDados() {
         fetch(`/medidas/pegarRegistroCPU?idMaquina=${idMaquina}`).then(function (res) {
@@ -203,9 +235,11 @@
                 // <p><b>Sistema operacional: </b><span><div id="nomeMaquina"></div></span></p>
                 // <p><b>Sistema operacional: </b><span><div id="tipoMaquina"></div></span></p>
 
-                    document.getElementById("tbMaquina").innerHTML += `<p class='divider'><b>Sistema operacional: </b><span>${resposta[0].sistemaOperacional}</span></p>`;
-                    document.getElementById("tbMaquina").innerHTML += `<p><b>Nome da máquina: </b><span>${resposta[0].nomeMaquina}</span></p>`;
-                    document.getElementById("tbMaquina").innerHTML += `<p><b>Tipo da máquina: </b><span>${resposta[0].tipoMaquina}</span></p>`;
+                    document.getElementById("tbMaquina-first").innerHTML += `<p><b>Sistema operacional: </b><span>${resposta[0].sistemaOperacional}</span></p>`;
+                    document.getElementById("tbMaquina-first").innerHTML += `<p><b>Nome da máquina: </b><span>${resposta[0].nomeMaquina}</span></p>`;
+                    document.getElementById("tbMaquina-first").innerHTML += `<p><b>Tipo da máquina: </b><span>${resposta[0].tipoMaquina}</span></p>`;
+                    // Aqui coloca o status da máquina - desligada ou ligada
+                    document.getElementById("tbMaquina-first").innerHTML += `<p><b>Status: </b><span>Desligada</span></p>`;                    
                     console.log(resposta)
 
                     // Aqui tem uma gambiarra pra funcionar mas é recomendavel que troque isso. Tava repetindo valores e as labels nao faziam sentido
@@ -222,7 +256,7 @@
                                 resposta[index].valor *= 1;
                                 Math.trunc(resposta[index].valor)
                             }
-                            document.getElementById("tbMaquina").innerHTML += `<p><b>${resposta[index].tipoComponente} - ${resposta[index].atributo}: </b><span>${resposta[index].valor} ${resposta[index].unidadeMedida}</span></p>`;
+                            document.getElementById("tbMaquina-sec").innerHTML += `<p><b>${resposta[index].tipoComponente} - ${resposta[index].atributo}: </b><span>${resposta[index].valor} ${resposta[index].unidadeMedida}</span></p>`;
 
                     }
                 });
@@ -454,3 +488,4 @@
 
 
 </script>
+<script src="./jsDash/script-dash.js"></script>

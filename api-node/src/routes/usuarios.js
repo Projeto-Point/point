@@ -20,6 +20,10 @@ router.post("/alterarFuncionario", function (req, res) {
     usuarioController.alterarFuncionario(req, res);
 });
 
+router.post("/alterarEmpresa", function (req, res) {
+    usuarioController.alterarEmpresa(req, res);
+});
+
 router.post("/autenticar", function (req, res) {
     usuarioController.entrar(req, res);
 });
@@ -38,6 +42,14 @@ router.get("/pegarDadosAtuais", function(req, res){
 
 router.get("/getSenhaGestor", function(req, res){
     usuarioController.getSenhaGestor(req, res);
+});
+
+router.get("/pegarDadosAtuaisEmpresa", function(req, res){
+    usuarioController.pegarDadosAtuaisEmpresa(req, res);
+});
+
+router.get('/removerFuncionario', function(req, res){
+    usuarioController.removerFuncionario(req,res);
 });
 
 module.exports = router;

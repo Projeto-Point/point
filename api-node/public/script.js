@@ -3,17 +3,9 @@ function abrirMenu() {
     navbar.style.opacity = 1;
 }
 
-function fecharMenu(aba) {
-
-    if(aba == 'contato'){
-
-        if(window.innerWidth < 997){
-            navbar.style.visibility = "hidden";
-            navbar.style.opacity = 0;
-        }
-
-    }
-    
+function fecharMenu() {
+    navbar.style.visibility = "hidden";
+    navbar.style.opacity = 0;
 }
 
 function voltarIndex(){
@@ -44,18 +36,4 @@ $('.dropdown .dropdown-menu li').click(function () {
     $(this).parents('.dropdown').find('input').attr('value', $(this).attr('id'));
 });
 
-import variables from './dashboard/css/styleDash.scss';
-module.exports = {
-    // ...
-    module: {
-     rules: [
-      {
-       test: /\.scss$/,
-       use: ["style-loader", "css-loader", "sass-loader"]
-      },
-      // ...
-     ]
-    }
-   };
-
-document.getElementById("app").style.padding = variables.padding;
+// pesquisa
