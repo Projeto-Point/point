@@ -59,7 +59,6 @@ if [ \"$opcao\" == \"1\" ]
         source "/home/urubu100/.sdkman/bin/sdkman-init.sh"
         sdk install java 11.0.10.j9-adpt
         echo "$(tput setaf 2)[ASSISTENTE POINT]:$(tput setaf 7) : Tudo pronto!!!!!! Basta executar o .jar no diretório correto!"
-    fi
 	else
 		# Python
 		echo  "$(tput setaf 2)[ASSISTENTE POINT]:$(tput setaf 7) Baixando aplicação Point"
@@ -71,6 +70,7 @@ if [ \"$opcao\" == \"1\" ]
         pip install geocoder
         pip install pymysql
 		echo  "$(tput setaf 2)[ASSISTENTE POINT]:$(tput setaf 7) Vamos instalar o docker, por favor coloque sua senha quando solicitada"
+        sudo apt upgrade && sudo apt update -y
         sudo apt install docker.io
         clear
         sudo systemctl start docker
