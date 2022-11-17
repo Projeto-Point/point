@@ -1,6 +1,9 @@
 import requests
 import psutil
 import json
+import email
+from datetime import datetime, timedelta
+
 
 def testarfields():
     url = "https://api.pipefy.com/graphql"
@@ -17,12 +20,29 @@ def testarfields():
 
     print(response.text)
 
-def reportarAlerta(nome, id, mensagem):
+
+
+
+
+def reportarAlerta(mensagem, email, nome):
+
     url = "https://api.pipefy.com/graphql"
+
+
+    now = datetime.now()
+
+    now = str(now)
+
+    dt = datetime.strptime(now, '%Y-%m-%d %H:%M:%S.%f')
+
+    somar_3_horas = dt + timedelta(hours=3)
+
+    dt_string = somar_3_horas.strftime("%d/%m/%Y %H:%M")
 
     #teste card do pipefy com o formulário preenchido a mão. Em seguida eu vou conectar isso com o BD para pegar as infos direto da máquina do funcionário
 
-    payload = {"query": "mutation {createCard(input: {pipe_id: 302776879,title: \"New card\",fields_attributes:[{field_id: \"qual_o_assunto_do_seu_pedido\", field_value: \"PC está superaquecendo\"},{field_id: \"email\", field_value: \"lullyfito@gmail.com\"},{field_id: \"nome_do_funcion_rio\", field_value: \"Lullyfuli\"}, {field_id: \"data_e_hora\", field_value: \"24/09/2004 08:30\"}]}) {card {title}}}"}
+    payload = {"query": "mutation {createCard(input: {pipe_id: 302776879,title: \"New card\",fields_attributes:[{field_id: \"qual_o_assunto_do_seu_pedido\", field_value: \"%s\"},{field_id: \"email\", field_value: \"%s\"},{field_id: \"nome_do_funcion_rio\", field_value: \"%s\"}, {field_id: \"data_e_hora\", field_value: \"%s\"}]}) {card {title}}}" % (mensagem, email, nome, dt_string)}
+
     headers = {
         "accept": "application/json",
         "content-type": "application/json",
@@ -35,6 +55,8 @@ def reportarAlerta(nome, id, mensagem):
 
 
 print("Enviando Alerta Para Service Desk")
-reportarAlerta("Máquina 1", "10053","RAM em 85%")
+reportarAlerta("80% RAM", "agdaTaniguchi@gmail.com", "Agda Tani")
+
+
 #testarfields()
 
