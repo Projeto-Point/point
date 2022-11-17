@@ -81,10 +81,10 @@ INNER JOIN Atributo ON fkComponente = idComponente;
 
 CREATE VIEW vw_registros AS
 SELECT  E.nome AS 'empresa', E.cnpj,
-		email,
-        idMaquina, nomeMaquina, sistemaOperacional,
-        C.tipo,
-        valor, unidadeMedida, dataEhora
+    email,
+    idMaquina, nomeMaquina, sistemaOperacional,
+    C.tipo,
+    valor, unidadeMedida, dataEhora
 FROM Empresa E
 INNER JOIN Funcionario F ON F.fkEmpresa = idEmpresa
 INNER JOIN Maquina ON Maquina.fkFuncionario = idFuncionario
@@ -93,8 +93,8 @@ INNER JOIN Registro ON fkComponente = idComponente;
 
 CREATE VIEW vw_infoMaquina AS
 SELECT idMaquina, nomeMaquina, sistemaOperacional, M.tipo AS 'tipoMaquina',
-	   C.tipo AS 'tipoComponente',
-       atributo, valor, unidadeMedida
+    C.tipo AS 'tipoComponente',
+    atributo, valor, unidadeMedida
 FROM Maquina M
 INNER JOIN Componente C ON C.fkMaquina = idMaquina
 INNER JOIN Atributo ON idComponente = fkComponente;
