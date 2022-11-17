@@ -60,7 +60,7 @@
         <nav id="menu-mobile"><img src="assets/dash/bars.svg"></nav>
     </header>
     <main>
-        
+
         <div  class="main-localizacao">
 
             <div class="left-wid">
@@ -84,8 +84,10 @@
             <div class="rigth-wid">
 
                 <div class="wordcloud"></div>
-                
-                <div class="table"></div>
+
+                <div class="table">
+
+                </div>
             </div>
         </div>
 
@@ -96,55 +98,55 @@
     <script>
 
 const position = [51.505, -0.09]
-        
+
         window.onload = function () {
-  
+
          var jsonObj = [{}]
           for (var i = 0; i < 5; i++) {
-  
+
             let randLat = (Math.random() * (-20.882104 - -24.841340) + -24.841340).toFixed(5)
             let randLng = (Math.random() * (-48.086846 - -51.126988) + -51.126988).toFixed(5)
             jsonObj[i] = {lat:Number(randLat), lng:Number(randLng)}
           }
-  
-  
-  
+
+
+
           var testData = {
             // Anotar no notion composicao não pode ser de muitos para muitos
-            
+
             // Select pega todos os quando a latitude e a longitude são distint.
-            
+
             // Quanto mais próximo do maximo fica com red dot
             max: 4,
             data: jsonObj
           };
-  
-         
+
+
           // Setando o mapa para ficar centralizado onde tem mais dados
-          
+
           var mediaLat = 0;
           var mediaLng = 0;
           tamanhoData = jsonObj.length;
-  
+
           for (let i = 0; i < tamanhoData; i++) {
             mediaLat += Number(jsonObj[i]['lat']);
             mediaLng += Number(jsonObj[i]["lng"]);
           }
-  
+
           mediaLat /= tamanhoData;
           mediaLng /= tamanhoData;
-  
-  
+
+
           var baseLayer = L.tileLayer(
             "http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
             {
               attribution:
                 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="http://cloudmade.com">CloudMade</a>',
               maxZoom: 10,
-    
+
             }
           );
-  
+
           var cfg = {
             // radius should be small ONLY if scaleRadius is true (or small radius is intended)
             radius: 2,
