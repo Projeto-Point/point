@@ -64,6 +64,7 @@ if [ \"$opcao\" == \"1\" ]
 		echo  "$(tput setaf 2)[ASSISTENTE POINT]:$(tput setaf 7) Baixando aplicação Point"
         git clone https://github.com/Projeto-Point/point-python.git
 		echo  "$(tput setaf 2)[ASSISTENTE POINT]:$(tput setaf 7) Instalando bibliotecas python necessárias"
+        sudo apt install python3-pip -y
         pip install psutil
         pip install dashing
         pip install pymssql

@@ -208,7 +208,7 @@
   );
 
   fetch(
-    `/maquinas/pegarKpis?idMaquina=1&dataInicio=${moment()
+    `/maquinas/pegarKpis?idMaquina=${idMaquina}&dataInicio=${moment()
       .subtract(30, "days")
       .format("YYYY-MM-DD")}&dataFinal=${moment().format("YYYY-MM-DD")}`
   )
@@ -251,38 +251,12 @@
       console.log(erro);
     });
 
-  pegarRegistros(
-    "graficoCPU",
-    "CPU",
-    1,
-    moment().subtract(30, "days").format("YYYY-MM-DD"),
-    moment().format("YYYY-MM-DD")
-  );
-  pegarRegistros(
-    "graficoRAM",
-    "RAM",
-    1,
-    moment().subtract(30, "days").format("YYYY-MM-DD"),
-    moment().format("YYYY-MM-DD")
-  );
-  pegarRegistros(
-    "graficoDisco",
-    "DISCO",
-    1,
-    moment().subtract(30, "days").format("YYYY-MM-DD"),
-    moment().format("YYYY-MM-DD")
-  );
+  pegarRegistros("graficoCPU", "CPU", idMaquina, moment().subtract(30, "days").format("YYYY-MM-DD"), moment().format("YYYY-MM-DD"));
+  pegarRegistros("graficoRAM", "RAM", idMaquina, moment().subtract(30, "days").format("YYYY-MM-DD"), moment().format("YYYY-MM-DD"));
+  pegarRegistros("graficoDisco", "DISCO", idMaquina, moment().subtract(30, "days").format("YYYY-MM-DD"), moment().format("YYYY-MM-DD"));
 
-  function pegarRegistros(
-    idGrafico,
-    tipoComponente,
-    idMaquina,
-    dataInicio,
-    dataFinal
-  ) {
-    fetch(
-      `/maquinas/analiseComponente?tipoComponente=${tipoComponente}&idMaquina=${idMaquina}&dataInicio=${dataInicio}&dataFinal=${dataFinal}`
-    )
+  function pegarRegistros(idGrafico, tipoComponente, idMaquina, dataInicio, dataFinal) {
+    fetch(`/maquinas/analiseComponente?tipoComponente=${tipoComponente}&idMaquina=${idMaquina}&dataInicio=${dataInicio}&dataFinal=${dataFinal}`)
       .then((res) => {
         if (res.ok) {
           res.json().then((resposta) => {
