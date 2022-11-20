@@ -1,4 +1,4 @@
-## Esse código é da Camarada Agdas. Temos que refatorar o código python 
+## Esse código é da Camarada Agdas. Temos que refatorar o código python
 import datetime
 import os
 import platform
@@ -11,13 +11,13 @@ import pymysql
 
 # Credenciais da Azure
 serverSqlServer = 'bd-point.database.windows.net'
-databaseSqlServer = 'bd-point' 
-usernameSqlServer = 'adm-point' 
+databaseSqlServer = 'bd-point'
+usernameSqlServer = 'adm-point'
 passwordSqlServer = '1cco#grupo1'
 
 # Credenciais do MySQL
-databaseMySql = 'bd_point' 
-usernameMySql = 'aluno' 
+databaseMySql = 'bd_point'
+usernameMySql = 'aluno'
 passwordMySql = 'sptech'
 
 def limpar():
@@ -29,11 +29,11 @@ def limpar():
 def inserirBanco(comando):
     # Azure
     conexaoSqlServer = pymssql.connect(server=serverSqlServer, user=usernameSqlServer, password=passwordSqlServer, database=databaseSqlServer)
-    
+
     with conexaoSqlServer:
         with conexaoSqlServer.cursor() as cursor:
             cursor.execute(comando)
-        
+
         conexaoSqlServer.commit()
 
     # MySQL Local
@@ -43,16 +43,16 @@ def inserirBanco(comando):
     with conexaoMySql:
         with conexaoMySql.cursor() as cursor:
             cursor.execute(comando)
-        
+
         conexaoMySql.commit()
 
 def consultarBanco(comando):
     comando = comando.replace('GETDATE', 'NOW')
-    
+
     try:
         # Azure SQL Server
         conexaoSqlServer = pymssql.connect(server=serverSqlServer, user=usernameSqlServer, password=passwordSqlServer, database=databaseSqlServer)
-    
+
         with conexaoSqlServer:
             with conexaoSqlServer.cursor() as cursor:
                 cursor.execute(comando)
@@ -79,7 +79,7 @@ while verificaLogin == False:
 
     login = input('Bem vindo ao Point! \nDigite o login do funcionário: ')
     senha = input('Digite a senha do funcionário: ')
-    
+
     consulta = consultarBanco(f"SELECT nome FROM Funcionario WHERE email = '{login}' and senha = '{senha}'")
     if(len(consulta) > 0):
         verificaLogin = True
@@ -99,7 +99,7 @@ else:
     consulta = consultarBanco(f"SELECT idFuncionario FROM Funcionario WHERE email = '{login}' and senha = '{senha}'")
 
     fkFuncionario = consulta[0][0]
-    
+
     inserirBanco(f"INSERT INTO Maquina (sistemaOperacional, nomeMaquina, tipo, fkFuncionario) VALUES ('{platform.system()}', '{platform.node()}', 'Servidor', {fkFuncionario})")
 
     consulta = consultarBanco(f"SELECT idMaquina FROM Maquina WHERE nomeMaquina = '{nome}'")
@@ -113,7 +113,7 @@ else:
     # Inserindo atributo dos componentes
     inserirBanco(f"INSERT INTO Atributo (atributo, valor, unidadeMedida, fkMaquina, fkComponente) VALUES ('CORE', {cpu_count(logical=False)}, 'unidade', {idMaquina}, 1)")
     inserirBanco(f"INSERT INTO Atributo (atributo, valor, unidadeMedida, fkMaquina, fkComponente) VALUES ('THREADS', {cpu_count(logical=True)}, 'unidade', {idMaquina}, 1)")
-    inserirBanco(f"INSERT INTO Atributo (atributo, valor, unidadeMedida, fkMaquina, fkComponente) VALUES ('Tamanho', {memoriaTotal}, 'GB', {idMaquina}, 2)")
+
     inserirBanco(f"INSERT INTO Atributo (atributo, valor, unidadeMedida, fkMaquina, fkComponente) VALUES ('Tamanho', {discoTotal}, 'GB', {idMaquina}, 3)")
 
 # Inserindo entrada com localização
@@ -123,7 +123,7 @@ idMaquina = consulta[0][0]
 ip = geocoder.ip('me')
 inserirBanco(f"INSERT INTO Localizacao (acao, dataEhora, ipAdress, longitude, latitude, cidade, pais, fkMaquina) VALUES ('E', GETDATE(), '{ip.ip}', {ip.latlng[0]}, {ip.latlng[1]}, '{ip.city}', '{ip.country}', {idMaquina})")
 
-# Personalizando o terminal 
+# Personalizando o terminal
 ui = HSplit(
     VSplit(
         Text(
@@ -176,18 +176,18 @@ while True:
     for i, (core, value) in enumerate(zip(cores_tui, ps_cpu_percent)):
         core.value = value
         core.title = f'Core_{i} {value}%'
-    
+
     # Informações da máquina
     outros_tui = ui.items[0].items[0]
     outros_tui.text = ''
-    
+
     # boot = datetime.fromtimestamp(boot_time()).strftime("%Y-%m-%d %H:%M:%S")
     # outros_tui.text += f'\nHorário do boot: {boot}'
     outros_tui.text += f'Nome da máquina: {platform.node()}'
     outros_tui.text += f'\nUsuário: {users()[0].name}'
     outros_tui.text += f'\n\nSistema operacional: {platform.system()}'
     outros_tui.text += f'\n\nQuantidade de processos: {len(pids())}'
-    
+
     # Disco - Porcentagem de memória ocupada do disco
     disk_tui = ui.items[2].items[1].items[0]
     disk_tui.value = disk_usage("/").percent
