@@ -102,7 +102,7 @@ FROM Empresa E
 INNER JOIN Funcionario F ON F.fkEmpresa = idEmpresa
 INNER JOIN Maquina ON Maquina.fkFuncionario = idFuncionario
 INNER JOIN Componente C ON fkMaquina = idMaquina
-INNER JOIN Registro ON fkComponente = idComponente;
+INNER JOIN Registro ON fkComponente = idComponente AND R.fkMaquina = idMaquina;
 
 CREATE VIEW "vw_infoMaquina" AS
 SELECT idMaquina, nomeMaquina, sistemaOperacional, M.tipo AS 'tipoMaquina',

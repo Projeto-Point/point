@@ -79,14 +79,19 @@ while verificaLogin == False:
 
     login = input('Bem vindo ao Point! \nDigite o login do funcionário: ')
     senha = input('Digite a senha do funcionário: ')
-
-    consulta = consultarBanco(f"SELECT nome FROM Funcionario WHERE email = '{login}' and senha = '{senha}'")
+    
+    consulta = consultarBanco(f"SELECT fkFuncionario FROM Funcionario WHERE email = '{login}' and senha = '{senha}'")
     if(len(consulta) > 0):
         verificaLogin = True
 
 nome = platform.node()
 
-consulta = consultarBanco(f"SELECT nomeMaquina FROM Maquina WHERE nomeMaquina = '{nome}'")
+# Pegando id do funcionário
+consulta = consultarBanco(f"SELECT idFuncionario FROM Funcionario WHERE email = '{login}' and senha = '{senha}'")
+idFuncionario = consulta[0][0]
+
+# Verificando se a máquina existe
+consulta = consultarBanco(f"SELECT nomeMaquina FROM Maquina WHERE nomeMaquina = '{nome}' AND fkFuncionario = {idFuncionario}")
 
 if len(consulta) == 1:
     print("Esta máquina já está cadastrada")
@@ -95,12 +100,8 @@ else:
 
     memoriaTotal = bytes_para_giga(virtual_memory().total)
     discoTotal = bytes_para_giga(disk_usage("/").total)
-
-    consulta = consultarBanco(f"SELECT idFuncionario FROM Funcionario WHERE email = '{login}' and senha = '{senha}'")
-
-    fkFuncionario = consulta[0][0]
-
-    inserirBanco(f"INSERT INTO Maquina (sistemaOperacional, nomeMaquina, tipo, fkFuncionario) VALUES ('{platform.system()}', '{platform.node()}', 'Servidor', {fkFuncionario})")
+    
+    inserirBanco(f"INSERT INTO Maquina (sistemaOperacional, nomeMaquina, tipo, fkFuncionario) VALUES ('{platform.system()}', '{platform.node()}', 'Servidor', {idFuncionario})")
 
     consulta = consultarBanco(f"SELECT idMaquina FROM Maquina WHERE nomeMaquina = '{nome}'")
     idMaquina = consulta[0][0]
