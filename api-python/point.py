@@ -1,5 +1,3 @@
-## Esse código é da Camarada Agdas. Temos que refatorar o código python 
-import datetime
 import os
 import platform
 from time import sleep
@@ -8,6 +6,11 @@ from psutil import (virtual_memory, cpu_percent, disk_usage, users, pids, proces
 import pymssql
 import geocoder
 import pymysql
+import requests
+import psutil
+import json
+import email
+from datetime import datetime, timedelta
 
 # Credenciais da Azure
 serverSqlServer = 'bd-point.database.windows.net'
@@ -17,8 +20,8 @@ passwordSqlServer = '1cco#grupo1'
 
 # Credenciais do MySQL
 databaseMySql = 'bd_point'
-usernameMySql = 'root'
-passwordMySql = 'urubu100'
+usernameMySql = 'aluno'
+passwordMySql = 'sptech'
 
 def limpar():
     if os.name == 'posix':
@@ -67,6 +70,38 @@ def consultarBanco(comando):
             with conexaoMySql.cursor() as cursor:
                 cursor.execute(comando)
                 return cursor.fetchall()
+
+
+
+def reportarAlerta(mensagem, email, nome):
+
+    url = "https://api.pipefy.com/graphql"
+
+
+    now = datetime.now()
+
+    now = str(now)
+
+    dt = datetime.strptime(now, '%Y-%m-%d %H:%M:%S.%f')
+
+    somar_3_horas = dt + timedelta(hours=3)
+
+    dt_string = somar_3_horas.strftime("%d/%m/%Y %H:%M")
+
+    #teste card do pipefy com o formulário preenchido a mão. Em seguida eu vou conectar isso com o BD para pegar as infos direto da máquina do funcionário
+
+    payload = {"query": "mutation {createCard(input: {pipe_id: 302776879,title: \"New card\",fields_attributes:[{field_id: \"qual_o_assunto_do_seu_pedido\", field_value: \"%s\"},{field_id: \"email\", field_value: \"%s\"},{field_id: \"nome_do_funcion_rio\", field_value: \"%s\"}, {field_id: \"data_e_hora\", field_value: \"%s\"}]}) {card {title}}}" % (mensagem, email, nome, dt_string)}
+
+    headers = {
+        "accept": "application/json",
+        "content-type": "application/json",
+        "authorization": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJ1c2VyIjp7ImlkIjozMDIwODAyNDcsImVtYWlsIjoiYWxlc3NhbmRyYS5iYWNjaW5Ac3B0ZWNoLnNjaG9vbCIsImFwcGxpY2F0aW9uIjozMDAyMTEzMjR9fQ.TmKWl_6YGv1rP6NsBmLGSSSnmJ6_EStYHMDHN5Rmc7C1BSnsvdTlZSGq9YPpuehXdJ9qiaAfAARrt-G_11dn4g"
+    }
+
+    response = requests.post(url, json=payload, headers=headers)
+
+    print(response.text)
+
 
 def bytes_para_giga(value):
     return f'{value / 1024 / 1024 / 1024: .2f}'
@@ -194,17 +229,31 @@ while True:
     disk_tui.title = f'Disco {disk_tui.value}%'
 
     # Tempo real
-    agora = datetime.datetime.now()
+    agora = datetime.now()
     agora_string = agora.strftime("%A %d %B %y %I:%M")
 
-    agora_datetime = datetime.datetime.strptime(agora_string, "%A %d %B %y %I:%M")
+    agora_datetime = datetime.strptime(agora_string, "%A %d %B %y %I:%M")
+
+    porc_cpu = cpu_percent(interval=0.1)
+    porc_ram = virtual_memory().percent
+    porc_disco = disk_usage('/').percent
+    has_alerta = True
 
     # Banco de dados
-    inserirBanco(f"INSERT INTO Registro (valor, unidadeMedida, dataEhora, fkComponente, fkMaquina) VALUES ({cpu_percent(interval=0.1)}, '%', GETDATE(), 1, {idMaquina})")
 
-    inserirBanco(f"INSERT INTO Registro (valor, unidadeMedida, dataEhora, fkComponente, fkMaquina) VALUES ({virtual_memory().percent}, '%', GETDATE(), 2, {idMaquina})")
+    if porc_cpu > 80:
+        reportarAlerta(f"CPU está com {porc_cpu}%!", login, "Ivan")
+    if porc_ram > 85:
+        reportarAlerta(f"Ram está com {porc_ram}%!", login, "Ivan")
+    if porc_disco > 90 and has_alerta:
+        reportarAlerta(f"Disco está com {porc_disco}%!", login, "Ivan")
+        has_alerta = False
 
-    inserirBanco(f"INSERT INTO Registro (valor, unidadeMedida, dataEhora, fkComponente, fkMaquina) VALUES ({disk_usage('/').percent}, '%', GETDATE(), 3, {idMaquina})")
+    inserirBanco(f"INSERT INTO Registro (valor, unidadeMedida, dataEhora, fkComponente, fkMaquina) VALUES ({porc_cpu}, '%', GETDATE(), 1, {idMaquina})")
+
+    inserirBanco(f"INSERT INTO Registro (valor, unidadeMedida, dataEhora, fkComponente, fkMaquina) VALUES ({porc_ram}, '%', GETDATE(), 2, {idMaquina})")
+
+    inserirBanco(f"INSERT INTO Registro (valor, unidadeMedida, dataEhora, fkComponente, fkMaquina) VALUES ({porc_disco}, '%', GETDATE(), 3, {idMaquina})")
 
     #Mostrar os dados de 3 em 3 segundos
     try:

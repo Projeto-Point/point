@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+    <head>
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Análise de funcionário | Point</title>
+        <link rel="stylesheet" href="css/styleDash.css" />
+        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.4/moment.min.js"></script>
+    </head>
+    <body>
+        <header>
+            <nav id="menu">
+                <a href="maquinas.html" class="logo">
+                    <img src="../assets/imgs/Point.png" />
+                </a>
+                <hr />
+                <!-- <a href="alertas.html">
+                    <img src="../assets/imgs/alfinete 1.png">
+                    <span>Alertas</span>
+                </a> -->
+                <a href="funcionarios.html" class="img-nav">
+                    <img src="../assets/imgs/user.png" />
+                    <span>Funcionários</span>
+                </a>
+                <a href="maquinas.html" class="img-nav">
+                    <img src="./assets/imgs/imac.png" />
+                    <span>Máquinas</span>
+                </a>
+                <a href="configuracoes.html" class="img-nav">
+                    <img src="./assets/imgs/setting.png" />
+                    <span>Configurações</span>
+                </a>
+                <hr />
+                <a href="../index.html" class="img-nav">
+                    <img src="../assets/imgs/x.png" />
+                    <span>Sair</span>
+                </a>
+            </nav>
+            <nav id="menu-mobile"><img src="assets/dash/bars.svg"></nav>
+        </header>
+        <main>
+            <section class="top">
+                <div class="top-esq">
+                    <p class="titulo">Olá, <span id="nome_gerente"></span></p>
+                    <p class="subtitulo">17/10/2022</p>
+                </div>
+                <div class="top-meio">
+                    <select id="">
+                        <option value="">BR - São Paulo</option>
+                        <option value="">BR - Rio de Janeiro</option>
+                        <option value="">BR - Minas Gerais</option>
+                    </select>
+                </div>
+            </section>
+            <section class="dashboard-analise-funcionario">
+                <div class="box box-kpi kpi-horas">
+                    <h3>Média de horas ativas por dia:</h3>
+                    <p id="kpiHoras">7h 39min</p>
+                </div>
+                <div class="box box-kpi kpi-qtd-func">
+                    <h3>Quantidade de funcionários:</h3>
+                    <p id="kpiQtdFunc">12 funcionários</p>
+                </div>
+                <div class="grafico-movimentacao grafico box">
+                    <div class="header">
+                        <h3>Entrada/Saída</h3>
+                        <div class="dir">
+                            <label for="data-movimentacao-inicio" style="margin-right: 5px;">Início:</label>
+                            <input type="date" id="data-movimentacao-inicio" style="height: fit-content; padding: 5px; margin-right: 30px;" onchange="pegarDadosMovimentacao()">
+                            <label for="data-movimentacao-fim" style="margin-right: 5px;">Fim:</label>
+                            <input type="date" id="data-movimentacao-fim" style="height: fit-content; padding: 5px;" onchange="pegarDadosMovimentacao()">
+                        </div>
+                    </div>
+                    <div class="main-grafico">
+                        <canvas id="graficoMovimentacao"></canvas>
+                    </div>
+                </div>
+                <div class="grafico-processador grafico box">
+                    <div class="header">
+                        <h3>Processador</h3>
+                        <div class="dir">
+                            <div id="dia-cpu">
+                                <label for="data-cpu-dia" style="margin-right: 5px;">Dia:</label>
+                                <input type="date" id="data-cpu-dia" style="height: fit-content; padding: 5px; margin-right: 30px;" onchange="pegarDadosCpu()">
+                            </div>
+                            <div id="periodo-cpu" >
+                                <label for="data-cpu-inicio" style="margin-right: 5px;">Início:</label>
+                                <input type="date" id="data-cpu-inicio" style="height: fit-content; padding: 5px; margin-right: 30px;" onchange="pegarDadosCpu()">
+                                <label for="data-cpu-fim" style="margin-right: 5px;">Fim:</label>
+                                <input type="date" id="data-cpu-fim" style="height: fit-content; padding: 5px; margin-right: 30px;" onchange="pegarDadosCpu()">
+                            </div>
+                            <select id="tempo-cpu" onchange="trocarSelecao(this.value, 'cpu'); pegarDadosCpu();">
+                                <option value="dia">Dia</option>
+                                <option value="periodo">Período</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="main-grafico">
+                        <canvas id="graficoCPU"></canvas>
+                    </div>
+                </div>
+                <div class="grafico-ram grafico box">
+                    <div class="header">
+                        <h3>Memória RAM</h3>
+                        <div class="dir">
+                            <div id="dia-ram">
+                                <label for="data-ram-dia" style="margin-right: 5px;">Dia:</label>
+                                <input type="date" id="data-ram-dia" style="height: fit-content; padding: 5px; margin-right: 30px;" onchange="pegarDadosRam()">
+                            </div>
+                            <div id="periodo-ram" >
+                                <label for="data-ram-inicio" style="margin-right: 5px;">Início:</label>
+                                <input type="date" id="data-ram-inicio" style="height: fit-content; padding: 5px; margin-right: 30px;" onchange="pegarDadosRam()">
+                                <label for="data-ram-fim" style="margin-right: 5px;">Fim:</label>
+                                <input type="date" id="data-ram-fim" style="height: fit-content; padding: 5px; margin-right: 30px;" onchange="pegarDadosRam()">
+                            </div>
+                            <select id="tempo-ram" onchange="trocarSelecao(this.value, 'ram'); pegarDadosRam();">
+                                <option value="dia">Dia</option>
+                                <option value="periodo">Período</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="main-grafico">
+                        <canvas id="graficoRAM"></canvas>
+                    </div>
+                </div>
+                <div class="box info-funcionario" id="sobreFuncionario">
+                    <h3>Sobre o funcionário</h3>
+                    <hr />
+                </div>
+                <div class="box info-maquina" id="sobreMaquina">
+                    <h3>Outros funcionários</h3>
+                    <hr />
+                </div>
+            </section>
+        </main>
+    </body>
+</html>
+
+<script>
+    var chartMovimentacao = null;
+    var chartCpu = null;
+    var chartRam = null;
+
+    window.onload = () => {
+        nome_gerente.innerHTML = sessionStorage.NOME_USUARIO;
+
+        document.getElementById("data-movimentacao-inicio").value = moment().subtract(1, 'week').format('YYYY-MM-DD');
+        document.getElementById("data-movimentacao-fim").value = moment().format('YYYY-MM-DD');
+
+        document.getElementById("data-ram-dia").value = moment().format('YYYY-MM-DD');
+        document.getElementById("data-cpu-inicio").value = moment().subtract(1, 'week').format('YYYY-MM-DD');
+        document.getElementById("data-cpu-fim").value = moment().format('YYYY-MM-DD');
+
+        document.getElementById("data-cpu-dia").value = moment().format('YYYY-MM-DD');
+        document.getElementById("data-ram-inicio").value = moment().subtract(1, 'week').format('YYYY-MM-DD');
+        document.getElementById("data-ram-fim").value = moment().format('YYYY-MM-DD');
+
+        trocarSelecao(document.getElementById('tempo-cpu').value, "cpu");
+        trocarSelecao(document.getElementById('tempo-cpu').value, "ram");
+
+        pegarDadosMovimentacao();
+        pegarDadosCpu();
+        pegarDadosRam();
+    };
+
+    function zeroEsquerda(numero, tamanho){
+        numero = (numero).toString();
+
+        if((numero).toString().length < tamanho){
+            for (let index = tamanho - (numero.length % tamanho); index > 0; index--) {
+                numero = [numero.slice(0, 0), '0', numero.slice(0)].join('');
+            }
+        }
+
+        return numero;
+    }
+
+    function formatarHorario(horario){
+        return (horario).substring(0, 2) + ":" + (horario).substring(2, 4)
+    }
+
+    function trocarSelecao(valor, tipoGrafico){
+        if(valor == "dia"){
+            document.getElementById(`periodo-${tipoGrafico}`).style.display = "none";
+            document.getElementById(`dia-${tipoGrafico}`).style.display = "block";
+        }
+        else{
+            document.getElementById(`periodo-${tipoGrafico}`).style.display = "block";
+            document.getElementById(`dia-${tipoGrafico}`).style.display = "none";
+        }
+    }
+
+    function pegarDadosMovimentacao(){
+        const periodoInicio = moment(document.getElementById('data-movimentacao-inicio').value).format('YYYY-MM-DD');
+        const periodoFim = moment(document.getElementById('data-movimentacao-fim').value).format('YYYY-MM-DD');
+        fetch(`/analiseAgda/pegarMovimentacao?periodoInicio=${periodoInicio}&periodoFim=${periodoFim}&idFuncionario=${7}&cidade=null`).then((res) => {
+            if(res.ok){
+                res.json().then((resposta) => {
+                    graficoMovimentacao(resposta);
+                });
+            }
+        });
+    }
+
+    function graficoMovimentacao(resposta){
+        if(chartMovimentacao != null){
+            chartMovimentacao.destroy();
+        }
+
+        let labels = [];
+
+        const data = {
+            labels: labels,
+            datasets: [
+                {
+                    label: 'Entrada',
+                    backgroundColor: 'rgb(255, 99, 132)',
+                    borderColor: 'rgb(255, 99, 132)',
+                    data: [],
+                },
+                {
+                    label: 'Saída',
+                    backgroundColor: 'rgb(0, 255, 0)',
+                    borderColor: 'rgb(0, 255, 0)',
+                    data: [],
+                },
+            ]
+        };
+
+        for (let index = 0; index < resposta.length; index++) {
+            if(! labels.includes(moment(resposta[index]['dataEhora']).format('DD/MM'))){
+                labels.push(moment(resposta[index]['dataEhora']).format('DD/MM'));
+            }
+
+            if(resposta[index]['acao'] == "E"){
+                data.datasets[0].data.push(moment(resposta[index]['dataEhora']).format('HHmm'));
+            }
+            else{
+                data.datasets[1].data.push(moment(resposta[index]['dataEhora']).format('HHmm'));
+            }
+        }
+
+        const config = {
+            type: 'line',
+            data: data,
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                let hora = zeroEsquerda(context.raw);
+
+                                return formatarHorario(hora);
+                            }
+                        }
+                    }
+                },
+                scales: {
+                    y: {
+                        ticks: {
+                            callback: function(value, index, ticks) {
+                                let hora = zeroEsquerda(value);
+
+                                return formatarHorario(hora);
+                            }
+                        }
+                    }
+                }
+            }
+        };
+
+        chartMovimentacao = new Chart(document.getElementById('graficoMovimentacao'), config);
+    }
+
+    function pegarDadosCpu(){
+        let periodoInicio;
+        let periodoFim;
+
+        if(document.getElementById('tempo-cpu').value == "periodo"){
+            periodoInicio = moment(document.getElementById('data-cpu-inicio').value).format('YYYY-MM-DD');
+            periodoFim = moment(document.getElementById('data-cpu-fim').value).format('YYYY-MM-DD');    
+        }
+        else{
+            periodoInicio = moment(document.getElementById('data-cpu-dia').value).format('YYYY-MM-DD');
+            periodoFim = moment(document.getElementById('data-cpu-dia').value).add(1, 'days').format('YYYY-MM-DD');
+        }
+
+        fetch(`/analiseAgda/pegarCpu?periodoInicio=${periodoInicio}&periodoFim=${periodoFim}&idFuncionario=${7}&cidade=null`).then((res) => {
+            if(res.ok){
+                res.json().then((resposta) => {
+                    graficoCpu(resposta);
+                });
+            }
+        });
+    }
+
+    function graficoCpu(resposta){
+        if(chartCpu != null){
+            chartCpu.destroy();
+        }
+
+        let labels = [];
+
+        const data = {
+            labels: labels,
+            datasets: [
+                {
+                    label: 'Média CPU (%)',
+                    backgroundColor: 'rgb(255, 99, 132)',
+                    borderColor: 'rgb(255, 99, 132)',
+                    data: [],
+                },
+            ]
+        };
+
+        for (let index = 0; index < resposta.length; index++) {
+            labels.push(formatarHorario(zeroEsquerda(resposta[index]['hora'] + "000", 2)));
+            data.datasets[0].data.push(resposta[index]['valor']);
+        }
+
+        const config = {
+            type: 'line',
+            data: data,
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+            }
+        };
+
+        if(resposta.length == 1){
+            config.type = "bar";
+        }
+
+        chartCpu = new Chart(document.getElementById('graficoCPU'), config);
+    }
+    
+    function pegarDadosRam(){
+        let periodoInicio;
+        let periodoFim;
+
+        if(document.getElementById('tempo-ram').value == "periodo"){
+            periodoInicio = moment(document.getElementById('data-ram-inicio').value).format('YYYY-MM-DD');
+            periodoFim = moment(document.getElementById('data-ram-fim').value).format('YYYY-MM-DD');    
+        }
+        else{
+            periodoInicio = moment(document.getElementById('data-ram-dia').value).format('YYYY-MM-DD');
+            periodoFim = moment(document.getElementById('data-ram-dia').value).add(1, 'days').format('YYYY-MM-DD');
+        }
+
+        fetch(`/analiseAgda/pegarRam?periodoInicio=${periodoInicio}&periodoFim=${periodoFim}&idFuncionario=${7}&cidade=null`).then((res) => {
+            if(res.ok){
+                res.json().then((resposta) => {
+                    graficoRam(resposta);
+                });
+            }
+        });
+    }
+
+    function graficoRam(resposta){
+        if(chartRam != null){
+            chartRam.destroy();
+        }
+
+        let labels = [];
+
+        const data = {
+            labels: labels,
+            datasets: [
+                {
+                    label: 'Média RAM (%)',
+                    backgroundColor: 'rgb(255, 99, 132)',
+                    borderColor: 'rgb(255, 99, 132)',
+                    data: [],
+                },
+            ]
+        };
+
+        for (let index = 0; index < resposta.length; index++) {
+            labels.push(formatarHorario(zeroEsquerda(resposta[index]['hora'] + "000", 2)));
+            data.datasets[0].data.push(resposta[index]['valor']);
+        }
+
+        const config = {
+            type: 'line',
+            data: data,
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+            }
+        };
+
+        if(resposta.length == 1){
+            config.type = "bar";
+        }
+
+        chartRam = new Chart(document.getElementById('graficoRAM'), config);
+    }
+</script>
