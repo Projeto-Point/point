@@ -143,7 +143,7 @@
         <hr />
       </div>
       <div class="box info-maquina" id="sobreMaquina">
-        <h3>Sobre a máquina</h3>
+        <h3>Sobre a Instância</h3>
         <hr />
       </div>
     </section>
@@ -154,7 +154,7 @@
 <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
 <script src="../script.js"></script>
 <script>
-  nomeGerente.innerHTML = sessionStorage.NOME_USUARIO;
+   nomeGerente.innerHTML = sessionStorage.NOME_USUARIO;
   nome_gerente.innerHTML = sessionStorage.NOME_USUARIO;
 
   const parametrosString = window.location.search;
@@ -164,17 +164,8 @@
   fetch(`/medidas/pegarRegistroMaquina?idMaquina=${idMaquina}`).then((res) => {
     if (res.ok) {
       res.json().then((resposta) => {
-        document.getElementById(
-          "sobreMaquina"
-        ).innerHTML += `<p><b>Sistema operacional: </b><span>${resposta[0].sistemaOperacional}</span></p>`;
-        document.getElementById(
-          "sobreMaquina"
-        ).innerHTML += `<p><b>Nome da máquina: </b><span>${resposta[0].nomeMaquina}</span></p>`;
-        document.getElementById(
-          "sobreMaquina"
-        ).innerHTML += `<p><b>Tipo da máquina: </b><span>${resposta[0].tipoMaquina}</span></p>`;
+        
 
-        document.getElementById("sobreMaquina").innerHTML += `<hr>`;
 
         for (let index = 0; index < resposta.length; index++) {
           if (resposta[index].atributo == "CORE") {
@@ -209,7 +200,7 @@
   );
 
   fetch(
-    `/maquinas/pegarKpis?idMaquina=1&dataInicio=${moment()
+    `/maquinas/pegarKpis?idMaquina=${idMaquina}&dataInicio=${moment()
       .subtract(30, "days")
       .format("YYYY-MM-DD")}&dataFinal=${moment().format("YYYY-MM-DD")}`
   )
@@ -226,20 +217,20 @@
             qtdDias > 1
               ? qtdDias + " dias e "
               : qtdDias == 1
-                ? qtdDias + " dia e "
-                : "";
+              ? qtdDias + " dia e "
+              : "";
           texto +=
             qtdHoras > 1
               ? qtdHoras + " horas e "
               : qtdHoras == 1
-                ? qtdHoras + " hora e "
-                : "";
+              ? qtdHoras + " hora e "
+              : "";
           texto +=
             qtdMinutos > 1
               ? qtdMinutos + " minutos e "
               : qtdMinutos == 1
-                ? qtdMinutos + " minuto e "
-                : "";
+              ? qtdMinutos + " minuto e "
+              : "";
 
           kpiHoras.innerHTML = texto.substring(0, texto.length - 3);
           kpiCPU.innerHTML = resposta[0].mediaProcessador + "%";
@@ -252,38 +243,12 @@
       console.log(erro);
     });
 
-  pegarRegistros(
-    "graficoCPU",
-    "CPU",
-    1,
-    moment().subtract(30, "days").format("YYYY-MM-DD"),
-    moment().format("YYYY-MM-DD")
-  );
-  pegarRegistros(
-    "graficoRAM",
-    "RAM",
-    1,
-    moment().subtract(30, "days").format("YYYY-MM-DD"),
-    moment().format("YYYY-MM-DD")
-  );
-  pegarRegistros(
-    "graficoDisco",
-    "DISCO",
-    1,
-    moment().subtract(30, "days").format("YYYY-MM-DD"),
-    moment().format("YYYY-MM-DD")
-  );
+  pegarRegistros("graficoCPU", "CPU", idMaquina, moment().subtract(30, "days").format("YYYY-MM-DD"), moment().format("YYYY-MM-DD"));
+  pegarRegistros("graficoRAM", "RAM", idMaquina, moment().subtract(30, "days").format("YYYY-MM-DD"), moment().format("YYYY-MM-DD"));
+  pegarRegistros("graficoDisco", "DISCO", idMaquina, moment().subtract(30, "days").format("YYYY-MM-DD"), moment().format("YYYY-MM-DD"));
 
-  function pegarRegistros(
-    idGrafico,
-    tipoComponente,
-    idMaquina,
-    dataInicio,
-    dataFinal
-  ) {
-    fetch(
-      `/maquinas/analiseComponente?tipoComponente=${tipoComponente}&idMaquina=${idMaquina}&dataInicio=${dataInicio}&dataFinal=${dataFinal}`
-    )
+  function pegarRegistros(idGrafico, tipoComponente, idMaquina, dataInicio, dataFinal) {
+    fetch(`/maquinas/analiseComponente?tipoComponente=${tipoComponente}&idMaquina=${idMaquina}&dataInicio=${dataInicio}&dataFinal=${dataFinal}`)
       .then((res) => {
         if (res.ok) {
           res.json().then((resposta) => {
@@ -367,6 +332,30 @@
 
        
         console.log(resposta);
+
+        document.getElementById(
+          "sobreMaquina"
+        ).innerHTML += `<p><b>Sistema operacional: </b><span>${resposta[0].sistemaOperacional}</span></p>`;
+        document.getElementById(
+          "sobreMaquina"
+        ).innerHTML += `<p><b>Tipo da instância: </b><span>${resposta[0].nomeInstancia}</span></p>`;
+        document.getElementById(
+          "sobreMaquina"
+        ).innerHTML += `<p><b>Custo por hora: </b><span>$${resposta[0].preco.toFixed(4)} USD</span></p>`;
+        document.getElementById(
+          "sobreMaquina"
+        ).innerHTML += `<p><b>Performance em rede: </b><span>${resposta[0].performaceRede}</span></p>`;
+        document.getElementById(
+          "sobreMaquina"
+        ).innerHTML += `<p><b>Armazenamento: </b><span>${resposta[0].tipoArmazenamento}</span></p>`;
+        document.getElementById(
+          "sobreMaquina"
+        ).innerHTML += `<p><b>Alterar instância: </b><span class="top-esq"><a href="https://us-east-1.console.aws.amazon.com/console/home?region=us-east-1#" class="logo">teste
+        </a></span></p>`;
+
+
+        
+
 
        
       });
