@@ -104,6 +104,11 @@ def reportarAlerta(mensagem, email, nome):
 def bytes_para_giga(value):
     return f'{value / 1024 / 1024 / 1024: .2f}'
 
+def has_hora_passada(hora_atual, hora_ultima_notificacao):
+    # 3 é a quantidade de horas que precisa passar para mandar a notificacao    
+   return hora_atual >= hora_ultima_notificacao + 1
+      
+
 verificaLogin = False
 verificarCadastro = False
 idFuncionario = 0
@@ -114,9 +119,10 @@ while verificaLogin == False:
     login = input('Bem vindo ao Point! \nDigite o login do funcionário: ')
     senha = input('Digite a senha do funcionário: ')
     
-    consulta = consultarBanco(f"SELECT idFuncionario FROM Funcionario WHERE email = '{login}' and senha = '{senha}'")
+    consulta = consultarBanco(f"SELECT idFuncionario, nome FROM Funcionario WHERE email = '{login}' and senha = '{senha}'")
     if(len(consulta) > 0):
         idFuncionario = consulta[0][0]
+        nomeFuncionario = consulta[0][1]
         verificaLogin = True
 
 nome = platform.node()
@@ -188,6 +194,9 @@ ui = HSplit(
     ),
 )
 
+
+arr_componentes_alertas = []
+is_primeira_hora = True
 while True:
 #     #Memória RAM
     mem_tui = ui.items[2].items[0]
@@ -234,17 +243,27 @@ while True:
 
     porc_cpu = cpu_percent(interval=0.1)
     porc_ram = virtual_memory().percent
-    porc_disco = disk_usage('/').percent
-    has_alerta = True
-
-    # Banco de dados
-    # to-do 
-    if porc_cpu > 80:
-        reportarAlerta(f"CPU está com {porc_cpu}%!", login, "Ivan")
-    if porc_ram > 85:
-        reportarAlerta(f"Ram está com {porc_ram}%!", login, "Ivan")
-    if porc_disco > 90 and has_alerta:
-        reportarAlerta(f"Disco está com {porc_disco}%!", login, "Ivan")
+    porc_disco = disk_usage('/').percent   
+  
+        
+    if porc_cpu > 80 and 'CPU' not in arr_componentes_alertas:
+        reportarAlerta(f"CPU está com {porc_cpu}%!", login, nomeFuncionario)
+        arr_componentes_alertas.append('CPU')
+    if porc_ram > 85 and 'RAM' not in arr_componentes_alertas:
+        reportarAlerta(f"Ram está com {porc_ram}%!", login, nomeFuncionario)
+        arr_componentes_alertas.append('RAM')
+    if porc_disco > 90 and 'Disco' not in arr_componentes_alertas:
+        reportarAlerta(f"Disco está com {porc_disco}%!", login, nomeFuncionario)
+        arr_componentes_alertas.append('Disco')
+        
+    
+    if is_primeira_hora:
+        ultima_hora = agora
+        is_primeira_hora = False
+        
+    if has_hora_passada(agora.hour, ultima_hora.hour):
+        arr_componentes_alertas.clear()
+        ultima_hora = agora
 
     inserirBanco(f"INSERT INTO Registro (valor, unidadeMedida, dataEhora, fkComponente, fkMaquina) VALUES ({porc_cpu}, '%', GETDATE(), 1, {idMaquina})")
 
