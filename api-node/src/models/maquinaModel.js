@@ -28,6 +28,17 @@ function analiseComponente(tipoComponente, idMaquina, dataInicio, dataFinal){
     return database.executar(instrucaoSql);
 }
 
+function pegarTempo(fkMaquina, dataInicio, dataFinal){
+    instrucaoSql = `SELECT acao,
+        CAST(dataEhora AS DATE) AS 'dia',
+        CAST(AVG(CAST(dataEhora AS FLOAT)) AS DATETIME) AS 'horario'
+    FROM Localizacao
+    WHERE fkMaquina = ${fkMaquina} AND CAST(dataEhora AS DATE) BETWEEN '${dataInicio}' AND '${dataFinal}'
+    GROUP BY acao, CAST(dataEhora AS DATE);`;
+    console.log(instrucaoSql);
+    return database.executar(instrucaoSql);
+}
+
 function pegarKpis(idMaquina, dataInicio, dataFinal){
     instrucaoSql = `SELECT COUNT(*) / 3 AS 'qtdMinutos',
         (SELECT ROUND(AVG(valor), 2) FROM vw_registros WHERE tipo = 'CPU' AND idMaquina = ${idMaquina} AND CAST(dataEhora AS DATE) BETWEEN '${dataInicio}' AND '${dataFinal}') AS 'mediaProcessador',
@@ -47,6 +58,7 @@ module.exports = {
     listar,
     listarAlertas,
     analiseComponente,
+    pegarTempo,
     pegarKpis,
     verificarAtividade,
 }

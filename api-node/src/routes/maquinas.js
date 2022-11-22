@@ -15,6 +15,10 @@ router.get("/analiseComponente", function(req, res){
     maquinaController.analiseComponente(req, res);
 });
 
+router.get("/pegarTempo", function(req, res){
+    maquinaController.pegarTempo(req, res);
+});
+
 router.get("/pegarKpis", function(req, res){
     maquinaController.pegarKpis(req, res);
 });

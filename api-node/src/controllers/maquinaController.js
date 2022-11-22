@@ -57,6 +57,25 @@ function analiseComponente(req, res){
     });
 }
 
+function pegarTempo(req, res){
+    const idMaquina = req.query.idMaquina;
+    const dataInicio = req.query.dataInicio;
+    const dataFinal = req.query.dataFinal;
+    maquinaModel.pegarTempo(idMaquina, dataInicio, dataFinal)
+    .then((resultado) => {
+        if(resultado.length > 0){
+            res.status(200).json(resultado);
+        }
+        else{
+            res.status(204).send("Nenhum registro encontrado!");
+        }
+    })
+    .catch((erro) => {
+        console.log(erro);
+        res.status(500).json(erro.sqlMessage);
+    });
+}
+
 function pegarKpis(req, res){
     const idMaquina = req.query.idMaquina;
     const dataInicio = req.query.dataInicio;
@@ -97,6 +116,7 @@ module.exports = {
     listar,
     listarAlertas,
     analiseComponente,
+    pegarTempo,
     pegarKpis,
     verificarAtividade,
 }
