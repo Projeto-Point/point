@@ -42,7 +42,9 @@ function analiseComponente(req, res){
     const idMaquina = req.query.idMaquina;
     const dataInicio = req.query.dataInicio;
     const dataFinal = req.query.dataFinal;
-    maquinaModel.analiseComponente(tipoComponente, idMaquina, dataInicio, dataFinal)
+    const tipoVisualizacao = req.query.tipoVisualizacao;
+
+    maquinaModel.analiseComponente(tipoComponente, idMaquina, dataInicio, dataFinal, tipoVisualizacao)
     .then((resultado) => {
         if(resultado.length > 0){
             res.status(200).json(resultado);
