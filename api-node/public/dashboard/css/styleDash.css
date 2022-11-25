@@ -537,6 +537,78 @@ main section.dashboard-analise .grafico .header select {
   height: 30px;
   padding-left: 10px;
 }
+main section.dashboard-analise section.dashboard-analise-funcionario {
+  margin-top: 30px;
+  display: grid;
+  gap: 30px;
+  grid-template-columns: 1fr 1fr 1fr;
+  grid-template-rows: 1fr repeat(3, 250px);
+  grid-template-areas: "k1 k2 i1" "g1 g1 i1" "g2 g2 i2" "g3 g3 i2";
+}
+main section.dashboard-analise section.dashboard-analise-funcionario .kpi-horas {
+  grid-area: k1;
+}
+main section.dashboard-analise section.dashboard-analise-funcionario .kpi-qtd-func {
+  grid-area: k2;
+}
+main section.dashboard-analise section.dashboard-analise-funcionario .grafico-movimentacao {
+  grid-area: g1;
+}
+main section.dashboard-analise section.dashboard-analise-funcionario .grafico-processador {
+  grid-area: g2;
+}
+main section.dashboard-analise section.dashboard-analise-funcionario .grafico-ram {
+  grid-area: g3;
+}
+main section.dashboard-analise section.dashboard-analise-funcionario .info-funcionario {
+  grid-area: i1;
+}
+main section.dashboard-analise section.dashboard-analise-funcionario .info-maquina {
+  grid-area: i2;
+}
+main section.dashboard-analise section.dashboard-analise-funcionario .box {
+  padding: 15px;
+  display: block;
+  font-size: 20px;
+}
+main section.dashboard-analise section.dashboard-analise-funcionario .box hr {
+  margin: 10px 0;
+  opacity: 0.4;
+}
+main section.dashboard-analise section.dashboard-analise-funcionario .box-kpi h1 {
+  text-align: center;
+  font-size: 3rem;
+  margin: 15px 0;
+}
+main section.dashboard-analise section.dashboard-analise-funcionario .grafico .header {
+  display: flex;
+  justify-content: space-between;
+  padding: 7px;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.3);
+}
+main section.dashboard-analise section.dashboard-analise-funcionario .grafico .header .dir {
+  display: flex;
+  align-items: center;
+}
+main section.dashboard-analise section.dashboard-analise-funcionario .grafico .header .dir .legenda {
+  width: 45px;
+  height: 25px;
+  border-radius: 5px;
+}
+main section.dashboard-analise section.dashboard-analise-funcionario .grafico .header .dir span {
+  margin-right: 30px;
+  margin-left: 7px;
+}
+main section.dashboard-analise section.dashboard-analise-funcionario .grafico .header .dir .alto {
+  background: #D0342C;
+}
+main section.dashboard-analise section.dashboard-analise-funcionario .grafico .header .dir .normal {
+  background: #00CA43;
+}
+main section.dashboard-analise section.dashboard-analise-funcionario .grafico .header select {
+  padding-left: 10px;
+  height: 30px;
+}
 main section.dashboard {
   height: 100%;
   margin-top: 30px;
@@ -621,6 +693,78 @@ main section.dashboard .grafico .container-info .part p, main section.dashboard 
 }
 main section.dashboard .func p {
   margin-top: 1%;
+}
+main section.dashboard-analise-funcionario {
+  margin-top: 30px;
+  display: grid;
+  gap: 30px;
+  grid-template-columns: 1fr 1fr 1fr;
+  grid-template-rows: 1fr repeat(3, 250px);
+  grid-template-areas: "k1 k2 i1" "g1 g1 i1" "g2 g2 i2" "g3 g3 i2";
+}
+main section.dashboard-analise-funcionario .kpi-horas {
+  grid-area: k1;
+}
+main section.dashboard-analise-funcionario .kpi-qtd-func {
+  grid-area: k2;
+}
+main section.dashboard-analise-funcionario .grafico-movimentacao {
+  grid-area: g1;
+}
+main section.dashboard-analise-funcionario .grafico-processador {
+  grid-area: g2;
+}
+main section.dashboard-analise-funcionario .grafico-ram {
+  grid-area: g3;
+}
+main section.dashboard-analise-funcionario .info-funcionario {
+  grid-area: i1;
+}
+main section.dashboard-analise-funcionario .info-maquina {
+  grid-area: i2;
+}
+main section.dashboard-analise-funcionario .box {
+  padding: 15px;
+  display: block;
+  font-size: 20px;
+}
+main section.dashboard-analise-funcionario .box hr {
+  margin: 10px 0;
+  opacity: 0.4;
+}
+main section.dashboard-analise-funcionario .box-kpi h1 {
+  text-align: center;
+  font-size: 3rem;
+  margin: 15px 0;
+}
+main section.dashboard-analise-funcionario .grafico .header {
+  display: flex;
+  justify-content: space-between;
+  padding: 7px;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.3);
+}
+main section.dashboard-analise-funcionario .grafico .header .dir {
+  display: flex;
+  align-items: center;
+}
+main section.dashboard-analise-funcionario .grafico .header .dir .legenda {
+  width: 45px;
+  height: 25px;
+  border-radius: 5px;
+}
+main section.dashboard-analise-funcionario .grafico .header .dir span {
+  margin-right: 30px;
+  margin-left: 7px;
+}
+main section.dashboard-analise-funcionario .grafico .header .dir .alto {
+  background: #D0342C;
+}
+main section.dashboard-analise-funcionario .grafico .header .dir .normal {
+  background: #00CA43;
+}
+main section.dashboard-analise-funcionario .grafico .header select {
+  height: 30px;
+  padding-left: 10px;
 }
 
 @media screen and (max-width: 1400px) {

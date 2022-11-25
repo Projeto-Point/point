@@ -57,11 +57,11 @@
             <section class="dashboard-analise-funcionario">
                 <div class="box box-kpi kpi-horas">
                     <h3>Média de horas ativas por dia:</h3>
-                    <p id="kpiHoras">7h 39min</p>
+                    <p id="kpiHoras"></p>
                 </div>
                 <div class="box box-kpi kpi-qtd-func">
                     <h3>Quantidade de funcionários:</h3>
-                    <p id="kpiQtdFunc">12 funcionários</p>
+                    <p id="kpiQtdFunc"></p>
                 </div>
                 <div class="grafico-movimentacao grafico box">
                     <div class="header">
@@ -129,9 +129,11 @@
                     <h3>Sobre o funcionário</h3>
                     <hr />
                 </div>
-                <div class="box info-maquina" id="sobreMaquina">
+                <div class="box info-maquina">
                     <h3>Outros funcionários</h3>
                     <hr />
+                    <div id="outros-funcionarios">
+                    </div>
                 </div>
             </section>
         </main>
@@ -142,6 +144,11 @@
     var chartMovimentacao = null;
     var chartCpu = null;
     var chartRam = null;
+
+    const parametrosString = window.location.search;
+    const parametros = new URLSearchParams(parametrosString);
+    const cidade = parametros.get("cidade");
+    const idFuncionario = Number(parametros.get("idFuncionario"));
 
     window.onload = () => {
         nome_gerente.innerHTML = sessionStorage.NOME_USUARIO;
@@ -163,6 +170,8 @@
         pegarDadosMovimentacao();
         pegarDadosCpu();
         pegarDadosRam();
+
+        pegarFuncionarios();
     };
 
     function zeroEsquerda(numero, tamanho){
@@ -195,7 +204,7 @@
     function pegarDadosMovimentacao(){
         const periodoInicio = moment(document.getElementById('data-movimentacao-inicio').value).format('YYYY-MM-DD');
         const periodoFim = moment(document.getElementById('data-movimentacao-fim').value).format('YYYY-MM-DD');
-        fetch(`/analiseAgda/pegarMovimentacao?periodoInicio=${periodoInicio}&periodoFim=${periodoFim}&idFuncionario=${7}&cidade=null`).then((res) => {
+        fetch(`/analiseAgda/pegarMovimentacao?periodoInicio=${periodoInicio}&periodoFim=${periodoFim}&idFuncionario=${idFuncionario}&cidade=${cidade}`).then((res) => {
             if(res.ok){
                 res.json().then((resposta) => {
                     graficoMovimentacao(resposta);
@@ -289,7 +298,7 @@
             periodoFim = moment(document.getElementById('data-cpu-dia').value).add(1, 'days').format('YYYY-MM-DD');
         }
 
-        fetch(`/analiseAgda/pegarCpu?periodoInicio=${periodoInicio}&periodoFim=${periodoFim}&idFuncionario=${7}&cidade=null`).then((res) => {
+        fetch(`/analiseAgda/pegarCpu?periodoInicio=${periodoInicio}&periodoFim=${periodoFim}&idFuncionario=${idFuncionario}&cidade=${cidade}`).then((res) => {
             if(res.ok){
                 res.json().then((resposta) => {
                     graficoCpu(resposta);
@@ -351,7 +360,7 @@
             periodoFim = moment(document.getElementById('data-ram-dia').value).add(1, 'days').format('YYYY-MM-DD');
         }
 
-        fetch(`/analiseAgda/pegarRam?periodoInicio=${periodoInicio}&periodoFim=${periodoFim}&idFuncionario=${7}&cidade=null`).then((res) => {
+        fetch(`/analiseAgda/pegarRam?periodoInicio=${periodoInicio}&periodoFim=${periodoFim}&idFuncionario=${idFuncionario}&cidade=${cidade}`).then((res) => {
             if(res.ok){
                 res.json().then((resposta) => {
                     graficoRam(resposta);
@@ -398,5 +407,20 @@
         }
 
         chartRam = new Chart(document.getElementById('graficoRAM'), config);
+    }
+
+    function pegarFuncionarios(){
+        fetch(`/analiseAgda/pegarFuncionarios?idEmpresa=${sessionStorage['ID_EMPRESA']}&cidade=${cidade}`).then((res) => {
+            if(res.ok){
+                res.json().then((resposta) => {
+                    console.log(resposta);
+                    kpiQtdFunc.innerHTML = resposta.length;
+
+                    for (let index = 0; index < resposta.length; index++) {
+                        document.getElementById("outros-funcionarios").innerHTML += `<a href="analisar-funcionarios.html?idFuncionario=${resposta[index].idFuncionario}&cidade=${cidade}">${resposta[index].nome}</a>`;
+                    }
+                });
+            }
+        });
     }
 </script>

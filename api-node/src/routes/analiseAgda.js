@@ -15,4 +15,8 @@ router.get("/pegarRam", function (req, res) {
     agdaController.pegarRam(req, res);
 });
 
+router.get("/pegarFuncionarios", function(req, res) {
+    agdaController.pegarFuncionarios(req, res);
+});
+
 module.exports = router;

@@ -575,6 +575,86 @@ main{
                 }
             }
         }
+        section.dashboard-analise-funcionario{
+            margin-top: 30px;
+            display: grid;
+            gap: 30px;
+            grid-template-columns: 1fr 1fr 1fr;
+            grid-template-rows: 1fr repeat(3, 250px);
+            grid-template-areas: "k1 k2 i1"
+                                 "g1 g1 i1"
+                                 "g2 g2 i2"
+                                 "g3 g3 i2";
+                                 
+            .kpi-horas{
+                grid-area: k1;
+            }
+            .kpi-qtd-func{
+                grid-area: k2;
+            }
+            .grafico-movimentacao{
+                grid-area: g1;
+            }
+            .grafico-processador{
+                grid-area: g2;
+            }
+            .grafico-ram{
+                grid-area: g3;
+            }
+            .info-funcionario{
+                grid-area: i1;
+            }
+            .info-maquina{
+                grid-area: i2;
+            }
+            .box{
+                padding: 15px;
+                display: block;
+                font-size: 20px;
+                hr{
+                    margin: 10px 0;
+                    opacity: 0.4;
+                }
+            }
+            .box-kpi{
+                h1{
+                    text-align: center;
+                    font-size: 3rem;
+                    margin: 15px 0;
+                }
+            }
+            .grafico{
+                .header{
+                    display: flex;
+                    justify-content: space-between;
+                    padding: 7px;
+                    border-bottom: 1px solid rgba(0, 0, 0, 0.3);
+                    .dir{
+                        display: flex;
+                        align-items: center;
+                        .legenda{
+                            width: 45px;
+                            height: 25px;
+                            border-radius: 5px;
+                        }
+                        span{
+                            margin-right: 30px;
+                            margin-left: 7px;
+                        }
+                        .alto{
+                            background: #D0342C;
+                        }
+                        .normal{
+                            background: #00CA43;
+                        }
+                    }
+                    select{
+                        padding-left: 10px;
+                        height: 30px;
+                    }
+                }
+            }
+        }
     }
     section.dashboard{
         height: 100%;
@@ -671,6 +751,86 @@ main{
         .func{
             p{
                margin-top: 1%;
+            }
+        }
+    }
+    section.dashboard-analise-funcionario{
+        margin-top: 30px;
+        display: grid;
+        gap: 30px;
+        grid-template-columns: 1fr 1fr 1fr;
+        grid-template-rows: 1fr repeat(3, 250px);
+        grid-template-areas: "k1 k2 i1"
+                             "g1 g1 i1"
+                             "g2 g2 i2"
+                             "g3 g3 i2";
+                             
+        .kpi-horas{
+            grid-area: k1;
+        }
+        .kpi-qtd-func{
+            grid-area: k2;
+        }
+        .grafico-movimentacao{
+            grid-area: g1;
+        }
+        .grafico-processador{
+            grid-area: g2;
+        }
+        .grafico-ram{
+            grid-area: g3;
+        }
+        .info-funcionario{
+            grid-area: i1;
+        }
+        .info-maquina{
+            grid-area: i2;
+        }
+        .box{
+            padding: 15px;
+            display: block;
+            font-size: 20px;
+            hr{
+                margin: 10px 0;
+                opacity: 0.4;
+            }
+        }
+        .box-kpi{
+            h1{
+                text-align: center;
+                font-size: 3rem;
+                margin: 15px 0;
+            }
+        }
+        .grafico{
+            .header{
+                display: flex;
+                justify-content: space-between;
+                padding: 7px;
+                border-bottom: 1px solid rgba(0, 0, 0, 0.3);
+                .dir{
+                    display: flex;
+                    align-items: center;
+                    .legenda{
+                        width: 45px;
+                        height: 25px;
+                        border-radius: 5px;
+                    }
+                    span{
+                        margin-right: 30px;
+                        margin-left: 7px;
+                    }
+                    .alto{
+                        background: #D0342C;
+                    }
+                    .normal{
+                        background: #00CA43;
+                    }
+                }
+                select{
+                    height: 30px;
+                    padding-left: 10px;
+                }
             }
         }
     }

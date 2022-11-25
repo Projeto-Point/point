@@ -21,16 +21,15 @@ function pegarMovimentacao(periodoInicio, periodoFim, idFuncionario, cidade){
 
 function pegarCpu(periodoInicio, periodoFim, idFuncionario, cidade){
     if(idFuncionario == 0){
-        console.log(cidade);
-        instrucaoSql = `SELECT DATEPART(hour, dataEhora) AS 'hora', ROUND(AVG(valor), 2) AS 'valor' FROM vw_registros
-        WHERE tipo = 'CPU' AND dataEhora BETWEEN '${periodoInicio}' AND '${periodoFim}'
-        GROUP BY DATEPART(hour, dataEhora)
-        ORDER BY DATEPART(hour, dataEhora);`;
-        console.log(instrucaoSql)
+        instrucaoSql = `SELECT DATEPART(hour, R.dataEhora) AS 'hora', ROUND(AVG(valor), 2) AS 'valor' FROM vw_registros R
+        INNER JOIN Localizacao ON fkMaquina = fkMaquina AND cidade = '${cidade}'
+        WHERE tipo = 'CPU' AND R.dataEhora BETWEEN '${periodoInicio}' AND '${periodoFim}'
+        GROUP BY DATEPART(hour, R.dataEhora)
+        ORDER BY DATEPART(hour, R.dataEhora);`;
     }
     else{
         instrucaoSql = `SELECT DATEPART(hour, dataEhora) AS 'hora', ROUND(AVG(valor), 2) AS 'valor' FROM vw_registros
-        WHERE tipo = 'CPU' AND dataEhora BETWEEN '${periodoInicio}' AND '${periodoFim}'
+        WHERE idFuncionario = ${idFuncionario} AND tipo = 'CPU' AND dataEhora BETWEEN '${periodoInicio}' AND '${periodoFim}'
         GROUP BY DATEPART(hour, dataEhora)
         ORDER BY DATEPART(hour, dataEhora);`;
     }
@@ -40,19 +39,27 @@ function pegarCpu(periodoInicio, periodoFim, idFuncionario, cidade){
 
 function pegarRam(periodoInicio, periodoFim, idFuncionario, cidade){
     if(idFuncionario == 0){
-        console.log(cidade);
-        instrucaoSql = `SELECT DATEPART(hour, dataEhora) AS 'hora', ROUND(AVG(valor), 2) AS 'valor' FROM vw_registros
-        WHERE tipo = 'RAM' AND dataEhora BETWEEN '${periodoInicio}' AND '${periodoFim}'
-        GROUP BY DATEPART(hour, dataEhora)
-        ORDER BY DATEPART(hour, dataEhora);`;
-        console.log(instrucaoSql)
+        instrucaoSql = `SELECT DATEPART(hour, R.dataEhora) AS 'hora', ROUND(AVG(valor), 2) AS 'valor' FROM vw_registros R
+        INNER JOIN Localizacao ON fkMaquina = fkMaquina AND cidade = '${cidade}'
+        WHERE tipo = 'RAM' AND R.dataEhora BETWEEN '${periodoInicio}' AND '${periodoFim}'
+        GROUP BY DATEPART(hour, R.dataEhora)
+        ORDER BY DATEPART(hour, R.dataEhora);`;
     }
     else{
         instrucaoSql = `SELECT DATEPART(hour, dataEhora) AS 'hora', ROUND(AVG(valor), 2) AS 'valor' FROM vw_registros
-        WHERE tipo = 'RAM' AND dataEhora BETWEEN '${periodoInicio}' AND '${periodoFim}'
+        WHERE idFuncionario = ${idFuncionario} AND tipo = 'RAM' AND dataEhora BETWEEN '${periodoInicio}' AND '${periodoFim}'
         GROUP BY DATEPART(hour, dataEhora)
         ORDER BY DATEPART(hour, dataEhora);`;
     }
+    console.log(instrucaoSql);
+    return database.executar(instrucaoSql);
+}
+
+function pegarFuncionarios(idEmpresa, cidade){
+    instrucaoSql = `SELECT DISTINCT nome, idFuncionario FROM Funcionario
+    INNER JOIN Maquina ON idFuncionario = fkFuncionario
+    INNER JOIN Localizacao ON idMaquina = fkMaquina
+    WHERE fkEmpresa = ${idEmpresa} AND cidade = '${cidade}';`;
     console.log(instrucaoSql);
     return database.executar(instrucaoSql);
 }
@@ -61,4 +68,5 @@ module.exports = {
     pegarMovimentacao,
     pegarCpu,
     pegarRam,
+    pegarFuncionarios,
 }
