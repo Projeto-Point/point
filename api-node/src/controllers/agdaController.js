@@ -79,9 +79,30 @@ function pegarFuncionarios(req, res){
     });
 }
 
+function mediaHorasAtivas(req, res){
+    const idFuncionario = req.query.idFuncionario;
+    const dataInicio = req.query.dataInicio;
+    const dataFinal = req.query.dataFinal;
+    const cidade = req.query.cidade;
+    agdaModel.mediaHorasAtivas(idFuncionario, dataInicio, dataFinal, cidade)
+    .then(function (resultado) {
+        if (resultado.length > 0) {
+            res.status(200).json(resultado);
+        }
+        else {
+            res.status(204).send("Nenhum funcionário encontrado!");
+        }
+    }).catch(function (erro) {
+        console.log(erro);
+        console.log("Houve um erro ao pegar a CPU: ", erro.sqlMessage);
+        res.status(500).json(erro.sqlMessage);
+    });
+}
+
 module.exports = {
     pegarMovimentacao,
     pegarCpu,
     pegarRam,
-    pegarFuncionarios
+    pegarFuncionarios,
+    mediaHorasAtivas,
 }

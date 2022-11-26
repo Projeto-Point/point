@@ -13,27 +13,35 @@
         <header>
             <nav id="menu">
                 <a href="maquinas.html" class="logo">
-                    <img src="../assets/imgs/Point.png" />
+                    <img src="../assets/imgs/Point.png">
                 </a>
-                <hr />
-                <!-- <a href="alertas.html">
-                    <img src="../assets/imgs/alfinete 1.png">
-                    <span>Alertas</span>
-                </a> -->
+                <hr>
                 <a href="funcionarios.html" class="img-nav">
-                    <img src="../assets/imgs/user.png" />
+                    <img src="../assets/imgs/user.png" >
                     <span>Funcionários</span>
                 </a>
                 <a href="maquinas.html" class="img-nav">
-                    <img src="./assets/imgs/imac.png" />
+                    <img src="./assets/imgs/imac.png">
                     <span>Máquinas</span>
                 </a>
+                <a href="instancias.html" class="img-nav">
+                    <img src="assets/dash/server.png">
+                    <span>Instâncias</span>
+                </a>
+                <a href="alertas.html" class="img-nav">
+                    <img src="assets/dash/alertas.png">
+                    <span>Alertas</span>
+                </a>
+                <a href="localizacao.html" class="img-nav">
+                    <img src="assets/imgs/pin.png">
+                    <span>Localização</span>
+                </a>
                 <a href="configuracoes.html" class="img-nav">
-                    <img src="./assets/imgs/setting.png" />
+                    <img src="./assets/imgs/setting.png">
                     <span>Configurações</span>
                 </a>
-                <hr />
-                <a href="../index.html" class="img-nav">
+                <hr>
+                <a class="img-nav" id="sair">
                     <img src="../assets/imgs/x.png" />
                     <span>Sair</span>
                 </a>
@@ -129,7 +137,7 @@
                     <h3>Sobre o funcionário</h3>
                     <hr />
                 </div>
-                <div class="box info-maquina">
+                <div class="box box-outros-funcionarios">
                     <h3>Outros funcionários</h3>
                     <hr />
                     <div id="outros-funcionarios">
@@ -172,6 +180,7 @@
         pegarDadosRam();
 
         pegarFuncionarios();
+        mediaHorasAtivas();
     };
 
     function zeroEsquerda(numero, tamanho){
@@ -413,14 +422,69 @@
         fetch(`/analiseAgda/pegarFuncionarios?idEmpresa=${sessionStorage['ID_EMPRESA']}&cidade=${cidade}`).then((res) => {
             if(res.ok){
                 res.json().then((resposta) => {
-                    console.log(resposta);
                     kpiQtdFunc.innerHTML = resposta.length;
 
+                    document.getElementById("outros-funcionarios").innerHTML += `<a class="funcionario func0" href="analisar-funcionarios.html?cidade=${cidade}">Média dos funcionários</a>`;
+                    
                     for (let index = 0; index < resposta.length; index++) {
-                        document.getElementById("outros-funcionarios").innerHTML += `<a href="analisar-funcionarios.html?idFuncionario=${resposta[index].idFuncionario}&cidade=${cidade}">${resposta[index].nome}</a>`;
+                        document.getElementById("outros-funcionarios").innerHTML += `<a class="funcionario func${resposta[index].idFuncionario}" href="analisar-funcionarios.html?idFuncionario=${resposta[index].idFuncionario}&cidade=${cidade}">${resposta[index].nome}</a>`;
                     }
+
+                    document.querySelector(`.func${idFuncionario}`).classList.add("selecionado");
                 });
             }
         });
     }
+
+    function mediaHorasAtivas(){
+        fetch(`/analiseAgda/mediaHorasAtivas?idFuncionario=${idFuncionario}&dataInicio=${moment().subtract(30, "days").format("YYYY-MM-DD")}&dataFinal=${moment().format("YYYY-MM-DD")}&cidade=${cidade}`)
+        .then((res) => {
+            if (res.ok) {
+                res.json().then((resposta) => {
+                    let horarioEntrada;
+                    let horariosDiferenca = [];
+
+                    resposta.forEach(item => {
+                        if (item.acao == "E") {
+                            horarioEntrada = moment(item.horario);
+                        }
+                        else {
+                            horariosDiferenca.push(moment(item.horario).diff(horarioEntrada));
+                        }
+                    });
+
+                    let horasAtivas = 0;
+                    horariosDiferenca.forEach(horario => {
+                        horasAtivas += horario;
+                    });
+
+                    let horas = moment.duration(horasAtivas).hours();
+                    let minutos = moment.duration(horasAtivas).minutes();
+
+                    if (horas == 1) {
+                        kpiHoras.innerHTML += horas;
+                        kpiHoras.innerHTML += " hora e "
+                    }
+                    else if (horas > 1) {
+                        kpiHoras.innerHTML += horas;
+                        kpiHoras.innerHTML += " horas e "
+                    }
+
+                    if (minutos == 1) {
+                        kpiHoras.innerHTML += minutos;
+                        kpiHoras.innerHTML += " minuto"
+                    }
+                    else if (minutos > 1) {
+                        kpiHoras.innerHTML += minutos;
+                        kpiHoras.innerHTML += " minutos"
+                    }
+                });
+            }
+        })
+        .catch((erro) => {
+            console.log(erro);
+        });
+    }
 </script>
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+<script src="./jsDash/script-dash.js"></script>

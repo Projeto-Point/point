@@ -19,4 +19,8 @@ router.get("/pegarFuncionarios", function(req, res) {
     agdaController.pegarFuncionarios(req, res);
 });
 
+router.get("/mediaHorasAtivas", function(req, res) {
+    agdaController.mediaHorasAtivas(req, res);
+});
+
 module.exports = router;

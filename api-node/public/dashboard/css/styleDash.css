@@ -684,7 +684,7 @@ main section.dashboard .grafico .container-info .part, main section.dashboard .t
   flex-direction: column;
   width: 40%;
   align-self: start;
-  place-items: start;
+  place-items: flex-start;
   padding: 5px;
   border-right: 1px solid rgba(209, 209, 209, 0.697);
 }
@@ -720,8 +720,9 @@ main section.dashboard-analise-funcionario .grafico-ram {
 main section.dashboard-analise-funcionario .info-funcionario {
   grid-area: i1;
 }
-main section.dashboard-analise-funcionario .info-maquina {
+main section.dashboard-analise-funcionario .box-outros-funcionarios {
   grid-area: i2;
+  overflow-y: auto;
 }
 main section.dashboard-analise-funcionario .box {
   padding: 15px;
@@ -765,6 +766,25 @@ main section.dashboard-analise-funcionario .grafico .header .dir .normal {
 main section.dashboard-analise-funcionario .grafico .header select {
   height: 30px;
   padding-left: 10px;
+}
+main section.dashboard-analise-funcionario a.funcionario {
+  padding: 10px;
+  margin: 5px;
+  color: black;
+  display: block;
+  transition-duration: 0.2s;
+  border-radius: var(--radius);
+}
+main section.dashboard-analise-funcionario a.funcionario.selecionado {
+  font-weight: bold;
+  color: var(--cor3);
+}
+main section.dashboard-analise-funcionario a.funcionario.selecionado:hover {
+  background: white;
+}
+main section.dashboard-analise-funcionario a.funcionario:hover {
+  transition-duration: 0.2s;
+  background: #eee;
 }
 
 @media screen and (max-width: 1400px) {

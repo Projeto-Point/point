@@ -585,7 +585,6 @@ main{
                                  "g1 g1 i1"
                                  "g2 g2 i2"
                                  "g3 g3 i2";
-                                 
             .kpi-horas{
                 grid-area: k1;
             }
@@ -738,7 +737,7 @@ main{
                     flex-direction: column;
                     width: 40%;
                     align-self: start;
-                    place-items: start;
+                    place-items: flex-start;
                     padding: 5px;
                     border-right: 1px solid rgba(209, 209, 209, 0.697);
 
@@ -783,8 +782,9 @@ main{
         .info-funcionario{
             grid-area: i1;
         }
-        .info-maquina{
+        .box-outros-funcionarios{
             grid-area: i2;
+            overflow-y: auto;
         }
         .box{
             padding: 15px;
@@ -831,6 +831,25 @@ main{
                     height: 30px;
                     padding-left: 10px;
                 }
+            }
+        }
+        a.funcionario{
+            padding: 10px;
+            margin: 5px;
+            color: black;
+            display: block;
+            transition-duration: 0.2s;
+            border-radius: var(--radius);
+            &.selecionado{
+                font-weight: bold;
+                color: var(--cor3);
+                &:hover{
+                    background: white; 
+                }
+            }
+            &:hover{
+                transition-duration: 0.2s;
+                background: #eee;
             }
         }
     }

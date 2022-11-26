@@ -64,9 +64,32 @@ function pegarFuncionarios(idEmpresa, cidade){
     return database.executar(instrucaoSql);
 }
 
+function mediaHorasAtivas(idFuncionario, dataInicio, dataFinal, cidade){
+    if(idFuncionario != 0){
+        instrucaoSql = `SELECT acao,
+            CAST(dataEhora AS DATE) AS 'dia',
+            CAST(AVG(CAST(dataEhora AS FLOAT)) AS DATETIME) AS 'horario'
+        FROM Localizacao
+        INNER JOIN Maquina ON fkMaquina = idMaquina
+        WHERE fkFuncionario = ${idFuncionario} AND CAST(dataEhora AS DATE) BETWEEN '${dataInicio}' AND '${dataFinal}'
+        GROUP BY acao, CAST(dataEhora AS DATE);`;
+    }
+    else{
+        instrucaoSql = `SELECT acao,
+            CAST(dataEhora AS DATE) AS 'dia',
+            CAST(AVG(CAST(dataEhora AS FLOAT)) AS DATETIME) AS 'horario'
+        FROM Localizacao
+        WHERE cidade = '${cidade}' AND CAST(dataEhora AS DATE) BETWEEN '${dataInicio}' AND '${dataFinal}'
+        GROUP BY acao, CAST(dataEhora AS DATE);`;
+    }
+    console.log(instrucaoSql);
+    return database.executar(instrucaoSql);
+}
+
 module.exports = {
     pegarMovimentacao,
     pegarCpu,
     pegarRam,
     pegarFuncionarios,
+    mediaHorasAtivas,
 }
