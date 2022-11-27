@@ -14,41 +14,41 @@
 <body>
   <header>
     <nav id="menu">
-        <a href="maquinas.html" class="logo">
-            <img src="../assets/imgs/Point.png">
-        </a>
-        <hr>
-        <a href="funcionarios.html" class="img-nav">
-            <img src="../assets/imgs/user.png" >
-            <span>Funcionários</span>
-        </a>
-        <a href="maquinas.html" class="img-nav">
-            <img src="./assets/imgs/imac.png">
-            <span>Máquinas</span>
-        </a>
-        <a href="instancias.html" class="img-nav">
-            <img src="assets/dash/server.png">
-            <span>Instâncias</span>
-        </a>
-        <a href="alertas.html" class="img-nav">
-            <img src="assets/dash/alertas.png">
-            <span>Alertas</span>
-        </a>
-        <a href="localizacao.html" class="img-nav">
-            <img src="assets/imgs/pin.png">
-            <span>Localização</span>
-        </a>
-        <a href="configuracoes.html" class="img-nav">
-            <img src="./assets/imgs/setting.png">
-            <span>Configurações</span>
-        </a>
-        <hr>
-        <a class="img-nav" id="sair">
-            <img src="../assets/imgs/x.png" />
-            <span>Sair</span>
-        </a>
+      <a href="maquinas.html" class="logo">
+        <img src="../assets/imgs/Point.png">
+      </a>
+      <hr>
+      <a href="funcionarios.html" class="img-nav">
+        <img src="../assets/imgs/user.png">
+        <span>Funcionários</span>
+      </a>
+      <a href="maquinas.html" class="img-nav">
+        <img src="./assets/imgs/imac.png">
+        <span>Máquinas</span>
+      </a>
+      <a href="instancias.html" class="img-nav">
+        <img src="assets/dash/server.png">
+        <span>Instâncias</span>
+      </a>
+      <a href="alertas.html" class="img-nav">
+        <img src="assets/dash/alertas.png">
+        <span>Alertas</span>
+      </a>
+      <a href="localizacao.html" class="img-nav">
+        <img src="assets/imgs/pin.png">
+        <span>Localização</span>
+      </a>
+      <a href="configuracoes.html" class="img-nav">
+        <img src="./assets/imgs/setting.png">
+        <span>Configurações</span>
+      </a>
+      <hr>
+      <a class="img-nav" id="sair">
+        <img src="../assets/imgs/x.png" />
+        <span>Sair</span>
+      </a>
     </nav>
-    <nav id="menu-mobile"><img src="assets/dash/bars.svg"></nav>
+    <nav id="menu-mobile"><img src="assets/dash/bars.svg" /></nav>
   </header>
   <main>
     <section class="top">
@@ -56,12 +56,12 @@
         <p class="titulo">Olá, <span id="nome_gerente"></span></p>
         <p class="subtitulo">17/10/2022</p>
       </div>
-      <div class="top-meio" style="visibility: hidden;">
+      <div class="top-meio" style="visibility: hidden">
         <input id="inp-pesquisar-funcionario" type="search" placeholder="Pesquise o nome de um funcionário..." />
       </div>
       <div class="top-dir">
         <p class="nome"><span id="nomeGerente"></span></p>
-        <img src="../assets/dash/icons8-user-64.png">
+        <img src="../assets/dash/icons8-user-64.png" />
       </div>
     </section>
     <section class="dashboard-analise">
@@ -77,70 +77,11 @@
         <h3>Média da memória RAM:</h3>
         <p id="kpiRAM">%</p>
       </div>
-      <div class="grafico-processador grafico box">
-        <div class="header">
-          <h3>Processador</h3>
-          <div class="dir">
-            <div class="legenda alto"></div>
-            <span>Maior que 80%</span>
-            <div class="legenda normal"></div>
-            <span>Menor que 80%</span>
-            <select id="">
-              <option value="ultimoMes">Último mês</option>
-              <option value="ultimaSemana">Última semana</option>
-              <option value="ultimoAno">Último ano</option>
-            </select>
-          </div>
-        </div>
-        <div class="main-grafico">
-          <canvas id="graficoCPU"></canvas>
-        </div>
-      </div>
-      <div class="grafico-ram grafico box">
-        <div class="header">
-          <h3>Memória RAM</h3>
-          <div class="dir">
-            <div class="legenda alto"></div>
-            <span>Maior que 85%</span>
-            <div class="legenda normal"></div>
-            <span>Menor que 85%</span>
-            <select id="">
-              <option value="ultimoMes">Último mês</option>
-              <option value="ultimaSemana">Última semana</option>
-              <option value="ultimoAno">Último ano</option>
-            </select>
-          </div>
-        </div>
-        <div class="main-grafico">
-          <canvas id="graficoRAM"></canvas>
-        </div>
-      </div>
-      <div class="grafico-disco grafico box">
-        <div class="header">
-          <h3>Disco</h3>
-          <div class="dir">
-            <div class="legenda alto"></div>
-            <span>Maior que 90%</span>
-            <div class="legenda normal"></div>
-            <span>Menor que 90%</span>
-            <select id="">
-              <option value="ultimoMes">Último mês</option>
-              <option value="ultimaSemana">Última semana</option>
-              <option value="ultimoAno">Último ano</option>
-            </select>
-          </div>
-        </div>
-        <div class="main-grafico">
-          <canvas id="graficoDisco"></canvas>
-        </div>
-      </div>
       <div class="box info-funcionario" id="sobreFuncionario">
         <h3>Sobre o funcionário</h3>
-        <hr />
       </div>
       <div class="box info-maquina" id="sobreMaquina">
-        <h3>Sobre a Instância</h3>
-        <hr />
+        <h3>Sobre a máquina</h3>
       </div>
     </section>
   </main>
@@ -150,37 +91,34 @@
 <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
 <script src="../script.js"></script>
 <script>
-   nomeGerente.innerHTML = sessionStorage.NOME_USUARIO;
+  nomeGerente.innerHTML = sessionStorage.NOME_USUARIO;
   nome_gerente.innerHTML = sessionStorage.NOME_USUARIO;
 
   const parametrosString = window.location.search;
   const parametros = new URLSearchParams(parametrosString);
   const idMaquina = Number(parametros.get("idMaquina"));
 
-  fetch(`/medidas/pegarRegistroMaquina?idMaquina=${idMaquina}`).then((res) => {
-    if (res.ok) {
-      res.json().then((resposta) => {
-        
-
-
-        for (let index = 0; index < resposta.length; index++) {
-          if (resposta[index].atributo == "CORE") {
-            resposta[index].unidadeMedida = "";
-            resposta[index].valor *= 1;
-            Math.trunc(resposta[index].valor);
-          }
-          if (resposta[index].atributo == "THREADS") {
-            resposta[index].unidadeMedida = "";
-            resposta[index].valor *= 1;
-            Math.trunc(resposta[index].valor);
-          }
-          document.getElementById(
-            "sobreMaquina"
-          ).innerHTML += `<p><b>${resposta[index].tipoComponente} - ${resposta[index].atributo}: </b><span>${resposta[index].valor} ${resposta[index].unidadeMedida}</span></p>`;
-        }
-      });
-    }
-  });
+  // fetch(`/medidas/pegarRegistroMaquina?idMaquina=${idMaquina}`).then((res) => {
+  //   if (res.ok) {
+  //     res.json().then((resposta) => {
+  //       for (let index = 0; index < resposta.length; index++) {
+  //         if (resposta[index].atributo == "CORE") {
+  //           resposta[index].unidadeMedida = "";
+  //           resposta[index].valor *= 1;
+  //           Math.trunc(resposta[index].valor);
+  //         }
+  //         if (resposta[index].atributo == "THREADS") {
+  //           resposta[index].unidadeMedida = "";
+  //           resposta[index].valor *= 1;
+  //           Math.trunc(resposta[index].valor);
+  //         }
+  //         document.getElementById(
+  //           "sobreMaquina"
+  //         ).innerHTML += `<p><b>${resposta[index].tipoComponente} - ${resposta[index].atributo}: </b><span>${resposta[index].valor} ${resposta[index].unidadeMedida}</span></p>`;
+  //       }
+  //     });
+  //   }
+  // });
 
   fetch(`/medidas/pegarRegistroFuncionario?idMaquina=${idMaquina}`).then(
     function (res) {
@@ -195,40 +133,10 @@
     }
   );
 
-  fetch(
-    `/maquinas/pegarKpis?idMaquina=${idMaquina}&dataInicio=${moment()
-      .subtract(30, "days")
-      .format("YYYY-MM-DD")}&dataFinal=${moment().format("YYYY-MM-DD")}`
-  )
+  fetch(`/maquinas/pegarKpis?idMaquina=${idMaquina}&dataInicio=${moment().subtract(30, "days").format("YYYY-MM-DD")}&dataFinal=${moment().format("YYYY-MM-DD")}`)
     .then((res) => {
       if (res.ok) {
         res.json().then((resposta) => {
-          let tempoMinutos = resposta[0].qtdMinutos;
-          let qtdMinutos = Math.floor(tempoMinutos % 60);
-          let qtdHoras = Math.floor(tempoMinutos / 60);
-          let qtdDias = Math.floor(tempoMinutos / 1440);
-          let texto = "";
-
-          texto +=
-            qtdDias > 1
-              ? qtdDias + " dias e "
-              : qtdDias == 1
-              ? qtdDias + " dia e "
-              : "";
-          texto +=
-            qtdHoras > 1
-              ? qtdHoras + " horas e "
-              : qtdHoras == 1
-              ? qtdHoras + " hora e "
-              : "";
-          texto +=
-            qtdMinutos > 1
-              ? qtdMinutos + " minutos e "
-              : qtdMinutos == 1
-              ? qtdMinutos + " minuto e "
-              : "";
-
-          kpiHoras.innerHTML = texto.substring(0, texto.length - 3);
           kpiCPU.innerHTML = resposta[0].mediaProcessador + "%";
           kpiRAM.innerHTML = resposta[0].mediaRAM + "%";
         });
@@ -239,94 +147,59 @@
       console.log(erro);
     });
 
-  pegarRegistros("graficoCPU", "CPU", idMaquina, moment().subtract(30, "days").format("YYYY-MM-DD"), moment().format("YYYY-MM-DD"));
-  pegarRegistros("graficoRAM", "RAM", idMaquina, moment().subtract(30, "days").format("YYYY-MM-DD"), moment().format("YYYY-MM-DD"));
-  pegarRegistros("graficoDisco", "DISCO", idMaquina, moment().subtract(30, "days").format("YYYY-MM-DD"), moment().format("YYYY-MM-DD"));
+  fetch(`/maquinas/pegarTempo?idMaquina=${idMaquina}&dataInicio=${moment().subtract(30, "days").format("YYYY-MM-DD")}&dataFinal=${moment().format("YYYY-MM-DD")}`)
+    .then((res) => {
+      if (res.ok) {
+        res.json().then((resposta) => {
+          let horarioEntrada;
+          let horariosDiferenca = [];
 
-  function pegarRegistros(idGrafico, tipoComponente, idMaquina, dataInicio, dataFinal) {
-    fetch(`/maquinas/analiseComponente?tipoComponente=${tipoComponente}&idMaquina=${idMaquina}&dataInicio=${dataInicio}&dataFinal=${dataFinal}`)
-      .then((res) => {
-        if (res.ok) {
-          res.json().then((resposta) => {
-            // console.log(resposta);
-            const labels = resposta.map((registro) =>
-              moment(registro.dataEhora).format("DD/MM/YYYY")
-            );
-
-            const data = {
-              labels: labels,
-              datasets: [
-                {
-                  label: "Valor médio",
-                  backgroundColor: [],
-                  data: resposta.map((registro) => registro.media),
-                },
-              ],
-            };
-
-            for (let index = 0; index < resposta.length; index++) {
-              if (tipoComponente == "CPU") {
-                if (resposta[index].media >= 80) {
-                  data.datasets[0].backgroundColor.push("#D0342C");
-                } else {
-                  data.datasets[0].backgroundColor.push("#00CA43");
-                }
-              } else if (tipoComponente == "RAM") {
-                if (resposta[index].media >= 85) {
-                  data.datasets[0].backgroundColor.push("#D0342C");
-                } else {
-                  data.datasets[0].backgroundColor.push("#00CA43");
-                }
-              } else if (tipoComponente == "DISCO") {
-                if (resposta[index].media >= 90) {
-                  data.datasets[0].backgroundColor.push("#D0342C");
-                } else {
-                  data.datasets[0].backgroundColor.push("#00CA43");
-                }
-              }
+          resposta.forEach(item => {
+            if (item.acao == "E") {
+              horarioEntrada = moment(item.horario);
             }
-
-            const config = {
-              type: "bar",
-              data: data,
-              options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                scales: {
-                  y: {
-                    beginAtZero: true,
-                  },
-                },
-                plugins: {
-                  legend: {
-                    display: false,
-                  },
-                },
-              },
-            };
-
-            const myChart = new Chart(
-              document.getElementById(idGrafico),
-              config
-            );
+            else {
+              horariosDiferenca.push(moment(item.horario).diff(horarioEntrada));
+            }
           });
-        } else {
-          console.log("Erro ao conseguir os resultados!");
-        }
-      })
-      .catch((erro) => {
-        console.log("Erro ao acessar /maquinas/analiseComponente");
-      });
-  }
 
-  
+          let horasAtivas = 0;
+          horariosDiferenca.forEach(horario => {
+            horasAtivas += horario;
+          });
 
+          let horas = moment.duration(horasAtivas).hours();
+          let minutos = moment.duration(horasAtivas).minutes();
 
-    fetch(`/medidas/pegarRegistroInstancia?idMaquina=${idMaquina}`).then((res) => {
+          if (horas == 1) {
+            kpiHoras.innerHTML += horas;
+            kpiHoras.innerHTML += " hora e "
+          }
+          else if (horas > 1) {
+            kpiHoras.innerHTML += horas;
+            kpiHoras.innerHTML += " horas e "
+          }
+
+          if (minutos == 1) {
+            kpiHoras.innerHTML += minutos;
+            kpiHoras.innerHTML += " minuto"
+          }
+          else if (minutos > 1) {
+            kpiHoras.innerHTML += minutos;
+            kpiHoras.innerHTML += " minutos"
+          }
+        });
+      }
+    })
+    .catch((erro) => {
+      console.log(erro);
+    });
+
+  fetch(`/medidas/pegarRegistroInstancia?idMaquina=${idMaquina}`).then((res) => {
     if (res.ok) {
       res.json().then((resposta) => {
 
-       
+
         console.log(resposta);
 
         document.getElementById(
@@ -347,13 +220,7 @@
         document.getElementById(
           "sobreMaquina"
         ).innerHTML += `<p><b>Alterar instância: </b><span class="top-esq"><a href="https://us-east-1.console.aws.amazon.com/console/home?region=us-east-1#" class="logo">teste
-        </a></span></p>`;
-
-
-        
-
-
-       
+      </a></span></p>`;
       });
     }
   });
