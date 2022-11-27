@@ -1,201 +1,244 @@
 <!DOCTYPE html>
 <html lang=pt-br">
+
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Localizacao | Point</title>
-    <link rel="stylesheet" href="css/styleDash.css">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.4/moment.min.js"></script>
-    <link
-      rel="stylesheet"
-      href="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.css"
-    />
-    <script src="./jsDash/leaftlet.js"></script>
-    <script src="./jsDash/heatmap.js"></script>
-    <script src="./jsDash/leaflet-heat.js"></script>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Localizacao | Point</title>
+  <link rel="stylesheet" href="css/styleDash.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.4/moment.min.js"></script>
+  <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.css" />
+  <script src="./jsDash/leaftlet.js"></script>
+  <script src="./jsDash/heatmap.js"></script>
+  <script src="./jsDash/leaflet-heat.js"></script>
 </head>
 
 <body>
-    <header>
-        <nav id="menu">
-            <a href="maquinas.html" class="logo">
-                <img src="../assets/imgs/Point.png">
-            </a>
-            <hr>
-            <a href="funcionarios.html" class="img-nav">
-                <img src="../assets/imgs/user.png" >
-                <span>Funcionários</span>
-            </a>
-            <a href="maquinas.html" class="img-nav">
-                <img src="./assets/imgs/imac.png">
-                <span>Máquinas</span>
-            </a>
-            <a href="instancias.html" class="img-nav">
-                <img src="assets/dash/server.png">
-                <span>Instâncias</span>
-            </a>
-            <a href="alertas.html" class="img-nav">
-                <img src="assets/dash/alertas.png">
-                <span>Alertas</span>
-            </a>
-            <a href="localizacao.html" class="img-nav">
-                <img src="assets/imgs/pin.png">
-                <span>Localização</span>
-            </a>
-            <a href="configuracoes.html" class="img-nav">
-                <img src="./assets/imgs/setting.png">
-                <span>Configurações</span>
-            </a>
-            <hr>
-            <a class="img-nav" id="sair">
-                <img src="../assets/imgs/x.png" />
-                <span>Sair</span>
-            </a>
-        </nav>
-        <nav id="menu-mobile"><img src="assets/dash/bars.svg"></nav>
-    </header>
-    <main>
+  <header>
+    <nav id="menu">
+      <a href="maquinas.html" class="logo">
+        <img src="../assets/imgs/Point.png">
+      </a>
+      <hr>
+      <a href="funcionarios.html" class="img-nav">
+        <img src="../assets/imgs/user.png">
+        <span>Funcionários</span>
+      </a>
+      <a href="maquinas.html" class="img-nav">
+        <img src="./assets/imgs/imac.png">
+        <span>Máquinas</span>
+      </a>
+      <a href="instancias.html" class="img-nav">
+        <img src="assets/dash/server.png">
+        <span>Instâncias</span>
+      </a>
+      <a href="alertas.html" class="img-nav">
+        <img src="assets/dash/alertas.png">
+        <span>Alertas</span>
+      </a>
+      <a href="localizacao.html" class="img-nav">
+        <img src="assets/imgs/pin.png">
+        <span>Localização</span>
+      </a>
+      <a href="configuracoes.html" class="img-nav">
+        <img src="./assets/imgs/setting.png">
+        <span>Configurações</span>
+      </a>
+      <hr>
+      <a class="img-nav" id="sair">
+        <img src="../assets/imgs/x.png" />
+        <span>Sair</span>
+      </a>
+    </nav>
+    <nav id="menu-mobile"><img src="assets/dash/bars.svg"></nav>
+  </header>
+  <main>
 
-        <div  class="main-localizacao">
+    <div class="main-localizacao">
 
-            <div class="left-wid">
+      <div class="left-wid">
 
-                <div class="titulo">
-                    <p>Localização das máquinas</p>
-                </div>
-
-                <div class="texto">
-                  <p>Aqui você pode observar os lugares onde seus funcionarios
-                    estão localizados ao redor do mundo.
-                  </p>
-                </div>
-
-                <div>
-                  <input type="text">
-                  <button onclick="pep()">JJSDJJ</button>
-                </div>
-                <div class="heatmap" id="map">
-
-                </div>
-            </div>
-
-
-            <div class="rigth-wid">
-
-                <div class="wordcloud"></div>
-
-                <div class="table">
-
-                    <ul>
-                        <li><a href=""><p>São Paulo</p><p>BR</p></li></a>
-                        <li><a href=""><p>São Paulo</p><p>BR</p></li></a>
-                        <li><a href=""><p>São Paulo</p><p>BR</p></li></a>
-                        <li><a href=""><p>São Paulo</p><p>BR</p></li></a>
-                        <li><a href=""><p>São Paulo</p><p>BR</p></li></a>
-                        <li><a href=""><p>São Paulo</p><p>BR</p></li></a>
-                        <li><a href=""><p>São Paulo</p><p>BR</p></li></a>
-                        <li><a href=""><p>São Paulo</p><p>BR</p></li></a>
-                        <li><a href=""><p>São Paulo</p><p>BR</p></li></a>
-                        <li><a href=""><p>São Paulo</p><p>BR</p></li></a>
-                        <li><a href=""><p>São Paulo</p><p>BR</p></li></a>
-                        
-                    </ul>
-
-                </div>
-            </div>
+        <div class="titulo">
+          <p>Localização das máquinas</p>
         </div>
 
-    </main>
+        <div class="filtro">
+        <div class="dropdown">
+          <div class="select">
+            <span>Preferências</span>
+            <i class="fa fa-chevron-left"></i>
+          </div>
+          <input type="hidden" name="gender" id="new_plano">
+          <ul class="dropdown-menu">
+            <li id="3">Todas as Máquinas</li>
+            <li id="2">Servidor</li>
+            <li id="1">Desktop</li>
+            <li id="1">?????</li>
+            <li id="1">?????</li>
+            <li id="1">?????</li>
+            <li id="1">?????</li>
+            <li id="1">?????</li>
+            <li id="1">?????</li>
+            <li id="1">?????</li>
+          </ul>
+        </div>
+        <button class="custom-btn btn-8" onclick="alterarHeat()">Filtrar</button>
+      </div>
+        <div class="heatmap" id="map">
 
-    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
-    <script src="../script.js"></script>
-    <script>
-
-       
-
-        function gerarMapa(){
-          // If valor == 1 fecth 1:fecth2:fecth3
-        var valor = sessionStorage.MAP;
-        var jsonObj = [{}]
-          for (var i = 0; i < 5; i++) {
-
-            let randLat = (Math.random() * (-20.882104 - -24.841340) + -24.841340).toFixed(5)
-            let randLng = (Math.random() * (-48.086846 - -51.126988) + -51.126988).toFixed(5)
-            jsonObj[i] = {lat:Number(randLat), lng:Number(randLng)}
-          }
-
-
-
-          var testData = {
-            // Anotar no notion composicao não pode ser de muitos para muitos
-
-            // Select pega todos os quando a latitude e a longitude são distint.
-
-            // Quanto mais próximo do maximo fica com red dot
-            max: 4,
-            data: jsonObj
-          };
+        </div>
+      </div>
 
 
-          // Setando o mapa para ficar centralizado onde tem mais dados
+      <div class="rigth-wid">
 
-          var mediaLat = 0;
-          var mediaLng = 0;
-          tamanhoData = jsonObj.length;
+        <div class="wordcloud"></div>
 
-          for (let i = 0; i < tamanhoData; i++) {
-            mediaLat += Number(jsonObj[i]['lat']);
-            mediaLng += Number(jsonObj[i]["lng"]);
-          }
+        <div class="table">
 
-          mediaLat /= tamanhoData;
-          mediaLng /= tamanhoData;
+          <ul>
+            <li><a href="">
+                <p>São Paulo</p>
+                <p>BR</p>
+            </li></a>
+            <li><a href="">
+                <p>São Paulo</p>
+                <p>BR</p>
+            </li></a>
+            <li><a href="">
+                <p>São Paulo</p>
+                <p>BR</p>
+            </li></a>
+            <li><a href="">
+                <p>São Paulo</p>
+                <p>BR</p>
+            </li></a>
+            <li><a href="">
+                <p>São Paulo</p>
+                <p>BR</p>
+            </li></a>
+            <li><a href="">
+                <p>São Paulo</p>
+                <p>BR</p>
+            </li></a>
+            <li><a href="">
+                <p>São Paulo</p>
+                <p>BR</p>
+            </li></a>
+            <li><a href="">
+                <p>São Paulo</p>
+                <p>BR</p>
+            </li></a>
+            <li><a href="">
+                <p>São Paulo</p>
+                <p>BR</p>
+            </li></a>
+            <li><a href="">
+                <p>São Paulo</p>
+                <p>BR</p>
+            </li></a>
+            <li><a href="">
+                <p>São Paulo</p>
+                <p>BR</p>
+            </li></a>
+
+          </ul>
+
+        </div>
+      </div>
+    </div>
+
+  </main>
+
+  <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script src="../script.js"></script>
+  <script>
 
 
-          var baseLayer = L.tileLayer(
-            "http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
-            {
-              attribution:
-                'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="http://cloudmade.com">CloudMade</a>',
-              maxZoom: 10,
 
-            }
-          );
+    function gerarMapa() {
+      // If valor == 1 fecth 1:fecth2:fecth3
+      var valor = sessionStorage.MAP;
+      var jsonObj = [{}]
+      for (var i = 0; i < 5; i++) {
 
-          var cfg = {
-            // radius should be small ONLY if scaleRadius is true (or small radius is intended)
-            radius: 2,
-            maxOpacity: 0.4,
-            // scales the radius based on map zoom
-            scaleRadius: true,
-            // if set to false the heatmap uses the global maximum for colorization
-            // if activated: uses the data maximum within the current map boundaries
-            //   (there will always be a red spot with useLocalExtremas true)
-            useLocalExtrema: false,
-            // which field name in your data represents the latitude - default "lat"
-            latField: "lat",
-            // which field name in your data represents the longitude - default "lng"
-            lngField: "lng",
-            // which field name in your data represents the data value - default "value"
-            valueField: "count",
-          };
+        let randLat = (Math.random() * (-20.882104 - -24.841340) + -24.841340).toFixed(5)
+        let randLng = (Math.random() * (-48.086846 - -51.126988) + -51.126988).toFixed(5)
+        jsonObj[i] = { lat: Number(randLat), lng: Number(randLng) }
+      }
 
-          var heatmapLayer = new HeatmapOverlay(cfg);
-          var map = new L.Map("map", {
-            center: new L.LatLng(mediaLat, mediaLng),
-            zoom: 3,
-            layers: [baseLayer, heatmapLayer],
-          });
 
-          heatmapLayer.setData(testData);
-          // make accessible for debugging
-          layer = heatmapLayer;
 
-       
-        };
+      var testData = {
+        // Anotar no notion composicao não pode ser de muitos para muitos
 
-        gerarMapa()
-       
-      </script>
-      <script src="./jsDash/script-dash.js"></script>
+        // Select pega todos os quando a latitude e a longitude são distint.
+
+        // Quanto mais próximo do maximo fica com red dot
+        max: 4,
+        data: jsonObj
+      };
+
+
+      // Setando o mapa para ficar centralizado onde tem mais dados
+
+      var mediaLat = 0;
+      var mediaLng = 0;
+      tamanhoData = jsonObj.length;
+
+      for (let i = 0; i < tamanhoData; i++) {
+        mediaLat += Number(jsonObj[i]['lat']);
+        mediaLng += Number(jsonObj[i]["lng"]);
+      }
+
+      mediaLat /= tamanhoData;
+      mediaLng /= tamanhoData;
+
+
+      var baseLayer = L.tileLayer(
+        "http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+        {
+          attribution:
+            'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="http://cloudmade.com">CloudMade</a>',
+          maxZoom: 10,
+
+        }
+      );
+
+      var cfg = {
+        // radius should be small ONLY if scaleRadius is true (or small radius is intended)
+        radius: 2,
+        maxOpacity: 0.4,
+        // scales the radius based on map zoom
+        scaleRadius: true,
+        // if set to false the heatmap uses the global maximum for colorization
+        // if activated: uses the data maximum within the current map boundaries
+        //   (there will always be a red spot with useLocalExtremas true)
+        useLocalExtrema: false,
+        // which field name in your data represents the latitude - default "lat"
+        latField: "lat",
+        // which field name in your data represents the longitude - default "lng"
+        lngField: "lng",
+        // which field name in your data represents the data value - default "value"
+        valueField: "count",
+      };
+
+      var heatmapLayer = new HeatmapOverlay(cfg);
+      var map = new L.Map("map", {
+        center: new L.LatLng(mediaLat, mediaLng),
+        zoom: 3,
+        layers: [baseLayer, heatmapLayer],
+      });
+
+      heatmapLayer.setData(testData);
+      // make accessible for debugging
+      layer = heatmapLayer;
+
+
+    };
+
+    gerarMapa()
+
+  </script>
+  <script src="./jsDash/script-dash.js"></script>

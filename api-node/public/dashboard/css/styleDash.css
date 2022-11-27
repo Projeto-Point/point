@@ -9,8 +9,8 @@
 
 :root {
   --cor1: #13b348;
-  --cor2: #00A219;
-  --cor3: #007B00;
+  --cor2: #00a219;
+  --cor3: #007b00;
   --radius: 4px;
 }
 
@@ -40,7 +40,8 @@ a.btn-link:hover {
   transition: all ease 100ms;
 }
 
-input, select {
+input,
+select {
   height: 50px;
   border: 2px solid var(--cor3);
   border-radius: var(--radius);
@@ -209,6 +210,185 @@ main .main-localizacao .left-wid {
   justify-content: space-evenly;
   align-items: center;
 }
+main .main-localizacao .left-wid .filtro {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  justify-content: center;
+}
+main .main-localizacao .left-wid .filtro .custom-btn {
+  width: 18%;
+  height: 35px;
+  color: #fff;
+  border-radius: 5px;
+  padding: 10px 25px;
+  font-family: "Lato", sans-serif;
+  font-weight: 500;
+  background: transparent;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  position: relative;
+  display: inline-block;
+  box-shadow: inset 2px 2px 2px 0px rgba(255, 255, 255, 0.5), 7px 7px 20px 0px rgba(0, 0, 0, 0.1), 4px 4px 5px 0px rgba(0, 0, 0, 0.1);
+  outline: none;
+  margin-left: 2%;
+}
+main .main-localizacao .left-wid .filtro .btn-8 {
+  background-color: var(--cor2);
+  padding: 0;
+  border: none;
+}
+main .main-localizacao .left-wid .filtro .btn-8 {
+  position: relative;
+  display: block;
+}
+main .main-localizacao .left-wid .filtro .btn-8:before,
+main .main-localizacao .left-wid .filtro .btn-8:after {
+  position: absolute;
+  content: "";
+  right: 0;
+  bottom: 0;
+  background: var(--cor3);
+  color: black;
+  /*box-shadow:  4px 4px 6px 0 rgba(255,255,255,.5),
+              -4px -4px 6px 0 rgba(116, 125, 136, .2), 
+    inset -4px -4px 6px 0 rgba(255,255,255,.5),
+    inset 4px 4px 6px 0 rgba(116, 125, 136, .3);*/
+  transition: all 0.3s ease;
+}
+main .main-localizacao .left-wid .filtro .btn-8:before {
+  height: 0%;
+  width: 2px;
+}
+main .main-localizacao .left-wid .filtro .btn-8:after {
+  width: 0%;
+  height: 2px;
+}
+main .main-localizacao .left-wid .filtro .btn-8:hover:before {
+  height: 100%;
+}
+main .main-localizacao .left-wid .filtro .btn-8:hover:after {
+  width: 100%;
+}
+main .main-localizacao .left-wid .filtro .btn-8:hover {
+  background: transparent;
+  color: #000000;
+}
+main .main-localizacao .left-wid .filtro .btn-8 span:hover {
+  color: #000000;
+}
+main .main-localizacao .left-wid .filtro .btn-8 span:before,
+main .main-localizacao .left-wid .filtro .btn-8 span:after {
+  position: absolute;
+  content: "";
+  left: 0;
+  top: 0;
+  background: #000000;
+  /*box-shadow:  4px 4px 6px 0 rgba(255,255,255,.5),
+              -4px -4px 6px 0 rgba(116, 125, 136, .2), 
+    inset -4px -4px 6px 0 rgba(255,255,255,.5),
+    inset 4px 4px 6px 0 rgba(116, 125, 136, .3);*/
+  transition: all 0.3s ease;
+}
+main .main-localizacao .left-wid .filtro .btn-8 span:before {
+  width: 2px;
+  height: 0%;
+}
+main .main-localizacao .left-wid .filtro .btn-8 span:after {
+  height: 2px;
+  width: 0%;
+}
+main .main-localizacao .left-wid .filtro .btn-8 span:hover:before {
+  height: 100%;
+}
+main .main-localizacao .left-wid .filtro .btn-8 span:hover:after {
+  width: 100%;
+}
+main .main-localizacao .left-wid .filtro .btn-8:active {
+  transform: scale(0.96);
+}
+main .main-localizacao .left-wid .filtro .dropdown {
+  width: 50%;
+  display: inline-block;
+  background-color: #fff;
+  border-radius: 2px;
+  box-shadow: 0 0 2px rgb(204, 204, 204);
+  transition: all 0s ease;
+  position: relative;
+  font-size: 14px;
+  color: #474747;
+  text-align: left;
+  text-align: center;
+}
+main .main-localizacao .left-wid .filtro .dropdown .select {
+  cursor: pointer;
+  display: block;
+  padding: 10px;
+}
+main .main-localizacao .left-wid .filtro .dropdown .select > i {
+  font-size: 13px;
+  color: #888;
+  cursor: pointer;
+  transition: all 0.3s ease-in-out;
+  float: right;
+  line-height: 20px;
+}
+main .main-localizacao .left-wid .filtro .dropdown:hover {
+  box-shadow: 0 0 4px rgb(204, 204, 204);
+}
+main .main-localizacao .left-wid .filtro .dropdown:active {
+  background-color: #f8f8f8;
+}
+main .main-localizacao .left-wid .filtro .dropdown.active:hover,
+main .main-localizacao .left-wid .filtro .dropdown.active {
+  box-shadow: 0 0 4px rgb(204, 204, 204);
+  border-radius: 2px 2px 0 0;
+}
+main .main-localizacao .left-wid .filtro .dropdown.active .select > i {
+  transform: rotate(-90deg);
+}
+main .main-localizacao .left-wid .filtro .dropdown .dropdown-menu {
+  position: absolute;
+  background-color: #fff;
+  width: 100%;
+  left: 0;
+  margin-top: 1px;
+  box-shadow: 0 1px 2px rgb(204, 204, 204);
+  border-radius: 0 1px 2px 2px;
+  overflow: hidden;
+  display: none;
+  max-height: 144px;
+  overflow-y: auto;
+  z-index: 9;
+}
+main .main-localizacao .left-wid .filtro .dropdown .dropdown-menu li {
+  padding: 10px;
+  transition: all 0.2s ease-in-out;
+  cursor: pointer;
+}
+main .main-localizacao .left-wid .filtro .dropdown .dropdown-menu {
+  padding: 0;
+  list-style: none;
+}
+main .main-localizacao .left-wid .filtro .dropdown .dropdown-menu li:hover {
+  background-color: #f2f2f2;
+}
+main .main-localizacao .left-wid .filtro .dropdown .dropdown-menu li:active {
+  background-color: #e2e2e2;
+}
+@media screen and (max-width: 1400px) {
+  main .main-localizacao .left-wid .filtro header nav#menu {
+    display: none;
+    transform: translateX(-100%);
+  }
+  main .main-localizacao .left-wid .filtro header nav#menu-mobile {
+    position: relative;
+    display: flex;
+  }
+  main .main-localizacao .left-wid .filtro main {
+    width: calc(100% - 70px);
+  }
+}
 main .main-localizacao .left-wid .titulo {
   font-weight: bold;
   font-size: 1.3rem;
@@ -219,9 +399,9 @@ main .main-localizacao .left-wid .titulo {
   margin-bottom: 0%;
   width: 100%;
   text-align: center;
+  margin-top: 5%;
 }
 main .main-localizacao .left-wid .texto {
-  margin-bottom: 10%;
   font-size: 0.9rem;
   background: rgba(255, 255, 255, 0.82);
   color: rgb(62, 62, 62);
@@ -230,7 +410,7 @@ main .main-localizacao .left-wid .texto {
   font-weight: 600;
 }
 main .main-localizacao .left-wid .heatmap {
-  margin-top: 5%;
+  margin-top: 10%;
   margin-bottom: 3%;
   border-radius: var(--radius);
   height: 60%;
@@ -352,7 +532,7 @@ main section#maquinas .box-maquina.alerta::after {
   display: flex;
   align-items: center;
   justify-content: center;
-  background: #D0342C;
+  background: #d0342c;
   border: 5px solid black;
   width: 50px;
   height: 50px;
@@ -528,10 +708,10 @@ main section.dashboard-analise .grafico .header .dir span {
   margin-left: 7px;
 }
 main section.dashboard-analise .grafico .header .dir .alto {
-  background: #D0342C;
+  background: #d0342c;
 }
 main section.dashboard-analise .grafico .header .dir .normal {
-  background: #00CA43;
+  background: #00ca43;
 }
 main section.dashboard-analise .grafico .header select {
   height: 30px;
@@ -600,10 +780,10 @@ main section.dashboard-analise section.dashboard-analise-funcionario .grafico .h
   margin-left: 7px;
 }
 main section.dashboard-analise section.dashboard-analise-funcionario .grafico .header .dir .alto {
-  background: #D0342C;
+  background: #d0342c;
 }
 main section.dashboard-analise section.dashboard-analise-funcionario .grafico .header .dir .normal {
-  background: #00CA43;
+  background: #00ca43;
 }
 main section.dashboard-analise section.dashboard-analise-funcionario .grafico .header select {
   padding-left: 10px;
@@ -647,30 +827,36 @@ main section.dashboard #tbFuncionario {
 main section.dashboard #tbMaquina {
   grid-area: t2;
 }
-main section.dashboard .grafico, main section.dashboard .tabela {
+main section.dashboard .grafico,
+main section.dashboard .tabela {
   color: black;
   background: #eee;
   border-radius: var(--radius);
   padding: 15px;
 }
-main section.dashboard .grafico div, main section.dashboard .tabela div {
+main section.dashboard .grafico div,
+main section.dashboard .tabela div {
   display: flex;
   justify-content: center;
   align-items: center;
 }
-main section.dashboard .grafico h3, main section.dashboard .tabela h3 {
+main section.dashboard .grafico h3,
+main section.dashboard .tabela h3 {
   font-size: 1.5rem;
   margin-bottom: 15px;
   border-bottom: 2px solid var(--cor3);
 }
-main section.dashboard .grafico p, main section.dashboard .tabela p {
+main section.dashboard .grafico p,
+main section.dashboard .tabela p {
   margin-top: 8px;
   font-size: 1.1rem;
 }
-main section.dashboard .grafico .diver, main section.dashboard .tabela .diver {
+main section.dashboard .grafico .diver,
+main section.dashboard .tabela .diver {
   background-color: var(--cor3);
 }
-main section.dashboard .grafico .container-info, main section.dashboard .tabela .container-info {
+main section.dashboard .grafico .container-info,
+main section.dashboard .tabela .container-info {
   grid-template-columns: 100%;
   display: flex;
   flex-direction: row;
@@ -679,7 +865,8 @@ main section.dashboard .grafico .container-info, main section.dashboard .tabela 
   height: -moz-fit-content;
   height: fit-content;
 }
-main section.dashboard .grafico .container-info .part, main section.dashboard .tabela .container-info .part {
+main section.dashboard .grafico .container-info .part,
+main section.dashboard .tabela .container-info .part {
   display: flex;
   flex-direction: column;
   width: 40%;
@@ -688,7 +875,8 @@ main section.dashboard .grafico .container-info .part, main section.dashboard .t
   padding: 5px;
   border-right: 1px solid rgba(209, 209, 209, 0.697);
 }
-main section.dashboard .grafico .container-info .part p, main section.dashboard .tabela .container-info .part p {
+main section.dashboard .grafico .container-info .part p,
+main section.dashboard .tabela .container-info .part p {
   margin-bottom: 5%;
 }
 main section.dashboard .func p {
@@ -758,10 +946,10 @@ main section.dashboard-analise-funcionario .grafico .header .dir span {
   margin-left: 7px;
 }
 main section.dashboard-analise-funcionario .grafico .header .dir .alto {
-  background: #D0342C;
+  background: #d0342c;
 }
 main section.dashboard-analise-funcionario .grafico .header .dir .normal {
-  background: #00CA43;
+  background: #00ca43;
 }
 main section.dashboard-analise-funcionario .grafico .header select {
   height: 30px;

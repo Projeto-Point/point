@@ -4,11 +4,13 @@
  */
 package banco;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.britooo.looca.api.core.Looca;
 import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.Unirest;
 import com.mashape.unirest.http.exceptions.UnirestException;
 import java.io.IOException;
+import java.net.URL;
 import org.springframework.jdbc.core.JdbcTemplate;
 
 import java.util.List;
@@ -34,33 +36,51 @@ public class Main {
         Registros registro = new Registros();
 
 
-      
-
 //      
-        if (func.isFuncionarioCadastrado("cleber@point.com", "123456")) {
+//        if (func.isFuncionarioCadastrado("cleber@point.com", "123456")) {
+//
+//            System.out.println(maquina.isMaquinaCadastrada(func));
+//
+//            if (maquina.isMaquinaCadastrada(func)) {
+//                System.out.println("Máquina já cadastrada");
+//            } else if (maquina.isCadastrarMaquina(func)) {
+//                System.out.println("Máquina Cadastrada");
+//            } else {
+//                System.out.println("Não foi possível encontrar máquina/cadastar máquina");
+//            }
+//        } else {
+//            System.out.println("Funcionário não encontrado");
+//        }
+//
+//        System.out.println("Agora vamos inserir os dados no banco");
+//
+//        int count = 0;
+//
+//        while (true) {
+//            registro.inserirRegistros(maquina);
+//            count++;
+//            System.out.println("Foram inseridos " + count + " Dados");
+//        }    
+    
 
-            System.out.println(maquina.isMaquinaCadastrada(func));
 
-            if (maquina.isMaquinaCadastrada(func)) {
-                System.out.println("Máquina já cadastrada");
-            } else if (maquina.isCadastrarMaquina(func)) {
-                System.out.println("Máquina Cadastrada");
-            } else {
-                System.out.println("Não foi possível encontrar máquina/cadastar máquina");
-            }
-        } else {
-            System.out.println("Funcionário não encontrado");
+    
+     
+         try {
+
+            ObjectMapper mapper = new ObjectMapper();
+            
+           Localizacao local = mapper.readValue(new URL("https://ipinfo.io/json"), Localizacao.class);
+           
+           local.inserirLocalizacao(local);
+
         }
-
-        System.out.println("Agora vamos inserir os dados no banco");
-
-        int count = 0;
-
-        while (true) {
-            registro.inserirRegistros(maquina);
-            count++;
-            System.out.println("Foram inseridos " + count + " Dados");
+         
+        catch (Exception exception) {
+            System.out.println(exception);
         }
+        
 
-    }
+    
+   }
 }
