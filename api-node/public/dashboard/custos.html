@@ -77,11 +77,31 @@
         <h3>Média da memória RAM:</h3>
         <p id="kpiRAM">%</p>
       </div>
-      <div class="box info-funcionario" id="sobreFuncionario">
-        <h3>Sobre o funcionário</h3>
-      </div>
-      <div class="box info-maquina" id="sobreMaquina">
+      <div class="grafico-processador grafico box">
+        <div class="header">
+            <h3>Processador</h3>
+            <div class="dir">
+                <div class="legenda alto"></div>
+                <span>Maior que 80%</span>
+                <div class="legenda normal"></div>
+                <span>Menor que 80%</span>
+                <select id="tempoCpu" onchange="mudarTempo('CPU', this.value)">
+                    <option value="ultimoMes">Último mês</option>
+                    <option value="ultimaSemana">Última semana</option>
+                    <option value="ultimoAno">Último ano</option>
+                </select>
+            </div>
+        </div>
+        <div class="main-grafico">
+            <canvas id="graficoCusto"></canvas>
+        </div>
+    </div>
+        <div class="box info-maquina">
         <h3>Sobre a máquina</h3>
+        <div id="sobreMaquina"></div>
+        <br>
+        <h3>Sobre o funcionário</h3>
+        <div id="sobreFuncionario"></div>
       </div>
     </section>
   </main>
@@ -97,6 +117,10 @@
   const parametrosString = window.location.search;
   const parametros = new URLSearchParams(parametrosString);
   const idMaquina = Number(parametros.get("idMaquina"));
+
+
+
+
 
   // fetch(`/medidas/pegarRegistroMaquina?idMaquina=${idMaquina}`).then((res) => {
   //   if (res.ok) {
@@ -127,7 +151,6 @@
           sobreFuncionario.innerHTML += `<p><b>Nome: </b>${resposta[0].nome}</p>`;
           sobreFuncionario.innerHTML += `<p><b>Cargo: </b>${resposta[0].cargo}</p>`;
           sobreFuncionario.innerHTML += `<p><b>E-mail: </b>${resposta[0].email}</p>`;
-          sobreFuncionario.innerHTML += `<p><b>Telefone: </b>${resposta[0].telefone}</p>`;
         });
       }
     }
@@ -188,6 +211,11 @@
             kpiHoras.innerHTML += minutos;
             kpiHoras.innerHTML += " minutos"
           }
+
+
+
+
+
         });
       }
     })
@@ -217,10 +245,10 @@
         document.getElementById(
           "sobreMaquina"
         ).innerHTML += `<p><b>Armazenamento: </b><span>${resposta[0].tipoArmazenamento}</span></p>`;
-        document.getElementById(
-          "sobreMaquina"
-        ).innerHTML += `<p><b>Alterar instância: </b><span class="top-esq"><a href="https://us-east-1.console.aws.amazon.com/console/home?region=us-east-1#" class="logo">teste
-      </a></span></p>`;
+      //   document.getElementById(
+      //     "sobreMaquina"
+      //   ).innerHTML += `<p><b>Alterar instância: </b><span class="top-esq"><a href="https://us-east-1.console.aws.amazon.com/console/home?region=us-east-1#" class="logo">teste
+      // </a></span></p>`;
       });
     }
   });
