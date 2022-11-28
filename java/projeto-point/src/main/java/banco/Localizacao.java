@@ -26,12 +26,34 @@ public class Localizacao {
 
     
    
-    // Inserir no banco
-    public void inserirLocalizacao(Localizacao local){
-        
-        
-        
-    }
     
+    public String[] getLocation(Localizacao local){
+        
+        String locLat = local.loc;
+        
+        String[] geoLocation = locLat.split(",");
+     
+        return geoLocation;
+                
+        }
+       
+    
+    // Inserir no banco
+    public void inserirLocalizacaoEntrada(Localizacao local){
+        
+       
+        
+         connection.update("INSERT INTO Localizacao (acao, dataEhora, ipAdress, longitude, latitude, cidade, pais, fkMaquina) VALUES ('E',GETDATE(), ?, ?, ?, ?, ?, ?)",
+                 
+                 local.ip,
+                 getLocation(local)[0],
+                 getLocation(local)[1],
+                 local.city,
+                 local.country,
+                 1
+      
+                );
+         
+    }
     
 }
