@@ -1095,6 +1095,18 @@ main {
         "i2";
       grid-template-rows: auto;
     }
+    section.dashboard-analise-funcionario {
+      grid-template-columns: 100%;
+      grid-template-areas:
+        "k1"
+        "k2"
+        "g1"
+        "g2"
+        "g3"
+        "i1"
+        "i2";
+      grid-template-rows: auto;
+    }
   }
 }
 

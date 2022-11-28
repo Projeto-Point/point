@@ -1009,6 +1009,11 @@ main section.dashboard-analise-funcionario a.funcionario:hover {
   main section.dashboard-analise .legenda {
     display: none;
   }
+  main section.dashboard-analise-funcionario {
+    grid-template-columns: 100%;
+    grid-template-areas: "k1" "k2" "g1" "g2" "g3" "i1" "i2";
+    grid-template-rows: auto;
+  }
 }
 @media screen and (max-width: 1100px) {
   header nav {

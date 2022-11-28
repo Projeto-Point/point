@@ -55,10 +55,8 @@
                     <p class="subtitulo">17/10/2022</p>
                 </div>
                 <div class="top-meio">
-                    <select id="">
-                        <option value="">BR - São Paulo</option>
-                        <option value="">BR - Rio de Janeiro</option>
-                        <option value="">BR - Minas Gerais</option>
+                    <select id="select-cidades">
+                        <!-- <option value="">BR - São Paulo</option> -->
                     </select>
                 </div>
             </section>
@@ -179,9 +177,14 @@
         pegarDadosCpu();
         pegarDadosRam();
 
+        pegarCidades();
         pegarFuncionarios();
         mediaHorasAtivas();
     };
+
+    document.getElementById("select-cidades").addEventListener('change', (event) => {
+        location.href = `analisar-funcionarios.html?cidade=${event.target.value}`;
+    });
 
     function zeroEsquerda(numero, tamanho){
         numero = (numero).toString();
@@ -213,8 +216,19 @@
     function pegarDadosMovimentacao(){
         const periodoInicio = moment(document.getElementById('data-movimentacao-inicio').value).format('YYYY-MM-DD');
         const periodoFim = moment(document.getElementById('data-movimentacao-fim').value).format('YYYY-MM-DD');
-        fetch(`/analiseAgda/pegarMovimentacao?periodoInicio=${periodoInicio}&periodoFim=${periodoFim}&idFuncionario=${idFuncionario}&cidade=${cidade}`).then((res) => {
-            if(res.ok){
+        fetch(`/analiseAgda/pegarMovimentacao?periodoInicio=${periodoInicio}&periodoFim=${periodoFim}&idFuncionario=${idFuncionario}&cidade=${cidade}&idEmpresa=${sessionStorage['ID_EMPRESA']}`).then((res) => {
+            console.log(res);
+            if(res.status == 204){
+                if(chartMovimentacao != null){
+                    chartMovimentacao.destroy();
+                }
+
+                ctx = document.getElementById('graficoMovimentacao').getContext("2d");
+                ctx.font = "16px Arial"
+                ctx.fillText("Nenhum dado encontrado encontrado!", 10, 30);
+                ctx.fillText("Tente mudar o dia ou o período", 10, 60);
+            }
+            else if(res.ok){
                 res.json().then((resposta) => {
                     graficoMovimentacao(resposta);
                 });
@@ -308,7 +322,17 @@
         }
 
         fetch(`/analiseAgda/pegarCpu?periodoInicio=${periodoInicio}&periodoFim=${periodoFim}&idFuncionario=${idFuncionario}&cidade=${cidade}`).then((res) => {
-            if(res.ok){
+            if(res.status == 204){
+                if(chartCpu != null){
+                    chartCpu.destroy();
+                }
+
+                ctx = document.getElementById('graficoCPU').getContext("2d");
+                ctx.font = "16px Arial"
+                ctx.fillText("Nenhum dado encontrado encontrado!", 10, 30);
+                ctx.fillText("Tente mudar o dia ou o período", 10, 60);
+            }
+            else if(res.ok){
                 res.json().then((resposta) => {
                     graficoCpu(resposta);
                 });
@@ -370,7 +394,17 @@
         }
 
         fetch(`/analiseAgda/pegarRam?periodoInicio=${periodoInicio}&periodoFim=${periodoFim}&idFuncionario=${idFuncionario}&cidade=${cidade}`).then((res) => {
-            if(res.ok){
+            if(res.status == 204){
+                if(chartRam != null){
+                    chartRam.destroy();
+                }
+
+                ctx = document.getElementById('graficoRAM').getContext("2d");
+                ctx.font = "16px Arial"
+                ctx.fillText("Nenhum dado encontrado encontrado!", 10, 30);
+                ctx.fillText("Tente mudar o dia ou o período", 10, 60);
+            }
+            else if(res.ok){
                 res.json().then((resposta) => {
                     graficoRam(resposta);
                 });
@@ -418,6 +452,26 @@
         chartRam = new Chart(document.getElementById('graficoRAM'), config);
     }
 
+    function pegarCidades(){
+        fetch(`/analiseAgda/pegarCidades?idEmpresa=${sessionStorage['ID_EMPRESA']}`).then((res) => {
+            if(res.ok){
+                res.json().then((resposta) => {
+                    for (let index = 0; index < resposta.length; index++) {
+                        document.getElementById("select-cidades").innerHTML += `<option value="${resposta[index].cidade}">${resposta[index].pais} - ${resposta[index].cidade}</option>`;
+                    }
+
+                    document.getElementById("outros-funcionarios").innerHTML += `<a class="funcionario func0" href="analisar-funcionarios.html?cidade=${cidade}">Média dos funcionários</a>`;
+                    
+                    for (let index = 0; index < resposta.length; index++) {
+                        document.getElementById("outros-funcionarios").innerHTML += `<a class="funcionario func${resposta[index].idFuncionario}" href="analisar-funcionarios.html?idFuncionario=${resposta[index].idFuncionario}&cidade=${cidade}">${resposta[index].nome}</a>`;
+                    }
+
+                    document.querySelector(`.func${idFuncionario}`).classList.add("selecionado");
+                });
+            }
+        });
+    }
+
     function pegarFuncionarios(){
         fetch(`/analiseAgda/pegarFuncionarios?idEmpresa=${sessionStorage['ID_EMPRESA']}&cidade=${cidade}`).then((res) => {
             if(res.ok){
@@ -437,7 +491,7 @@
     }
 
     function mediaHorasAtivas(){
-        fetch(`/analiseAgda/mediaHorasAtivas?idFuncionario=${idFuncionario}&dataInicio=${moment().subtract(30, "days").format("YYYY-MM-DD")}&dataFinal=${moment().format("YYYY-MM-DD")}&cidade=${cidade}`)
+        fetch(`/analiseAgda/mediaHorasAtivas?idFuncionario=${idFuncionario}&dataInicio=${moment().subtract(30, "days").format("YYYY-MM-DD")}&dataFinal=${moment().format("YYYY-MM-DD")}&cidade=${cidade}&idEmpresa=${sessionStorage['ID_EMPRESA']}`)
         .then((res) => {
             if (res.ok) {
                 res.json().then((resposta) => {
@@ -457,6 +511,10 @@
                     horariosDiferenca.forEach(horario => {
                         horasAtivas += horario;
                     });
+
+                    if(horasAtivas == 0){
+                        kpiHoras.innerHTML += "Não foi possível calcular";
+                    }
 
                     let horas = moment.duration(horasAtivas).hours();
                     let minutos = moment.duration(horasAtivas).minutes();

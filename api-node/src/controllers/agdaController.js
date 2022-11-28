@@ -6,7 +6,8 @@ function pegarMovimentacao(req, res) {
     const periodoFim = req.query.periodoFim;
     const idFuncionario = req.query.idFuncionario;
     const cidade = req.query.cidade;
-    agdaModel.pegarMovimentacao(periodoInicio, periodoFim, idFuncionario, cidade)
+    const idEmpresa = req.query.idEmpresa;
+    agdaModel.pegarMovimentacao(periodoInicio, periodoFim, idFuncionario, cidade, idEmpresa)
     .then(function (resultado) {
         if (resultado.length > 0) {
             res.status(200).json(resultado);
@@ -84,7 +85,8 @@ function mediaHorasAtivas(req, res){
     const dataInicio = req.query.dataInicio;
     const dataFinal = req.query.dataFinal;
     const cidade = req.query.cidade;
-    agdaModel.mediaHorasAtivas(idFuncionario, dataInicio, dataFinal, cidade)
+    const idEmpresa = req.query.idEmpresa;
+    agdaModel.mediaHorasAtivas(idFuncionario, dataInicio, dataFinal, cidade, idEmpresa)
     .then(function (resultado) {
         if (resultado.length > 0) {
             res.status(200).json(resultado);
@@ -99,10 +101,28 @@ function mediaHorasAtivas(req, res){
     });
 }
 
+function pegarCidades(req, res){
+    const idEmpresa = req.query.idEmpresa;
+    agdaModel.pegarCidades(idEmpresa)
+    .then(function (resultado) {
+        if (resultado.length > 0) {
+            res.status(200).json(resultado);
+        }
+        else {
+            res.status(204).send("Nenhuma cidade encontrada!");
+        }
+    }).catch(function (erro) {
+        console.log(erro);
+        console.log("Houve um erro ao pegar a CPU: ", erro.sqlMessage);
+        res.status(500).json(erro.sqlMessage);
+    });
+}
+
 module.exports = {
     pegarMovimentacao,
     pegarCpu,
     pegarRam,
     pegarFuncionarios,
     mediaHorasAtivas,
+    pegarCidades,
 }

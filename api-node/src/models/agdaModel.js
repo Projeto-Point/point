@@ -1,10 +1,12 @@
 var database = require("../database/config");
 
-function pegarMovimentacao(periodoInicio, periodoFim, idFuncionario, cidade){
+function pegarMovimentacao(periodoInicio, periodoFim, idFuncionario, cidade, idEmpresa){
     if(idFuncionario == 0){
         console.log(cidade);
         instrucaoSql = `SELECT acao, CAST(AVG(CAST(dataEhora AS FLOAT)) AS DATETIME) AS dataEhora FROM Localizacao
-        WHERE cidade = '${cidade}' AND CAST(dataEhora AS DATE) BETWEEN '${periodoInicio}' AND '${periodoFim}'
+        INNER JOIN Maquina ON fkMaquina = idMaquina
+        INNER JOIN Funcionario ON fkFuncionario = idFuncionario
+        WHERE cidade = '${cidade}' AND CAST(dataEhora AS DATE) BETWEEN '${periodoInicio}' AND '${periodoFim}' AND fkEmpresa = ${idEmpresa}
         GROUP BY acao, CAST(dataEhora AS DATE);`;
         console.log(instrucaoSql)
     }
@@ -64,7 +66,7 @@ function pegarFuncionarios(idEmpresa, cidade){
     return database.executar(instrucaoSql);
 }
 
-function mediaHorasAtivas(idFuncionario, dataInicio, dataFinal, cidade){
+function mediaHorasAtivas(idFuncionario, dataInicio, dataFinal, cidade, idEmpresa){
     if(idFuncionario != 0){
         instrucaoSql = `SELECT acao,
             CAST(dataEhora AS DATE) AS 'dia',
@@ -79,9 +81,20 @@ function mediaHorasAtivas(idFuncionario, dataInicio, dataFinal, cidade){
             CAST(dataEhora AS DATE) AS 'dia',
             CAST(AVG(CAST(dataEhora AS FLOAT)) AS DATETIME) AS 'horario'
         FROM Localizacao
-        WHERE cidade = '${cidade}' AND CAST(dataEhora AS DATE) BETWEEN '${dataInicio}' AND '${dataFinal}'
+        INNER JOIN Maquina ON fkMaquina = idMaquina
+        INNER JOIN Funcionario ON fkFuncionario = idFuncionario
+        WHERE cidade = '${cidade}' AND CAST(dataEhora AS DATE) BETWEEN '${dataInicio}' AND '${dataFinal}' AND fkEmpresa = ${idEmpresa}
         GROUP BY acao, CAST(dataEhora AS DATE);`;
     }
+    console.log(instrucaoSql);
+    return database.executar(instrucaoSql);
+}
+
+function pegarCidades(idEmpresa){
+    instrucaoSql = `SELECT DISTINCT cidade, pais FROM Localizacao 
+    INNER JOIN Maquina ON fkMaquina = idMaquina
+    INNER JOIN Funcionario ON fkFuncionario = idFuncionario
+    WHERE fkEmpresa = ${idEmpresa};`;
     console.log(instrucaoSql);
     return database.executar(instrucaoSql);
 }
@@ -92,4 +105,5 @@ module.exports = {
     pegarRam,
     pegarFuncionarios,
     mediaHorasAtivas,
+    pegarCidades,
 }

@@ -23,4 +23,8 @@ router.get("/mediaHorasAtivas", function(req, res) {
     agdaController.mediaHorasAtivas(req, res);
 });
 
+router.get("/pegarCidades", function(req, res) {
+    agdaController.pegarCidades(req, res);
+});
+
 module.exports = router;
