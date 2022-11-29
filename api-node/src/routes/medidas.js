@@ -27,4 +27,12 @@ router.get("/pegarRegistroInstancia", function(req, res){
     medidaController.pegarRegistroInstancia(req, res);
 });
 
+router.get("/pegarRegistroDownload", function(req, res){ 
+    medidaController.pegarRegistroDownload(req, res);
+});
+
+router.get("/pegarRegistroUpload", function(req, res){ 
+    medidaController.pegarRegistroUpload(req, res);
+});
+
 module.exports = router;
