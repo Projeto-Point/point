@@ -39,11 +39,27 @@ function pegarRegistroInstancia(idMaquina){
     console.log("Executando a instrução SQL: \n" + instrucaoSql);
     return database.executar(instrucaoSql);
 }
+function pegarRegistroDownload(idMaquina){
+    instrucaoSql = `SELECT TOP 10 bytesRebidos FROM vw_rede
+    WHERE idMaquina = ${idMaquina} order by dataEhora desc;`;
+    console.log("Executando a instrução SQL: \n" + instrucaoSql);
+    return database.executar(instrucaoSql);
+}
+
+function pegarRegistroUpload(idMaquina){
+    instrucaoSql = `SELECT TOP 10 bytesEnviados FROM vw_rede 
+    WHERE idMaquina = ${idMaquina} order by dataEhora desc;`;
+    console.log("Executando a instrução SQL: \n" + instrucaoSql);
+    return database.executar(instrucaoSql);
+}
+
 module.exports = {
     pegarRegistroCPU,
     pegarRegistroDISCO,
     pegarRegistroRAM,
     pegarRegistroFuncionario,
     pegarRegistroMaquina,
-    pegarRegistroInstancia
+    pegarRegistroInstancia,
+    pegarRegistroUpload,
+    pegarRegistroDownload
 }
