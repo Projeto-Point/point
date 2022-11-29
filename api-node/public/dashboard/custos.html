@@ -120,6 +120,7 @@
 
 
 
+
   // fetch(`/medidas/pegarRegistroMaquina?idMaquina=${idMaquina}`).then((res) => {
   //   if (res.ok) {
   //     res.json().then((resposta) => {
@@ -246,29 +247,30 @@
     }
   });
 
-  const labels = [
-    '',
-    '',
-    '',
-    '',
-    '',
-    '',
-    '',
-    '',
-    '',
-    ''
-  ];
 
+
+
+ 
+  const labels = [1,2,3,4,5,6,7,8,9,10];
   const data = {
     labels: labels,
-    datasets: [{
-      //CPU
-      label: '',
-      data: [1,2,3,4,5,6,7,8,9,10],
-      fill: true,
-      borderColor: 'rgb(75, 192, 192)',
-
-    }]
+    datasets: [
+      {
+        label: 'Dataset 1',
+        data: [1,2,3,4,5,6,7,8,9,10],
+        borderColor: 'rgb(75, 192, 192)',
+        backgroundColor: 'rgb(75, 192, 192)',
+        stack: 'combined',
+        type: 'bar'
+      },
+      {
+        label: 'Dataset 2',
+        data: [1,2,3,4,5,6,7,8,9,10],
+        borderColor: 'rgb(75, 192, 192)',
+        backgroundColor: 'rgb(75, 192, 192)',
+        stack: 'combined'
+      }
+    ]
   };
 
   const config = {
@@ -278,18 +280,19 @@
       plugins: {
         title: {
           display: false,
-          text: ''
         }
       },
       scales: {
         y: {
-          stacked: false
+          stacked: true
         }
       }
     },
   };
 
-  window.graficoCPU = new Chart(
+
+
+  window.graficoCusto = new Chart(
     document.getElementById('graficoCusto').getContext("2d"),
     config);
 </script>
