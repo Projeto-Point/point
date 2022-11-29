@@ -1,4 +1,3 @@
-## Esse código é da Camarada Agdas. Temos que refatorar o código python 
 import os
 import platform
 from time import sleep
@@ -8,6 +7,9 @@ import pymssql
 import geocoder
 import pymysql
 import requests
+import psutil
+import json
+import email
 from datetime import datetime, timedelta
 
 # Credenciais da Azure
@@ -18,8 +20,8 @@ passwordSqlServer = '1cco#grupo1'
 
 # Credenciais do MySQL
 databaseMySql = 'bd_point'
-usernameMySql = 'root'
-passwordMySql = 'urubu100'
+usernameMySql = 'aluno'
+passwordMySql = 'sptech'
 
 def limpar():
     if os.name == 'posix':
@@ -37,20 +39,10 @@ def inserirBanco(comando):
         
         conexaoSqlServer.commit()
 
-    # MySQL Local
-    # comando = comando.replace('GETDATE', 'NOW')
-    # conexaoMySql = pymysql.connect(db=databaseMySql, user=usernameMySql, passwd=passwordMySql)
-
-    # with conexaoMySql:
-    #     with conexaoMySql.cursor() as cursor:
-    #         cursor.execute(comando)
-        
-    #     conexaoMySql.commit()
 
 def consultarBanco(comando):
-    comando = comando.replace('GETDATE', 'NOW')
-    
-    
+
+      
         # Azure SQL Server
     conexaoSqlServer = pymssql.connect(server=serverSqlServer, user=usernameSqlServer, password=passwordSqlServer, database=databaseSqlServer)
 
@@ -59,15 +51,6 @@ def consultarBanco(comando):
             cursor.execute(comando)
             return cursor.fetchall()
 
-    # except:
-    #     # MySQL Local
-    #     comando = comando.replace('GETDATE', 'NOW')
-    #     conexaoMySql = pymysql.connect(db=databaseMySql, user=usernameMySql, passwd=passwordMySql)
-
-    #     with conexaoMySql:
-    #         with conexaoMySql.cursor() as cursor:
-    #             cursor.execute(comando)
-    #             return cursor.fetchall()
 
 
 
@@ -107,7 +90,7 @@ def bytes_para_giga(value):
 def has_hora_passada(hora_atual, hora_ultima_notificacao):
     # 3 é a quantidade de horas que precisa passar para mandar a notificacao    
    return hora_atual >= hora_ultima_notificacao + 1
-      
+    
 
 verificaLogin = False
 verificarCadastro = False
