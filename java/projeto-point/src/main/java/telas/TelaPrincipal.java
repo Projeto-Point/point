@@ -21,8 +21,11 @@ import java.util.TimerTask;
 
 import banco.Utilitarios;
 import banco.Funcionario;
+import banco.Localizacao;
 import banco.Maquina;
 import banco.Registros;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import java.net.URL;
 
 public class TelaPrincipal extends javax.swing.JFrame {
 
@@ -34,13 +37,17 @@ public class TelaPrincipal extends javax.swing.JFrame {
     Temperatura temperatura = looca.getTemperatura();
     Memoria memoria = looca.getMemoria();
     Processador processador = looca.getProcessador();
+    
+    Funcionario func;
 
-    public TelaPrincipal(Funcionario func) {
+    public TelaPrincipal(Funcionario func) {        
         initComponents();
         this.setResizable(false);
         this.looca = new Looca();
         this.setUpOs();
 
+        this.func = func;
+        
         Utilitarios utils = new Utilitarios();
         Maquina maquina = new Maquina();
         Registros registro = new Registros();
@@ -60,6 +67,16 @@ public class TelaPrincipal extends javax.swing.JFrame {
         Double espacoUtilizado = registro.getVolumeTotal() - registro.getVolumeDisponivel();
         grupoDeDisco.setText(utils.limitarDuasCasasDecimais(espacoUtilizado).toString() + " GB / " + registro.getVolumeTotal().toString() +
             " GB (" + utils.limitarDuasCasasDecimais(registro.getPorcentagemVolume()) + "%)");
+        
+        try{
+            ObjectMapper mapper = new ObjectMapper();
+            Localizacao local = mapper.readValue(new URL("https://ipinfo.io/json"), Localizacao.class);
+            local.inserirLocalizacao("E", maquina.getId(), local);
+        }
+        catch (Exception e){
+            System.out.println("Não foi possível inserir a entrada");
+            System.out.println(e);
+        }
 
         int delay = 5000;
         int interval = 1000;
@@ -112,68 +129,64 @@ public class TelaPrincipal extends javax.swing.JFrame {
         jLabel10 = new javax.swing.JLabel();
         grupoDeDisco = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
+        btnFechar = new javax.swing.JButton();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
         setBackground(new java.awt.Color(51, 255, 51));
 
         jLabel1.setFont(new java.awt.Font("sansserif", 1, 16)); // NOI18N
-        jLabel1.setForeground(new java.awt.Color(0, 0, 0));
         jLabel1.setText("Fabricante:");
 
         jLabel2.setFont(new java.awt.Font("sansserif", 1, 16)); // NOI18N
-        jLabel2.setForeground(new java.awt.Color(0, 0, 0));
         jLabel2.setText("Sistema Operacional:");
         jLabel2.setMaximumSize(new java.awt.Dimension(119, 25));
 
         jLabel3.setFont(new java.awt.Font("sansserif", 1, 16)); // NOI18N
-        jLabel3.setForeground(new java.awt.Color(0, 0, 0));
         jLabel3.setText("Arquitetura:");
 
         lblSistemaOperacionalValue.setFont(new java.awt.Font("sansserif", 0, 15)); // NOI18N
-        lblSistemaOperacionalValue.setForeground(new java.awt.Color(0, 0, 0));
         lblSistemaOperacionalValue.setText("--");
 
         lblFabricanteValue.setFont(new java.awt.Font("sansserif", 0, 15)); // NOI18N
-        lblFabricanteValue.setForeground(new java.awt.Color(0, 0, 0));
         lblFabricanteValue.setText("--");
 
         lblArquiteturaValue.setFont(new java.awt.Font("sansserif", 0, 15)); // NOI18N
-        lblArquiteturaValue.setForeground(new java.awt.Color(0, 0, 0));
         lblArquiteturaValue.setText("--");
 
         totalRam.setFont(new java.awt.Font("sansserif", 0, 15)); // NOI18N
-        totalRam.setForeground(new java.awt.Color(0, 0, 0));
         totalRam.setText("--");
 
         cpu.setFont(new java.awt.Font("sansserif", 0, 15)); // NOI18N
-        cpu.setForeground(new java.awt.Color(0, 0, 0));
         cpu.setText("--");
 
         jLabel7.setFont(new java.awt.Font("sansserif", 1, 16)); // NOI18N
-        jLabel7.setForeground(new java.awt.Color(0, 0, 0));
         jLabel7.setText("CPU:");
 
         jLabel8.setFont(new java.awt.Font("sansserif", 1, 16)); // NOI18N
-        jLabel8.setForeground(new java.awt.Color(0, 0, 0));
         jLabel8.setText("Total da memória RAM:");
 
         jLabel9.setFont(new java.awt.Font("sansserif", 1, 16)); // NOI18N
-        jLabel9.setForeground(new java.awt.Color(0, 0, 0));
         jLabel9.setText("Uso de RAM:");
 
         usoRam.setFont(new java.awt.Font("sansserif", 0, 15)); // NOI18N
-        usoRam.setForeground(new java.awt.Color(0, 0, 0));
         usoRam.setText("--");
 
         jLabel10.setFont(new java.awt.Font("sansserif", 1, 16)); // NOI18N
-        jLabel10.setForeground(new java.awt.Color(0, 0, 0));
         jLabel10.setText("Discos:");
 
         grupoDeDisco.setFont(new java.awt.Font("sansserif", 0, 15)); // NOI18N
-        grupoDeDisco.setForeground(new java.awt.Color(0, 0, 0));
         grupoDeDisco.setText("--");
 
         jLabel5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/assets/PointPequeno.png"))); // NOI18N
+
+        btnFechar.setBackground(new java.awt.Color(204, 0, 0));
+        btnFechar.setForeground(new java.awt.Color(255, 255, 255));
+        btnFechar.setText("Fechar");
+        btnFechar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnFecharActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -198,14 +211,15 @@ public class TelaPrincipal extends javax.swing.JFrame {
                                     .addComponent(usoRam, javax.swing.GroupLayout.PREFERRED_SIZE, 290, javax.swing.GroupLayout.PREFERRED_SIZE)))
                             .addGroup(layout.createSequentialGroup()
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(grupoDeDisco)
                                     .addComponent(jLabel10)
                                     .addComponent(jLabel7)
                                     .addComponent(cpu)
                                     .addComponent(jLabel1)
                                     .addComponent(lblFabricanteValue)
-                                    .addComponent(jLabel3))
-                                .addGap(0, 0, Short.MAX_VALUE)))
+                                    .addComponent(jLabel3)
+                                    .addComponent(grupoDeDisco))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(btnFechar, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)))
                         .addContainerGap())
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -243,18 +257,39 @@ public class TelaPrincipal extends javax.swing.JFrame {
                     .addComponent(totalRam)
                     .addComponent(usoRam))
                 .addGap(18, 18, 18)
-                .addComponent(jLabel7)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(cpu)
-                .addGap(18, 18, 18)
-                .addComponent(jLabel10)
-                .addGap(18, 18, 18)
-                .addComponent(grupoDeDisco)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jLabel7)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(cpu)
+                        .addGap(18, 18, 18)
+                        .addComponent(jLabel10)
+                        .addGap(18, 18, 18)
+                        .addComponent(grupoDeDisco))
+                    .addComponent(btnFechar, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void btnFecharActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnFecharActionPerformed
+        // TODO add your handling code here:
+        Maquina maquina = new Maquina();
+        maquina.isMaquinaCadastrada(this.func);
+        
+        try{
+            ObjectMapper mapper = new ObjectMapper();
+            Localizacao local = mapper.readValue(new URL("https://ipinfo.io/json"), Localizacao.class);
+            local.inserirLocalizacao("S", maquina.getId(), local);
+        }
+        catch (Exception e){
+            System.out.println("Não foi possível inserir a saída");
+            System.out.println(e);
+        }
+        
+        System.exit(0);
+    }//GEN-LAST:event_btnFecharActionPerformed
 
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
@@ -291,6 +326,7 @@ public class TelaPrincipal extends javax.swing.JFrame {
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnFechar;
     private javax.swing.JLabel cpu;
     private javax.swing.JLabel grupoDeDisco;
     private javax.swing.JLabel jLabel1;

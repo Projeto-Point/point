@@ -72,7 +72,8 @@ public class Main {
             
            Localizacao local = mapper.readValue(new URL("https://ipinfo.io/json"), Localizacao.class);
            
-           local.inserirLocalizacaoEntrada(local);
+//           local.inserirLocalizacaoEntrada(local);
+//            local.inserirLocalizacao("E", Integer.MIN_VALUE, local);
 
              
 

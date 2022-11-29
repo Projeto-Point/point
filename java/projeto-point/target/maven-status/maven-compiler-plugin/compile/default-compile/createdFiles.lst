@@ -16,5 +16,6 @@ telas\TelaLogin.class
 telas\TelaLogin$4.class
 banco\Database.class
 banco\Funcionario.class
+banco\Localizacao.class
 banco\Main.class
 banco\TratamentoValores.class

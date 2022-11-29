@@ -23,6 +23,7 @@ public class Localizacao {
     public String postal;  
     public String timezone; 
     public String readme;
+    public String hostname;
 
     
    
@@ -39,20 +40,17 @@ public class Localizacao {
        
     
     // Inserir no banco
-    public void inserirLocalizacaoEntrada(Localizacao local){
+    public void inserirLocalizacao(String acao, Integer idMaquina, Localizacao local){
         
-       
-        
-         connection.update("INSERT INTO Localizacao (acao, dataEhora, ipAdress, longitude, latitude, cidade, pais, fkMaquina) VALUES ('E',GETDATE(), ?, ?, ?, ?, ?, ?)",
-                 
-                 local.ip,
-                 getLocation(local)[0],
-                 getLocation(local)[1],
-                 local.city,
-                 local.country,
-                 1
-      
-                );
+         connection.update("INSERT INTO Localizacao (acao, dataEhora, ipAdress, longitude, latitude, cidade, pais, fkMaquina) VALUES (?, GETDATE(), ?, ?, ?, ?, ?, ?)",
+            acao,
+            local.ip,
+            getLocation(local)[0],
+            getLocation(local)[1],
+            local.city,
+            local.country,
+            idMaquina
+        );
          
     }
     
