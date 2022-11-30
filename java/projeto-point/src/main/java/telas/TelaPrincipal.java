@@ -105,7 +105,7 @@ public class TelaPrincipal extends javax.swing.JFrame {
                     ConexaoPipefySlack conexao = new ConexaoPipefySlack(func);
                     conexao.enviarAlerta(String.format("RAM está com %.1f%%!", porcentagemRam), func);
                 }
-                if(porcentagemRam > 90){
+                if(porcentagemDisco > 90){
                     ConexaoPipefySlack conexao = new ConexaoPipefySlack(func);
                     conexao.enviarAlerta(String.format("Disco está com %.1f%%!", porcentagemDisco), func);
                 }
