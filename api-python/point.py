@@ -40,7 +40,7 @@ def inserirBanco(comando):
         conexaoSqlServer.commit()
 
     # MySQL Local
-    comando = comando.replace('GETDATE', 'NOW')
+    comando = comando.replace("GETDATE() AT TIME ZONE 'UTC' AT TIME ZONE 'Bahia Standard Time", "NOW()")
     conexaoMySql = pymysql.connect(db=databaseMySql, user=usernameMySql, passwd=passwordMySql)
 
     with conexaoMySql:
@@ -50,7 +50,7 @@ def inserirBanco(comando):
         conexaoMySql.commit()
 
 def consultarBanco(comando):
-    comando = comando.replace('GETDATE', 'NOW')
+    comando = comando.replace("GETDATE() AT TIME ZONE 'UTC' AT TIME ZONE 'Bahia Standard Time", "NOW()")
     
     try:
         # Azure SQL Server
@@ -63,14 +63,27 @@ def consultarBanco(comando):
 
     except:
         # MySQL Local
-        comando = comando.replace('GETDATE', 'NOW')
+        comando = comando.replace("GETDATE() AT TIME ZONE 'UTC' AT TIME ZONE 'Bahia Standard Time", "NOW()")
         conexaoMySql = pymysql.connect(db=databaseMySql, user=usernameMySql, passwd=passwordMySql)
 
         with conexaoMySql:
             with conexaoMySql.cursor() as cursor:
                 cursor.execute(comando)
                 return cursor.fetchall()
+            
 
+def has_alerta_por_componente(componente):
+    x = consultarBanco(f"SELECT TOP 1 resolucao,idAlerta FROM Alerta WHERE fkMaquina = {idMaquina} and componente like '{componente}' ORDER BY dataEhora DESC;")
+    if len(x) > 0:
+        return [x[0][0], x[0][1]]
+    else:
+        return [0,0]
+
+def inserir_alerta(componente, valor):
+    inserirBanco(f"INSERT INTO Alerta (dataEhora, titulo, resolucao, componente, valor, fkMaquina)VALUES (GETDATE() AT TIME ZONE 'UTC' AT TIME ZONE 'Bahia Standard Time', '{componente} está com {valor}', 'ABERTO', '{componente}', {valor}, {idMaquina})")
+
+def fechar_alerta(idAlerta):
+    inserirBanco(f"UPDATE [dbo].[Alerta] SET resolucao = 'FECHADO' WHERE idAlerta = {idAlerta};")
 
 
 def reportarAlerta(mensagem, email, nome):
@@ -197,8 +210,6 @@ ui = HSplit(
 )
 
 
-arr_componentes_alertas = []
-is_primeira_hora = True
 while True:
 #     #Memória RAM
     mem_tui = ui.items[2].items[0]
@@ -246,32 +257,49 @@ while True:
     porc_cpu = cpu_percent(interval=0.1)
     porc_ram = virtual_memory().percent
     porc_disco = disk_usage('/').percent   
-  
-        
-    if porc_cpu > 80 and 'CPU' not in arr_componentes_alertas:
-        reportarAlerta(f"CPU está com {porc_cpu}%!", login, nomeFuncionario)
-        arr_componentes_alertas.append('CPU')
-    if porc_ram > 85 and 'RAM' not in arr_componentes_alertas:
-        reportarAlerta(f"Ram está com {porc_ram}%!", login, nomeFuncionario)
-        arr_componentes_alertas.append('RAM')
-    if porc_disco > 90 and 'Disco' not in arr_componentes_alertas:
-        reportarAlerta(f"Disco está com {porc_disco}%!", login, nomeFuncionario)
-        arr_componentes_alertas.append('Disco')
-        
     
-    if is_primeira_hora:
-        ultima_hora = agora
-        is_primeira_hora = False
+
+    # Esta fora de metrica??? > 80
+    #True)Verifica se foi criado 
+    #> True) Se for criado e esta aberto -- Faz nada
+    #> False) Cria o alerta
+    #False) verifica se fo 
+    # 
+
+    if porc_cpu >= 80:
+        if has_alerta_por_componente('CPU')[0] != 'ABERTO':
+            inserir_alerta('CPU',porc_cpu)
+            reportarAlerta(f"CPU está com {porc_cpu}%!", login, nomeFuncionario)
+    else:
+        if has_alerta_por_componente('CPU')[0] != 'FECHADO':
+            fechar_alerta(has_alerta_por_componente('CPU')[1])
         
-    if has_hora_passada(agora.hour, ultima_hora.hour):
-        arr_componentes_alertas.clear()
-        ultima_hora = agora
+    if porc_ram >= 85:
+        
+        if has_alerta_por_componente('RAM')[0] != 'ABERTO':
+            inserir_alerta('RAM', porc_ram)
+            reportarAlerta(f"Ram está com {porc_ram}%!", login, nomeFuncionario)
+    else:
+        if has_alerta_por_componente('RAM')[0] != 'FECHADO':
+            fechar_alerta(has_alerta_por_componente('RAM')[1])
+             
+    if porc_disco >= 90:
+        
+        if has_alerta_por_componente('DISCO')[0] != 'ABERTO':
+            inserir_alerta('DISCO', porc_disco)
+            reportarAlerta(f"Disco está com {porc_disco}%!", login, nomeFuncionario)
+    else:
+        if has_alerta_por_componente('DISCO')[0] != 'FECHADO':
+            fechar_alerta(has_alerta_por_componente('DISCO')[1])
+        
+            
+            
 
-    inserirBanco(f"INSERT INTO Registro (valor, unidadeMedida, dataEhora, fkComponente, fkMaquina) VALUES ({porc_cpu}, '%', GETDATE(), 1, {idMaquina})")
+    inserirBanco(f"INSERT INTO Registro (valor, unidadeMedida, dataEhora, fkComponente, fkMaquina) VALUES ({porc_cpu}, '%', GETDATE() AT TIME ZONE 'UTC' AT TIME ZONE 'Bahia Standard Time', 1, {idMaquina})")
 
-    inserirBanco(f"INSERT INTO Registro (valor, unidadeMedida, dataEhora, fkComponente, fkMaquina) VALUES ({porc_ram}, '%', GETDATE(), 2, {idMaquina})")
+    inserirBanco(f"INSERT INTO Registro (valor, unidadeMedida, dataEhora, fkComponente, fkMaquina) VALUES ({porc_ram}, '%', GETDATE() AT TIME ZONE 'UTC' AT TIME ZONE 'Bahia Standard Time', 2, {idMaquina})")
 
-    inserirBanco(f"INSERT INTO Registro (valor, unidadeMedida, dataEhora, fkComponente, fkMaquina) VALUES ({porc_disco}, '%', GETDATE(), 3, {idMaquina})")
+    inserirBanco(f"INSERT INTO Registro (valor, unidadeMedida, dataEhora, fkComponente, fkMaquina) VALUES ({porc_disco}, '%', GETDATE() AT TIME ZONE 'UTC' AT TIME ZONE 'Bahia Standard Time', 3, {idMaquina})")
 
     #Mostrar os dados de 3 em 3 segundos
     try:
@@ -279,5 +307,5 @@ while True:
         sleep(3)
     except KeyboardInterrupt:
         # Inserindo saída com localização
-        inserirBanco(f"INSERT INTO Localizacao (acao, dataEhora, ipAdress, longitude, latitude, cidade, pais, fkMaquina) VALUES ('S', GETDATE(), '{ip.ip}', {ip.latlng[0]}, {ip.latlng[1]}, '{ip.city}', '{ip.country}', {idMaquina})")
+        inserirBanco(f"INSERT INTO Localizacao (acao, dataEhora, ipAdress, longitude, latitude, cidade, pais, fkMaquina) VALUES ('S', GETDATE() AT TIME ZONE 'UTC' AT TIME ZONE 'Bahia Standard Time', '{ip.ip}', {ip.latlng[0]}, {ip.latlng[1]}, '{ip.city}', '{ip.country}', {idMaquina})")
         break

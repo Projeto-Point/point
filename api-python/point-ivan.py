@@ -41,8 +41,6 @@ def inserirBanco(comando):
 
 
 def consultarBanco(comando):
-
-      
         # Azure SQL Server
     conexaoSqlServer = pymssql.connect(server=serverSqlServer, user=usernameSqlServer, password=passwordSqlServer, database=databaseSqlServer)
 
@@ -51,10 +49,18 @@ def consultarBanco(comando):
             cursor.execute(comando)
             return cursor.fetchall()
 
-def has_alerta():
+def has_alerta_por_componente(componente):
+    x = consultarBanco(f"SELECT TOP 1 resolucao,idAlerta FROM Alerta WHERE fkMaquina = {idMaquina} and componente like '{componente}' ORDER BY dataEhora DESC;")
+    if len(x) > 0:
+        return [x[0][0], x[0][1]]
+    else:
+        return [0,0]
 
-    x = consultarBanco(f"SELECT TOP 1 resolucao FROM Alerta WHERE fkMaquina = {idMaquina} ORDER BY dataEhora DESC;")
-    return x[0][0]
+def inserir_alerta(componente, valor):
+    inserirBanco(f"INSERT INTO Alerta (dataEhora, titulo, resolucao, componente, valor, fkMaquina)VALUES (GETDATE() AT TIME ZONE 'UTC' AT TIME ZONE 'Bahia Standard Time', '{componente} está com {valor}', 'ABERTO', '{componente}', {valor}, {idMaquina})")
+
+def fechar_alerta(idAlerta):
+    inserirBanco(f"UPDATE [dbo].[Alerta] SET resolucao = 'FECHADO' WHERE idAlerta = {idAlerta};")
 
 
 def reportarAlerta(mensagem, email, nome):
@@ -91,7 +97,7 @@ def bytes_para_giga(value):
     return f'{value / 1024 / 1024 / 1024: .2f}'
 
 def has_hora_passada(hora_atual, hora_ultima_notificacao):
-    # 3 é a quantidade de horas que precisa passar para mandar a notificacao    
+    # 3 é a quantidade de hors que precisa passar para mandar a notificacao    
    return hora_atual >= hora_ultima_notificacao + 1
     
 
@@ -144,10 +150,6 @@ else:
 consulta = consultarBanco(f"SELECT idMaquina FROM Maquina WHERE nomeMaquina = '{nome}' AND fkFuncionario = {idFuncionario}")
 idMaquina = consulta[0][0]
 
-
-print(has_alerta())
-exit()
-
 # Inserindo entrada com localização
 ip = geocoder.ip('me')
 inserirBanco(f"INSERT INTO Localizacao (acao, dataEhora, ipAdress, longitude, latitude, cidade, pais, fkMaquina) VALUES ('E', GETDATE() AT TIME ZONE 'UTC' AT TIME ZONE 'Bahia Standard Time', '{ip.ip}', {ip.latlng[0]}, {ip.latlng[1]}, '{ip.city}', '{ip.country}', {idMaquina})")
@@ -186,8 +188,6 @@ ui = HSplit(
 )
 
 
-arr_componentes_alertas = []
-is_primeira_hora = True
 while True:
 #     #Memória RAM
     mem_tui = ui.items[2].items[0]
@@ -236,7 +236,6 @@ while True:
     porc_ram = virtual_memory().percent
     porc_disco = disk_usage('/').percent   
     
-    # dataEhora, titulo, resolucao, fkMaquina, componentes, valor?? 
 
     # Esta fora de metrica??? > 80
     #True)Verifica se foi criado 
@@ -245,26 +244,34 @@ while True:
     #False) verifica se fo 
     # 
 
-#        inserirBanco(f"INSERT INTO Alerta (dataEhora, tituto, resolucao, componentes, valor, fkMaquina) VALUES (GETDATE() AT TIME ZONE 'UTC' AT TIME ZONE 'Bahia Standard Time', 'CPU está com {porc_cpu}', 'Aberto', 'CPU', {porc_cpu}, {idMaquina})")
-
-    if porc_cpu > 80 and 'CPU':
-        reportarAlerta(f"CPU está com {porc_cpu}%!", login, nomeFuncionario)
-        arr_componentes_alertas.append('CPU')
-    if porc_ram > 85 and 'RAM':
-        reportarAlerta(f"Ram está com {porc_ram}%!", login, nomeFuncionario)
-        arr_componentes_alertas.append('RAM')
-    if porc_disco > 90 and 'Disco':
-        reportarAlerta(f"Disco está com {porc_disco}%!", login, nomeFuncionario)
-        arr_componentes_alertas.append('Disco')
+    if porc_cpu >= 80:
+        if has_alerta_por_componente('CPU')[0] != 'ABERTO':
+            inserir_alerta('CPU',porc_cpu)
+            reportarAlerta(f"CPU está com {porc_cpu}%!", login, nomeFuncionario)
+    else:
+        if has_alerta_por_componente('CPU')[0] != 'FECHADO':
+            fechar_alerta(has_alerta_por_componente('CPU')[1])
         
-    
-    # if is_primeira_hora:
-    #     ultima_hora = agora
-    #     is_primeira_hora = False
+    if porc_ram >= 85:
         
-    # if has_hora_passada(agora.hour, ultima_hora.hour):
-    #     arr_componentes_alertas.clear()
-    #     ultima_hora = agora
+        if has_alerta_por_componente('RAM')[0] != 'ABERTO':
+            inserir_alerta('RAM', porc_ram)
+            reportarAlerta(f"Ram está com {porc_ram}%!", login, nomeFuncionario)
+    else:
+        if has_alerta_por_componente('RAM')[0] != 'FECHADO':
+            fechar_alerta(has_alerta_por_componente('RAM')[1])
+             
+    if porc_disco >= 90:
+        
+        if has_alerta_por_componente('DISCO')[0] != 'ABERTO':
+            inserir_alerta('DISCO', porc_disco)
+            reportarAlerta(f"Disco está com {porc_disco}%!", login, nomeFuncionario)
+    else:
+        if has_alerta_por_componente('DISCO')[0] != 'FECHADO':
+            fechar_alerta(has_alerta_por_componente('DISCO')[1])
+        
+            
+            
 
     inserirBanco(f"INSERT INTO Registro (valor, unidadeMedida, dataEhora, fkComponente, fkMaquina) VALUES ({porc_cpu}, '%', GETDATE() AT TIME ZONE 'UTC' AT TIME ZONE 'Bahia Standard Time', 1, {idMaquina})")
 

@@ -3,13 +3,29 @@ from time import sleep
 import random
 import requests
 from json import dumps 
+import pymssql
 
 
-webhook = "https://hooks.slack.com/services/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"
+serverSqlServer = 'bd-point.database.windows.net'
+databaseSqlServer = 'bd-point' 
+usernameSqlServer = 'adm-point' 
+passwordSqlServer = '1cco#grupo1'
 
-nomeFuncionario = 'Pedro'
+def consultarBanco(comando):
+        # Azure SQL Server
+    conexaoSqlServer = pymssql.connect(server=serverSqlServer, user=usernameSqlServer, password=passwordSqlServer, database=databaseSqlServer)
 
-mensagem = { "text" : "A CPU do funcionario " + str(nomeFuncionario) + " está acima do comum"}
+    with conexaoSqlServer:
+        with conexaoSqlServer.cursor() as cursor:
+            cursor.execute(comando)
+            return cursor.fetchall()
 
-print(requests.post(webhook, data=dumps(mensagem)))
+def has_alerta_por_componente(componente):
+    x = consultarBanco(f"SELECT TOP 1 resolucao,idAlerta FROM Alerta WHERE fkMaquina = 12 and componente like '{componente}' ORDER BY dataEhora DESC;")
+    if len(x) > 0:
+        return [x[0][0], x[0][1]]
+    else:
+        return [0,0]
+    
 
+print(has_alerta_por_componente('CPU')[0])
