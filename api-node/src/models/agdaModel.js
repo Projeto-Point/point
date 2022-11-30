@@ -15,17 +15,19 @@ function pegarMovimentacao(periodoInicio, periodoFim, idFuncionario, cidade, idE
         FROM Localizacao
         INNER JOIN Maquina ON idMaquina = fkMaquina
         INNER JOIN Funcionario ON idFuncionario = fkFuncionario
-        WHERE idFuncionario = ${idFuncionario} AND CAST(dataEhora AS DATE) BETWEEN '${periodoInicio}' AND '${periodoFim}'
+        WHERE idFuncionario = ${idFuncionario} AND CAST(dataEhora AS DATE) BETWEEN '${periodoInicio}' AND '${periodoFim}' AND cidade = '${cidade}'
         GROUP BY acao, CAST(dataEhora AS DATE);`;
     }
     return database.executar(instrucaoSql);
 }
 
-function pegarCpu(periodoInicio, periodoFim, idFuncionario, cidade){
+function pegarCpu(periodoInicio, periodoFim, idFuncionario, cidade, idEmpresa){
+    console.log(idFuncionario);
     if(idFuncionario == 0){
         instrucaoSql = `SELECT DATEPART(hour, R.dataEhora) AS 'hora', ROUND(AVG(valor), 2) AS 'valor' FROM vw_registros R
-        INNER JOIN Localizacao ON fkMaquina = fkMaquina AND cidade = '${cidade}'
-        WHERE tipo = 'CPU' AND R.dataEhora BETWEEN '${periodoInicio}' AND '${periodoFim}'
+        INNER JOIN Localizacao ON idMaquina = fkMaquina AND cidade = '${cidade}'
+        INNER JOIN Funcionario F ON F.idFuncionario = R.idFuncionario
+        WHERE tipo = 'CPU' AND R.dataEhora BETWEEN '${periodoInicio}' AND '${periodoFim}' AND fkEmpresa = ${idEmpresa}
         GROUP BY DATEPART(hour, R.dataEhora)
         ORDER BY DATEPART(hour, R.dataEhora);`;
     }
@@ -39,11 +41,12 @@ function pegarCpu(periodoInicio, periodoFim, idFuncionario, cidade){
     return database.executar(instrucaoSql);
 }
 
-function pegarRam(periodoInicio, periodoFim, idFuncionario, cidade){
+function pegarRam(periodoInicio, periodoFim, idFuncionario, cidade, idEmpresa){
     if(idFuncionario == 0){
         instrucaoSql = `SELECT DATEPART(hour, R.dataEhora) AS 'hora', ROUND(AVG(valor), 2) AS 'valor' FROM vw_registros R
-        INNER JOIN Localizacao ON fkMaquina = fkMaquina AND cidade = '${cidade}'
-        WHERE tipo = 'RAM' AND R.dataEhora BETWEEN '${periodoInicio}' AND '${periodoFim}'
+        INNER JOIN Localizacao ON idMaquina = fkMaquina AND cidade = '${cidade}'
+        INNER JOIN Funcionario F ON F.idFuncionario = R.idFuncionario
+        WHERE tipo = 'RAM' AND R.dataEhora BETWEEN '${periodoInicio}' AND '${periodoFim}' AND fkEmpresa = ${idEmpresa}
         GROUP BY DATEPART(hour, R.dataEhora)
         ORDER BY DATEPART(hour, R.dataEhora);`;
     }

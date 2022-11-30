@@ -25,9 +25,10 @@ function pegarMovimentacao(req, res) {
 function pegarCpu(req, res) {
     const periodoInicio = req.query.periodoInicio;
     const periodoFim = req.query.periodoFim;
-    const idFuncionario = req.query.idFuncionario || 0;
+    const idFuncionario = req.query.idFuncionario;
     const cidade = req.query.cidade;
-    agdaModel.pegarCpu(periodoInicio, periodoFim, idFuncionario, cidade)
+    const idEmpresa = req.query.idEmpresa;
+    agdaModel.pegarCpu(periodoInicio, periodoFim, idFuncionario, cidade, idEmpresa)
     .then(function (resultado) {
         if (resultado.length > 0) {
             res.status(200).json(resultado);
@@ -47,7 +48,8 @@ function pegarRam(req, res) {
     const periodoFim = req.query.periodoFim;
     const idFuncionario = req.query.idFuncionario;
     const cidade = req.query.cidade;
-    agdaModel.pegarRam(periodoInicio, periodoFim, idFuncionario, cidade)
+    const idEmpresa = req.query.idEmpresa;
+    agdaModel.pegarRam(periodoInicio, periodoFim, idFuncionario, cidade, idEmpresa)
     .then(function (resultado) {
         if (resultado.length > 0) {
             res.status(200).json(resultado);

@@ -199,7 +199,11 @@
     }
 
     function formatarHorario(horario){
-        return (horario).substring(0, 2) + ":" + (horario).substring(2, 4)
+        while(horario.length < 4){
+            horario += "0";
+        }
+
+        return (horario).substring(0, 2) + ":" + (horario).substring(2, 4);
     }
 
     function trocarSelecao(valor, tipoGrafico){
@@ -217,7 +221,6 @@
         const periodoInicio = moment(document.getElementById('data-movimentacao-inicio').value).format('YYYY-MM-DD');
         const periodoFim = moment(document.getElementById('data-movimentacao-fim').value).format('YYYY-MM-DD');
         fetch(`/analiseAgda/pegarMovimentacao?periodoInicio=${periodoInicio}&periodoFim=${periodoFim}&idFuncionario=${idFuncionario}&cidade=${cidade}&idEmpresa=${sessionStorage['ID_EMPRESA']}`).then((res) => {
-            console.log(res);
             if(res.status == 204){
                 if(chartMovimentacao != null){
                     chartMovimentacao.destroy();
@@ -230,6 +233,9 @@
             }
             else if(res.ok){
                 res.json().then((resposta) => {
+                    reposta = resposta.map((registro) =>
+                        moment(registro.dataEhora).utc(0).format('YYYY-MM-DDTHH:mm:ss')
+                    );
                     graficoMovimentacao(resposta);
                 });
             }
@@ -295,7 +301,7 @@
                     y: {
                         ticks: {
                             callback: function(value, index, ticks) {
-                                let hora = zeroEsquerda(value);
+                                let hora = zeroEsquerda(value, 4);
 
                                 return formatarHorario(hora);
                             }
@@ -321,7 +327,7 @@
             periodoFim = moment(document.getElementById('data-cpu-dia').value).add(1, 'days').format('YYYY-MM-DD');
         }
 
-        fetch(`/analiseAgda/pegarCpu?periodoInicio=${periodoInicio}&periodoFim=${periodoFim}&idFuncionario=${idFuncionario}&cidade=${cidade}`).then((res) => {
+        fetch(`/analiseAgda/pegarCpu?periodoInicio=${periodoInicio}&periodoFim=${periodoFim}&idFuncionario=${idFuncionario}&cidade=${cidade}&idEmpresa=${sessionStorage['ID_EMPRESA']}`).then((res) => {
             if(res.status == 204){
                 if(chartCpu != null){
                     chartCpu.destroy();
@@ -360,7 +366,7 @@
         };
 
         for (let index = 0; index < resposta.length; index++) {
-            labels.push(formatarHorario(zeroEsquerda(resposta[index]['hora'] + "000", 2)));
+            labels.push(formatarHorario(zeroEsquerda(resposta[index]['hora'], 2)));
             data.datasets[0].data.push(resposta[index]['valor']);
         }
 
@@ -393,7 +399,7 @@
             periodoFim = moment(document.getElementById('data-ram-dia').value).add(1, 'days').format('YYYY-MM-DD');
         }
 
-        fetch(`/analiseAgda/pegarRam?periodoInicio=${periodoInicio}&periodoFim=${periodoFim}&idFuncionario=${idFuncionario}&cidade=${cidade}`).then((res) => {
+        fetch(`/analiseAgda/pegarRam?periodoInicio=${periodoInicio}&periodoFim=${periodoFim}&idFuncionario=${idFuncionario}&cidade=${cidade}&idEmpresa=${sessionStorage['ID_EMPRESA']}`).then((res) => {
             if(res.status == 204){
                 if(chartRam != null){
                     chartRam.destroy();
@@ -432,7 +438,7 @@
         };
 
         for (let index = 0; index < resposta.length; index++) {
-            labels.push(formatarHorario(zeroEsquerda(resposta[index]['hora'] + "000", 2)));
+            labels.push(formatarHorario(zeroEsquerda(resposta[index]['hora'], 2)));
             data.datasets[0].data.push(resposta[index]['valor']);
         }
 
@@ -456,17 +462,17 @@
         fetch(`/analiseAgda/pegarCidades?idEmpresa=${sessionStorage['ID_EMPRESA']}`).then((res) => {
             if(res.ok){
                 res.json().then((resposta) => {
+                    let indiceCidade;
+
                     for (let index = 0; index < resposta.length; index++) {
                         document.getElementById("select-cidades").innerHTML += `<option value="${resposta[index].cidade}">${resposta[index].pais} - ${resposta[index].cidade}</option>`;
+                        
+                        if(cidade == resposta[index].cidade){   
+                            indiceCidade = index;
+                        }
                     }
 
-                    document.getElementById("outros-funcionarios").innerHTML += `<a class="funcionario func0" href="analisar-funcionarios.html?cidade=${cidade}">Média dos funcionários</a>`;
-                    
-                    for (let index = 0; index < resposta.length; index++) {
-                        document.getElementById("outros-funcionarios").innerHTML += `<a class="funcionario func${resposta[index].idFuncionario}" href="analisar-funcionarios.html?idFuncionario=${resposta[index].idFuncionario}&cidade=${cidade}">${resposta[index].nome}</a>`;
-                    }
-
-                    document.querySelector(`.func${idFuncionario}`).classList.add("selecionado");
+                    document.getElementById("select-cidades").selectedIndex = indiceCidade;
                 });
             }
         });
@@ -479,7 +485,7 @@
                     kpiQtdFunc.innerHTML = resposta.length;
 
                     document.getElementById("outros-funcionarios").innerHTML += `<a class="funcionario func0" href="analisar-funcionarios.html?cidade=${cidade}">Média dos funcionários</a>`;
-                    
+
                     for (let index = 0; index < resposta.length; index++) {
                         document.getElementById("outros-funcionarios").innerHTML += `<a class="funcionario func${resposta[index].idFuncionario}" href="analisar-funcionarios.html?idFuncionario=${resposta[index].idFuncionario}&cidade=${cidade}">${resposta[index].nome}</a>`;
                     }
@@ -512,7 +518,7 @@
                         horasAtivas += horario;
                     });
 
-                    if(horasAtivas == 0){
+                    if(horasAtivas <= 0){
                         kpiHoras.innerHTML += "Não foi possível calcular";
                     }
 
