@@ -27,4 +27,9 @@ router.get("/verificarAtividade", function(req, res){
     maquinaController.verificarAtividade(req, res);
 });
 
+router.get("/pegarKpisRede", function(req, res){
+    maquinaController.pegarKpisRede(req, res);
+});
+
+
 module.exports = router;

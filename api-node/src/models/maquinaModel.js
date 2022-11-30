@@ -58,7 +58,16 @@ function pegarKpis(idMaquina, dataInicio, dataFinal){
 }
 
 function verificarAtividade(idMaquina){
-    instrucaoSql = `SELECT TOP 1 dataEhora, acao FROM Localizacao WHERE fkMaquina = ${idMaquina} ORDER BY dataEhora DESC;`
+    instrucaoSql = `SELECT TOP 1 dataEhora, acao FROM Localizacao WHERE fkMaquina = ${idMaquina} ORDER BY dataEhora DESC;`;
+    console.log(instrucaoSql)
+    return database.executar(instrucaoSql);
+}
+
+function pegarKpisRede(idMaquina, dataInicio, dataFinal){
+    instrucaoSql = `SELECT COUNT(*) / 3 AS 'qtdMinutos',
+    (SELECT ROUND(AVG(bytesRecebidos), 2) FROM vw_rede WHERE idMaquina = ${idMaquina} AND CAST(dataEhora AS DATE) BETWEEN '${dataInicio}' AND '${dataFinal}') AS 'mediaDownload',
+    (SELECT ROUND(AVG(bytesEnviados), 2) FROM vw_rede WHERE idMaquina = ${idMaquina} AND CAST(dataEhora AS DATE) BETWEEN '${dataInicio}' AND '${dataFinal}') AS 'mediaUpload'
+    FROM vw_rede WHERE idMaquina = ${idMaquina} AND CAST(dataEhora AS DATE) BETWEEN '${dataInicio}' AND '${dataFinal}';`;
     console.log(instrucaoSql)
     return database.executar(instrucaoSql);
 }
@@ -70,4 +79,5 @@ module.exports = {
     pegarTempo,
     pegarKpis,
     verificarAtividade,
+    pegarKpisRede
 }

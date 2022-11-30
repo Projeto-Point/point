@@ -40,7 +40,7 @@ function pegarRegistroInstancia(idMaquina){
     return database.executar(instrucaoSql);
 }
 function pegarRegistroDownload(idMaquina){
-    instrucaoSql = `SELECT TOP 10 bytesRebidos FROM vw_rede
+    instrucaoSql = `SELECT TOP 10 bytesRecebidos FROM vw_rede
     WHERE idMaquina = ${idMaquina} order by dataEhora desc;`;
     console.log("Executando a instrução SQL: \n" + instrucaoSql);
     return database.executar(instrucaoSql);

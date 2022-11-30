@@ -851,18 +851,16 @@ svg rect {
   display: none;
 }/*# sourceMappingURL=styleDash.css.map */
 
-.tempo-real-rede{
+.dashboard{
   display: flex;
-  justify-content: space-around;
   flex-wrap: nowrap;
-  flex-direction: row;
 }
 
 .tempo-real-dowload{
   display: flex;
   background-color: white;
   height: 255px;
-  width: 455px;
+  width: 368px;
   border-radius: 5px;
   color: black;
   box-shadow: 0 0 10px rgba(0,0,0,0.6);
@@ -872,7 +870,7 @@ svg rect {
   display: flex;
   background-color: white;
   height: 255px;
-  width: 455px;
+  width: 368px;
   margin-left: 25px;
   margin-right: -600px;
   border-radius: 5px;
@@ -889,8 +887,10 @@ svg rect {
   font: 25px bold;
 }
 
+
+
 @media screen and (max-width: 1200px) {
-  .tempo-real-rede{
+  .dashboard{
     display: flex;
     flex-wrap: wrap;
     justify-content: start;

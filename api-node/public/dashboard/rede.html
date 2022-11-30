@@ -71,21 +71,27 @@
                 <p id="kpiHoras"></p>
             </div>
             <div class="box box-kpi kpi-mediaProc">
-                <h3>Média de Dowload:</h3>
-                <p id="kpiCPU">%</p>
+                <h3>Média de Download:</h3>
+                <p id="kpiDownload">GB</p>
             </div>
             <div class="box box-kpi kpi-mediaRam">
                 <h3>Média de Upload:</h3>
-                <p id="kpiRAM">%</p>
+                <p id="kpiUpload">GB</p>
             </div>
-            <div class="tempo-real-rede">
-                <div class="tempo-real-dowload" id="gfCpu">
-                    <h3 class="h3Rede">Download</h3>
-                    <div> <canvas id="graficoCPU" style="position: relative;"></canvas></div>
-                </div>
-                <div class="tempo-real-upload" id="gfRam">
-                    <h3 class="h3Rede">Upload</h3>
-                    <canvas id="graficoRAM" style="position: relative;"></canvas>
+            <div class="grafico-processador grafico box">
+                <div class="header">
+                    <h3>Download</h3>
+                    <div class="dir">
+                        <div class="legenda alto"></div>
+                        <span>Maior que 80%</span>
+                        <div class="legenda normal"></div>
+                        <span>Menor que 80%</span>
+                        <select id="tempoCpu" onchange="mudarTempo('CPU', this.value)">
+                            <option value="ultimoMes">Último mês</option>
+                            <option value="ultimaSemana">Última semana</option>
+                            <option value="ultimoAno">Último ano</option>
+                        </select>
+                    </div>
                 </div>
                 <div class="main-grafico">
                     <canvas id="graficoCPU"></canvas>
@@ -93,13 +99,13 @@
             </div>
             <div class="grafico-ram grafico box">
                 <div class="header">
-                    <h3>Download</h3>
+                    <h3>Upload</h3>
                     <div class="dir">
                         <div class="legenda alto"></div>
                         <span>Maior que 85%</span>
                         <div class="legenda normal"></div>
                         <span>Menor que 85%</span>
-                        <select id="tempoDowload" onchange="mudarTempo('Dowload', this.value)">
+                        <select id="tempoRam" onchange="mudarTempo('RAM', this.value)">
                             <option value="ultimoMes">Último mês</option>
                             <option value="ultimaSemana">Última semana</option>
                             <option value="ultimoAno">Último ano</option>
@@ -110,23 +116,13 @@
                     <canvas id="graficoRAM"></canvas>
                 </div>
             </div>
-            <div class="grafico-disco grafico box">
-                <div class="header">
-                    <h3>Upload</h3>
-                    <div class="dir">
-                        <div class="legenda alto"></div>
-                        <span>Maior que 90%</span>
-                        <div class="legenda normal"></div>
-                        <span>Menor que 90%</span>
-                        <select id="tempoDisco" onchange="mudarTempo('Disco', this.value)">
-                            <option value="ultimoMes">Último mês</option>
-                            <option value="ultimaSemana">Última semana</option>
-                            <option value="ultimoAno">Último ano</option>
-                        </select>
-                    </div>
+            <div class="dashboard">
+                <div class="tempo-real-dowload" id="gfCpu">
+                    
+                    <div> <canvas id="graficoDown" style="position: relative;"></canvas></div>
                 </div>
-                <div class="main-grafico">
-                    <canvas id="graficoDisco"></canvas>
+                <div class="tempo-real-upload" id="gfRam">
+                    <canvas id="graficoUp" style="position: relative;"></canvas>
                 </div>
             </div>
 
@@ -144,17 +140,22 @@
 <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
 <script src="../script.js"></script>
 <script>
-    /*tempo real*/
-
-    /*analise*/
     nomeGerente.innerHTML = sessionStorage.NOME_USUARIO;
     nome_gerente.innerHTML = sessionStorage.NOME_USUARIO;
 
     const parametrosString = window.location.search;
     const parametros = new URLSearchParams(parametrosString);
-    const idMaquinaA = Number(parametros.get("idMaquina"));
+    const idMaquina = Number(parametros.get("idMaquina"));
 
-    fetch(`/medidas/pegarRegistroMaquina?idMaquina=${idMaquinaA}`).then((res) => {
+    const tempoAtualizacao = 10 * 1000;
+    var gerente = sessionStorage.NOME_USUARIO
+
+    var proximaAtualizacao;
+
+    var downMedida = [];
+    var upMedida = [];
+
+    fetch(`/medidas/pegarRegistroMaquina?idMaquina=${idMaquina}`).then((res) => {
         if (res.ok) {
             res.json().then((resposta) => {
                 document.getElementById(
@@ -187,7 +188,7 @@
         }
     });
 
-    fetch(`/medidas/pegarRegistroFuncionario?idMaquina=${idMaquinaA}`).then(
+    fetch(`/medidas/pegarRegistroFuncionario?idMaquina=${idMaquina}`).then(
         function (res) {
             if (res.ok) {
                 res.json().then((resposta) => {
@@ -200,22 +201,21 @@
         }
     );
 
-    fetch(`/maquinas/pegarKpis?idMaquina=${idMaquinaA}&dataInicio=${moment().subtract(30, "days").format("YYYY-MM-DD")}&dataFinal=${moment().format("YYYY-MM-DD")}`)
+    fetch(`/maquinas/pegarKpisRede?idMaquina=${idMaquina}&dataInicio=${moment().subtract(30, "days").format("YYYY-MM-DD")}&dataFinal=${moment().format("YYYY-MM-DD")}`)
         .then((res) => {
             if (res.ok) {
                 res.json().then((resposta) => {
-                    console.log(resposta)
-                    kpiCPU.innerHTML = resposta[0].mediaProcessador + "%";
-                    kpiRAM.innerHTML = resposta[0].mediaRAM + "%";
+                    kpiDownload.innerHTML = resposta[0].mediaDownload + "GB";
+                    kpiUpload.innerHTML = resposta[0].mediaUpload + "GB";
                 });
             }
         })
         .catch((erro) => {
-            console.log("Erro ao acessar /maquinas/pegarKpis");
+            console.log("Erro ao acessar /maquinas/pegarKpisRede");
             console.log(erro);
         });
 
-    fetch(`/maquinas/pegarTempo?idMaquina=${idMaquinaA}&dataInicio=${moment().subtract(30, "days").format("YYYY-MM-DD")}&dataFinal=${moment().format("YYYY-MM-DD")}`)
+    fetch(`/maquinas/pegarTempo?idMaquina=${idMaquina}&dataInicio=${moment().subtract(30, "days").format("YYYY-MM-DD")}&dataFinal=${moment().format("YYYY-MM-DD")}`)
         .then((res) => {
             if (res.ok) {
                 res.json().then((resposta) => {
@@ -263,20 +263,21 @@
             console.log(erro);
         });
 
-    var chartDown = null;
-    var chartUp = null;
+    var chartCpu = null;
+    var chartRam = null;
+    var chartDisco = null;
 
-    mudarTempo("Down", tempoDown.value);
-    mudarTempo("Up", tempoUp.value);
+    mudarTempo("CPU", tempoCpu.value);
+    mudarTempo("RAM", tempoRam.value);
+
 
     function mudarTempo(componente, tempo) {
-        if (chartDown != null && componente == "CPU") {
-            chartDown.destroy();
+        if (chartCpu != null && componente == "CPU") {
+            chartCpu.destroy();
         }
-        else if (chartUp != null && componente == "RAM") {
-            chartUp.destroy();
+        else if (chartRam != null && componente == "RAM") {
+            chartRam.destroy();
         }
-
         tipoVisualizacao = "dia";
         if (tempo == "ultimaSemana") {
             tempo = moment().subtract(7, "days");
@@ -288,11 +289,11 @@
             tipoVisualizacao = "mes";
             tempo = moment().subtract(1, "years");
         }
-        pegarRegistros(`grafico${componente}`, componente, idMaquinaA, tempo.format("YYYY-MM-DD"), moment().format("YYYY-MM-DD"), tipoVisualizacao);
+        pegarRegistros(`grafico${componente}`, componente, idMaquina, tempo.format("YYYY-MM-DD"), moment().format("YYYY-MM-DD"), tipoVisualizacao);
     }
 
-    function pegarRegistros(idGrafico, tipoComponente, idMaquinaA, dataInicio, dataFinal, tipoVisualizacao) {
-        fetch(`/maquinas/analiseComponente?tipoComponente=${tipoComponente}&idMaquina=${idMaquinaA}&dataInicio=${dataInicio}&dataFinal=${dataFinal}&tipoVisualizacao=${tipoVisualizacao}`)
+    function pegarRegistros(idGrafico, tipoComponente, idMaquina, dataInicio, dataFinal, tipoVisualizacao) {
+        fetch(`/maquinas/analiseComponente?tipoComponente=${tipoComponente}&idMaquina=${idMaquina}&dataInicio=${dataInicio}&dataFinal=${dataFinal}&tipoVisualizacao=${tipoVisualizacao}`)
             .then((res) => {
                 if (res.ok) {
                     res.json().then((resposta) => {
@@ -366,7 +367,7 @@
                         if (tipoComponente == "CPU") {
                             chartCpu = new Chart(document.getElementById(idGrafico), config);
                         }
-                        else if (tipoComponente == " RAM") {
+                        else if (tipoComponente == "RAM") {
                             chartRam = new Chart(document.getElementById(idGrafico), config);
                         }
                         else if (tipoComponente == "Disco") {
@@ -382,7 +383,51 @@
             });
     }
 
-    function plotarGraficoCPU(cpuMedida) {
+
+    window.onload = () => {
+        const parametrosString = window.location.search;
+        const parametros = new URLSearchParams(parametrosString);
+
+        fetch(`/maquinas/verificarAtividade?idMaquina=${idMaquina}`).then(function (res) {
+            if (res.ok) {
+                res.json().then(resposta => {
+                    if (resposta[0].acao == "S") {
+                        document.querySelector('.dashboard').innerHTML = `<p style="grid-column-start: 1; grid-column-end: 4; display: flex; justify-content: center; align-items: center; font-weight: bold; font-size: 1.3rem;">Máquina desligada desde o dia ${moment(resposta[0].dataEhora).format("DD/MM/YYYY [às] HH:mm")}</p>`;
+                    }
+                });
+            }
+        });
+
+        recuperarDados();
+    };
+
+
+    function recuperarDados() {
+        fetch(`/medidas/pegarRegistroDownload?idMaquina=${idMaquina}`).then(function (res) {
+            if (res.ok) {
+                res.json().then(Download => {
+
+                    console.log(Download)
+                    downMedida = Download.map((object) => object.valor);
+                    plotarGraficoDownload(downMedida);
+
+                })
+            }
+        })
+
+        fetch(`/medidas/pegarRegistroUpload?idMaquina=${idMaquina}`).then(function (res) {
+            if (res.ok) {
+                res.json().then(Upload => {
+
+                    upMedida = Upload.map((object) => object.valor);
+                    plotarGraficoUpload(upMedida);
+
+                })
+            }
+        })
+    }
+
+    function plotarGraficoDownload(downMedida) {
         const labels = [
             '',
             '',
@@ -399,9 +444,9 @@
         const data = {
             labels: labels,
             datasets: [{
-                //CPU
-                label: 'CPU',
-                data: cpuMedida,
+                //download
+                label: 'Download',
+                data: downMedida,
                 fill: true,
                 borderColor: 'rgb(75, 192, 192)',
 
@@ -424,29 +469,103 @@
 
         };
 
-        window.graficoCPU = new Chart(
-            document.getElementById('graficoCPU').getContext("2d"),
+        window.graficoDown = new Chart(
+            document.getElementById('graficoDown').getContext("2d"),
             config
 
         );
         setTimeout(() => {
-            atualizarGraficoCPU(document.getElementById('graficoCPU').getContext("2d"), data)
+            atualizarGraficoDownload(document.getElementById('graficoDown').getContext("2d"), data)
         }, tempoAtualizacao
 
         )
 
     }
 
-    function atualizarGraficoCPU(grafico, dados) {
-        fetch(`/medidas/pegarRegistroCPU?idMaquina=${idMaquina}`).then(function (res) {
+    function atualizarGraficoDownload(grafico, dados) {
+        fetch(`/medidas/pegarRegistroDownload?idMaquina=${idMaquina}`).then(function (res) {
             if (res.ok) {
-                res.json().then(CPU => {
-                    cpuMedida = CPU.map((object) => object.valor);
-                    dados.datasets[0].data = cpuMedida
-                    window.graficoCPU.update();
+                res.json().then(Download => {
+                    downMedida = Download.map((object) => object.valor);
+                    dados.datasets[0].data = downMedida
+                    window.graficoDown.update();
 
                     proximaAtualizacao = setTimeout(() => {
-                        atualizarGraficoCPU(grafico, dados);
+                        atualizarGraficoDownload(grafico, dados);
+                    }, tempoAtualizacao)
+
+                })
+            }
+        })
+        // console.log("ta funcionando")
+    }
+    function plotarGraficoUpload(upMedida) {
+        const labels = [
+            '',
+            '',
+            '',
+            '',
+            '',
+            '',
+            '',
+            '',
+            '',
+            ''
+        ];
+
+        const data = {
+            labels: labels,
+            datasets: [{
+                //Upload
+                label: 'Upload',
+                data: upMedida,
+                fill: true,
+                borderColor: 'rgb(75, 192, 192)',
+            }]
+        };
+
+        const config = {
+            type: 'line',
+            data: data,
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        display: false
+                    },
+                    Animation: false,
+                },
+            }
+
+        };
+
+        window.graficoUp = new Chart(
+            document.getElementById('graficoUp').getContext("2d"),
+            config
+
+        );
+        setTimeout(() => {
+            atualizarGraficoUpload(document.getElementById('graficoUp').getContext("2d"), data)
+        }, tempoAtualizacao
+
+        )
+
+    }
+
+    function atualizarGraficoUpload(grafico, dados) {
+        fetch(`/medidas/pegarRegistroUpload?idMaquina=${idMaquina}`).then(function (res) {
+            if (res.ok) {
+                res.json().then(Upload => {
+
+
+
+                    upMedida = Upload.map((object) => object.valor);
+                    dados.datasets[0].data = upMedida
+                    window.graficoUp.update();
+
+                    proximaAtualizacao = setTimeout(() => {
+                        atualizarGraficoUpload(grafico, dados)
                     }, tempoAtualizacao)
 
                 })
@@ -455,101 +574,7 @@
         // console.log("ta funcionando")
     }
 
-    function recuperarDados() {
-        fetch(`/medidas/pegarRegistroDownload?idMaquina=${idMaquina}`).then(function (res) {
-            if (res.ok) {
-                res.json().then(CPU => {
-
-                    console.log(CPU)
-                    cpuMedida = CPU.map((object) => object.valor);
-                    plotarGraficoDownload(cpuMedida);
-
-                })
-            }
-        })
-
-        fetch(`/medidas/pegarRegistroDISCO?idMaquina=${idMaquina}`).then(function (res) {
-            if (res.ok) {
-                res.json().then(DISCO => {
-
-                    // console.log(DISCO)
-                    discoMedida = DISCO.map((object) => object.valor);
-                    discoDisponivel = 100 - discoMedida[0];
-                    plotarGraficoDISCO(discoMedida);
-
-                })
-            }
-        })
 
 
-
-        fetch(`/medidas/pegarRegistroRAM?idMaquina=${idMaquina}`).then(function (res) {
-            if (res.ok) {
-                res.json().then(RAM => {
-
-                    // console.log(RAM)
-                    ramMedida = RAM.map((object) => object.valor);
-                    plotarGraficoRAM(ramMedida);
-
-                })
-            }
-        })
-
-        fetch(`/medidas/pegarRegistroFuncionario?idMaquina=${idMaquina}`).then(function (res) {
-            if (res.ok) {
-                res.json().then(RegistroFuncionario => {
-                    // console.log(RegistroFuncionario)
-
-                    var nomeFuncionario = RegistroFuncionario.map((object) => object.nome);
-                    var emailFuncionario = RegistroFuncionario.map((object) => object.email);
-                    var cargoFuncionario = RegistroFuncionario.map((object) => object.cargo);
-                    var telefoneFuncionario = RegistroFuncionario.map((object) => object.telefone);
-
-                    nome.innerHTML = nomeFuncionario;
-                    mail.innerHTML = emailFuncionario
-                    cargo.innerHTML = cargoFuncionario;
-                    telefone.innerHTML = telefoneFuncionario;
-
-                })
-            }
-        });
-
-        fetch(`/medidas/pegarRegistroMaquina?idMaquina=${idMaquina}`).then((res) => {
-            if (res.ok) {
-                res.json().then((resposta) => {
-                    //     <p><b>Sistema operacional: </b><span><div id="sistemaOp"></div></span></p>
-                    // <p><b>Sistema operacional: </b><span><div id="nomeMaquina"></div></span></p>
-                    // <p><b>Sistema operacional: </b><span><div id="tipoMaquina"></div></span></p>
-
-                    document.getElementById("tbMaquina-first").innerHTML += `<p><b>Sistema operacional: </b><span>${resposta[0].sistemaOperacional}</span></p>`;
-                    document.getElementById("tbMaquina-first").innerHTML += `<p><b>Nome da máquina: </b><span>${resposta[0].nomeMaquina}</span></p>`;
-                    document.getElementById("tbMaquina-first").innerHTML += `<p><b>Tipo da máquina: </b><span>${resposta[0].tipoMaquina}</span></p>`;
-                    // Aqui coloca o status da máquina - desligada ou ligada
-                    document.getElementById("tbMaquina-first").innerHTML += `<p><b>Status: </b><span>Desligada</span></p>`;
-                    console.log(resposta)
-
-                    // Aqui tem uma gambiarra pra funcionar mas é recomendavel que troque isso. Tava repetindo valores e as labels nao faziam sentido
-                    for (let index = 0; index < resposta.length; index++) {
-
-                        if (resposta[index].atributo == "CORE") {
-
-                            resposta[index].unidadeMedida = "";
-                            resposta[index].valor *= 1;
-                            Math.trunc(resposta[index].valor)
-                        }
-                        if (resposta[index].atributo == "THREADS") {
-                            resposta[index].unidadeMedida = "";
-                            resposta[index].valor *= 1;
-                            Math.trunc(resposta[index].valor)
-                        }
-                        document.getElementById("tbMaquina-sec").innerHTML += `<p><b>${resposta[index].tipoComponente} - ${resposta[index].atributo}: </b><span>${resposta[index].valor} ${resposta[index].unidadeMedida}</span></p>`;
-
-                    }
-                });
-            }
-        });
-
-
-    }
 </script>
 <script src="./jsDash/script-dash.js"></script>
