@@ -450,10 +450,6 @@ main {
         border: 2px dashed red;
         height: 40%;
         width: 80%;
-        background: url("../assets/imgs/wordcloud.png");
-        background-repeat: no-repeat;
-        background-position: center;
-        background-size: cover;
       }
 
       .table {
@@ -860,6 +856,7 @@ main {
     #gfCpu {
       grid-area: g1;
     }
+    
     #gfDisco {
       grid-area: g2;
       div {

@@ -18,6 +18,7 @@ public class Funcionario {
 
     private Integer id;
     private String nome;
+    private String email;
 
     public Integer getId() {
         return id;
@@ -33,6 +34,14 @@ public class Funcionario {
 
     public void setNome(String nome) {
         this.nome = nome;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
     
 
@@ -50,6 +59,7 @@ public class Funcionario {
             int id = jsonResultado.getInt("idFuncionario");
             String nome = jsonResultado.getString("nome");
 
+           this.email = email;
            this.id = id;
            this.nome = nome;
 

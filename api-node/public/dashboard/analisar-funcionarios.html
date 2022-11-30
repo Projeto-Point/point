@@ -157,6 +157,8 @@
     const idFuncionario = Number(parametros.get("idFuncionario"));
 
     window.onload = () => {
+        pegarFuncionarios();
+        
         nome_gerente.innerHTML = sessionStorage.NOME_USUARIO;
 
         document.getElementById("data-movimentacao-inicio").value = moment().subtract(1, 'week').format('YYYY-MM-DD');
@@ -178,7 +180,6 @@
         pegarDadosRam();
 
         pegarCidades();
-        pegarFuncionarios();
         mediaHorasAtivas();
     };
 
@@ -482,6 +483,8 @@
         fetch(`/analiseAgda/pegarFuncionarios?idEmpresa=${sessionStorage['ID_EMPRESA']}&cidade=${cidade}`).then((res) => {
             if(res.ok){
                 res.json().then((resposta) => {
+                    document.getElementById("outros-funcionarios").innerHTML = "";
+                    
                     kpiQtdFunc.innerHTML = resposta.length;
 
                     document.getElementById("outros-funcionarios").innerHTML += `<a class="funcionario func0" href="analisar-funcionarios.html?cidade=${cidade}">Média dos funcionários</a>`;

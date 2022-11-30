@@ -78,11 +78,39 @@ function pegarRegistroInstancia(req, res){
     });
 }
 
+function pegarRegistroDownload(req, res){
+    var idMaquina = req.query.idMaquina;
+    medidaModel.pegarRegistroDownload(idMaquina)
+    .then(function (resposta) {
+        res.status(200).json(resposta);
+    })
+    .catch(function(erro){
+        console.log(erro);
+        console.log("Houve um erro ao buscar os registroDownloads.", erro.sqlMessage);
+        res.status(500).json(erro.sqlMessage);
+    });
+}
+
+function pegarRegistroUpload(req, res){
+    var idMaquina = req.query.idMaquina;
+    medidaModel.pegarRegistroUpload(idMaquina)
+    .then(function (resposta) {
+        res.status(200).json(resposta);
+    })
+    .catch(function(erro){
+        console.log(erro);
+        console.log("Houve um erro ao buscar os pegarRegistroUploads.", erro.sqlMessage);
+        res.status(500).json(erro.sqlMessage);
+    });
+}
+
 module.exports = {
     pegarRegistroCPU,
     pegarRegistroDISCO,
     pegarRegistroRAM,
     pegarRegistroFuncionario,
     pegarRegistroMaquina,
+    pegarRegistroDownload,
+    pegarRegistroUpload,
     pegarRegistroInstancia
 }

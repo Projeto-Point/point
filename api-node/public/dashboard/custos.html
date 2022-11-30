@@ -6,7 +6,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Análise de máquina | Point</title>
-  <link rel="stylesheet" href="css/styleDash.css" />
+  <link rel="stylesheet" href="css/styleDashCustos.css" />
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.4/moment.min.js"></script>
 </head>
@@ -79,24 +79,22 @@
       </div>
       <div class="grafico-processador grafico box">
         <div class="header">
-            <h3>Processador</h3>
-            <div class="dir">
-                <div class="legenda alto"></div>
-                <span>Maior que 80%</span>
-                <div class="legenda normal"></div>
-                <span>Menor que 80%</span>
-                <select id="tempoCpu" onchange="mudarTempo('CPU', this.value)">
-                    <option value="ultimoMes">Último mês</option>
-                    <option value="ultimaSemana">Última semana</option>
-                    <option value="ultimoAno">Último ano</option>
-                </select>
-            </div>
+          <h3>Custos</h3>
+          <div class="dir">
+            <div></div>
+            <span>Total: </span>
+            <select id="tempoCpu" onchange="mudarTempo('CPU', this.value)">
+              <option value="ultimoMes">Último mês</option>
+              <option value="ultimaSemana">Última semana</option>
+              <option value="ultimoAno">Último ano</option>
+            </select>
+          </div>
         </div>
         <div class="main-grafico">
-            <canvas id="graficoCusto"></canvas>
+          <canvas id="graficoCusto"></canvas>
         </div>
-    </div>
-        <div class="box info-maquina">
+      </div>
+      <div class="box info-maquina">
         <h3>Sobre a máquina</h3>
         <div id="sobreMaquina"></div>
         <br>
@@ -117,6 +115,7 @@
   const parametrosString = window.location.search;
   const parametros = new URLSearchParams(parametrosString);
   const idMaquina = Number(parametros.get("idMaquina"));
+
 
 
 
@@ -211,11 +210,6 @@
             kpiHoras.innerHTML += minutos;
             kpiHoras.innerHTML += " minutos"
           }
-
-
-
-
-
         });
       }
     })
@@ -245,12 +239,61 @@
         document.getElementById(
           "sobreMaquina"
         ).innerHTML += `<p><b>Armazenamento: </b><span>${resposta[0].tipoArmazenamento}</span></p>`;
-      //   document.getElementById(
-      //     "sobreMaquina"
-      //   ).innerHTML += `<p><b>Alterar instância: </b><span class="top-esq"><a href="https://us-east-1.console.aws.amazon.com/console/home?region=us-east-1#" class="logo">teste
-      // </a></span></p>`;
+        //   document.getElementById(
+        //     "sobreMaquina"
+        //   ).innerHTML += `<p><b>Alterar instância: </b><span class="top-esq"><a href="https://us-east-1.console.aws.amazon.com/console/home?region=us-east-1#" class="logo">teste
+        // </a></span></p>`;
       });
     }
   });
+
+
+
+
+ 
+  const labels = [1,2,3,4,5,6,7,8,9,10];
+  const data = {
+    labels: labels,
+    datasets: [
+      {
+        label: 'Dataset 1',
+        data: [1,2,3,4,5,6,7,8,9,10],
+        borderColor: 'rgb(75, 192, 192)',
+        backgroundColor: 'rgb(75, 192, 192)',
+        stack: 'combined',
+        type: 'bar'
+      },
+      {
+        label: 'Dataset 2',
+        data: [1,2,3,4,5,6,7,8,9,10],
+        borderColor: 'rgb(75, 192, 192)',
+        backgroundColor: 'rgb(75, 192, 192)',
+        stack: 'combined'
+      }
+    ]
+  };
+
+  const config = {
+    type: 'line',
+    data: data,
+    options: {
+      plugins: {
+        title: {
+          display: false,
+        }
+      },
+      scales: {
+        y: {
+          stacked: true
+        }
+      }
+    },
+  };
+
+
+
+  window.graficoCusto = new Chart(
+    document.getElementById('graficoCusto').getContext("2d"),
+    config);
 </script>
 <script src="./jsDash/script-dash.js"></script>

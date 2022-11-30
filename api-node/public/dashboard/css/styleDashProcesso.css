@@ -638,8 +638,8 @@ main section.dashboard-analise {
   display: grid;
   gap: 30px;
   grid-template-columns: 1fr 1fr 1fr;
-  grid-template-rows: 1fr repeat(3, 250px);
-  grid-template-areas: "k1 k2 k3" "g1 g1 i2" "g2 g2 i2" "g3 g3 i1";
+  grid-template-rows: 1fr (250px);
+  grid-template-areas: "k1 k2 k3" "g1 g1 i2" "g1 g1 i2";
 }
 main section.dashboard-analise .kpi-horas {
   grid-area: k1;
@@ -900,7 +900,7 @@ main section.dashboard-analise-funcionario .grafico-movimentacao {
   grid-area: g1;
 }
 main section.dashboard-analise-funcionario .grafico-processador {
-  grid-area: g2;
+ grid-area: g2;
 }
 main section.dashboard-analise-funcionario .grafico-ram {
   grid-area: g3;
@@ -931,6 +931,7 @@ main section.dashboard-analise-funcionario .grafico .header {
   justify-content: space-between;
   padding: 7px;
   border-bottom: 1px solid rgba(0, 0, 0, 0.3);
+  background: url("../assets/imgs/wordcloud-porceso.png");
 }
 main section.dashboard-analise-funcionario .grafico .header .dir {
   display: flex;
@@ -1000,7 +1001,7 @@ main section.dashboard-analise-funcionario a.funcionario:hover {
   }
   main section.dashboard-analise {
     grid-template-columns: 100%;
-    grid-template-areas: "k1" "k2" "k3" "g1" "g2" "g3" "i1" "i2";
+    grid-template-areas: "k1 k2 k3" "g1 g1 i2" "g1 g1 i2";
     grid-template-rows: auto;
   }
   main section.dashboard-analise .legenda + span {

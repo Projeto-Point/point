@@ -34,56 +34,23 @@ public class Main {
         Componente componentes = new Componente();
         Atributo atributo = new Atributo();
         Registros registro = new Registros();
+      
+        if (func.isFuncionarioCadastrado("cleber@point.com", "123456")) {
 
+            System.out.println(maquina.isMaquinaCadastrada(func));
 
-//      
-//        if (func.isFuncionarioCadastrado("cleber@point.com", "123456")) {
-//
-//            System.out.println(maquina.isMaquinaCadastrada(func));
-//
-//            if (maquina.isMaquinaCadastrada(func)) {
-//                System.out.println("Máquina já cadastrada");
-//            } else if (maquina.isCadastrarMaquina(func)) {
-//                System.out.println("Máquina Cadastrada");
-//            } else {
-//                System.out.println("Não foi possível encontrar máquina/cadastar máquina");
-//            }
-//        } else {
-//            System.out.println("Funcionário não encontrado");
-//        }
-//
-//        System.out.println("Agora vamos inserir os dados no banco");
-//
-//        int count = 0;
-//
-//        while (true) {
-//            registro.inserirRegistros(maquina);
-//            count++;
-//            System.out.println("Foram inseridos " + count + " Dados");
-//        }    
-    
-
-
-    
-     
-         try {
-
-            ObjectMapper mapper = new ObjectMapper();
-            
-           Localizacao local = mapper.readValue(new URL("https://ipinfo.io/json"), Localizacao.class);
-           
-//           local.inserirLocalizacaoEntrada(local);
-//            local.inserirLocalizacao("E", Integer.MIN_VALUE, local);
-
-             
-
+            if (maquina.isMaquinaCadastrada(func)) {
+                System.out.println("Máquina já cadastrada");
+            } else if (maquina.isCadastrarMaquina(func)) {
+                System.out.println("Máquina Cadastrada");
+            } else {
+                System.out.println("Não foi possível encontrar máquina/cadastar máquina");
+            }
         }
-         
-        catch (Exception exception) {
-            System.out.println(exception);
+        else {
+            System.out.println("Funcionário não encontrado");
         }
         
-
-    
-   }
+        ConexaoPipefySlack conexao = new ConexaoPipefySlack(func);
+    }
 }
