@@ -51,7 +51,10 @@ def consultarBanco(comando):
             cursor.execute(comando)
             return cursor.fetchall()
 
+def has_alerta():
 
+    x = consultarBanco(f"SELECT TOP 1 resolucao FROM Alerta WHERE fkMaquina = {idMaquina} ORDER BY dataEhora DESC;")
+    return x[0][0]
 
 
 def reportarAlerta(mensagem, email, nome):
@@ -110,6 +113,7 @@ while verificaLogin == False:
 
 nome = platform.node()
 
+
 # Verificando se a máquina existe
 consulta = consultarBanco(f"SELECT nomeMaquina FROM Maquina WHERE nomeMaquina = '{nome}' AND fkFuncionario = {idFuncionario}")
 
@@ -140,9 +144,13 @@ else:
 consulta = consultarBanco(f"SELECT idMaquina FROM Maquina WHERE nomeMaquina = '{nome}' AND fkFuncionario = {idFuncionario}")
 idMaquina = consulta[0][0]
 
+
+print(has_alerta())
+exit()
+
 # Inserindo entrada com localização
 ip = geocoder.ip('me')
-inserirBanco(f"INSERT INTO Localizacao (acao, dataEhora, ipAdress, longitude, latitude, cidade, pais, fkMaquina) VALUES ('E', GETDATE(), '{ip.ip}', {ip.latlng[0]}, {ip.latlng[1]}, '{ip.city}', '{ip.country}', {idMaquina})")
+inserirBanco(f"INSERT INTO Localizacao (acao, dataEhora, ipAdress, longitude, latitude, cidade, pais, fkMaquina) VALUES ('E', GETDATE() AT TIME ZONE 'UTC' AT TIME ZONE 'Bahia Standard Time', '{ip.ip}', {ip.latlng[0]}, {ip.latlng[1]}, '{ip.city}', '{ip.country}', {idMaquina})")
 
 # Personalizando o terminal 
 ui = HSplit(
@@ -227,32 +235,42 @@ while True:
     porc_cpu = cpu_percent(interval=0.1)
     porc_ram = virtual_memory().percent
     porc_disco = disk_usage('/').percent   
-  
-        
-    if porc_cpu > 80 and 'CPU' not in arr_componentes_alertas:
+    
+    # dataEhora, titulo, resolucao, fkMaquina, componentes, valor?? 
+
+    # Esta fora de metrica??? > 80
+    #True)Verifica se foi criado 
+    #> True) Se for criado e esta aberto -- Faz nada
+    #> False) Cria o alerta
+    #False) verifica se fo 
+    # 
+
+#        inserirBanco(f"INSERT INTO Alerta (dataEhora, tituto, resolucao, componentes, valor, fkMaquina) VALUES (GETDATE() AT TIME ZONE 'UTC' AT TIME ZONE 'Bahia Standard Time', 'CPU está com {porc_cpu}', 'Aberto', 'CPU', {porc_cpu}, {idMaquina})")
+
+    if porc_cpu > 80 and 'CPU':
         reportarAlerta(f"CPU está com {porc_cpu}%!", login, nomeFuncionario)
         arr_componentes_alertas.append('CPU')
-    if porc_ram > 85 and 'RAM' not in arr_componentes_alertas:
+    if porc_ram > 85 and 'RAM':
         reportarAlerta(f"Ram está com {porc_ram}%!", login, nomeFuncionario)
         arr_componentes_alertas.append('RAM')
-    if porc_disco > 90 and 'Disco' not in arr_componentes_alertas:
+    if porc_disco > 90 and 'Disco':
         reportarAlerta(f"Disco está com {porc_disco}%!", login, nomeFuncionario)
         arr_componentes_alertas.append('Disco')
         
     
-    if is_primeira_hora:
-        ultima_hora = agora
-        is_primeira_hora = False
+    # if is_primeira_hora:
+    #     ultima_hora = agora
+    #     is_primeira_hora = False
         
-    if has_hora_passada(agora.hour, ultima_hora.hour):
-        arr_componentes_alertas.clear()
-        ultima_hora = agora
+    # if has_hora_passada(agora.hour, ultima_hora.hour):
+    #     arr_componentes_alertas.clear()
+    #     ultima_hora = agora
 
-    inserirBanco(f"INSERT INTO Registro (valor, unidadeMedida, dataEhora, fkComponente, fkMaquina) VALUES ({porc_cpu}, '%', GETDATE(), 1, {idMaquina})")
+    inserirBanco(f"INSERT INTO Registro (valor, unidadeMedida, dataEhora, fkComponente, fkMaquina) VALUES ({porc_cpu}, '%', GETDATE() AT TIME ZONE 'UTC' AT TIME ZONE 'Bahia Standard Time', 1, {idMaquina})")
 
-    inserirBanco(f"INSERT INTO Registro (valor, unidadeMedida, dataEhora, fkComponente, fkMaquina) VALUES ({porc_ram}, '%', GETDATE(), 2, {idMaquina})")
+    inserirBanco(f"INSERT INTO Registro (valor, unidadeMedida, dataEhora, fkComponente, fkMaquina) VALUES ({porc_ram}, '%', GETDATE() AT TIME ZONE 'UTC' AT TIME ZONE 'Bahia Standard Time', 2, {idMaquina})")
 
-    inserirBanco(f"INSERT INTO Registro (valor, unidadeMedida, dataEhora, fkComponente, fkMaquina) VALUES ({porc_disco}, '%', GETDATE(), 3, {idMaquina})")
+    inserirBanco(f"INSERT INTO Registro (valor, unidadeMedida, dataEhora, fkComponente, fkMaquina) VALUES ({porc_disco}, '%', GETDATE() AT TIME ZONE 'UTC' AT TIME ZONE 'Bahia Standard Time', 3, {idMaquina})")
 
     #Mostrar os dados de 3 em 3 segundos
     try:
@@ -260,5 +278,5 @@ while True:
         sleep(3)
     except KeyboardInterrupt:
         # Inserindo saída com localização
-        inserirBanco(f"INSERT INTO Localizacao (acao, dataEhora, ipAdress, longitude, latitude, cidade, pais, fkMaquina) VALUES ('S', GETDATE(), '{ip.ip}', {ip.latlng[0]}, {ip.latlng[1]}, '{ip.city}', '{ip.country}', {idMaquina})")
+        inserirBanco(f"INSERT INTO Localizacao (acao, dataEhora, ipAdress, longitude, latitude, cidade, pais, fkMaquina) VALUES ('S', GETDATE() AT TIME ZONE 'UTC' AT TIME ZONE 'Bahia Standard Time', '{ip.ip}', {ip.latlng[0]}, {ip.latlng[1]}, '{ip.city}', '{ip.country}', {idMaquina})")
         break
