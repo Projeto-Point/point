@@ -902,6 +902,7 @@ main section.dashboard-analise-funcionario .grafico-movimentacao {
 main section.dashboard-analise-funcionario .grafico-processador {
  grid-area: g2;
 }
+
 main section.dashboard-analise-funcionario .grafico-ram {
   grid-area: g3;
 }
@@ -931,7 +932,7 @@ main section.dashboard-analise-funcionario .grafico .header {
   justify-content: space-between;
   padding: 7px;
   border-bottom: 1px solid rgba(0, 0, 0, 0.3);
-  background: url("../assets/imgs/wordcloud-porceso.png");
+  
 }
 main section.dashboard-analise-funcionario .grafico .header .dir {
   display: flex;
