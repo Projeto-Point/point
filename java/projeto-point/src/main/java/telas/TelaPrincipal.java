@@ -4,6 +4,7 @@
  */
 package telas;
 
+import banco.ConexaoPipefySlack;
 import com.github.britooo.looca.api.core.Looca;
 import com.github.britooo.looca.api.group.discos.Disco;
 import com.github.britooo.looca.api.group.discos.DiscoGrupo;
@@ -83,14 +84,31 @@ public class TelaPrincipal extends javax.swing.JFrame {
         Timer timer = new Timer();
         timer.scheduleAtFixedRate(new TimerTask() {
             public void run() {
+                Double porcentagemRam = (double) looca.getMemoria().getEmUso() / looca.getMemoria().getTotal() * 100;
+                Double porcentagemCpu = looca.getProcessador().getUso();
+                Double porcentagemDisco = utils.limitarDuasCasasDecimais(registro.getPorcentagemVolume());
+                
                 usoRam.setText(utils.limitarDuasCasasDecimais(utils.converterBytesParaGiga(looca.getMemoria().getEmUso())).toString() + " GB ("
-                    + (utils.limitarDuasCasasDecimais((double) looca.getMemoria().getEmUso() / looca.getMemoria().getTotal() * 100).toString()) + "%)");
-                cpu.setText(utils.limitarDuasCasasDecimais(looca.getProcessador().getUso()).toString() + "%");
+                    + (utils.limitarDuasCasasDecimais(porcentagemRam).toString()) + "%)");
+                cpu.setText(utils.limitarDuasCasasDecimais(porcentagemCpu).toString() + "%");
                 Double espacoUtilizado = registro.getVolumeTotal() - registro.getVolumeDisponivel();
                 grupoDeDisco.setText(utils.limitarDuasCasasDecimais(espacoUtilizado).toString() + " GB / " + registro.getVolumeTotal().toString() +
-                    " GB (" + utils.limitarDuasCasasDecimais(registro.getPorcentagemVolume()) + "%)");
+                    " GB (" + porcentagemDisco + "%)");
                 
                 registro.inserirRegistros(maquina);
+                
+                if(porcentagemCpu > 80){
+                    ConexaoPipefySlack conexao = new ConexaoPipefySlack(func);
+                    conexao.enviarAlerta(String.format("CPU está com %.1f%%!", porcentagemCpu), func);
+                }
+                if(porcentagemRam > 85){
+                    ConexaoPipefySlack conexao = new ConexaoPipefySlack(func);
+                    conexao.enviarAlerta(String.format("RAM está com %.1f%%!", porcentagemRam), func);
+                }
+                if(porcentagemRam > 90){
+                    ConexaoPipefySlack conexao = new ConexaoPipefySlack(func);
+                    conexao.enviarAlerta(String.format("Disco está com %.1f%%!", porcentagemDisco), func);
+                }
             }
         }, delay, interval);
 

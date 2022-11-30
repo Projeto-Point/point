@@ -52,5 +52,6 @@ public class Main {
         }
         
         ConexaoPipefySlack conexao = new ConexaoPipefySlack(func);
+        conexao.enviarAlerta("CPU está com 100.0%!", func);
     }
 }

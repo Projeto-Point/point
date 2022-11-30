@@ -90,7 +90,7 @@ public class Maquina {
     public Boolean isMaquinaCadastrada(Funcionario funcionario) {
         
         
-        List<Map<String, Object>> resultado = connection.queryForList("SELECT idMaquina, sistemaOperacional FROM Maquina INNER JOIN Funcionario ON idFuncionario = fkFuncionario WHERE idFuncionario = " + funcionario.getId() + ";");
+        List<Map<String, Object>> resultado = connection.queryForList(String.format("SELECT idMaquina, sistemaOperacional FROM Maquina WHERE nomeMaquina = '%s' AND fkFuncionario = %d;", getNomeMaquina(), funcionario.getId()));
         if (!resultado.isEmpty()) {
             JSONObject jsonResultado = new JSONObject(resultado.get(0));
             int idMaquina = jsonResultado.getInt("idMaquina");

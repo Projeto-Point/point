@@ -24,7 +24,7 @@ public class ConexaoPipefySlack {
         this.func = func;
     }
 
-    public void enviarAlerta(String mensagem, String componente, Long valor, Funcionario func) {
+    public void enviarAlerta(String mensagem, Funcionario func) {
         try {
             OkHttpClient client = new OkHttpClient();
             MediaType mediaType = MediaType.parse("application/json");
