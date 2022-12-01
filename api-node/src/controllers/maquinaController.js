@@ -133,6 +133,28 @@ function pegarKpisRede(req, res){
     });
 }
 
+function analiseBytes(req, res){
+    const tipoBytes = req.query.tipoBytes;
+    const idMaquina = req.query.idMaquina;
+    const dataInicio = req.query.dataInicio;
+    const dataFinal = req.query.dataFinal;
+    const tipoVisualizacao = req.query.tipoVisualizacao;
+
+    maquinaModel.analiseBytes(tipoBytes, idMaquina, dataInicio, dataFinal, tipoVisualizacao)
+    .then((resultado) => {
+        if(resultado.length > 0){
+            res.status(200).json(resultado);
+        }
+        else{
+            res.status(204).send("Nenhum registro encontrado!");
+        }
+    })
+    .catch((erro) => {
+        console.log(erro);
+        res.status(500).json(erro.sqlMessage);
+    });
+}
+
 module.exports = {
     listar,
     listarAlertas,
@@ -140,5 +162,6 @@ module.exports = {
     pegarTempo,
     pegarKpis,
     verificarAtividade,
-    pegarKpisRede
+    pegarKpisRede,
+    analiseBytes
 }
