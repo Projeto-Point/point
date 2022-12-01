@@ -15,6 +15,7 @@ var maquinasRouter = require("./src/routes/maquinas");
 var agdaRouter = require("./src/routes/analiseAgda");
 var mapaIvan = require("./src/routes/mapaIvan");
 var grossizinhoRouter = require("./src/routes/grossizinho");
+var guilhermeRouter = require("./src/routes/");
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
@@ -29,6 +30,7 @@ app.use("/maquinas", maquinasRouter);
 app.use("/analiseAgda", agdaRouter);
 app.use("/mapaIvan", mapaIvan);
 app.use("/grossizinho", grossizinhoRouter)
+app.use("/guilherme", guilhermeRouter)
 
 app.listen(PORTA, function () {
     console.log(`Servidor do seu site já está rodando! Acesse o caminho a seguir para visualizar: http://localhost:${PORTA} \n
