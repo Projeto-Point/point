@@ -116,7 +116,7 @@
   const parametros = new URLSearchParams(parametrosString);
   const idMaquina = Number(parametros.get("idMaquina"));
 
-
+  horasAtivas()
 
 
 
@@ -173,6 +173,7 @@
     .then((res) => {
       if (res.ok) {
         res.json().then((resposta) => {
+          console.log(resposta)
           let horarioEntrada;
           let horariosDiferenca = [];
 
@@ -192,7 +193,7 @@
 
           let horas = moment.duration(horasAtivas).hours();
           let minutos = moment.duration(horasAtivas).minutes();
-
+          console.log(horas)
           if (horas == 1) {
             kpiHoras.innerHTML += horas;
             kpiHoras.innerHTML += " hora e "
@@ -210,6 +211,44 @@
             kpiHoras.innerHTML += minutos;
             kpiHoras.innerHTML += " minutos"
           }
+
+
+
+
+
+
+          fetch(`/medidas/pegarRegistroInstancia?idMaquina=${idMaquina}`).then((res) => {
+            if (res.ok) {
+              res.json().then((resposta) => {
+
+
+                console.log(resposta);
+
+                document.getElementById(
+                  "sobreMaquina"
+                ).innerHTML += `<p><b>Sistema operacional: </b><span>${resposta[0].sistemaOperacional}</span></p>`;
+                document.getElementById(
+                  "sobreMaquina"
+                ).innerHTML += `<p><b>Tipo da instância: </b><span>${resposta[0].nomeInstancia}</span></p>`;
+                document.getElementById(
+                  "sobreMaquina"
+                ).innerHTML += `<p><b>Custo por hora: </b><span>$${resposta[0].preco.toFixed(4)} USD</span></p>`;
+                document.getElementById(
+                  "sobreMaquina"
+                ).innerHTML += `<p><b>Performance em rede: </b><span>${resposta[0].performaceRede}</span></p>`;
+                document.getElementById(
+                  "sobreMaquina"
+                ).innerHTML += `<p><b>Armazenamento: </b><span>${resposta[0].tipoArmazenamento}</span></p>`;
+                //   document.getElementById(
+                //     "sobreMaquina"
+                //   ).innerHTML += `<p><b>Alterar instância: </b><span class="top-esq"><a href="https://us-east-1.console.aws.amazon.com/console/home?region=us-east-1#" class="logo">teste
+                // </a></span></p>`;
+
+
+                console.log(Number(horas) * Number(resposta[0].preco))
+              });
+            }
+          });
         });
       }
     })
@@ -217,47 +256,13 @@
       console.log(erro);
     });
 
-  fetch(`/medidas/pegarRegistroInstancia?idMaquina=${idMaquina}`).then((res) => {
-    if (res.ok) {
-      res.json().then((resposta) => {
-
-
-        console.log(resposta);
-
-        document.getElementById(
-          "sobreMaquina"
-        ).innerHTML += `<p><b>Sistema operacional: </b><span>${resposta[0].sistemaOperacional}</span></p>`;
-        document.getElementById(
-          "sobreMaquina"
-        ).innerHTML += `<p><b>Tipo da instância: </b><span>${resposta[0].nomeInstancia}</span></p>`;
-        document.getElementById(
-          "sobreMaquina"
-        ).innerHTML += `<p><b>Custo por hora: </b><span>$${resposta[0].preco.toFixed(4)} USD</span></p>`;
-        document.getElementById(
-          "sobreMaquina"
-        ).innerHTML += `<p><b>Performance em rede: </b><span>${resposta[0].performaceRede}</span></p>`;
-        document.getElementById(
-          "sobreMaquina"
-        ).innerHTML += `<p><b>Armazenamento: </b><span>${resposta[0].tipoArmazenamento}</span></p>`;
-        //   document.getElementById(
-        //     "sobreMaquina"
-        //   ).innerHTML += `<p><b>Alterar instância: </b><span class="top-esq"><a href="https://us-east-1.console.aws.amazon.com/console/home?region=us-east-1#" class="logo">teste
-        // </a></span></p>`;
-      });
-    }
-  });
-
-
-
-
- 
-  const labels = [1,2,3,4,5,6,7,8,9,10];
+  const labels = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
   const data = {
     labels: labels,
     datasets: [
       {
         label: 'Dataset 1',
-        data: [1,2,3,4,5,6,7,8,9,10],
+        data: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
         borderColor: 'rgb(75, 192, 192)',
         backgroundColor: 'rgb(75, 192, 192)',
         stack: 'combined',
@@ -265,7 +270,7 @@
       },
       {
         label: 'Dataset 2',
-        data: [1,2,3,4,5,6,7,8,9,10],
+        data: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
         borderColor: 'rgb(75, 192, 192)',
         backgroundColor: 'rgb(75, 192, 192)',
         stack: 'combined'
@@ -291,9 +296,28 @@
   };
 
 
+  function horasAtivas() {
+    fetch(`/grossizinho/horasAtivas?idMaquina=${idMaquina}`)
+      .then((res) => {
+        if (res.ok) {
+          res.json().then((resposta) => {
+            console.log(resposta)
+            console.log('ta funcionando')
+          });
+        }
+      })
+      .catch((erro) => {
+        console.log(erro);
+        console.log('quebrou')
+      });
+
+
+  }
+
 
   window.graficoCusto = new Chart(
     document.getElementById('graficoCusto').getContext("2d"),
     config);
+
 </script>
 <script src="./jsDash/script-dash.js"></script>
