@@ -4,6 +4,7 @@
  */
 package telas;
 
+import banco.Alerta;
 import banco.ConexaoPipefySlack;
 import com.github.britooo.looca.api.core.Looca;
 import com.github.britooo.looca.api.group.discos.Disco;
@@ -52,6 +53,7 @@ public class TelaPrincipal extends javax.swing.JFrame {
         Utilitarios utils = new Utilitarios();
         Maquina maquina = new Maquina();
         Registros registro = new Registros();
+        ConexaoPipefySlack conexao = new ConexaoPipefySlack(func);
         
         if (maquina.isMaquinaCadastrada(func)) {
             System.out.println("Máquina já cadastrada");
@@ -66,8 +68,7 @@ public class TelaPrincipal extends javax.swing.JFrame {
             + (utils.limitarDuasCasasDecimais((double) looca.getMemoria().getEmUso() / looca.getMemoria().getTotal() * 100).toString()) + "%)");
         totalRam.setText(utils.limitarDuasCasasDecimais(utils.converterBytesParaGiga(looca.getMemoria().getTotal())).toString() + " GB");
         Double espacoUtilizado = registro.getVolumeTotal() - registro.getVolumeDisponivel();
-        grupoDeDisco.setText(utils.limitarDuasCasasDecimais(espacoUtilizado).toString() + " GB / " + registro.getVolumeTotal().toString() +
-            " GB (" + utils.limitarDuasCasasDecimais(registro.getPorcentagemVolume()) + "%)");
+        grupoDeDisco.setText(utils.limitarDuasCasasDecimais(espacoUtilizado).toString() + " GB / " + registro.getVolumeTotal().toString() + " GB (" + utils.limitarDuasCasasDecimais(registro.getPorcentagemVolume()) + "%)");
         
         try{
             ObjectMapper mapper = new ObjectMapper();
@@ -82,6 +83,7 @@ public class TelaPrincipal extends javax.swing.JFrame {
         int delay = 5000;
         int interval = 1000;
         Timer timer = new Timer();
+        Alerta alerta = new Alerta(maquina);
         timer.scheduleAtFixedRate(new TimerTask() {
             public void run() {
                 Double porcentagemRam = (double) looca.getMemoria().getEmUso() / looca.getMemoria().getTotal() * 100;
@@ -97,17 +99,43 @@ public class TelaPrincipal extends javax.swing.JFrame {
                 
                 registro.inserirRegistros(maquina);
                 
-                if(porcentagemCpu > 80){
-                    ConexaoPipefySlack conexao = new ConexaoPipefySlack(func);
-                    conexao.enviarAlerta(String.format("CPU está com %.1f%%!", porcentagemCpu), func);
+                if(porcentagemCpu >= 80){
+                    if(alerta.verificarUltimoAlerta("CPU").equals("FECHADO")){
+                        alerta.criarAlerta("CPU", porcentagemCpu);
+                        conexao.enviarAlerta(String.format("CPU está com %.1f%%!", porcentagemCpu), func);
+                        System.out.println("Alerta inserido!");
+                    }
                 }
-                if(porcentagemRam > 85){
-                    ConexaoPipefySlack conexao = new ConexaoPipefySlack(func);
-                    conexao.enviarAlerta(String.format("RAM está com %.1f%%!", porcentagemRam), func);
+                else{
+                    if(alerta.verificarUltimoAlerta("CPU").equals("ABERTO")){
+                        alerta.fecharAlerta("CPU");
+                    }
                 }
-                if(porcentagemDisco > 90){
-                    ConexaoPipefySlack conexao = new ConexaoPipefySlack(func);
-                    conexao.enviarAlerta(String.format("Disco está com %.1f%%!", porcentagemDisco), func);
+                
+                if(porcentagemRam >= 85){
+                    if(alerta.verificarUltimoAlerta("RAM").equals("FECHADO")){
+                        alerta.criarAlerta("RAM", porcentagemRam);
+                        conexao.enviarAlerta(String.format("RAM está com %.1f%%!", porcentagemRam), func);
+                        System.out.println("Alerta inserido!");
+                    }
+                }
+                else{
+                    if(alerta.verificarUltimoAlerta("RAM").equals("ABERTO")){
+                        alerta.fecharAlerta("RAM");
+                    }
+                }
+                
+                if(porcentagemDisco >= 90){
+                    if(alerta.verificarUltimoAlerta("DISCO").equals("FECHADO")){
+                        alerta.criarAlerta("DISCO", porcentagemDisco);
+                        conexao.enviarAlerta(String.format("Disco está com %.1f%%!", porcentagemDisco), func);
+                        System.out.println("Alerta inserido!");
+                    }
+                }
+                else{
+                    if(alerta.verificarUltimoAlerta("DISCO").equals("ABERTO")){
+                        alerta.fecharAlerta("DISCO");
+                    }
                 }
             }
         }, delay, interval);

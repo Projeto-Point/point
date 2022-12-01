@@ -10,10 +10,12 @@ banco/Maquina.class
 telas/TelaLogin$4.class
 banco/Atributo.class
 telas/TelaLogin$2.class
+.netbeans_automatic_build
 banco/Main.class
 banco/Localizacao.class
 telas/TelaLogin$3.class
 telas/TelaPrincipal$1.class
+banco/Alerta.class
 telas/App.class
 banco/Database.class
 banco/TratamentoValores.class

@@ -52,6 +52,26 @@ public class Main {
         }
         
         ConexaoPipefySlack conexao = new ConexaoPipefySlack(func);
-        conexao.enviarAlerta("CPU está com 100.0%!", func);
+        Alerta alerta = new Alerta(maquina);
+        
+        Double porcentagemRam = (double) looca.getMemoria().getEmUso() / looca.getMemoria().getTotal() * 100;
+        Double porcentagemCpu = looca.getProcessador().getUso();
+        
+        porcentagemCpu = 23.00;
+        
+        
+        
+        if(porcentagemCpu >= 80){
+            if(alerta.verificarUltimoAlerta("CPU").equals("FECHADO")){
+                alerta.criarAlerta("CPU", porcentagemCpu);
+                conexao.enviarAlerta(String.format("CPU está com %.1f%%!", porcentagemCpu), func);
+                System.out.println("Alerta inserido!");
+            }
+        }
+        else{
+            if(alerta.verificarUltimoAlerta("CPU").equals("ABERTO")){
+                alerta.fecharAlerta("CPU");
+            }
+        }
     }
 }

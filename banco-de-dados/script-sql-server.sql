@@ -110,7 +110,7 @@ SELECT idMaquina, nomeMaquina, sistemaOperacional, M.tipo AS 'tipoMaquina',
        atributo, valor, unidadeMedida
 FROM Maquina M
 INNER JOIN Componente C ON C.fkMaquina = idMaquina
-INNER JOIN Atributo ON idComponente = fkComponente;
+INNER JOIN Atributo A ON idComponente = fkComponente AND A.fkMaquina = idMaquina;
 
 -- Insert 
 
