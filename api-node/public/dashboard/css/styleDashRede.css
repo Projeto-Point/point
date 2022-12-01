@@ -887,7 +887,9 @@ svg rect {
   font: 25px bold;
 }
 
-
+#graficoDown{
+  width: 368px;
+}
 
 @media screen and (max-width: 1200px) {
   .dashboard{
@@ -919,5 +921,4 @@ svg rect {
     margin-right: 1px;
 
   }
-
 }

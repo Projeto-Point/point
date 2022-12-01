@@ -72,6 +72,23 @@ function pegarKpisRede(idMaquina, dataInicio, dataFinal){
     return database.executar(instrucaoSql);
 }
 
+function analiseBytes(tipoBytes, idMaquina, dataInicio, dataFinal, tipoVisualizacao = "dia"){
+    if(tipoVisualizacao == "dia"){
+        instrucaoSql = `SELECT CAST(dataEhora AS DATE) AS 'dataEhora', ROUND(AVG(valor), 2) AS 'media' FROM vw_registros
+        WHERE tipo = '${tipoComponente}' AND idMaquina = ${idMaquina} AND CAST(dataEhora AS DATE) BETWEEN '${dataInicio}' AND '${dataFinal}'
+        GROUP BY CAST(dataEhora AS DATE)
+        ORDER BY dataEhora`;
+    }
+    else{
+        instrucaoSql = `SELECT DATEPART(MONTH, dataEhora) AS 'dataEhora', ROUND(AVG(valor), 2) AS 'media' FROM vw_registros
+        WHERE tipo = '${tipoComponente}' AND idMaquina = ${idMaquina} AND CAST(dataEhora AS DATE) BETWEEN '${dataInicio}' AND '${dataFinal}'
+        GROUP BY DATEPART(MONTH, dataEhora)
+        ORDER BY dataEhora`;
+    }
+    console.log(instrucaoSql);
+    return database.executar(instrucaoSql);
+}
+
 module.exports = {
     listar,
     listarAlertas,
@@ -79,5 +96,6 @@ module.exports = {
     pegarTempo,
     pegarKpis,
     verificarAtividade,
-    pegarKpisRede
+    pegarKpisRede,
+    analiseBytes
 }

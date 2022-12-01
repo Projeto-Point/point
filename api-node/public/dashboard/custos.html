@@ -116,32 +116,7 @@
   const parametros = new URLSearchParams(parametrosString);
   const idMaquina = Number(parametros.get("idMaquina"));
 
-  horasAtivas()
 
-
-
-
-  // fetch(`/medidas/pegarRegistroMaquina?idMaquina=${idMaquina}`).then((res) => {
-  //   if (res.ok) {
-  //     res.json().then((resposta) => {
-  //       for (let index = 0; index < resposta.length; index++) {
-  //         if (resposta[index].atributo == "CORE") {
-  //           resposta[index].unidadeMedida = "";
-  //           resposta[index].valor *= 1;
-  //           Math.trunc(resposta[index].valor);
-  //         }
-  //         if (resposta[index].atributo == "THREADS") {
-  //           resposta[index].unidadeMedida = "";
-  //           resposta[index].valor *= 1;
-  //           Math.trunc(resposta[index].valor);
-  //         }
-  //         document.getElementById(
-  //           "sobreMaquina"
-  //         ).innerHTML += `<p><b>${resposta[index].tipoComponente} - ${resposta[index].atributo}: </b><span>${resposta[index].valor} ${resposta[index].unidadeMedida}</span></p>`;
-  //       }
-  //     });
-  //   }
-  // });
 
   fetch(`/medidas/pegarRegistroFuncionario?idMaquina=${idMaquina}`).then(
     function (res) {
@@ -173,7 +148,6 @@
     .then((res) => {
       if (res.ok) {
         res.json().then((resposta) => {
-          console.log(resposta)
           let horarioEntrada;
           let horariosDiferenca = [];
 
@@ -193,7 +167,8 @@
 
           let horas = moment.duration(horasAtivas).hours();
           let minutos = moment.duration(horasAtivas).minutes();
-          console.log(horas)
+
+
           if (horas == 1) {
             kpiHoras.innerHTML += horas;
             kpiHoras.innerHTML += " hora e "
@@ -221,8 +196,10 @@
             if (res.ok) {
               res.json().then((resposta) => {
 
-
+                var preco = resposta.map((object) => object.preco);
+                console.log(preco)
                 console.log(resposta);
+
 
                 document.getElementById(
                   "sobreMaquina"
@@ -245,7 +222,97 @@
                 // </a></span></p>`;
 
 
-                console.log(Number(horas) * Number(resposta[0].preco))
+
+
+                fetch(`/grossizinho/horasAtivas?idMaquina=${idMaquina}`)
+                  .then((res) => {
+                    if (res.ok) {
+                      res.json().then((tempo) => {
+                        console.log(tempo)
+
+                        var dias = tempo.map((object) => object.dia);
+
+                        console.log(dias)
+
+                        let horarioEntrada;
+                        let horariosDiferenca = [];
+
+
+
+                        tempo.forEach(item => {
+                          if (item.acao == "E") {
+                            horarioEntrada = moment(item.horario);
+                          }
+                          else {
+                            horariosDiferenca.push(moment(item.horario).diff(horarioEntrada));
+                          }
+                        });
+
+                        let horas = moment.duration(horasAtivas).hours();
+                        let minutos = moment.duration(horasAtivas).minutes();
+
+
+                        for (let i = 0; i < horariosDiferenca.length; i++) {
+                          horas = moment.duration(horariosDiferenca[i]).hours();
+                          console.log(horas)
+
+                        }
+
+
+
+
+                        const labels = moment.duration(dias).calendar();
+                        const data = {
+                          labels: labels,
+                          datasets: [
+                            {
+                              label: 'Dataset 1',
+                              data: horas,
+                              borderColor: 'rgb(75, 192, 192)',
+                              backgroundColor: 'rgb(75, 192, 192)',
+                              stack: 'combined',
+                              type: 'bar'
+                            },
+                            {
+                              label: 'Dataset 2',
+                              data: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
+                              borderColor: 'rgb(75, 192, 192)',
+                              backgroundColor: 'rgb(75, 192, 192)',
+                              stack: 'combined'
+                            }
+                          ]
+                        };
+
+                        const config = {
+                          type: 'line',
+                          data: data,
+                          options: {
+                            plugins: {
+                              title: {
+                                display: false,
+                              }
+                            },
+                            scales: {
+                              y: {
+                                stacked: true
+                              }
+                            }
+                          },
+                        };
+
+                        window.graficoCusto = new Chart(
+                          document.getElementById('graficoCusto').getContext("2d"),
+                          config);
+
+
+
+                      });
+                    }
+                  })
+                  .catch((erro) => {
+                    console.log(erro);
+                  });
+
               });
             }
           });
@@ -256,68 +323,11 @@
       console.log(erro);
     });
 
-  const labels = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
-  const data = {
-    labels: labels,
-    datasets: [
-      {
-        label: 'Dataset 1',
-        data: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
-        borderColor: 'rgb(75, 192, 192)',
-        backgroundColor: 'rgb(75, 192, 192)',
-        stack: 'combined',
-        type: 'bar'
-      },
-      {
-        label: 'Dataset 2',
-        data: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
-        borderColor: 'rgb(75, 192, 192)',
-        backgroundColor: 'rgb(75, 192, 192)',
-        stack: 'combined'
-      }
-    ]
-  };
-
-  const config = {
-    type: 'line',
-    data: data,
-    options: {
-      plugins: {
-        title: {
-          display: false,
-        }
-      },
-      scales: {
-        y: {
-          stacked: true
-        }
-      }
-    },
-  };
 
 
-  function horasAtivas() {
-    fetch(`/grossizinho/horasAtivas?idMaquina=${idMaquina}`)
-      .then((res) => {
-        if (res.ok) {
-          res.json().then((resposta) => {
-            console.log(resposta)
-            console.log('ta funcionando')
-          });
-        }
-      })
-      .catch((erro) => {
-        console.log(erro);
-        console.log('quebrou')
-      });
 
 
-  }
 
-
-  window.graficoCusto = new Chart(
-    document.getElementById('graficoCusto').getContext("2d"),
-    config);
 
 </script>
 <script src="./jsDash/script-dash.js"></script>

@@ -15,7 +15,14 @@ var maquinasRouter = require("./src/routes/maquinas");
 var agdaRouter = require("./src/routes/analiseAgda");
 var mapaIvan = require("./src/routes/mapaIvan");
 var grossizinhoRouter = require("./src/routes/grossizinho");
+<<<<<<< HEAD
 // var guilhermeRouter = require("./src/routes/guilherme");
+=======
+<<<<<<< HEAD
+// var guilhermeRouter = require("./src/routes/guilherme");
+=======
+>>>>>>> 6fea59db1aee5fc31e29558a8903c70c94fb1488
+>>>>>>> f1481f2589356b2cf7fa74a2ff1b816988116d14
 var gabrielRouter = require("./src/routes/gabriel");
 
 app.use(express.json());
@@ -31,7 +38,14 @@ app.use("/maquinas", maquinasRouter);
 app.use("/analiseAgda", agdaRouter);
 app.use("/mapaIvan", mapaIvan);
 app.use("/grossizinho", grossizinhoRouter)
+<<<<<<< HEAD
 // app.use("/guilherme", guilhermeRouter)
+=======
+<<<<<<< HEAD
+// app.use("/guilherme", guilhermeRouter)
+=======
+>>>>>>> 6fea59db1aee5fc31e29558a8903c70c94fb1488
+>>>>>>> f1481f2589356b2cf7fa74a2ff1b816988116d14
 app.use("/gabriel", gabrielRouter)
 
 app.listen(PORTA, function () {
