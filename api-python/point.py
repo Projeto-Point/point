@@ -43,6 +43,9 @@ def inserirBanco(comando):
 
         # MySQL Local
     except:
+        pass
+
+    try:
         comando = comando.replace("GETDATE() AT TIME ZONE 'UTC' AT TIME ZONE 'Bahia Standard Time'", "NOW()")
         conexaoMySql = pymysql.connect(db=databaseMySql, user=usernameMySql, passwd=passwordMySql)
         with conexaoMySql:
@@ -50,6 +53,8 @@ def inserirBanco(comando):
                 cursor.execute(comando)
             
             conexaoMySql.commit()
+    except:
+        pass
 
 def consultarBanco(comando):
     comando = comando.replace("GETDATE() AT TIME ZONE 'UTC' AT TIME ZONE 'Bahia Standard Time'", "NOW()")
