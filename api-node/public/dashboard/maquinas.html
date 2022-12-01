@@ -89,7 +89,15 @@
 <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
 <script>
     nomeGerente.innerHTML = sessionStorage.NOME_USUARIO;
-    // TO DO: incluir máquinas com alertas, verificar se é computador ou servidor
+    // TODO: incluir máquinas com alertas, verificar se é computador ou servidor
+
+
+
+    /* FIXME: Só pega se é servidor ou máquina Exemplo: 
+        O funcionário Kelvin está com 2 máquinas associadas a ele 
+        Uma é servidor outra é maquina porém só aparece que ele tem instância na dash
+    */
+
 
     function listarMaquina() {
         var pesquisaMaquinaVar = document.getElementById("inp-pesquisar-maquina").value;

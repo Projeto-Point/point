@@ -161,91 +161,46 @@
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <script>
 
-    
-
-// CHartss
-
-const ctx = document.getElementById('myChart')
-
- 
-   const data = {
-  labels: [
-    'Eating',
-    'Drinking',
-    'Sleeping',
-    'Designing',
-    'Coding',
-    'Cycling',
-    'Running'
-  ],
-  datasets: [{
-    label: 'My First Dataset',
-    data: [65, 59, 90, 81, 56, 55, 40],
-    fill: true,
-    backgroundColor: 'rgba(255, 99, 132, 0.2)',
-    borderColor: 'rgb(255, 99, 132)',
-    pointBackgroundColor: 'rgb(255, 99, 132)',
-    pointBorderColor: '#fff',
-    pointHoverBackgroundColor: '#fff',
-    pointHoverBorderColor: 'rgb(255, 99, 132)'
-  }]
-};
+    //IMPORTANT: As medidas de Latitude e Longitude foram trocadas no banco então o select que pega a localizacao com lat e long é 
+    // Vice versa. Então no código está tudo Trocado
 
 
-const config = {
-  type: 'radar',
-  data: data,
-  options: {
-    elements: {
-      line: {
-        borderWidth: 3
-      }
+    /* TODO: Colocar o select pra pegar os dados de Longitude e Latitude
+          Passar como parametro da página para o tipo de filtro no Maap 
+    */
+    function pegarDadosMapa(){
+      fetch(`/mapaIvan/getLocalizacao?idEmpresa=${sessionStorage.ID_EMPRESA}`).
+      then(function(resposta) {
+
+        if (resposta.ok){
+
+          resposta.json().then((resposta) => {
+
+          gerarMapa(resposta)
+            
+          });
+          
+        }
+
+      })
     }
-  },
-};
 
-
-new Chart(ctx, config)
- 
-      
+    function gerarMapa(jsonObj) {
   
-
-
-
-
-    function gerarMapa() {
-      // If valor == 1 fecth 1:fecth2:fecth3
-      var valor = sessionStorage.MAP;
-      var jsonObj = [{}]
-      for (var i = 0; i < 5; i++) {
-
-        let randLat = (Math.random() * (-20.882104 - -24.841340) + -24.841340).toFixed(5)
-        let randLng = (Math.random() * (-48.086846 - -51.126988) + -51.126988).toFixed(5)
-        jsonObj[i] = { lat: Number(randLat), lng: Number(randLng) }
-      }
-
-
-
+      // TODO: Pegar o valor máximo que a parada aparece pra deixar no max para ter um equilibrio
       var testData = {
-        // Anotar no notion composicao não pode ser de muitos para muitos
-
-        // Select pega todos os quando a latitude e a longitude são distint.
-
         // Quanto mais próximo do maximo fica com red dot
-        max: 4,
+        max: 30,
         data: jsonObj
       };
-
-
-      // Setando o mapa para ficar centralizado onde tem mais dados
 
       var mediaLat = 0;
       var mediaLng = 0;
       tamanhoData = jsonObj.length;
 
       for (let i = 0; i < tamanhoData; i++) {
-        mediaLat += Number(jsonObj[i]['lat']);
-        mediaLng += Number(jsonObj[i]["lng"]);
+        mediaLat += Number(jsonObj[i]['latitude']);
+        mediaLng += Number(jsonObj[i]["longitude"]);
       }
 
       mediaLat /= tamanhoData;
@@ -262,27 +217,26 @@ new Chart(ctx, config)
         }
       );
 
+      console.log(jsonObj)
       var cfg = {
-        // radius should be small ONLY if scaleRadius is true (or small radius is intended)
-        radius: 2,
-        maxOpacity: 0.4,
-        // scales the radius based on map zoom
+    
+        radius: 0.1,
+        maxOpacity: 0.5,
+
         scaleRadius: true,
-        // if set to false the heatmap uses the global maximum for colorization
-        // if activated: uses the data maximum within the current map boundaries
-        //   (there will always be a red spot with useLocalExtremas true)
+ 
         useLocalExtrema: false,
-        // which field name in your data represents the latitude - default "lat"
-        latField: "lat",
-        // which field name in your data represents the longitude - default "lng"
-        lngField: "lng",
-        // which field name in your data represents the data value - default "value"
+ 
+        latField: "longitude",
+
+        lngField: "latitude",
+       
         valueField: "count",
       };
 
       var heatmapLayer = new HeatmapOverlay(cfg);
       var map = new L.Map("map", {
-        center: new L.LatLng(mediaLat, mediaLng),
+        center: new L.LatLng(mediaLng, mediaLat),
         zoom: 3,
         layers: [baseLayer, heatmapLayer],
       });
@@ -294,7 +248,8 @@ new Chart(ctx, config)
 
     };
 
-    gerarMapa()
-
+    
+    pegarDadosMapa()
+  
   </script>
   <script src="./jsDash/script-dash.js"></script>
