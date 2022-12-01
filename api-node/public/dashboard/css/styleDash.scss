@@ -192,7 +192,8 @@ main {
   color: white;
   padding: 30px;
 
-  
+  // NOTE: Aqui fica a parte da página de alertas
+
 
   .main-localizacao {
     display: flex;
@@ -637,6 +638,14 @@ main {
           grid-area: btn;
           width: fit-content;
           justify-self: end;
+        }
+
+        .infoAlerta{
+          
+          p:last-child{
+            margin-top:25px;
+          }
+
         }
       }
     }

@@ -102,7 +102,7 @@
 
         <div class="table">
 
-          <ul>
+          <ul id="lista">
             <li><a href="">
                 <p>São Paulo</p>
                 <p>BR</p>
@@ -185,12 +185,39 @@
       })
     }
 
+
+    function listarCidades(){
+
+
+    }
+
     function gerarMapa(jsonObj) {
   
       // TODO: Pegar o valor máximo que a parada aparece pra deixar no max para ter um equilibrio
+      var maximoValores = 0
+
+      jsonObj.forEach(i => {
+
+        var count =0;
+
+        jsonObj.forEach(j =>{
+
+          if(i['latitude'] == j['latitude'] && i['longitude'] == j['longitude']){
+            count++;
+          }
+
+          if(count >= maximoValores){
+            maximoValores = count;
+          }
+
+        });
+      });
+
+      console.log(maximoValores)
+
       var testData = {
         // Quanto mais próximo do maximo fica com red dot
-        max: 30,
+        max: maximoValores,
         data: jsonObj
       };
 
@@ -220,7 +247,7 @@
       console.log(jsonObj)
       var cfg = {
     
-        radius: 0.1,
+        radius: 0.2,
         maxOpacity: 0.5,
 
         scaleRadius: true,

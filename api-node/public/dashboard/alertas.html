@@ -64,11 +64,9 @@
                     <div class="opcao">
                         <input type="checkbox" id="aberto" value="aberto"><label for="aberto">Aberto</label>
                     </div>
+
                     <div class="opcao">
-                        <input type="checkbox" id="andamento" value="em-andamento"><label for="andamento">Em andamento</label>
-                    </div>
-                    <div class="opcao">
-                        <input type="checkbox" id="concluido" value="concluido"><label for="concluido">Concluído</label>
+                        <input type="checkbox" id="fechado" value="fechado"><label for="fechado">Fechado</label>
                     </div>
                 </div>
                 <div class="filtro box">
@@ -86,7 +84,7 @@
             <div class="main">
                 <section class="top">
                     <div class="top-meio">
-                        <input id="inp-pesquisar-maquina" type="search" placeholder="Pesquise por máquina">
+                        <input id="inp-pesquisar-maquina" type="search" placeholder="Pesquise por nome do funcionário" onkeyup="listarPorNomeFuncionario()">
                     </div>
                     <div class="top-dir">
                        
@@ -95,13 +93,6 @@
                     </div>
                 </section>
                 <div id="lista-alertas">
-                    <!-- <div class="alerta box">
-                        <h3 id="titulo-alerta">CPU 93% - UBUNTU 2042</h3>
-                        <p id="data-alerta">15/03/2022 às 15:36</p>
-                        <p id="responsavel-alerta"><span>Responsável pela máquina: </span>Ivan Miranda</p>
-                        <p id="resolucao-alerta"><span>Resolução: </span>Aberto<span class="bolinha bol-aberto"></span></p>
-                        <a class="btn-link" href="#" id="btn-alerta">Ver mais</a>
-                    </div> -->
                 </div>
             </div>
         </section>
@@ -110,20 +101,46 @@
     <script src="../script.js"></script>
     <script>
 
+
+        function listarMaquina(){
+
+
+        
         nomeGerente.innerHTML=sessionStorage.NOME_USUARIO;
 
-        fetch(`/maquinas/listarAlertas`)
+        fetch(`/maquinas/listarAlertas?idEmpresa=${sessionStorage.ID_EMPRESA}`)
         .then((res) => {
             if(res.ok){
                 res.json().then((resposta) => {
+
+                    // FIXME: Deixar alinhado o titulo / imagem / horário 
+                    console.log(resposta)
                     for (let i = 0; i < resposta.length; i++) {
+
+                        imagemTipoMaquina = ''
+
+                        if(resposta[i].tipo == 'Servidor'){
+
+                            imagemTipoMaquina = '<img src="../dashboard/assets/dash/instancia.png" style="width: 30px; height: 30px;">'
+                            
+                        }else{
+                            imagemTipoMaquina = '<img src="../dashboard/assets/dash/computer.png" style="width: 30px; height: 30px;">'
+                            
+                        }
+
                         document.getElementById("lista-alertas").innerHTML += `
                         <div class="alerta box">
-                            <h3 id="titulo-alerta">${resposta[i].titulo}</h3>
+                            
+                            <h3 id="titulo-alerta">
+                                ${imagemTipoMaquina}
+                                ${resposta[i].titulo}</h3>
                             <p id="data-alerta">${moment(resposta[i].dataEhora).format("DD/MM/YYYY [às] HH:mm")}</p>
-                            <p id="responsavel-alerta"><span>Responsável pela máquina: </span>${resposta[i].nome}</p>
-                            <p id="resolucao-alerta"><span>Resolução: </span>${resposta[i].resolucao}<span class="bolinha bol-aberto"></span></p>
-                            <a class="btn-link" href="${resposta[i].link}" id="btn-alerta">Ver mais</a>
+                            <div class="infoAlerta">
+                            <p id="responsavel-alerta"><span>Funcionário: </span>${resposta[i].nome}</p>
+                            <p id="cargo-alerta"><span>Cargo: </span>${resposta[i].cargo}</p>
+                        </div>
+                            <p id="resolucao-alerta"><span>Status: </span>${resposta[i].resolucao}<span class="bolinha bol-aberto"></span></p>
+                            <a class="btn-link" href="./analise.html?idMaquina=${resposta[i].idMaquina}" id="btn-alerta">Ver mais</a>
                         </div>`;
                     }
                 });
@@ -132,5 +149,10 @@
         .catch((erro) => {
             console.log(erro);
         });
+    }
+
+    listarMaquina()
+
+
     </script>
     <script src="./jsDash/script-dash.js"></script>

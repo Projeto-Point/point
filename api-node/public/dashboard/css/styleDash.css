@@ -837,6 +837,10 @@ main section#alertas .main .alerta a#btn-alerta {
       justify-self: end;
 }
 
+main section#alertas .main .alerta .infoAlerta p:last-child {
+  margin-top: 25px;
+}
+
 main section.funcionarios .top {
   margin-bottom: 30px;
 }
