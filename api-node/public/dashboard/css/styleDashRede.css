@@ -856,11 +856,11 @@ svg rect {
   flex-wrap: nowrap;
 }
 
-.tempo-real-dowload{
+.tempo-real-download{
   display: flex;
   background-color: white;
   height: 255px;
-  width: 368px;
+  width: 372px;
   border-radius: 5px;
   color: black;
   box-shadow: 0 0 10px rgba(0,0,0,0.6);
@@ -896,7 +896,7 @@ svg rect {
     justify-content: start;
   }
   
-  .tempo-real-dowload{
+  .tempo-real-download{
     display: flex;
     background-color: white;
     height: 255px;

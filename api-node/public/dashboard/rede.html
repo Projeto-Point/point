@@ -78,28 +78,18 @@
                 <h3>Média de Upload:</h3>
                 <p id="kpiUpload">GB</p>
             </div>
-            <div class="grafico-processador grafico box">
-                <div class="header">
-                    <h3>Download</h3>
-                    <div class="dir">
-                        <div class="legenda alto"></div>
-                        <span>Maior que 80%</span>
-                        <div class="legenda normal"></div>
-                        <span>Menor que 80%</span>
-                        <select id="tempoCpu" onchange="mudarTempo('CPU', this.value)">
-                            <option value="ultimoMes">Último mês</option>
-                            <option value="ultimaSemana">Última semana</option>
-                            <option value="ultimoAno">Último ano</option>
-                        </select>
-                    </div>
+            
+            <div class="dashboard">
+                <div class="tempo-real-download" id="gfCpu">
+                    <div> <canvas id="graficoDown" style="position: relative;"></canvas></div>
                 </div>
-                <div class="main-grafico">
-                    <canvas id="graficoCPU"></canvas>
+                <div class="tempo-real-upload" id="gfRam">
+                    <canvas id="graficoUp" style="position: relative;"></canvas>
                 </div>
             </div>
             <div class="grafico-ram grafico box">
                 <div class="header">
-                    <h3>Upload</h3>
+                    <h3>Download</h3>
                     <div class="dir">
                         <div class="legenda alto"></div>
                         <span>Maior que 85%</span>
@@ -116,13 +106,23 @@
                     <canvas id="graficoRAM"></canvas>
                 </div>
             </div>
-            <div class="dashboard">
-                <div class="tempo-real-dowload" id="gfCpu">
-                    
-                    <div> <canvas id="graficoDown" style="position: relative;"></canvas></div>
+            <div class="grafico-disco grafico box">
+                <div class="header">
+                    <h3>Upload</h3>
+                    <div class="dir">
+                        <div class="legenda alto"></div>
+                        <span>Maior que 90%</span>
+                        <div class="legenda normal"></div>
+                        <span>Menor que 90%</span>
+                        <select id="tempoDisco" onchange="mudarTempo('Disco', this.value)">
+                            <option value="ultimoMes">Último mês</option>
+                            <option value="ultimaSemana">Última semana</option>
+                            <option value="ultimoAno">Último ano</option>
+                        </select>
+                    </div>
                 </div>
-                <div class="tempo-real-upload" id="gfRam">
-                    <canvas id="graficoUp" style="position: relative;"></canvas>
+                <div class="main-grafico">
+                    <canvas id="graficoDisco"></canvas>
                 </div>
             </div>
 
@@ -205,8 +205,9 @@
         .then((res) => {
             if (res.ok) {
                 res.json().then((resposta) => {
-                    kpiDownload.innerHTML = resposta[0].mediaDownload + "GB";
-                    kpiUpload.innerHTML = resposta[0].mediaUpload + "GB";
+                    console.log(resposta)
+                    kpiDownload.innerHTML = resposta[0].mediaDownload + " GB";
+                    kpiUpload.innerHTML = resposta[0].mediaUpload + " GB";
                 });
             }
         })
@@ -262,35 +263,6 @@
         .catch((erro) => {
             console.log(erro);
         });
-
-    var chartCpu = null;
-    var chartRam = null;
-    var chartDisco = null;
-
-    mudarTempo("CPU", tempoCpu.value);
-    mudarTempo("RAM", tempoRam.value);
-
-
-    function mudarTempo(componente, tempo) {
-        if (chartCpu != null && componente == "CPU") {
-            chartCpu.destroy();
-        }
-        else if (chartRam != null && componente == "RAM") {
-            chartRam.destroy();
-        }
-        tipoVisualizacao = "dia";
-        if (tempo == "ultimaSemana") {
-            tempo = moment().subtract(7, "days");
-        }
-        else if (tempo == "ultimoMes") {
-            tempo = moment().subtract(30, "days");
-        }
-        else {
-            tipoVisualizacao = "mes";
-            tempo = moment().subtract(1, "years");
-        }
-        pegarRegistros(`grafico${componente}`, componente, idMaquina, tempo.format("YYYY-MM-DD"), moment().format("YYYY-MM-DD"), tipoVisualizacao);
-    }
 
     function pegarRegistros(idGrafico, tipoComponente, idMaquina, dataInicio, dataFinal, tipoVisualizacao) {
         fetch(`/maquinas/analiseComponente?tipoComponente=${tipoComponente}&idMaquina=${idMaquina}&dataInicio=${dataInicio}&dataFinal=${dataFinal}&tipoVisualizacao=${tipoVisualizacao}`)
@@ -407,9 +379,10 @@
             if (res.ok) {
                 res.json().then(Download => {
 
-                    console.log(Download)
-                    downMedida = Download.map((object) => object.valor);
+                    
+                    downMedida = Download.map((object) => object.bytesRecebidos);
                     plotarGraficoDownload(downMedida);
+                    
 
                 })
             }
@@ -419,7 +392,7 @@
             if (res.ok) {
                 res.json().then(Upload => {
 
-                    upMedida = Upload.map((object) => object.valor);
+                    upMedida = Upload.map((object) => object.bytesEnviados);
                     plotarGraficoUpload(upMedida);
 
                 })
@@ -452,6 +425,8 @@
 
             }]
         };
+
+        console.log(downMedida)
 
         const config = {
             type: 'line',
@@ -486,7 +461,7 @@
         fetch(`/medidas/pegarRegistroDownload?idMaquina=${idMaquina}`).then(function (res) {
             if (res.ok) {
                 res.json().then(Download => {
-                    downMedida = Download.map((object) => object.valor);
+                    downMedida = Download.map((object) => object.bytesRecebidos);
                     dados.datasets[0].data = downMedida
                     window.graficoDown.update();
 
@@ -497,7 +472,7 @@
                 })
             }
         })
-        // console.log("ta funcionando")
+        //  console.log("ta funcionando")
     }
     function plotarGraficoUpload(upMedida) {
         const labels = [
@@ -560,7 +535,7 @@
 
 
 
-                    upMedida = Upload.map((object) => object.valor);
+                    upMedida = Upload.map((object) => object.bytesEnviados);
                     dados.datasets[0].data = upMedida
                     window.graficoUp.update();
 
