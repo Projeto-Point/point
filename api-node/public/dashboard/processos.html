@@ -65,17 +65,17 @@
       </div>
     </section>
     <section class="dashboard-analise">
-     
+
       <div class="grafico-processador grafico box">
-       
+
         <div class="main-grafico">
-           <h3>Sobre os processos </h3>
-           <div id="sobreProcesso"></div>
-           
+          <h3>Sobre os processos </h3>
+          <div id="sobreProcesso"></div>
+
           <img src="../assets/imgs/wordcloud-porceso.png" alt="" width="100%">
         </div>
       </div>
-     
+
       <div class="box info-maquina">
         <h3>Sobre a máquina</h3>
         <div id="sobreMaquina"></div>
@@ -158,189 +158,19 @@
     }
   );
 
-  fetch(`/maquinas/pegarKpis?idMaquina=${idMaquina}&dataInicio=${moment().subtract(30, "days").format("YYYY-MM-DD")}&dataFinal=${moment().format("YYYY-MM-DD")}`)
-    .then((res) => {
+  fetch(`/gabriel/listarProcessos?idMaquina=${idMaquina}`).then(
+    function (res) {
       if (res.ok) {
         res.json().then((resposta) => {
-          kpiCPU.innerHTML = resposta[0].mediaProcessador + "%";
-          kpiRAM.innerHTML = resposta[0].mediaRAM + "%";
+          console.log(resposta)
+          for (let j = 0; j < resposta.length; j++) {
+            sobreProcesso.innerHTML += resposta.nome[j];
+          }
+
+
         });
       }
-    })
-    .catch((erro) => {
-      console.log("Erro ao acessar /maquinas/pegarKpis");
-      console.log(erro);
-    });
-
-  fetch(`/maquinas/pegarTempo?idMaquina=${idMaquina}&dataInicio=${moment().subtract(30, "days").format("YYYY-MM-DD")}&dataFinal=${moment().format("YYYY-MM-DD")}`)
-    .then((res) => {
-      if (res.ok) {
-        res.json().then((resposta) => {
-          let horarioEntrada;
-          let horariosDiferenca = [];
-
-          resposta.forEach(item => {
-            if (item.acao == "E") {
-              horarioEntrada = moment(item.horario);
-            }
-            else {
-              horariosDiferenca.push(moment(item.horario).diff(horarioEntrada));
-            }
-          });
-
-          let horasAtivas = 0;
-          horariosDiferenca.forEach(horario => {
-            horasAtivas += horario;
-          });
-
-          let horas = moment.duration(horasAtivas).hours();
-          let minutos = moment.duration(horasAtivas).minutes();
-
-          if (horas == 1) {
-            kpiHoras.innerHTML += horas;
-            kpiHoras.innerHTML += " hora e "
-          }
-          else if (horas > 1) {
-            kpiHoras.innerHTML += horas;
-            kpiHoras.innerHTML += " horas e "
-          }
-
-          if (minutos == 1) {
-            kpiHoras.innerHTML += minutos;
-            kpiHoras.innerHTML += " minuto"
-          }
-          else if (minutos > 1) {
-            kpiHoras.innerHTML += minutos;
-            kpiHoras.innerHTML += " minutos"
-          }
-        });
-      }
-    })
-    .catch((erro) => {
-      console.log(erro);
-    });
-  var chartCpu = null;
-  var chartRam = null;
-  var chartDisco = null;
-
-  mudarTempo("CPU", tempoCpu.value);
-  mudarTempo("RAM", tempoRam.value);
-  mudarTempo("Disco", tempoDisco.value);
-
-  function mudarTempo(componente, tempo) {
-    if (chartCpu != null && componente == "CPU") {
-      chartCpu.destroy();
     }
-    else if (chartRam != null && componente == "RAM") {
-      chartRam.destroy();
-    }
-    else if (chartDisco != null && componente == "Disco") {
-      chartDisco.destroy();
-    }
-
-    tipoVisualizacao = "dia";
-    if (tempo == "ultimaSemana") {
-      tempo = moment().subtract(7, "days");
-    }
-    else if (tempo == "ultimoMes") {
-      tempo = moment().subtract(30, "days");
-    }
-    else {
-      tipoVisualizacao = "mes";
-      tempo = moment().subtract(1, "years");
-    }
-    pegarRegistros(`grafico${componente}`, componente, idMaquina, tempo.format("YYYY-MM-DD"), moment().format("YYYY-MM-DD"), tipoVisualizacao);
-  }
-
-  function pegarRegistros(idGrafico, tipoComponente, idMaquina, dataInicio, dataFinal, tipoVisualizacao) {
-    fetch(`/maquinas/analiseComponente?tipoComponente=${tipoComponente}&idMaquina=${idMaquina}&dataInicio=${dataInicio}&dataFinal=${dataFinal}&tipoVisualizacao=${tipoVisualizacao}`)
-      .then((res) => {
-        if (res.ok) {
-          res.json().then((resposta) => {
-            console.log(resposta);
-            let labels = [];
-
-            if (tipoVisualizacao == "dia") {
-              labels = resposta.map((registro) =>
-                moment(registro.dataEhora).format("DD/MM/YYYY")
-              );
-            }
-            else {
-              labels = resposta.map((registro) =>
-                // registro.dataEhora
-                moment().locale('pt').month(1)
-              );
-            }
-
-            const data = {
-              labels: labels,
-              datasets: [
-                {
-                  label: "Valor médio",
-                  backgroundColor: [],
-                  data: resposta.map((registro) => registro.media),
-                },
-              ],
-            };
-
-            for (let index = 0; index < resposta.length; index++) {
-              if (tipoComponente == "CPU") {
-                if (resposta[index].media >= 80) {
-                  data.datasets[0].backgroundColor.push("#D0342C");
-                } else {
-                  data.datasets[0].backgroundColor.push("#00CA43");
-                }
-              } else if (tipoComponente == "RAM") {
-                if (resposta[index].media >= 85) {
-                  data.datasets[0].backgroundColor.push("#D0342C");
-                } else {
-                  data.datasets[0].backgroundColor.push("#00CA43");
-                }
-              } else if (tipoComponente == "Disco") {
-                if (resposta[index].media >= 90) {
-                  data.datasets[0].backgroundColor.push("#D0342C");
-                } else {
-                  data.datasets[0].backgroundColor.push("#00CA43");
-                }
-              }
-            }
-
-            const config = {
-              type: "bar",
-              data: data,
-              options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                scales: {
-                  y: {
-                    beginAtZero: true,
-                  },
-                },
-                plugins: {
-                  legend: {
-                    display: false,
-                  },
-                },
-              },
-            };
-
-            if (tipoComponente == "CPU") {
-              chartCpu = new Chart(document.getElementById(idGrafico), config);
-            }
-            else if (tipoComponente == "RAM") {
-              chartRam = new Chart(document.getElementById(idGrafico), config);
-            }
-            else if (tipoComponente == "Disco") {
-              chartDisco = new Chart(document.getElementById(idGrafico), config);
-            }
-          });
-        } else {
-          console.log("Erro ao conseguir os resultados!");
-        }
-      })
-      .catch((erro) => {
-        console.log("Erro ao acessar /maquinas/analiseComponente");
-      });
-  }
+  );
 </script>
 <script src="./jsDash/script-dash.js"></script>
