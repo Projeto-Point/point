@@ -1,3 +1,4 @@
+from cmath import exp
 import os
 import platform
 from time import sleep
@@ -31,26 +32,32 @@ def limpar():
 
 def inserirBanco(comando):
     # Azure
-    conexaoSqlServer = pymssql.connect(server=serverSqlServer, user=usernameSqlServer, password=passwordSqlServer, database=databaseSqlServer)
     
-    with conexaoSqlServer:
-        with conexaoSqlServer.cursor() as cursor:
-            cursor.execute(comando)
-        
-        conexaoSqlServer.commit()
+    try:
+        conexaoSqlServer = pymssql.connect(server=serverSqlServer, user=usernameSqlServer, password=passwordSqlServer, database=databaseSqlServer)
+        with conexaoSqlServer:
+            with conexaoSqlServer.cursor() as cursor:
+                cursor.execute(comando)
+            
+            conexaoSqlServer.commit()
 
-    # MySQL Local
-    comando = comando.replace("GETDATE() AT TIME ZONE 'UTC' AT TIME ZONE 'Bahia Standard Time", "NOW()")
-    conexaoMySql = pymysql.connect(db=databaseMySql, user=usernameMySql, passwd=passwordMySql)
+        # MySQL Local
+    except:
+        pass
 
-    with conexaoMySql:
-        with conexaoMySql.cursor() as cursor:
-            cursor.execute(comando)
-        
-        conexaoMySql.commit()
+    try:
+        comando = comando.replace("GETDATE() AT TIME ZONE 'UTC' AT TIME ZONE 'Bahia Standard Time'", "NOW()")
+        conexaoMySql = pymysql.connect(db=databaseMySql, user=usernameMySql, passwd=passwordMySql)
+        with conexaoMySql:
+            with conexaoMySql.cursor() as cursor:
+                cursor.execute(comando)
+            
+            conexaoMySql.commit()
+    except:
+        pass
 
 def consultarBanco(comando):
-    comando = comando.replace("GETDATE() AT TIME ZONE 'UTC' AT TIME ZONE 'Bahia Standard Time", "NOW()")
+    comando = comando.replace("GETDATE() AT TIME ZONE 'UTC' AT TIME ZONE 'Bahia Standard Time'", "NOW()")
     
     try:
         # Azure SQL Server
@@ -63,7 +70,9 @@ def consultarBanco(comando):
 
     except:
         # MySQL Local
-        comando = comando.replace("GETDATE() AT TIME ZONE 'UTC' AT TIME ZONE 'Bahia Standard Time", "NOW()")
+        comando = comando.replace("GETDATE() AT TIME ZONE 'UTC' AT TIME ZONE 'Bahia Standard Time'", "NOW()")
+
+        print(comando)
         conexaoMySql = pymysql.connect(db=databaseMySql, user=usernameMySql, passwd=passwordMySql)
 
         with conexaoMySql:
@@ -174,7 +183,7 @@ idMaquina = consulta[0][0]
 
 # Inserindo entrada com localização
 ip = geocoder.ip('me')
-inserirBanco(f"INSERT INTO Localizacao (acao, dataEhora, ipAdress, longitude, latitude, cidade, pais, fkMaquina) VALUES ('E', GETDATE(), '{ip.ip}', {ip.latlng[0]}, {ip.latlng[1]}, '{ip.city}', '{ip.country}', {idMaquina})")
+inserirBanco(f"INSERT INTO Localizacao (acao, dataEhora, ipAdress, longitude, latitude, cidade, pais, fkMaquina) VALUES ('E', GETDATE() AT TIME ZONE 'UTC' AT TIME ZONE 'Bahia Standard Time', '{ip.ip}', {ip.latlng[0]}, {ip.latlng[1]}, '{ip.city}', '{ip.country}', {idMaquina})")
 
 # Personalizando o terminal 
 ui = HSplit(
@@ -271,7 +280,7 @@ while True:
             inserir_alerta('CPU',porc_cpu)
             reportarAlerta(f"CPU está com {porc_cpu}%!", login, nomeFuncionario)
     else:
-        if has_alerta_por_componente('CPU')[0] != 'FECHADO':
+        if has_alerta_por_componente('CPU')[0] != 'FECHADO' and has_alerta_por_componente('CPU')[1] != 0:
             fechar_alerta(has_alerta_por_componente('CPU')[1])
         
     if porc_ram >= 85:
@@ -280,7 +289,7 @@ while True:
             inserir_alerta('RAM', porc_ram)
             reportarAlerta(f"Ram está com {porc_ram}%!", login, nomeFuncionario)
     else:
-        if has_alerta_por_componente('RAM')[0] != 'FECHADO':
+        if has_alerta_por_componente('RAM')[0] != 'FECHADO' and has_alerta_por_componente('RAM')[1] != 0:
             fechar_alerta(has_alerta_por_componente('RAM')[1])
              
     if porc_disco >= 90:
@@ -289,7 +298,7 @@ while True:
             inserir_alerta('DISCO', porc_disco)
             reportarAlerta(f"Disco está com {porc_disco}%!", login, nomeFuncionario)
     else:
-        if has_alerta_por_componente('DISCO')[0] != 'FECHADO':
+        if has_alerta_por_componente('DISCO')[0] != 'FECHADO' and has_alerta_por_componente('DISCO')[1]  :
             fechar_alerta(has_alerta_por_componente('DISCO')[1])
         
             
