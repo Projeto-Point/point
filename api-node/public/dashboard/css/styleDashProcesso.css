@@ -637,39 +637,22 @@ main section.dashboard-analise {
   margin-top: 30px;
   display: grid;
   gap: 30px;
-  grid-template-columns: 1fr 1fr 1fr;
-  grid-template-rows: 1fr (250px);
-  grid-template-areas: "k1 k2 k3" "g1 g1 i2" "g1 g1 i2";
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 1fr 1fr;
+  grid-template-areas: "g1 g2";
 }
-main section.dashboard-analise .kpi-horas {
-  grid-area: k1;
-}
-main section.dashboard-analise .kpi-mediaProc {
-  grid-area: k2;
-}
-main section.dashboard-analise .kpi-mediaRam {
-  grid-area: k3;
-}
+
 main section.dashboard-analise .grafico-processador {
   grid-area: g1;
 }
-main section.dashboard-analise .grafico-ram {
+main section.dashboard-analise .info-maquina {
   grid-area: g2;
-}
-main section.dashboard-analise .grafico-disco {
-  grid-area: g3;
-}
-main section.dashboard-analise .info-funcionario {
-  grid-area: i1;
 }
 main section.dashboard-analise .info-funcionario p {
   margin-top: 15px;
 }
 main section.dashboard-analise .info-funcionario h3 {
   border-bottom: 2px solid var(--cor3);
-}
-main section.dashboard-analise .info-maquina {
-  grid-area: i2;
 }
 main section.dashboard-analise .info-maquina p {
   margin-top: 7%;
@@ -888,7 +871,10 @@ main section.dashboard-analise-funcionario {
   gap: 30px;
   grid-template-columns: 1fr 1fr 1fr;
   grid-template-rows: 1fr repeat(3, 250px);
-  grid-template-areas: "k1 k2 i1" "g1 g1 i1" "g2 g2 i2" "g3 g3 i2";
+  grid-template-areas: "k1 k2 i1" 
+                       "g1 g1 i1"
+                       "g2 g2 i2"
+                       "g3 g3 i2";
 }
 main section.dashboard-analise-funcionario .kpi-horas {
   grid-area: k1;

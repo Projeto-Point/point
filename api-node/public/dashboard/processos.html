@@ -65,28 +65,17 @@
       </div>
     </section>
     <section class="dashboard-analise">
-      <div class="box box-kpi kpi-horas">
-        <h3>Horas ativas:</h3>
-        <p id="kpiHoras"></p>
-      </div>
-      <div class="box box-kpi kpi-mediaProc">
-        <h3>Média da CPU:</h3>
-        <p id="kpiCPU">%</p>
-      </div>
-      <div class="box box-kpi kpi-mediaRam">
-        <h3>Média da memória RAM:</h3>
-        <p id="kpiRAM">%</p>
-      </div>
+     
       <div class="grafico-processador grafico box">
        
         <div class="main-grafico">
            <h3>Sobre os processos </h3>
-           
+           <div id="sobreProcesso"></div>
            
           <img src="../assets/imgs/wordcloud-porceso.png" alt="" width="100%">
         </div>
       </div>
-      
+     
       <div class="box info-maquina">
         <h3>Sobre a máquina</h3>
         <div id="sobreMaquina"></div>
@@ -142,6 +131,19 @@
       });
     }
   });
+
+  fetch(`/medidas/pegarRegistroFuncionario?idMaquina=${idMaquina}`).then(
+    function (res) {
+      if (res.ok) {
+        res.json().then((resposta) => {
+          sobreProcesso.innerHTML += `<p><b>IdProcesso: </b>${resposta[0].nome}</p>`;
+          sobreProcesso.innerHTML += `<p><b>Nome: </b>${resposta[0].cargo}</p>`;
+          sobreProcesso.innerHTML += `<p><b>Porcentagem CPU: </b>${resposta[0].email}</p>`;
+          sobreProcesso.innerHTML += `<p><b>Pid: </b>${resposta[0].telefone}</p>`;
+        });
+      }
+    }
+  );
 
   fetch(`/medidas/pegarRegistroFuncionario?idMaquina=${idMaquina}`).then(
     function (res) {
