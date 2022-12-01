@@ -67,7 +67,7 @@
         </section>
         <section class="dashboard-analise">
             <div class="box box-kpi kpi-horas">
-                <h3>Horas ativas:</h3>
+                <h3>Rede:</h3>
                 <p id="kpiHoras"></p>
             </div>
             <div class="box box-kpi kpi-mediaProc">
@@ -95,7 +95,7 @@
                         <span>Maior que 85%</span>
                         <div class="legenda normal"></div>
                         <span>Menor que 85%</span>
-                        <select id="tempoRam" onchange="mudarTempo('RAM', this.value)">
+                        <select id="tempoDown" onchange="mudarTempo('Download', this.value)">
                             <option value="ultimoMes">Último mês</option>
                             <option value="ultimaSemana">Última semana</option>
                             <option value="ultimoAno">Último ano</option>
@@ -114,7 +114,7 @@
                         <span>Maior que 90%</span>
                         <div class="legenda normal"></div>
                         <span>Menor que 90%</span>
-                        <select id="tempoDisco" onchange="mudarTempo('Disco', this.value)">
+                        <select id="tempoUp" onchange="mudarTempo('Upload', this.value)">
                             <option value="ultimoMes">Último mês</option>
                             <option value="ultimaSemana">Última semana</option>
                             <option value="ultimoAno">Último ano</option>
@@ -264,8 +264,8 @@
             console.log(erro);
         });
 
-    function pegarRegistros(idGrafico, tipoComponente, idMaquina, dataInicio, dataFinal, tipoVisualizacao) {
-        fetch(`/maquinas/analiseComponente?tipoComponente=${tipoComponente}&idMaquina=${idMaquina}&dataInicio=${dataInicio}&dataFinal=${dataFinal}&tipoVisualizacao=${tipoVisualizacao}`)
+    function pegarRegistros(idGrafico, tipoBytes, idMaquina, dataInicio, dataFinal, tipoVisualizacao) {
+        fetch(`/maquinas/analiseBytes?tipoBytes=${tipoBytes}&idMaquina=${idMaquina}&dataInicio=${dataInicio}&dataFinal=${dataFinal}&tipoVisualizacao=${tipoVisualizacao}`)
             .then((res) => {
                 if (res.ok) {
                     res.json().then((resposta) => {
@@ -296,24 +296,19 @@
                         };
 
                         for (let index = 0; index < resposta.length; index++) {
-                            if (tipoComponente == "CPU") {
+                            if (tipoBytes == "CPU") {
                                 if (resposta[index].media >= 80) {
                                     data.datasets[0].backgroundColor.push("#D0342C");
                                 } else {
                                     data.datasets[0].backgroundColor.push("#00CA43");
                                 }
-                            } else if (tipoComponente == "RAM") {
+                            } else if (tipoBytes == "RAM") {
                                 if (resposta[index].media >= 85) {
                                     data.datasets[0].backgroundColor.push("#D0342C");
                                 } else {
                                     data.datasets[0].backgroundColor.push("#00CA43");
                                 }
-                            } else if (tipoComponente == "Disco") {
-                                if (resposta[index].media >= 90) {
-                                    data.datasets[0].backgroundColor.push("#D0342C");
-                                } else {
-                                    data.datasets[0].backgroundColor.push("#00CA43");
-                                }
+
                             }
                         }
 
@@ -336,13 +331,13 @@
                             },
                         };
 
-                        if (tipoComponente == "CPU") {
+                        if (tipoBytes == "CPU") {
                             chartCpu = new Chart(document.getElementById(idGrafico), config);
                         }
-                        else if (tipoComponente == "RAM") {
+                        else if (tipoBytes == "RAM") {
                             chartRam = new Chart(document.getElementById(idGrafico), config);
                         }
-                        else if (tipoComponente == "Disco") {
+                        else if (tipoBytes == "Disco") {
                             chartDisco = new Chart(document.getElementById(idGrafico), config);
                         }
                     });
