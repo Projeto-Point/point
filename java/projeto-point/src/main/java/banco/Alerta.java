@@ -1,45 +1,45 @@
 package banco;
 
-import java.util.List;
-import java.util.Map;
 import org.json.JSONObject;
-import org.springframework.jdbc.core.JdbcTemplate;
 
 public class Alerta {
     private Maquina maquina;
-    private Database database = new Database();
-    private JdbcTemplate connection = database.getConnection();
+    private Database banco;
 
-    public Alerta(Maquina maquina) {
+    public Alerta(Database banco, Maquina maquina) {
+        this.banco = banco;
         this.maquina = maquina;
     }
     
     public void criarAlerta(String componente, Double valor){
         try {
-            connection.update("INSERT INTO Alerta (dataEhora, titulo, resolucao, componente, valor, fkMaquina) VALUES (GETDATE() AT TIME ZONE 'UTC' AT TIME ZONE 'Bahia Standard Time', ?, 'ABERTO', ?, ?, ?);", 
+            banco.inserirRegistro(String.format("INSERT INTO Alerta (dataEhora, titulo, resolucao, componente, valor, fkMaquina) VALUES (DATA, '%s', 'ABERTO', '%s', %s, %d);",
                     String.format("%s está com %.2f%%", componente, valor),
                     componente,
-                    valor,
+                    Utilitarios.limitarDuasCasasDecimais(valor),
                     maquina.getId()
+                )
             );
             
             System.out.println("Alerta inserido");
-            
-            Utilitarios.wait(1000);
-        } catch (Exception e) {
+        }
+        catch (Exception e) {
             System.out.println("Não foi possível criar um alerta");
             System.out.println(e);
         }
     }
     
     public String verificarUltimoAlerta(String componente){
-        List<Map<String, Object>> resultado = connection.queryForList(String.format("SELECT TOP 1 resolucao FROM Alerta WHERE fkMaquina = %d AND componente = '%s' ORDER BY dataEhora DESC;", maquina.getId(), componente));
+        JSONObject consulta = banco.consultarRegistro(String.format("SELECT TOP 1 resolucao FROM Alerta WHERE fkMaquina = %d AND componente = '%s' ORDER BY dataEhora DESC;",
+                maquina.getId(), 
+                componente
+            )
+        );   
         
         String resolucao = "FECHADO";
         
-        if(!resultado.isEmpty()){
-            JSONObject jsonResultado = new JSONObject(resultado.get(0));
-            resolucao = jsonResultado.getString("resolucao");
+        if(!(consulta == null)){
+            resolucao = consulta.getString("resolucao");
         }
         
         return resolucao;
@@ -47,11 +47,8 @@ public class Alerta {
     
     public void fecharAlerta(String componente){
         try{
-            connection.update(String.format("UPDATE Alerta SET resolucao = 'FECHADO' WHERE fkMaquina = %d AND componente = '%s'", maquina.getId(), componente));
-            
+            banco.inserirRegistro(String.format("UPDATE Alerta SET resolucao = 'FECHADO' WHERE fkMaquina = %d AND componente = '%s'", maquina.getId(), componente));
             System.out.println("Alerta atualizado");
-            
-            Utilitarios.wait(1000);
         }
         catch (Exception e){
             System.out.println("Houve um erro ao atualizar o alerta!");

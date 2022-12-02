@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package banco;
 
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -10,19 +6,15 @@ import java.util.List;
 import java.util.Map;
 import org.json.JSONObject;
 
-/**
- *
- * @author ivanm
- */
 public class Registros {
+    private Looca looca = new Looca();
+    private Database banco;
 
-    Looca looca = new Looca();
-    Database database = new Database();
-    JdbcTemplate connection = database.getConnection();
-    Utilitarios utilitarios = new Utilitarios();
+    public Registros(Database banco) {
+        this.banco = banco;
+    }
 
     public Double getVolumeTotal() {
-
         String retornoTotal = looca.getGrupoDeDiscos().getVolumes().toString();
 
         String[] retornoSeparado = retornoTotal.split(":");
@@ -39,16 +31,14 @@ public class Registros {
 
         Long valorEspaco = Long.parseLong(espacoTotalString);
 
-        Double valorEspacoDouble = utilitarios.converterBytesParaGiga(valorEspaco);
+        Double valorEspacoDouble = Utilitarios.converterBytesParaGiga(valorEspaco);
 
-        valorEspacoDouble = utilitarios.limitarDuasCasasDecimais(valorEspacoDouble);
+        valorEspacoDouble = Utilitarios.limitarDuasCasasDecimais(valorEspacoDouble);
 
         return valorEspacoDouble;
-
     }
 
     public Double getVolumeDisponivel() {
-
         String retornoTotal = looca.getGrupoDeDiscos().getVolumes().toString();
 
         String[] retornoSeparado = retornoTotal.split(":");
@@ -65,74 +55,61 @@ public class Registros {
 
         Long valorEspaco = Long.parseLong(espacoDisponivelString);
 
-        Double valorEspacoDouble = utilitarios.converterBytesParaGiga(valorEspaco);
+        Double valorEspacoDouble = Utilitarios.converterBytesParaGiga(valorEspaco);
 
-        valorEspacoDouble = utilitarios.limitarDuasCasasDecimais(valorEspacoDouble);
+        valorEspacoDouble = Utilitarios.limitarDuasCasasDecimais(valorEspacoDouble);
 
         return valorEspacoDouble;
-
     }
 
     public Double getPorcentagemVolume() {
-
         Double total = getVolumeTotal();
         Double uso = getVolumeDisponivel();
         Double porcentagemDisponivel = uso / total;
         Double porcentagemUso = 1.0 - porcentagemDisponivel;
-        porcentagemUso = utilitarios.limitarDuasCasasDecimais(porcentagemUso);
+        porcentagemUso = Utilitarios.limitarDuasCasasDecimais(porcentagemUso);
 
         return porcentagemUso * 100;
     }
 
     private void scriptInsert(Maquina maquina, int idComponente, Double valor, String unidadeMedida) {
-
         int idMaquina = maquina.getId();
 
-        Utilitarios.wait(3600);
-        connection.update("INSERT INTO dbo.Registro (fkMaquina, fkComponente, dataEhora, valor, unidadeMedida) VALUES(?, ?, current_timestamp, ?, ?);",
+        banco.inserirRegistro(String.format("INSERT INTO Registro (fkMaquina, fkComponente, dataEhora, valor, unidadeMedida) VALUES(%d, %d, DATA, %s, '%s');",
                 idMaquina,
                 idComponente,
-                valor,
+                Utilitarios.limitarDuasCasasDecimais(valor),
                 unidadeMedida
+            )
         );
     }
 
     private void insertCPURegistro(Maquina maquina) {
-
         Double percentCPU = looca.getProcessador().getUso();
-        percentCPU = utilitarios.limitarDuasCasasDecimais(percentCPU);
+        percentCPU = Utilitarios.limitarDuasCasasDecimais(percentCPU);
 
         scriptInsert(maquina, 1, percentCPU, "%");
     }
 
     private void insertRAMRegistro(Maquina maquina) {
-
         Long memoriaTotal = looca.getMemoria().getTotal();
         Long memoriaUso = looca.getMemoria().getEmUso();
-        Double x = utilitarios.converterBytesParaGiga(memoriaTotal);
-        Double y = utilitarios.converterBytesParaGiga(memoriaUso);
+        Double x = Utilitarios.converterBytesParaGiga(memoriaTotal);
+        Double y = Utilitarios.converterBytesParaGiga(memoriaUso);
         Double porc = y / x;
         porc = porc * 100;
 
         scriptInsert(maquina, 2, porc, "%");
-
     }
     
     private void insertVolumeRegistro(Maquina maquina){
-        
         Double porcentagemVolume = getPorcentagemVolume();
-        
         scriptInsert(maquina, 3, porcentagemVolume, "%");
-        
     }
     
     public void inserirRegistros(Maquina maquina){
-        
         insertCPURegistro(maquina);
         insertRAMRegistro(maquina);
         insertVolumeRegistro(maquina);
-        
     }
-    
-   
 }

@@ -6,18 +6,15 @@ package telas;
 
 import banco.Alerta;
 import banco.ConexaoPipefySlack;
+import banco.Database;
 import com.github.britooo.looca.api.core.Looca;
-import com.github.britooo.looca.api.group.discos.Disco;
 import com.github.britooo.looca.api.group.discos.DiscoGrupo;
 import com.github.britooo.looca.api.group.sistema.Sistema;
 import com.github.britooo.looca.api.group.memoria.Memoria;
 import com.github.britooo.looca.api.group.processador.Processador;
-import com.github.britooo.looca.api.group.processos.Processo;
 import com.github.britooo.looca.api.group.processos.ProcessoGrupo;
-import com.github.britooo.looca.api.group.servicos.Servico;
 import com.github.britooo.looca.api.group.servicos.ServicoGrupo;
 import com.github.britooo.looca.api.group.temperatura.Temperatura;
-import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -31,49 +28,53 @@ import java.net.URL;
 
 public class TelaPrincipal extends javax.swing.JFrame {
 
-    Looca looca = new Looca();
-    Sistema sistema = looca.getSistema();
-    DiscoGrupo grupoDeDiscos = looca.getGrupoDeDiscos();
-    ServicoGrupo grupoDeServicos = looca.getGrupoDeServicos();
-    ProcessoGrupo grupoDeProcessos = looca.getGrupoDeProcessos();
-    Temperatura temperatura = looca.getTemperatura();
-    Memoria memoria = looca.getMemoria();
-    Processador processador = looca.getProcessador();
+    private Looca looca = new Looca();
+    private Sistema sistema = looca.getSistema();
+    private DiscoGrupo grupoDeDiscos = looca.getGrupoDeDiscos();
+    private ServicoGrupo grupoDeServicos = looca.getGrupoDeServicos();
+    private ProcessoGrupo grupoDeProcessos = looca.getGrupoDeProcessos();
+    private Temperatura temperatura = looca.getTemperatura();
+    private Memoria memoria = looca.getMemoria();
+    private Processador processador = looca.getProcessador();
+    private Maquina maquina;
+    private Database banco;
     
-    Funcionario func;
+    private Funcionario func;
 
-    public TelaPrincipal(Funcionario func) {        
+    public TelaPrincipal(Database banco, Funcionario func) {        
         initComponents();
         this.setResizable(false);
         this.looca = new Looca();
+        this.banco = banco;
         this.setUpOs();
 
         this.func = func;
         
-        Utilitarios utils = new Utilitarios();
-        Maquina maquina = new Maquina();
-        Registros registro = new Registros();
+        this.maquina = new Maquina(banco);
+        Registros registro = new Registros(banco);
         ConexaoPipefySlack conexao = new ConexaoPipefySlack(func);
         
         if (maquina.isMaquinaCadastrada(func)) {
             System.out.println("Máquina já cadastrada");
-        }else if (maquina.isCadastrarMaquina(func)){
+        }
+        else if (maquina.isCadastrarMaquina(func)){
             System.out.println("Máquina Cadastrada");
-        }else{
+        }
+        else{
             System.out.println("Não foi possível encontrar máquina/cadastar máquina");
         }
         
-        cpu.setText(utils.limitarDuasCasasDecimais(looca.getProcessador().getUso()).toString() + "%");
-        usoRam.setText(utils.limitarDuasCasasDecimais(utils.converterBytesParaGiga(looca.getMemoria().getEmUso())).toString() + " GB ("
-            + (utils.limitarDuasCasasDecimais((double) looca.getMemoria().getEmUso() / looca.getMemoria().getTotal() * 100).toString()) + "%)");
-        totalRam.setText(utils.limitarDuasCasasDecimais(utils.converterBytesParaGiga(looca.getMemoria().getTotal())).toString() + " GB");
+        cpu.setText(Utilitarios.limitarDuasCasasDecimais(looca.getProcessador().getUso()).toString() + "%");
+        usoRam.setText(Utilitarios.limitarDuasCasasDecimais(Utilitarios.converterBytesParaGiga(looca.getMemoria().getEmUso())).toString() + " GB ("
+            + (Utilitarios.limitarDuasCasasDecimais((double) looca.getMemoria().getEmUso() / looca.getMemoria().getTotal() * 100).toString()) + "%)");
+        totalRam.setText(Utilitarios.limitarDuasCasasDecimais(Utilitarios.converterBytesParaGiga(looca.getMemoria().getTotal())).toString() + " GB");
         Double espacoUtilizado = registro.getVolumeTotal() - registro.getVolumeDisponivel();
-        grupoDeDisco.setText(utils.limitarDuasCasasDecimais(espacoUtilizado).toString() + " GB / " + registro.getVolumeTotal().toString() + " GB (" + utils.limitarDuasCasasDecimais(registro.getPorcentagemVolume()) + "%)");
+        grupoDeDisco.setText(Utilitarios.limitarDuasCasasDecimais(espacoUtilizado).toString() + " GB / " + registro.getVolumeTotal().toString() + " GB (" + Utilitarios.limitarDuasCasasDecimais(registro.getPorcentagemVolume()) + "%)");
         
         try{
             ObjectMapper mapper = new ObjectMapper();
             Localizacao local = mapper.readValue(new URL("https://ipinfo.io/json"), Localizacao.class);
-            local.inserirLocalizacao("E", maquina.getId(), local);
+            local.inserirLocalizacao(banco, "E", maquina.getId(), local);
         }
         catch (Exception e){
             System.out.println("Não foi possível inserir a entrada");
@@ -83,18 +84,19 @@ public class TelaPrincipal extends javax.swing.JFrame {
         int delay = 5000;
         int interval = 1000;
         Timer timer = new Timer();
-        Alerta alerta = new Alerta(maquina);
+        Alerta alerta = new Alerta(banco, maquina);
         timer.scheduleAtFixedRate(new TimerTask() {
+            @Override
             public void run() {
                 Double porcentagemRam = (double) looca.getMemoria().getEmUso() / looca.getMemoria().getTotal() * 100;
                 Double porcentagemCpu = looca.getProcessador().getUso();
-                Double porcentagemDisco = utils.limitarDuasCasasDecimais(registro.getPorcentagemVolume());
+                Double porcentagemDisco = Utilitarios.limitarDuasCasasDecimais(registro.getPorcentagemVolume());
                 
-                usoRam.setText(utils.limitarDuasCasasDecimais(utils.converterBytesParaGiga(looca.getMemoria().getEmUso())).toString() + " GB ("
-                    + (utils.limitarDuasCasasDecimais(porcentagemRam).toString()) + "%)");
-                cpu.setText(utils.limitarDuasCasasDecimais(porcentagemCpu).toString() + "%");
+                usoRam.setText(Utilitarios.limitarDuasCasasDecimais(Utilitarios.converterBytesParaGiga(looca.getMemoria().getEmUso())).toString() + " GB ("
+                    + (Utilitarios.limitarDuasCasasDecimais(porcentagemRam).toString()) + "%)");
+                cpu.setText(Utilitarios.limitarDuasCasasDecimais(porcentagemCpu).toString() + "%");
                 Double espacoUtilizado = registro.getVolumeTotal() - registro.getVolumeDisponivel();
-                grupoDeDisco.setText(utils.limitarDuasCasasDecimais(espacoUtilizado).toString() + " GB / " + registro.getVolumeTotal().toString() +
+                grupoDeDisco.setText(Utilitarios.limitarDuasCasasDecimais(espacoUtilizado).toString() + " GB / " + registro.getVolumeTotal().toString() +
                     " GB (" + porcentagemDisco + "%)");
                 
                 registro.inserirRegistros(maquina);
@@ -321,13 +323,10 @@ public class TelaPrincipal extends javax.swing.JFrame {
 
     private void btnFecharActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnFecharActionPerformed
         // TODO add your handling code here:
-        Maquina maquina = new Maquina();
-        maquina.isMaquinaCadastrada(this.func);
-        
         try{
             ObjectMapper mapper = new ObjectMapper();
             Localizacao local = mapper.readValue(new URL("https://ipinfo.io/json"), Localizacao.class);
-            local.inserirLocalizacao("S", maquina.getId(), local);
+            local.inserirLocalizacao(banco, "S", maquina.getId(), local);
         }
         catch (Exception e){
             System.out.println("Não foi possível inserir a saída");

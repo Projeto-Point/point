@@ -70,7 +70,14 @@
 
         <div class="main-grafico">
           <h3>Sobre os processos </h3>
-          <div id="sobreProcesso"></div>
+          
+          <div id="sobreProcesso">
+            <div  id ="idProcesso" >IdProcesso:</div> <br>
+            <div  id ="nomeProcessos" >Nome:</div><br>
+            <div  id ="porcentagemProcesso" >Porcentagem da CPU:</div><br>
+            <div  id ="Pidprocesso" >Pid:</div>
+
+          </div>
 
           <img src="../assets/imgs/wordcloud-porceso.png" alt="" width="100%">
         </div>
@@ -78,6 +85,7 @@
 
       <div class="box info-maquina">
         <h3>Sobre a máquina</h3>
+       
         <div id="sobreMaquina"></div>
         <br>
         <h3>Sobre o funcionário</h3>
@@ -132,18 +140,7 @@
     }
   });
 
-  fetch(`/medidas/pegarRegistroFuncionario?idMaquina=${idMaquina}`).then(
-    function (res) {
-      if (res.ok) {
-        res.json().then((resposta) => {
-          sobreProcesso.innerHTML += `<p><b>IdProcesso: </b>${resposta[0].nome}</p>`;
-          sobreProcesso.innerHTML += `<p><b>Nome: </b>${resposta[0].cargo}</p>`;
-          sobreProcesso.innerHTML += `<p><b>Porcentagem CPU: </b>${resposta[0].email}</p>`;
-          sobreProcesso.innerHTML += `<p><b>Pid: </b>${resposta[0].telefone}</p>`;
-        });
-      }
-    }
-  );
+ 
 
   fetch(`/medidas/pegarRegistroFuncionario?idMaquina=${idMaquina}`).then(
     function (res) {
@@ -163,10 +160,23 @@
       if (res.ok) {
         res.json().then((resposta) => {
           console.log(resposta)
-          for (let j = 0; j < resposta.length; j++) {
-            sobreProcesso.innerHTML += resposta.nome[j];
-          }
+          var id = resposta.map((object) => object.nome);
+          var nomeProcessos = resposta.map((object) => object.nome);
+          var porcentagemCPU = resposta.map((object) => object.nome);
+          var pid = resposta.map((object) => object.nome);
 
+         //for (let j = 0; j < resposta.length; j++) {
+          // sobreProcesso.innerHTML += idProcesso[j];
+          // sobreProcesso.innerHTML += nomeProcessos[j];
+          // sobreProcesso.innerHTML += porcentagemProcesso[j];
+          // sobreProcesso.innerHTML += Pidprocesso[j];
+           
+          //} 
+            console.log(id)
+            console.log(nomeProcessos)
+            console.log(porcentagemCPU)
+            console.log(pid)
+            
 
         });
       }

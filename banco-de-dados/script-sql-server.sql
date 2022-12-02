@@ -1,5 +1,3 @@
--- exec sp_columns Localizacao; Desc Table
-
 use [bd-point];
 
 create table Empresa (
@@ -74,6 +72,14 @@ create table Registro(
     unidadeMedida VARCHAR(5),
     foreign key (fkComponente, fkMaquina) references componente (idComponente, fkMaquina)
    
+);
+
+CREATE TABLE RegistroAgda (
+	idRegistro INT PRIMARY KEY IDENTITY(1, 1),
+	qtdProcessos INT,
+	dataEhora DATETIME,
+	fkMaquina INT,
+	FOREIGN KEY (fkMaquina) REFERENCES Maquina(idMaquina)
 );
 
 GO
