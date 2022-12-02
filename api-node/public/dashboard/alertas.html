@@ -127,10 +127,18 @@
 
     listarMaquina()
 
-    var componentes = []
-    function listarTudo(dadosAlerta, ordem){
+    function has_check(){
+        return document.getElementById('DISCO').checked || document.getElementById('RAM').checked || document.getElementById('CPU').checked
+    }
 
+    var componentes = [0,0,0]
+    function listarTudo(dadosAlerta, ordem, check){
+        
         //console.log(dadosAlerta)
+            
+            document.getElementById('CPU').checked?componentes[0] = 'CPU':componentes[0] = 0
+            document.getElementById('RAM').checked?componentes[1] = 'RAM':componentes[1] = 0
+            document.getElementById('DISCO').checked?componentes[2] = 'DISCO':componentes[2] = 0
 
         document.getElementById("lista-alertas").innerHTML = ''
 
@@ -148,14 +156,9 @@
                     imagemTipoMaquina = '<img src="../dashboard/assets/dash/computer.png" style="width: 30px; height: 30px;">'
                     
                 }
-                
-                // TODO: Fazer filtro por componente que não estou conseguindo
-                //if(document.getElementById('CPU').checked)componentes.push('CPU')
-                //if(document.getElementById('RAM').checked)componentes.push('RAM')
-                //if(document.getElementById('DISCO').checked)componentes.push('DISCO')
-    
-                // NOTE: IF para filtrar por componentes
-    
+
+                console.log(has_check())
+                if(!componentes.includes(dadosAlerta[i].componente) && has_check())continue
                 //if(componentes.length > 0 && dadosAlerta[i].componente in componentes == false)continue
                 var abaPesquisa = document.getElementById('inp-pesquisar-funcionario').value;
                 if(dadosAlerta[i].nome.toUpperCase().indexOf(abaPesquisa.toUpperCase()) < 0)continue
@@ -195,18 +198,13 @@
                 
             }
 
-   
-            //if(document.getElementById('CPU').checked)componentes.push('CPU')
-            //if(document.getElementById('RAM').checked)componentes.push('RAM')
-            //if(document.getElementById('DISCO').checked)componentes.push('DISCO')
-
-            // NOTE: IF para filtrar por componentes
-
-            //if(componentes.length > 0 && dadosAlerta[i].componente in componentes == false)continue
+            
+            console.log(has_check())
+            if(!componentes.includes(dadosAlerta[i].componente) && has_check())continue
 
             var abaPesquisa = document.getElementById('inp-pesquisar-funcionario').value;
+            
             if(dadosAlerta[i].nome.toUpperCase().indexOf(abaPesquisa.toUpperCase()) < 0)continue
-
             if(document.getElementById('aberto').checked && dadosAlerta[i].resolucao == 'FECHADO')continue
             if(document.getElementById('fechado').checked && dadosAlerta[i].resolucao == 'ABERTO')continue
             if(document.getElementById('servidor').checked && dadosAlerta[i].tipo == 'Desktop')continue
