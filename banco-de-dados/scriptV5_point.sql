@@ -59,12 +59,30 @@ create table Atributo(
     fkMaquina INT
 );
 
+create table Alerta(
+    idAlerta INT PRIMARY KEY AUTO_INCREMENT,
+    dataEhora DATETIME,
+    titulo VARCHAR(50),
+    componente CHAR(5),
+    valor DECIMAL(5, 2),
+    resolucao VARCHAR(7),
+    fkMaquina INT
+);
+
 create table Registro(
     fkMaquina int,
     fkComponente int,
     dataEhora datetime,
     valor decimal(6,2),
     unidadeMedida VARCHAR(5)
+);
+
+CREATE TABLE RegistroAgda (
+	idRegistro INT PRIMARY KEY AUTO_INCREMENT,
+	qtdProcessos INT,
+	dataEhora DATETIME,
+	fkMaquina INT,
+	FOREIGN KEY (fkMaquina) REFERENCES Maquina(idMaquina)
 );
 
 CREATE VIEW vw_componentes AS
