@@ -9,6 +9,7 @@
     <link rel="stylesheet" href="css/styleDash.css" />
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.4/moment.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.4/locale/pt-br.min.js"></script>
 </head>
 
 <body>
@@ -34,7 +35,7 @@
                 <img src="assets/dash/alertas.png">
                 <span>Alertas</span>
             </a>
-            <a href="localizacao.html" class="img-nav">
+            <a href="localizacao.html?filtroMapa=geral" class="img-nav">
                 <img src="assets/imgs/pin.png">
                 <span>Localização</span>
             </a>
@@ -220,15 +221,13 @@
         .then((res) => {
             if (res.ok) {
                 res.json().then((resposta) => {
-                    let horarioEntrada;
                     let horariosDiferenca = [];
 
                     resposta.forEach(item => {
-                        if (item.acao == "E") {
-                            horarioEntrada = moment(item.horario);
-                        }
-                        else {
-                            horariosDiferenca.push(moment(item.horario).diff(horarioEntrada));
+                        if(item.dataSaida != null){
+                            let horarioEntrada = moment(item.dataEntrada).utc();
+                            let horarioSaida = moment(item.dataSaida).utc();
+                            horariosDiferenca.push(horarioSaida.diff(horarioEntrada));
                         }
                     });
 
@@ -302,18 +301,17 @@
             .then((res) => {
                 if (res.ok) {
                     res.json().then((resposta) => {
-                        console.log(resposta);
+                        // console.log(resposta);
                         let labels = [];
 
                         if(tipoVisualizacao == "dia"){
                             labels = resposta.map((registro) =>
-                                moment(registro.dataEhora).format("DD/MM/YYYY")
+                                moment.utc(registro.dataEhora).format("DD/MM/YYYY")
                             );
                         }
                         else{
                             labels = resposta.map((registro) => 
-                                // registro.dataEhora
-                                moment().locale('pt').month(1)
+                                moment().month(registro.dataEhora - 1).format("MMM").charAt(0).toUpperCase() + moment().month(registro.dataEhora - 1).format("MMM").slice(1)
                             );
                         }
 

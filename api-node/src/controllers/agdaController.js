@@ -22,6 +22,27 @@ function pegarMovimentacao(req, res) {
     });
 }
 
+function pegarProcessos(req, res) {
+    const periodoInicio = req.query.periodoInicio;
+    const periodoFim = req.query.periodoFim;
+    const idFuncionario = req.query.idFuncionario;
+    const cidade = req.query.cidade;
+    const idEmpresa = req.query.idEmpresa;
+    agdaModel.pegarProcessos(periodoInicio, periodoFim, idFuncionario, cidade, idEmpresa)
+    .then(function (resultado) {
+        if (resultado.length > 0) {
+            res.status(200).json(resultado);
+        }
+        else {
+            res.status(204).send("Nenhum processo encontrado!");
+        }
+    }).catch(function (erro) {
+        console.log(erro);
+        console.log("Houve um erro ao pegar a quantidade de processos: ", erro.sqlMessage);
+        res.status(500).json(erro.sqlMessage);
+    });
+}
+
 function pegarCpu(req, res) {
     const periodoInicio = req.query.periodoInicio;
     const periodoFim = req.query.periodoFim;
@@ -122,6 +143,7 @@ function pegarCidades(req, res){
 
 module.exports = {
     pegarMovimentacao,
+    pegarProcessos,
     pegarCpu,
     pegarRam,
     pegarFuncionarios,

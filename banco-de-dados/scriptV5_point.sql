@@ -33,8 +33,8 @@ create table Maquina (
 
 create table Localizacao (
     idLocalizacao int primary key auto_increment,
-    acao char(1),
-    dataEhora datetime,
+    dataEntrada datetime,
+    dataSaida datetime,
     ipAdress varchar(16),
     longitude decimal(7,4),
     latitude decimal(7,4),
@@ -59,12 +59,29 @@ create table Atributo(
     fkMaquina INT
 );
 
+create table Alerta(
+    idAlerta INT PRIMARY KEY AUTO_INCREMENT,
+    dataEhora DATETIME,
+    titulo VARCHAR(50),
+    componente CHAR(5),
+    valor DECIMAL(5, 2),
+    resolucao VARCHAR(7),
+    fkMaquina INT
+);
+
 create table Registro(
     fkMaquina int,
     fkComponente int,
     dataEhora datetime,
     valor decimal(6,2),
     unidadeMedida VARCHAR(5)
+);
+
+CREATE TABLE RegistroAgda (
+	idRegistro INT PRIMARY KEY AUTO_INCREMENT,
+	qtdProcessos INT,
+	dataEhora DATETIME,
+	fkMaquina INT
 );
 
 CREATE VIEW vw_componentes AS

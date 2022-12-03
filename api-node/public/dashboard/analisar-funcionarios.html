@@ -32,7 +32,7 @@
                     <img src="assets/dash/alertas.png">
                     <span>Alertas</span>
                 </a>
-                <a href="localizacao.html" class="img-nav">
+                <a href="localizacao.html?filtroMapa=geral" class="img-nav">
                     <img src="assets/imgs/pin.png">
                     <span>Localização</span>
                 </a>
@@ -81,6 +81,30 @@
                     </div>
                     <div class="main-grafico">
                         <canvas id="graficoMovimentacao"></canvas>
+                    </div>
+                </div>
+                <div class="grafico-processos grafico box">
+                    <div class="header">
+                        <h3>Processos</h3>
+                        <div class="dir">
+                            <div id="dia-processo">
+                                <label for="data-processo-dia" style="margin-right: 5px;">Dia:</label>
+                                <input type="date" id="data-processo-dia" style="height: fit-content; padding: 5px; margin-right: 30px;" onchange="pegarDadosProcesso()">
+                            </div>
+                            <div id="periodo-processo" >
+                                <label for="data-processo-inicio" style="margin-right: 5px;">Início:</label>
+                                <input type="date" id="data-processo-inicio" style="height: fit-content; padding: 5px; margin-right: 30px;" onchange="pegarDadosProcesso()">
+                                <label for="data-processo-fim" style="margin-right: 5px;">Fim:</label>
+                                <input type="date" id="data-processo-fim" style="height: fit-content; padding: 5px; margin-right: 30px;" onchange="pegarDadosProcesso()">
+                            </div>
+                            <select id="tempo-processo" onchange="trocarSelecao(this.value, 'processo'); pegarDadosProcesso();">
+                                <option value="dia">Dia</option>
+                                <option value="periodo">Período</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="main-grafico">
+                        <canvas id="graficoProcessos"></canvas>
                     </div>
                 </div>
                 <div class="grafico-processador grafico box">
@@ -150,6 +174,7 @@
     var chartMovimentacao = null;
     var chartCpu = null;
     var chartRam = null;
+    var chartProcessos = null;
 
     const parametrosString = window.location.search;
     const parametros = new URLSearchParams(parametrosString);
@@ -163,21 +188,27 @@
 
         document.getElementById("data-movimentacao-inicio").value = moment().subtract(1, 'week').format('YYYY-MM-DD');
         document.getElementById("data-movimentacao-fim").value = moment().format('YYYY-MM-DD');
-
-        document.getElementById("data-ram-dia").value = moment().format('YYYY-MM-DD');
-        document.getElementById("data-cpu-inicio").value = moment().subtract(1, 'week').format('YYYY-MM-DD');
-        document.getElementById("data-cpu-fim").value = moment().format('YYYY-MM-DD');
+        
+        document.getElementById("data-processo-dia").value = moment().format('YYYY-MM-DD');
+        document.getElementById("data-processo-inicio").value = moment().subtract(1, 'week').format('YYYY-MM-DD');
+        document.getElementById("data-processo-fim").value = moment().format('YYYY-MM-DD');
 
         document.getElementById("data-cpu-dia").value = moment().format('YYYY-MM-DD');
+        document.getElementById("data-cpu-inicio").value = moment().subtract(1, 'week').format('YYYY-MM-DD');
+        document.getElementById("data-cpu-fim").value = moment().format('YYYY-MM-DD');
+        
+        document.getElementById("data-ram-dia").value = moment().format('YYYY-MM-DD');
         document.getElementById("data-ram-inicio").value = moment().subtract(1, 'week').format('YYYY-MM-DD');
         document.getElementById("data-ram-fim").value = moment().format('YYYY-MM-DD');
 
+        trocarSelecao(document.getElementById('tempo-processo').value, "processo");
         trocarSelecao(document.getElementById('tempo-cpu').value, "cpu");
-        trocarSelecao(document.getElementById('tempo-cpu').value, "ram");
+        trocarSelecao(document.getElementById('tempo-ram').value, "ram");
 
         pegarDadosMovimentacao();
         pegarDadosCpu();
         pegarDadosRam();
+        pegarDadosProcesso();
 
         pegarCidades();
         mediaHorasAtivas();
@@ -235,7 +266,7 @@
             else if(res.ok){
                 res.json().then((resposta) => {
                     reposta = resposta.map((registro) =>
-                        moment(registro.dataEhora).utc(0).format('YYYY-MM-DDTHH:mm:ss')
+                        moment().utc(registro.dataEhora).format('YYYY-MM-DDTHH:mm:ss')
                     );
                     graficoMovimentacao(resposta);
                 });
@@ -269,15 +300,15 @@
         };
 
         for (let index = 0; index < resposta.length; index++) {
-            if(! labels.includes(moment(resposta[index]['dataEhora']).format('DD/MM'))){
-                labels.push(moment(resposta[index]['dataEhora']).format('DD/MM'));
+            if(! labels.includes(moment().utc(resposta[index]['dataEhora']).format('DD/MM'))){
+                labels.push(moment().utc(resposta[index]['dataEhora']).format('DD/MM'));
             }
 
             if(resposta[index]['acao'] == "E"){
-                data.datasets[0].data.push(moment(resposta[index]['dataEhora']).format('HHmm'));
+                data.datasets[0].data.push(moment().utc(resposta[index]['dataEhora']).format('HHmm'));
             }
             else{
-                data.datasets[1].data.push(moment(resposta[index]['dataEhora']).format('HHmm'));
+                data.datasets[1].data.push(moment().utc(resposta[index]['dataEhora']).format('HHmm'));
             }
         }
 
@@ -300,6 +331,7 @@
                 },
                 scales: {
                     y: {
+                        max : 2359,
                         ticks: {
                             callback: function(value, index, ticks) {
                                 let hora = zeroEsquerda(value, 4);
@@ -313,6 +345,78 @@
         };
 
         chartMovimentacao = new Chart(document.getElementById('graficoMovimentacao'), config);
+    }
+
+    function pegarDadosProcesso(){
+        let periodoInicio;
+        let periodoFim;
+
+        if(document.getElementById('tempo-processo').value == "periodo"){
+            periodoInicio = moment(document.getElementById('data-processo-inicio').value).format('YYYY-MM-DD');
+            periodoFim = moment(document.getElementById('data-processo-fim').value).format('YYYY-MM-DD');    
+        }
+        else{
+            periodoInicio = moment(document.getElementById('data-processo-dia').value).format('YYYY-MM-DD');
+            periodoFim = moment(document.getElementById('data-processo-dia').value).add(1, 'days').format('YYYY-MM-DD');
+        }
+
+        fetch(`/analiseAgda/pegarProcessos?periodoInicio=${periodoInicio}&periodoFim=${periodoFim}&idFuncionario=${idFuncionario}&cidade=${cidade}&idEmpresa=${sessionStorage['ID_EMPRESA']}`).then((res) => {
+            if(res.status == 204){
+                if(chartProcessos != null){
+                    chartProcessos.destroy();
+                }
+
+                ctx = document.getElementById('graficoProcessos').getContext("2d");
+                ctx.font = "16px Arial"
+                ctx.fillText("Nenhum dado encontrado encontrado!", 10, 30);
+                ctx.fillText("Tente mudar o dia ou o período", 10, 60);
+            }
+            else if(res.ok){
+                res.json().then((resposta) => {
+                    graficoProcessos(resposta);
+                });
+            }
+        });
+    }
+
+    function graficoProcessos(resposta){
+        if(chartProcessos != null){
+            chartProcessos.destroy();
+        }
+
+        let labels = [];
+
+        const data = {
+            labels: labels,
+            datasets: [
+                {
+                    label: 'Quantidade dos processos',
+                    backgroundColor: 'rgb(255, 99, 132)',
+                    borderColor: 'rgb(255, 99, 132)',
+                    data: [],
+                },
+            ]
+        };
+
+        for (let index = 0; index < resposta.length; index++) {
+            labels.push(formatarHorario(zeroEsquerda(resposta[index]['hora'], 2)));
+            data.datasets[0].data.push(resposta[index]['valor']);
+        }
+
+        const config = {
+            type: 'line',
+            data: data,
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+            }
+        };
+
+        if(resposta.length == 1){
+            config.type = "bar";
+        }
+
+        chartProcessos = new Chart(document.getElementById('graficoProcessos'), config);
     }
 
     function pegarDadosCpu(){
@@ -507,6 +611,8 @@
                     let horarioEntrada;
                     let horariosDiferenca = [];
 
+                    console.log(resposta);
+
                     resposta.forEach(item => {
                         if (item.acao == "E") {
                             horarioEntrada = moment(item.horario);
@@ -524,6 +630,8 @@
                     if(horasAtivas <= 0){
                         kpiHoras.innerHTML += "Não foi possível calcular";
                     }
+
+                    console.log(horariosDiferenca)
 
                     let horas = moment.duration(horasAtivas).hours();
                     let minutos = moment.duration(horasAtivas).minutes();

@@ -1,15 +1,12 @@
 import os
 import platform
 from time import sleep
-from dashing import (HSplit, VSplit, VGauge, HGauge, Text)
-from psutil import (virtual_memory, cpu_percent, disk_usage, users, pids, process_iter, cpu_count)
+from dashing import (HSplit, VSplit, HGauge, Text)
+from psutil import (virtual_memory, cpu_percent, disk_usage, users, pids, cpu_count)
 import pymssql
 import geocoder
 import pymysql
 import requests
-import psutil
-import json
-import email
 from datetime import datetime, timedelta
 
 # Credenciais da Azure
@@ -152,7 +149,7 @@ idMaquina = consulta[0][0]
 
 # Inserindo entrada com localização
 ip = geocoder.ip('me')
-inserirBanco(f"INSERT INTO Localizacao (acao, dataEhora, ipAdress, longitude, latitude, cidade, pais, fkMaquina) VALUES ('E', GETDATE() AT TIME ZONE 'UTC' AT TIME ZONE 'Bahia Standard Time', '{ip.ip}', {ip.latlng[0]}, {ip.latlng[1]}, '{ip.city}', '{ip.country}', {idMaquina})")
+inserirBanco(f"INSERT INTO Localizacao (dataEntrada, ipAdress, longitude, latitude, cidade, pais, fkMaquina) VALUES (GETDATE() AT TIME ZONE 'UTC' AT TIME ZONE 'Bahia Standard Time', '{ip.ip}', {ip.latlng[0]}, {ip.latlng[1]}, '{ip.city}', '{ip.country}', {idMaquina})")
 
 # Personalizando o terminal 
 ui = HSplit(
@@ -279,11 +276,13 @@ while True:
 
     inserirBanco(f"INSERT INTO Registro (valor, unidadeMedida, dataEhora, fkComponente, fkMaquina) VALUES ({porc_disco}, '%', GETDATE() AT TIME ZONE 'UTC' AT TIME ZONE 'Bahia Standard Time', 3, {idMaquina})")
 
+    inserirBanco(f"INSERT INTO RegistroAgda (qtdProcessos, dataEhora, fkMaquina) VALUES ({len(pids())}, GETDATE() AT TIME ZONE 'UTC' AT TIME ZONE 'Bahia Standard Time', {idMaquina})")
+
     #Mostrar os dados de 3 em 3 segundos
     try:
         ui.display()
         sleep(3)
     except KeyboardInterrupt:
         # Inserindo saída com localização
-        inserirBanco(f"INSERT INTO Localizacao (acao, dataEhora, ipAdress, longitude, latitude, cidade, pais, fkMaquina) VALUES ('S', GETDATE() AT TIME ZONE 'UTC' AT TIME ZONE 'Bahia Standard Time', '{ip.ip}', {ip.latlng[0]}, {ip.latlng[1]}, '{ip.city}', '{ip.country}', {idMaquina})")
+        inserirBanco(f"UPDATE Localizacao SET dataSaida = GETDATE() AT TIME ZONE 'UTC' AT TIME ZONE 'Bahia Standard Time' WHERE fkMaquina = {idMaquina} AND idLocalizacao = (SELECT TOP 1 idLocalizacao FROM Localizacao WHERE fkMaquina = {idMaquina} ORDER BY idLocalizacao DESC);")
         break

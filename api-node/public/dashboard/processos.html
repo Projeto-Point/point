@@ -34,7 +34,7 @@
         <img src="assets/dash/alertas.png">
         <span>Alertas</span>
       </a>
-      <a href="localizacao.html" class="img-nav">
+      <a href="localizacao.html?filtroMapa=geral" class="img-nav">
         <img src="assets/imgs/pin.png">
         <span>Localização</span>
       </a>
@@ -69,8 +69,15 @@
       <div class="grafico-processador grafico box">
 
         <div class="main-grafico">
-          <h3>Sobre os processos </h3>
-          <div id="sobreProcesso"></div>
+          <h3>Sobre os processos </h3> <br>
+
+          <div id="sobreProcesso">
+            <div id="idProcesso">IdProcesso:</div> <br>
+            <div id="nomeProcessos">Nome:</div><br>
+            <div id="porcentagemProcesso">Porcentagem da CPU:</div><br>
+            <div id="Pidprocesso">Pid:</div>
+
+          </div>
 
           <img src="../assets/imgs/wordcloud-porceso.png" alt="" width="100%">
         </div>
@@ -78,6 +85,7 @@
 
       <div class="box info-maquina">
         <h3>Sobre a máquina</h3>
+
         <div id="sobreMaquina"></div>
         <br>
         <h3>Sobre o funcionário</h3>
@@ -132,18 +140,7 @@
     }
   });
 
-  fetch(`/medidas/pegarRegistroFuncionario?idMaquina=${idMaquina}`).then(
-    function (res) {
-      if (res.ok) {
-        res.json().then((resposta) => {
-          sobreProcesso.innerHTML += `<p><b>IdProcesso: </b>${resposta[0].nome}</p>`;
-          sobreProcesso.innerHTML += `<p><b>Nome: </b>${resposta[0].cargo}</p>`;
-          sobreProcesso.innerHTML += `<p><b>Porcentagem CPU: </b>${resposta[0].email}</p>`;
-          sobreProcesso.innerHTML += `<p><b>Pid: </b>${resposta[0].telefone}</p>`;
-        });
-      }
-    }
-  );
+
 
   fetch(`/medidas/pegarRegistroFuncionario?idMaquina=${idMaquina}`).then(
     function (res) {
@@ -163,9 +160,23 @@
       if (res.ok) {
         res.json().then((resposta) => {
           console.log(resposta)
+
+          var id = resposta.map((object) => object.idProcesso);
+          var nomeProcesso = resposta.map((object) => object.nome);
+          var porcentagem = resposta.map((object) => object.porcentagemCpu);
+          var pid = resposta.map((object) => object.pid);
+
           for (let j = 0; j < resposta.length; j++) {
-            sobreProcesso.innerHTML += resposta.nome[j];
+            idProcesso.innerHTML = `<p><b>IdProcesso: </b>${id[j]}</p>`;
+            nomeProcessos.innerHTML = `<p><b>Nome: </b>${nomeProcesso[j]}</p>`;
+            porcentagemProcesso.innerHTML = `<p><b>Porcentagem CPU: </b>${porcentagem[j]}</p>`;
+            Pidprocesso.innerHTML = `<p><b>PID: </b>${pid[j]}</p>`;
+            console.log(id);
+            console.log(nomeProcesso);
+            console.log(porcentagem);
+            console.log(pid);
           }
+
 
 
         });

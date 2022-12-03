@@ -1,24 +1,36 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package banco;
 
-import java.util.List;
-import java.util.Map;
 import org.json.JSONObject;
-import org.springframework.jdbc.core.BeanPropertyRowMapper;
-import org.springframework.jdbc.core.JdbcTemplate;
 
-/**
- *
- * @author ivanm
- */
 public class Funcionario {
-
     private Integer id;
     private String nome;
     private String email;
+
+    private Database banco;
+
+    public Funcionario(Database banco) {
+        this.banco = banco;
+    }
+
+    public Boolean isFuncionarioCadastrado(String email, String senha) {
+        try {
+            JSONObject consulta = banco.consultarRegistro(String.format("SELECT idFuncionario,nome from Funcionario where email = '%s' AND senha ='%s';",
+                    email,
+                    senha
+                )
+            );
+
+            this.email = email;
+            this.id = consulta.getInt("idFuncionario");
+            this.nome = consulta.getString("nome");
+
+            return true;
+        }
+        catch (Exception e) {
+            return false;
+        }
+    }
 
     public Integer getId() {
         return id;
@@ -43,32 +55,4 @@ public class Funcionario {
     public void setEmail(String email) {
         this.email = email;
     }
-    
-
-    Database database = new Database();
-
-    JdbcTemplate connection = database.getConnection();
-
-    public Boolean isFuncionarioCadastrado(String email, String senha) {
-
-        try {
-            List<Map<String, Object>> resultado = connection.queryForList("SELECT idFuncionario,nome from Funcionario where email = '" + email + "' AND senha ='" + senha + "';");
-
-            JSONObject jsonResultado = new JSONObject(resultado.get(0));
-
-            int id = jsonResultado.getInt("idFuncionario");
-            String nome = jsonResultado.getString("nome");
-
-           this.email = email;
-           this.id = id;
-           this.nome = nome;
-
-            return true;
-        } catch (Exception e) {
-  
-            return false;
-        }
-
-    }
-
 }

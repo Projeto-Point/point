@@ -33,7 +33,7 @@
                 <img src="assets/dash/alertas.png">
                 <span>Alertas</span>
             </a>
-            <a href="localizacao.html" class="img-nav">
+            <a href="localizacao.html?filtroMapa=geral" class="img-nav">
                 <img src="assets/imgs/pin.png">
                 <span>Localização</span>
             </a>
@@ -52,16 +52,16 @@
     <main>
         <section id="alertas">
             <div class="menu-lateral">
-                <div class="filtro box">
+                <div class="filtro box" >
                     <p>Ordenar por:</p>
-                    <select id="">
-                        <option value="">Mais recentes</option>
-                        <option value="">Mais antigos</option>
+                    <select id="select-order"onchange="listarMaquina()">
+                        <option value="0">Mais recentes</option>
+                        <option value="1">Mais antigos</option>
                     </select>
                 </div>
-                <div class="filtro box">
+                <div class="filtro box" onchange="listarMaquina()">
                     <p>Resolução:</p>
-                    <div class="opcao">
+                    <div class="opcao" >
                         <input type="checkbox" id="aberto" value="aberto"><label for="aberto">Aberto</label>
                     </div>
 
@@ -69,22 +69,22 @@
                         <input type="checkbox" id="fechado" value="fechado"><label for="fechado">Fechado</label>
                     </div>
                 </div>
-                <div class="filtro box">
+                <div class="filtro box" onchange="listarMaquina()">
                     <p>Componente:</p>
-                    <div class="opcao"><input type="checkbox" id="" value="cpu"><label for="">CPU</label></div>
-                    <div class="opcao"><input type="checkbox" id="" value="ram"><label for="">RAM</label></div>
-                    <div class="opcao"><input type="checkbox" id="" value="disco"><label for="">DISCO</label></div>
+                    <div class="opcao"><input type="checkbox" id="CPU" value="cpu"><label for="">CPU</label></div>
+                    <div class="opcao"><input type="checkbox" id="RAM" value="ram"><label for="">RAM</label></div>
+                    <div class="opcao"><input type="checkbox" id="DISCO" value="disco"><label for="">DISCO</label></div>
                 </div>
-                <div class="filtro box">
+                <div class="filtro box" onchange="listarMaquina()">
                     <p>Tipo de máquina:</p>
-                    <div class="opcao"><input type="checkbox" id="" value="servidor"><label for="">Servidor</label></div>
-                    <div class="opcao"><input type="checkbox" id="" value="desktop"><label for="">Desktop</label></div>
+                    <div class="opcao"><input type="checkbox" id="servidor" value="servidor"><label for="">Servidor</label></div>
+                    <div class="opcao"><input type="checkbox" id="desktop" value="desktop"><label for="">Desktop</label></div>
                 </div>
             </div>
             <div class="main">
                 <section class="top">
                     <div class="top-meio">
-                        <input id="inp-pesquisar-maquina" type="search" placeholder="Pesquise por nome do funcionário" onkeyup="listarPorNomeFuncionario()">
+                        <input id="inp-pesquisar-funcionario" type="search" placeholder="Pesquise por nome do funcionário" onkeyup="listarMaquina()">
                     </div>
                     <div class="top-dir">
                        
@@ -101,11 +101,11 @@
     <script src="../script.js"></script>
     <script>
 
-
         function listarMaquina(){
 
 
-        
+        var selectOrder = document.getElementById('select-order').value
+
         nomeGerente.innerHTML=sessionStorage.NOME_USUARIO;
 
         fetch(`/maquinas/listarAlertas?idEmpresa=${sessionStorage.ID_EMPRESA}`)
@@ -113,36 +113,10 @@
             if(res.ok){
                 res.json().then((resposta) => {
 
-                    // FIXME: Deixar alinhado o titulo / imagem / horário 
-                    console.log(resposta)
-                    for (let i = 0; i < resposta.length; i++) {
+                    // FIXME: Deixar alinhado o titulo / imagem / horário
+                
+                    listarTudo(resposta, selectOrder)
 
-                        imagemTipoMaquina = ''
-
-                        if(resposta[i].tipo == 'Servidor'){
-
-                            imagemTipoMaquina = '<img src="../dashboard/assets/dash/instancia.png" style="width: 30px; height: 30px;">'
-                            
-                        }else{
-                            imagemTipoMaquina = '<img src="../dashboard/assets/dash/computer.png" style="width: 30px; height: 30px;">'
-                            
-                        }
-
-                        document.getElementById("lista-alertas").innerHTML += `
-                        <div class="alerta box">
-                            
-                            <h3 id="titulo-alerta">
-                                ${imagemTipoMaquina}
-                                ${resposta[i].titulo}</h3>
-                            <p id="data-alerta">${moment(resposta[i].dataEhora).format("DD/MM/YYYY [às] HH:mm")}</p>
-                            <div class="infoAlerta">
-                            <p id="responsavel-alerta"><span>Funcionário: </span>${resposta[i].nome}</p>
-                            <p id="cargo-alerta"><span>Cargo: </span>${resposta[i].cargo}</p>
-                        </div>
-                            <p id="resolucao-alerta"><span>Status: </span>${resposta[i].resolucao}<span class="bolinha bol-aberto"></span></p>
-                            <a class="btn-link" href="./analise.html?idMaquina=${resposta[i].idMaquina}" id="btn-alerta">Ver mais</a>
-                        </div>`;
-                    }
                 });
             }
         })
@@ -153,6 +127,109 @@
 
     listarMaquina()
 
+    function has_check(){
+        return document.getElementById('DISCO').checked || document.getElementById('RAM').checked || document.getElementById('CPU').checked
+    }
+
+    var componentes = [0,0,0]
+    function listarTudo(dadosAlerta, ordem, check){
+        
+        //console.log(dadosAlerta)
+            
+            document.getElementById('CPU').checked?componentes[0] = 'CPU':componentes[0] = 0
+            document.getElementById('RAM').checked?componentes[1] = 'RAM':componentes[1] = 0
+            document.getElementById('DISCO').checked?componentes[2] = 'DISCO':componentes[2] = 0
+
+        document.getElementById("lista-alertas").innerHTML = ''
+
+        if(ordem == 1){
+
+            for (let i = 0; i < dadosAlerta.length; i++) {
+
+                imagemTipoMaquina = ''
+    
+                if(dadosAlerta[i].tipo == 'Servidor'){
+    
+                    imagemTipoMaquina = '<img src="../dashboard/assets/dash/instancia.png" style="width: 30px; height: 30px;">'
+                    
+                }else{
+                    imagemTipoMaquina = '<img src="../dashboard/assets/dash/computer.png" style="width: 30px; height: 30px;">'
+                    
+                }
+
+                console.log(has_check())
+                if(!componentes.includes(dadosAlerta[i].componente) && has_check())continue
+                //if(componentes.length > 0 && dadosAlerta[i].componente in componentes == false)continue
+                var abaPesquisa = document.getElementById('inp-pesquisar-funcionario').value;
+                if(dadosAlerta[i].nome.toUpperCase().indexOf(abaPesquisa.toUpperCase()) < 0)continue
+                console.log('dwd')
+                if(document.getElementById('aberto').checked && dadosAlerta[i].resolucao == 'FECHADO')continue
+                if(document.getElementById('fechado').checked && dadosAlerta[i].resolucao == 'ABERTO')continue
+                if(document.getElementById('servidor').checked && dadosAlerta[i].tipo == 'Desktop')continue
+                if(document.getElementById('desktop').checked && dadosAlerta[i].tipo == 'Servidor')continue
+    
+                document.getElementById("lista-alertas").innerHTML += `
+                <div class="alerta box">
+                    
+                    <h3 id="titulo-alerta">
+                        ${imagemTipoMaquina}
+                        ${dadosAlerta[i].titulo}</h3>
+                    <p id="data-alerta">${moment(dadosAlerta[i].dataEhora).utc(0).format("DD/MM/YYYY [às] HH:mm")}</p>
+                    <div class="infoAlerta">
+                    <p id="responsavel-alerta"><span>Funcionário: </span>${dadosAlerta[i].nome}</p>
+                    <p id="cargo-alerta"><span>Cargo: </span>${dadosAlerta[i].cargo}</p>
+                </div>
+                    <p id="resolucao-alerta"><span>Status: </span>${dadosAlerta[i].resolucao}<span class="bolinha bol-aberto"></span></p>
+                    <a class="btn-link" href="./analise.html?idMaquina=${dadosAlerta[i].idMaquina}" id="btn-alerta">Ver mais</a>
+                </div>`;
+            }
+        }else if(ordem == 0){
+    
+        for (let i = dadosAlerta.length-1; i >= 0; i--) {
+
+            imagemTipoMaquina = ''
+
+            if(dadosAlerta[i].tipo == 'Servidor'){
+
+                imagemTipoMaquina = '<img src="../dashboard/assets/dash/instancia.png" style="width: 30px; height: 30px;">'
+                
+            }else{
+                imagemTipoMaquina = '<img src="../dashboard/assets/dash/computer.png" style="width: 30px; height: 30px;">'
+                
+            }
+
+            
+            console.log(has_check())
+            if(!componentes.includes(dadosAlerta[i].componente) && has_check())continue
+
+            var abaPesquisa = document.getElementById('inp-pesquisar-funcionario').value;
+            
+            if(dadosAlerta[i].nome.toUpperCase().indexOf(abaPesquisa.toUpperCase()) < 0)continue
+            if(document.getElementById('aberto').checked && dadosAlerta[i].resolucao == 'FECHADO')continue
+            if(document.getElementById('fechado').checked && dadosAlerta[i].resolucao == 'ABERTO')continue
+            if(document.getElementById('servidor').checked && dadosAlerta[i].tipo == 'Desktop')continue
+            if(document.getElementById('desktop').checked && dadosAlerta[i].tipo == 'Servidor')continue
+
+            document.getElementById("lista-alertas").innerHTML += `
+            <div class="alerta box">
+                
+                <h3 id="titulo-alerta">
+                    ${imagemTipoMaquina}
+                    ${dadosAlerta[i].titulo}</h3>
+                <p id="data-alerta">${moment(dadosAlerta[i].dataEhora).utc(0).format("DD/MM/YYYY [às] HH:mm")}</p>
+                <div class="infoAlerta">
+                <p id="responsavel-alerta"><span>Funcionário: </span>${dadosAlerta[i].nome}</p>
+                <p id="cargo-alerta"><span>Cargo: </span>${dadosAlerta[i].cargo}</p>
+            </div>
+                <p id="resolucao-alerta"><span>Status: </span>${dadosAlerta[i].resolucao}<span class="bolinha bol-aberto"></span></p>
+                <a class="btn-link" href="./analise.html?idMaquina=${dadosAlerta[i].idMaquina}" id="btn-alerta">Ver mais</a>
+            </div>`;
+        }
+
+        }
+    
+    }
+
 
     </script>
-    <script src="./jsDash/script-dash.js"></script>
+    <script src="./jsDash/script-dash.js"></script>\

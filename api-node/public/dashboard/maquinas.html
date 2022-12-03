@@ -18,7 +18,7 @@
             </a>
             <hr>
             <a href="funcionarios.html" class="img-nav">
-                <img src="../assets/imgs/user.png" >
+                <img src="../assets/imgs/user.png">
                 <span>Funcionários</span>
             </a>
             <a href="maquinas.html" class="img-nav">
@@ -33,7 +33,7 @@
                 <img src="assets/dash/alertas.png">
                 <span>Alertas</span>
             </a>
-            <a href="localizacao.html" class="img-nav">
+            <a href="localizacao.html?filtroMapa=geral" class="img-nav">
                 <img src="assets/imgs/pin.png">
                 <span>Localização</span>
             </a>
@@ -98,6 +98,7 @@
         Uma é servidor outra é maquina porém só aparece que ele tem instância na dash
     */
 
+    setInterval(listarMaquina, 5000);
 
     function listarMaquina() {
         var pesquisaMaquinaVar = document.getElementById("inp-pesquisar-maquina").value;
@@ -107,22 +108,27 @@
                 resposta.json().then((resposta) => {
                     console.log(resposta);
                     if (pesquisaMaquinaVar == "") {
+                        var maquinas = [];
                         var lista = document.querySelector("#maquinas");
-                        console.log(resposta);
                         lista.innerHTML = ''
                         for (let maquina = 0; maquina < resposta.length; maquina++) {
-                            if (resposta[maquina].tipo == "DESKTOP") {
-                                lista.innerHTML += `<div class="box box-maquina">
-                            <img src="../assets/dash/computer.png">
-                            <h3>${resposta[maquina].nome}</h3>
-                            <p>${resposta[maquina].nomeMaquina}</p>
-                            <div class="botoes">
-                                <a class="btn-link" href="tempo-real.html?idMaquina=${resposta[maquina].idMaquina}">Tempo real</a>
-                                <a class="btn-link" href="analise.html?idMaquina=${resposta[maquina].idMaquina}">Analisar</a>
-                                <a class="btn-link" href="rede.html?idMaquina=${resposta[maquina].idMaquina}">Rede</a>
-                                <a class="btn-link" href="processos.html?idMaquina=${resposta[maquina].idMaquina}">Processos</a>
-                            </div>
-                        </div>`;
+                            let content = `<div class="box box-maquina">
+                                <img src="../assets/dash/computer.png">
+                                <h3>${resposta[maquina].nome}</h3>
+                                <p>${resposta[maquina].nomeMaquina}</p>
+                                <div class="botoes">
+                                    <a class="btn-link" href="tempo-real.html?idMaquina=${resposta[maquina].idMaquina}">Tempo real</a>
+                                    <a class="btn-link" href="analise.html?idMaquina=${resposta[maquina].idMaquina}">Analisar</a>
+                                    <a class="btn-link" href="rede.html?idMaquina=${resposta[maquina].idMaquina}">Rede</a>
+                                    <a class="btn-link" href="processos.html?idMaquina=${resposta[maquina].idMaquina}">Processos</a>
+                                </div>
+                            </div>`;
+                            if (resposta[maquina].tipo == "DESKTOP" && !maquinas.includes(content)) {
+                                lista.innerHTML += content;
+                                maquinas.push(content);
+                                if(resposta[maquina].resolucao == "ABERTO"){
+                                    document.querySelectorAll(".box-maquina")[document.querySelectorAll(".box-maquina").length - 1].classList.add("alerta");
+                                }
                             }
                         }
                     }
@@ -131,19 +137,28 @@
                         console.log(resposta);
                         lista.innerHTML = '';
                         for (let maquina = 0; maquina < resposta.length; maquina++) {
+                            let maquinas = [];
                             if (resposta[maquina].tipo == "DESKTOP") {
                                 if ((resposta[maquina].nome).toUpperCase().indexOf(pesquisaMaquinaVar.toUpperCase()) != -1 || (resposta[maquina].nomeMaquina).toUpperCase().indexOf(pesquisaMaquinaVar.toUpperCase()) != -1) {
                                     {
-                                        lista.innerHTML += `<div class="box box-maquina">
+                                        let content = `<div class="box box-maquina">
                                             <img src="../assets/dash/computer.png">
                                             <h3>${resposta[maquina].nome}</h3>
                                             <p>${resposta[maquina].nomeMaquina}</p>
                                             <div class="botoes">
                                                 <a class="btn-link" href="tempo-real.html?idMaquina=${resposta[maquina].idMaquina}">Tempo real</a>
                                                 <a class="btn-link" href="analise.html?idMaquina=${resposta[maquina].idMaquina}">Analisar</a>
-
+                                                <a class="btn-link" href="rede.html?idMaquina=${resposta[maquina].idMaquina}">Rede</a>
+                                                <a class="btn-link" href="processos.html?idMaquina=${resposta[maquina].idMaquina}">Processos</a>
                                             </div>
                                         </div>`;
+                                        if (resposta[maquina].tipo == "DESKTOP" && !maquinas.includes(content)) {
+                                            lista.innerHTML += content;
+                                            maquinas.push(content);
+                                            if(resposta[maquina].resolucao == "ABERTO"){
+                                                document.querySelectorAll(".box-maquina")[document.querySelectorAll(".box-maquina").length - 1].classList.add("alerta");
+                                            }
+                                        }
                                     }
                                 }
                             }
