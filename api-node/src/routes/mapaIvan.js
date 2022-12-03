@@ -5,9 +5,11 @@ var ivanController = require("../controllers/ivanController");
 
 
 router.get("/getLocalizacao", function (req, res) {
-    console.log('IODFJNEWOIFNEIO')
     ivanController.getLocalizacao(req, res);
 });
 
+router.get("/getCidades", function(req, res){
+    ivanController.getCidades(req,res);
+});
 
 module.exports = router;
