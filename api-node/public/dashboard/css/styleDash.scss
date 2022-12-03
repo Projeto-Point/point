@@ -628,6 +628,11 @@ main {
         }
         h3#titulo-alerta {
           grid-area: titulo;
+          display: flex;
+          align-items: center;
+          img{
+            margin-right: 15px;
+          }
         }
         p#data-alerta {
           grid-area: data;

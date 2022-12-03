@@ -30,7 +30,7 @@ function listar(idEmpresa, ordenarPor){
     return database.executar(instrucaoSql);
 }
 
-function listarAlertas(){
+function listarAlertas(idEmpresa){
     instrucaoSql = `SELECT * FROM vw_alertas where idEmpresa = ${idEmpresa} ORDER BY dataEhora;`;
     return database.executar(instrucaoSql);
 }

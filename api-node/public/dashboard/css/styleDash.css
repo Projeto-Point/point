@@ -594,6 +594,11 @@ main section#alertas .main .alerta span {
 }
 main section#alertas .main .alerta h3#titulo-alerta {
   grid-area: titulo;
+  display: flex;
+  align-items: center;
+}
+main section#alertas .main .alerta h3#titulo-alerta img {
+  margin-right: 15px;
 }
 main section#alertas .main .alerta p#data-alerta {
   grid-area: data;

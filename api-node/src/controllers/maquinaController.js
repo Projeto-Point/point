@@ -21,7 +21,8 @@ function listar(req, res) {
 
 // Página de alertas
 function listarAlertas(req, res){
-    maquinaModel.listarAlertas()
+    const idEmpresa = req.query.idEmpresa;
+    maquinaModel.listarAlertas(idEmpresa)
     .then(function(resultado) {
         if(resultado.length > 0){
             res.status(200).json(resultado);

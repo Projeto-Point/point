@@ -163,10 +163,10 @@
                 var abaPesquisa = document.getElementById('inp-pesquisar-funcionario').value;
                 if(dadosAlerta[i].nome.toUpperCase().indexOf(abaPesquisa.toUpperCase()) < 0)continue
                 console.log('dwd')
-                if(document.getElementById('aberto').checked && dadosAlerta[i].resolucao == 'FECHADO')continue
-                if(document.getElementById('fechado').checked && dadosAlerta[i].resolucao == 'ABERTO')continue
-                if(document.getElementById('servidor').checked && dadosAlerta[i].tipo == 'Desktop')continue
-                if(document.getElementById('desktop').checked && dadosAlerta[i].tipo == 'Servidor')continue
+                if(document.getElementById('aberto').checked && dadosAlerta[i].resolucao.toUpperCase() == 'FECHADO')continue
+                if(document.getElementById('fechado').checked && dadosAlerta[i].resolucao.toUpperCase() == 'ABERTO')continue
+                if(document.getElementById('servidor').checked && dadosAlerta[i].tipo.toUpperCase() == 'DESKTOP')continue
+                if(document.getElementById('desktop').checked && dadosAlerta[i].tipo.toUpperCase() == 'SERVIDOR')continue
     
                 document.getElementById("lista-alertas").innerHTML += `
                 <div class="alerta box">
@@ -205,10 +205,10 @@
             var abaPesquisa = document.getElementById('inp-pesquisar-funcionario').value;
             
             if(dadosAlerta[i].nome.toUpperCase().indexOf(abaPesquisa.toUpperCase()) < 0)continue
-            if(document.getElementById('aberto').checked && dadosAlerta[i].resolucao == 'FECHADO')continue
-            if(document.getElementById('fechado').checked && dadosAlerta[i].resolucao == 'ABERTO')continue
-            if(document.getElementById('servidor').checked && dadosAlerta[i].tipo == 'Desktop')continue
-            if(document.getElementById('desktop').checked && dadosAlerta[i].tipo == 'Servidor')continue
+            if(document.getElementById('aberto').checked && dadosAlerta[i].resolucao.toUpperCase() == 'FECHADO')continue
+            if(document.getElementById('fechado').checked && dadosAlerta[i].resolucao.toUpperCase() == 'ABERTO')continue
+            if(document.getElementById('servidor').checked && dadosAlerta[i].tipo.toUpperCase() == 'DESKTOP')continue
+            if(document.getElementById('desktop').checked && dadosAlerta[i].tipo.toUpperCase() == 'SERVIDOR')continue
 
             document.getElementById("lista-alertas").innerHTML += `
             <div class="alerta box">

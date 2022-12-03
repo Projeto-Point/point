@@ -23,7 +23,7 @@ public class Maquina {
     }
 
     public int selectIdMaquina(Funcionario funcionario) {
-        JSONObject consulta = banco.consultarRegistro(String.format("SELECT M.idMaquina FROM Maquina M INNER JOIN Funcionario F ON F.idFuncionario = M.fkFuncionario WHERE F.idFuncionario = %d;", funcionario.getId()));
+        JSONObject consulta = banco.consultarRegistro(String.format("SELECT M.idMaquina FROM Maquina M INNER JOIN Funcionario F ON F.idFuncionario = M.fkFuncionario WHERE F.idFuncionario = %d AND nomeMaquina = '%s';", funcionario.getId(), getNomeMaquina()));
 
         if (!(consulta == null)) {
             int idMaquina = consulta.getInt("idMaquina");
