@@ -205,7 +205,9 @@
         trocarSelecao(document.getElementById('tempo-cpu').value, "cpu");
         trocarSelecao(document.getElementById('tempo-ram').value, "ram");
 
-        pegarDadosMovimentacao();
+        pegarDadosMovimentacao("E");
+        pegarDadosMovimentacao("S");
+
         pegarDadosCpu();
         pegarDadosRam();
         pegarDadosProcesso();
@@ -249,10 +251,10 @@
         }
     }
 
-    function pegarDadosMovimentacao(){
+    function pegarDadosMovimentacao(acao){
         const periodoInicio = moment(document.getElementById('data-movimentacao-inicio').value).format('YYYY-MM-DD');
         const periodoFim = moment(document.getElementById('data-movimentacao-fim').value).format('YYYY-MM-DD');
-        fetch(`/analiseAgda/pegarMovimentacao?periodoInicio=${periodoInicio}&periodoFim=${periodoFim}&idFuncionario=${idFuncionario}&cidade=${cidade}&idEmpresa=${sessionStorage['ID_EMPRESA']}`).then((res) => {
+        fetch(`/analiseAgda/pegarMovimentacao?acao=${acao}&periodoInicio=${periodoInicio}&periodoFim=${periodoFim}&idFuncionario=${idFuncionario}&cidade=${cidade}&idEmpresa=${sessionStorage['ID_EMPRESA']}`).then((res) => {
             if(res.status == 204){
                 if(chartMovimentacao != null){
                     chartMovimentacao.destroy();
@@ -265,22 +267,20 @@
             }
             else if(res.ok){
                 res.json().then((resposta) => {
-                    reposta = resposta.map((registro) =>
-                        moment().utc(registro.dataEhora).format('YYYY-MM-DDTHH:mm:ss')
-                    );
-                    graficoMovimentacao(resposta);
+                    console.log("Ação 1: " + acao)
+                    graficoMovimentacao(resposta, acao);
                 });
             }
         });
     }
 
-    function graficoMovimentacao(resposta){
-        if(chartMovimentacao != null){
+    function graficoMovimentacao(resposta, acao){
+        if(chartMovimentacao != null && acao == "S"){
             chartMovimentacao.destroy();
         }
 
         let labels = [];
-
+        
         const data = {
             labels: labels,
             datasets: [
@@ -298,53 +298,62 @@
                 },
             ]
         };
+        
+        if(acao == "E"){
+            const config = {
+                type: 'line',
+                data: data,
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    let hora = zeroEsquerda(context.raw);
 
-        for (let index = 0; index < resposta.length; index++) {
-            if(! labels.includes(moment().utc(resposta[index]['dataEhora']).format('DD/MM'))){
-                labels.push(moment().utc(resposta[index]['dataEhora']).format('DD/MM'));
-            }
-
-            if(resposta[index]['acao'] == "E"){
-                data.datasets[0].data.push(moment().utc(resposta[index]['dataEhora']).format('HHmm'));
-            }
-            else{
-                data.datasets[1].data.push(moment().utc(resposta[index]['dataEhora']).format('HHmm'));
-            }
-        }
-
-        const config = {
-            type: 'line',
-            data: data,
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                plugins: {
-                    tooltip: {
-                        callbacks: {
-                            label: function(context) {
-                                let hora = zeroEsquerda(context.raw);
-
-                                return formatarHorario(hora);
+                                    return formatarHorario(hora);
+                                }
                             }
                         }
-                    }
-                },
-                scales: {
-                    y: {
-                        max : 2359,
-                        ticks: {
-                            callback: function(value, index, ticks) {
-                                let hora = zeroEsquerda(value, 4);
+                    },
+                    scales: {
+                        y: {
+                            max : 2359,
+                            ticks: {
+                                callback: function(value, index, ticks) {
+                                    let hora = zeroEsquerda(value, 4);
 
-                                return formatarHorario(hora);
+                                    return formatarHorario(hora);
+                                }
                             }
                         }
                     }
                 }
-            }
-        };
+            };
 
-        chartMovimentacao = new Chart(document.getElementById('graficoMovimentacao'), config);
+            chartMovimentacao = new Chart(document.getElementById('graficoMovimentacao'), config);
+        }
+
+        for (let index = 0; index < resposta.length; index++) {
+            if(! labels.includes(moment().utc(resposta[index]['dataEntrada']).format('DD/MM'))){
+                labels.push(moment().utc(resposta[index]['dataEntrada']).format('DD/MM'));
+            }
+            
+            if(! labels.includes(moment().utc(resposta[index]['dataSaida']).format('DD/MM'))){
+                labels.push(moment().utc(resposta[index]['dataSaida']).format('DD/MM'));
+            }
+
+            if(acao == "E"){
+                data.datasets[0].data.push(moment(resposta[index]['horarioEntrada']).utc(0).format('HHmm'));
+            }
+            else{
+                data.datasets[1].data.push(moment(resposta[index]['horarioSaida']).utc(0).format('HHmm'));
+            }
+
+            console.log(data.datasets[1])
+            chartMovimentacao.update();
+        }
     }
 
     function pegarDadosProcesso(){

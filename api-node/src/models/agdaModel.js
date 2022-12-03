@@ -1,27 +1,43 @@
 var database = require("../database/config");
 
-function pegarMovimentacao(periodoInicio, periodoFim, idFuncionario, cidade, idEmpresa){
+function pegarMovimentacao(acao, periodoInicio, periodoFim, idFuncionario, cidade, idEmpresa){
     if(idFuncionario == 0){
-        console.log(cidade);
-        instrucaoSql = `SELECT CAST(AVG(CAST AS FLOAT) AS DATETIME) AS dataEhora FROM Localizacao
-        INNER JOIN Maquina ON fkMaquina = idMaquina
-        INNER JOIN Funcionario ON fkFuncionario = idFuncionario
-        `;
-        instrucaoSql = `SELECT acao, CAST(AVG(CAST(dataEhora AS FLOAT)) AS DATETIME) AS dataEhora FROM Localizacao
-        INNER JOIN Maquina ON fkMaquina = idMaquina
-        INNER JOIN Funcionario ON fkFuncionario = idFuncionario
-        WHERE cidade = '${cidade}' AND CAST(dataEhora AS DATE) BETWEEN '${periodoInicio}' AND '${periodoFim}' AND fkEmpresa = ${idEmpresa}
-        GROUP BY acao, CAST(dataEhora AS DATE);`;
-        console.log(instrucaoSql)
+        if(acao == 'E'){
+            instrucaoSql = `SELECT DISTINCT CAST(dataEntrada AS DATE) AS dataEntrada, CAST(AVG(CAST(dataEntrada AS FLOAT)) AS DATETIME) AS horarioEntrada
+            FROM Localizacao
+            INNER JOIN Maquina ON fkMaquina = idMaquina
+            INNER JOIN Funcionario ON fkFuncionario = idFuncionario
+            WHERE cidade = '${cidade}' AND CAST(dataEntrada AS DATE) BETWEEN '${periodoInicio}' AND '${periodoFim}' AND fkEmpresa = ${idEmpresa}
+            GROUP BY CAST(dataEntrada AS DATE);`;
+        }
+        else{
+            instrucaoSql = `SELECT DISTINCT CAST(dataSaida AS DATE) AS dataSaida, CAST(AVG(CAST(dataSaida AS FLOAT)) AS DATETIME) AS horarioSaida
+            FROM Localizacao
+            INNER JOIN Maquina ON fkMaquina = idMaquina
+            INNER JOIN Funcionario ON fkFuncionario = idFuncionario
+            WHERE cidade = '${cidade}' AND CAST(dataSaida AS DATE) BETWEEN '${periodoInicio}' AND '${periodoFim}' AND fkEmpresa = ${idEmpresa}
+            GROUP BY CAST(dataSaida AS DATE);`;
+        }
     }
     else{
-        instrucaoSql = `SELECT acao, CAST(AVG(CAST(dataEhora AS FLOAT)) AS DATETIME) AS dataEhora
-        FROM Localizacao
-        INNER JOIN Maquina ON idMaquina = fkMaquina
-        INNER JOIN Funcionario ON idFuncionario = fkFuncionario
-        WHERE idFuncionario = ${idFuncionario} AND CAST(dataEhora AS DATE) BETWEEN '${periodoInicio}' AND '${periodoFim}' AND cidade = '${cidade}'
-        GROUP BY acao, CAST(dataEhora AS DATE);`;
+        if(acao == 'E'){
+            instrucaoSql = `SELECT DISTINCT CAST(dataEntrada AS DATE) AS dataEntrada, CAST(AVG(CAST(dataEntrada AS FLOAT)) AS DATETIME) AS horarioEntrada
+            FROM Localizacao
+            INNER JOIN Maquina ON fkMaquina = idMaquina
+            INNER JOIN Funcionario ON fkFuncionario = idFuncionario
+            WHERE cidade = '${cidade}' AND CAST(dataEntrada AS DATE) BETWEEN '${periodoInicio}' AND '${periodoFim}' AND idFuncionario = ${idFuncionario}
+            GROUP BY CAST(dataEntrada AS DATE);`;
+        }
+        else{
+            instrucaoSql = `SELECT DISTINCT CAST(dataSaida AS DATE) AS dataSaida, CAST(AVG(CAST(dataSaida AS FLOAT)) AS DATETIME) AS horarioSaida
+            FROM Localizacao
+            INNER JOIN Maquina ON fkMaquina = idMaquina
+            INNER JOIN Funcionario ON fkFuncionario = idFuncionario
+            WHERE cidade = '${cidade}' AND CAST(dataSaida AS DATE) BETWEEN '${periodoInicio}' AND '${periodoFim}' AND idFuncionario = ${idFuncionario}
+            GROUP BY CAST(dataSaida AS DATE);`;
+        }
     }
+    console.log(instrucaoSql)
     return database.executar(instrucaoSql);
 }
 

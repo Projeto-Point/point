@@ -2,12 +2,13 @@ var agdaModel = require("../models/agdaModel");
 
 // Página das máquinas
 function pegarMovimentacao(req, res) {
+    const acao = req.query.acao;
     const periodoInicio = req.query.periodoInicio;
     const periodoFim = req.query.periodoFim;
     const idFuncionario = req.query.idFuncionario;
     const cidade = req.query.cidade;
     const idEmpresa = req.query.idEmpresa;
-    agdaModel.pegarMovimentacao(periodoInicio, periodoFim, idFuncionario, cidade, idEmpresa)
+    agdaModel.pegarMovimentacao(acao, periodoInicio, periodoFim, idFuncionario, cidade, idEmpresa)
     .then(function (resultado) {
         if (resultado.length > 0) {
             res.status(200).json(resultado);
