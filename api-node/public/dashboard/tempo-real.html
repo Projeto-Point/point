@@ -152,14 +152,19 @@
         fetch(`/maquinas/verificarAtividade?idMaquina=${idMaquina}`).then(function (res) {
             if (res.ok) {
                 res.json().then(resposta => {
-                    if(resposta[0].acao == "S"){
-                        document.querySelector('.dashboard').innerHTML = `<p style="grid-column-start: 1; grid-column-end: 4; display: flex; justify-content: center; align-items: center; font-weight: bold; font-size: 1.3rem;">Máquina desligada desde o dia ${moment(resposta[0].dataEhora).format("DD/MM/YYYY [às] HH:mm")}</p>`;
+                    console.log(resposta);
+                    if(resposta[0].dataEntrada == null){
+                        document.querySelector('.dashboard').innerHTML = `<p style="grid-column-start: 1; grid-column-end: 4; display: flex; justify-content: center; align-items: center; font-weight: bold; font-size: 1.3rem;">Não foi possível capturar a entrada e saída da máquina!</p>`;
+                    }
+                    else if(resposta[0].dataSaida != null){
+                        document.querySelector('.dashboard').innerHTML = `<p style="grid-column-start: 1; grid-column-end: 4; display: flex; justify-content: center; align-items: center; font-weight: bold; font-size: 1.3rem;">Máquina desligada desde o dia ${moment().utc(resposta[0].dataSaida).format("DD/MM/YYYY [às] HH:mm")}</p>`;
+                    }
+                    else{
+                        recuperarDados();
                     }
                 });
             }
         });
-        
-        recuperarDados();
     };
 
 

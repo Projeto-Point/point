@@ -33,8 +33,8 @@ create table Maquina (
 
 create table Localizacao (
     idLocalizacao int primary key auto_increment,
-    acao char(1),
-    dataEhora datetime,
+    dataEntrada datetime,
+    dataSaida datetime,
     ipAdress varchar(16),
     longitude decimal(7,4),
     latitude decimal(7,4),

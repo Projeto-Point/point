@@ -174,7 +174,7 @@
                     <h3 id="titulo-alerta">
                         ${imagemTipoMaquina}
                         ${dadosAlerta[i].titulo}</h3>
-                    <p id="data-alerta">${moment(dadosAlerta[i].dataEhora).format("DD/MM/YYYY [às] HH:mm")}</p>
+                    <p id="data-alerta">${moment(dadosAlerta[i].dataEhora).utc(0).format("DD/MM/YYYY [às] HH:mm")}</p>
                     <div class="infoAlerta">
                     <p id="responsavel-alerta"><span>Funcionário: </span>${dadosAlerta[i].nome}</p>
                     <p id="cargo-alerta"><span>Cargo: </span>${dadosAlerta[i].cargo}</p>
@@ -216,7 +216,7 @@
                 <h3 id="titulo-alerta">
                     ${imagemTipoMaquina}
                     ${dadosAlerta[i].titulo}</h3>
-                <p id="data-alerta">${moment(dadosAlerta[i].dataEhora).format("DD/MM/YYYY [às] HH:mm")}</p>
+                <p id="data-alerta">${moment(dadosAlerta[i].dataEhora).utc(0).format("DD/MM/YYYY [às] HH:mm")}</p>
                 <div class="infoAlerta">
                 <p id="responsavel-alerta"><span>Funcionário: </span>${dadosAlerta[i].nome}</p>
                 <p id="cargo-alerta"><span>Cargo: </span>${dadosAlerta[i].cargo}</p>

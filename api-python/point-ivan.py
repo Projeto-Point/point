@@ -7,9 +7,6 @@ import pymssql
 import geocoder
 import pymysql
 import requests
-import psutil
-import json
-import email
 from datetime import datetime, timedelta
 
 # Credenciais da Azure
@@ -152,7 +149,7 @@ idMaquina = consulta[0][0]
 
 # Inserindo entrada com localização
 ip = geocoder.ip('me')
-inserirBanco(f"INSERT INTO Localizacao (acao, dataEhora, ipAdress, longitude, latitude, cidade, pais, fkMaquina) VALUES ('E', GETDATE() AT TIME ZONE 'UTC' AT TIME ZONE 'Bahia Standard Time', '{ip.ip}', {ip.latlng[0]}, {ip.latlng[1]}, '{ip.city}', '{ip.country}', {idMaquina})")
+inserirBanco(f"INSERT INTO Localizacao (dataEntrada, ipAdress, longitude, latitude, cidade, pais, fkMaquina) VALUES (GETDATE() AT TIME ZONE 'UTC' AT TIME ZONE 'Bahia Standard Time', '{ip.ip}', {ip.latlng[0]}, {ip.latlng[1]}, '{ip.city}', '{ip.country}', {idMaquina})")
 
 # Personalizando o terminal 
 ui = HSplit(
@@ -287,5 +284,5 @@ while True:
         sleep(3)
     except KeyboardInterrupt:
         # Inserindo saída com localização
-        inserirBanco(f"INSERT INTO Localizacao (acao, dataEhora, ipAdress, longitude, latitude, cidade, pais, fkMaquina) VALUES ('S', GETDATE() AT TIME ZONE 'UTC' AT TIME ZONE 'Bahia Standard Time', '{ip.ip}', {ip.latlng[0]}, {ip.latlng[1]}, '{ip.city}', '{ip.country}', {idMaquina})")
+        inserirBanco(f"UPDATE Localizacao SET dataSaida = GETDATE() AT TIME ZONE 'UTC' AT TIME ZONE 'Bahia Standard Time' WHERE fkMaquina = {idMaquina} AND idLocalizacao = (SELECT TOP 1 idLocalizacao FROM Localizacao WHERE fkMaquina = {idMaquina} ORDER BY idLocalizacao DESC);")
         break
