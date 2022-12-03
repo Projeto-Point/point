@@ -65,19 +65,6 @@ function pegarRegistroMaquina(req, res){
     });
 }
 
-function pegarRegistroInstancia(req, res){
-    var idMaquina = req.query.idMaquina;
-    medidaModel.pegarRegistroInstancia(idMaquina)
-    .then(function (resposta) {
-        res.status(200).json(resposta);
-    })
-    .catch(function(erro){
-        console.log(erro);
-        console.log("Houve um erro ao buscar os registros da máquina.", erro.sqlMessage);
-        res.status(500).json(erro.sqlMessage);
-    });
-}
-
 function pegarRegistroDownload(req, res){
     var idMaquina = req.query.idMaquina;
     medidaModel.pegarRegistroDownload(idMaquina)
@@ -111,6 +98,6 @@ module.exports = {
     pegarRegistroFuncionario,
     pegarRegistroMaquina,
     pegarRegistroDownload,
-    pegarRegistroUpload,
-    pegarRegistroInstancia
+    pegarRegistroUpload
+    
 }

@@ -1,5 +1,10 @@
 var database = require("../database/config");
 
+function pegarRegistroInstancia(idMaquina){
+    instrucaoSql = `SELECT * FROM [dbo].[Maquina], instancia WHERE idMaquina = ${idMaquina} AND nomeMaquina = nomeInstancia;`;
+    console.log("Executando a instrução SQL: \n" + instrucaoSql);
+    return database.executar(instrucaoSql);
+}
 
 function horasAtivas(idMaquina) {
         instrucaoSql = `SELECT acao,
@@ -14,6 +19,7 @@ function horasAtivas(idMaquina) {
 }
 
 module.exports = {
-    horasAtivas
+    horasAtivas,
+    pegarRegistroInstancia
 
 }

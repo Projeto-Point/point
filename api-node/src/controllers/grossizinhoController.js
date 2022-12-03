@@ -1,5 +1,18 @@
 var grossizinhoModel = require("../models/grossizinhoModel");
 
+function pegarRegistroInstancia(req, res){
+    var idMaquina = req.query.idMaquina;
+    grossizinhoModel.pegarRegistroInstancia(idMaquina)
+    .then(function (resposta) {
+        res.status(200).json(resposta);
+    })
+    .catch(function(erro){
+        console.log(erro);
+        console.log("Houve um erro ao buscar os registros da máquina.", erro.sqlMessage);
+        res.status(500).json(erro.sqlMessage);
+    });
+}
+
 function horasAtivas(req, res){
     const idMaquina = req.query.idMaquina;
     
@@ -21,6 +34,7 @@ function horasAtivas(req, res){
 
 
 module.exports = {
-    horasAtivas
+    horasAtivas,
+    pegarRegistroInstancia
     
 }

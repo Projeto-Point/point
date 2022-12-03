@@ -34,11 +34,7 @@ function pegarRegistroMaquina(idMaquina){
     return database.executar(instrucaoSql);
 }
 
-function pegarRegistroInstancia(idMaquina){
-    instrucaoSql = `SELECT * FROM [dbo].[Maquina], instancia WHERE idMaquina = ${idMaquina} AND nomeMaquina = nomeInstancia;`;
-    console.log("Executando a instrução SQL: \n" + instrucaoSql);
-    return database.executar(instrucaoSql);
-}
+
 function pegarRegistroDownload(idMaquina){
     instrucaoSql = `SELECT TOP 10 bytesRecebidos FROM vw_rede
     WHERE idMaquina = ${idMaquina} order by dataEhora desc;`;
@@ -59,7 +55,6 @@ module.exports = {
     pegarRegistroRAM,
     pegarRegistroFuncionario,
     pegarRegistroMaquina,
-    pegarRegistroInstancia,
     pegarRegistroUpload,
     pegarRegistroDownload
 }
