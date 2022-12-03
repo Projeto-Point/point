@@ -637,15 +637,20 @@ main section.dashboard-analise {
   margin-top: 30px;
   display: grid;
   gap: 30px;
-  grid-template-columns: 1fr 1fr 1fr;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
   grid-template-rows: 1fr (250px);
-  grid-template-areas: "k1 k2 k3" "g1 g1 i2" "g1 g1 i2";
+  grid-template-areas: "k1 k2 k3 k4"
+                       "g1 g1 g1 i2"
+                       "g1 g1 g1 i2";
 }
 main section.dashboard-analise .kpi-horas {
   grid-area: k1;
 }
 main section.dashboard-analise .kpi-mediaProc {
   grid-area: k2;
+}
+main section.dashboard-analise .kpi-custo {
+  grid-area: k4;
 }
 main section.dashboard-analise .kpi-mediaRam {
   grid-area: k3;
@@ -721,13 +726,18 @@ main section.dashboard-analise section.dashboard-analise-funcionario {
   margin-top: 30px;
   display: grid;
   gap: 30px;
-  grid-template-columns: 1fr 1fr 1fr;
-  grid-template-rows: 1fr repeat(3, 250px);
-  grid-template-areas: "k1 k2 i1" "g1 g1 i1" "g2 g2 i2" "g3 g3 i2";
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+  grid-template-rows: 1fr repeat(4, 250px);
+  grid-template-areas: "k1 k2 i1 i2" "g1 g1 i1 i2" "g2 g2 i2 i2" "g3 g3 i2 i2";
 }
 main section.dashboard-analise section.dashboard-analise-funcionario .kpi-horas {
   grid-area: k1;
 }
+
+main section.dashboard-analise section.dashboard-analise-funcionario .kpi-custo {
+  grid-area: k1;
+}
+
 main section.dashboard-analise section.dashboard-analise-funcionario .kpi-qtd-func {
   grid-area: k2;
 }
@@ -796,8 +806,10 @@ main section.dashboard {
   gap: 25px;
   font-size: 20px;
   grid-template-columns: repeat(3, 32%);
-  grid-template-rows: repeat(3, 300px);
-  grid-template-areas: "g1 g2 g3" "t1 t1 t1" "t2 t2 t2";
+  grid-template-rows: repeat(4, 250px);
+  grid-template-areas: "g1 g2 g3 g4"
+                       "t1 t1 t1 t1"
+                       "t2 t2 t2 t2";
 }
 main section.dashboard #gfCpu {
   grid-area: g1;
@@ -887,14 +899,11 @@ main section.dashboard-analise-funcionario {
   display: grid;
   gap: 30px;
   grid-template-columns: 1fr 1fr 1fr;
-  grid-template-rows: 1fr repeat(3, 250px);
+  grid-template-rows: 1fr repeat(4, 250px);
   grid-template-areas: "k1 k2 i1" "g1 g1 i1" "g2 g2 i2" "g3 g3 i2";
 }
 main section.dashboard-analise-funcionario .kpi-horas {
   grid-area: k1;
-}
-main section.dashboard-analise-funcionario .kpi-qtd-func {
-  grid-area: k2;
 }
 main section.dashboard-analise-funcionario .grafico-movimentacao {
   grid-area: g1;
@@ -1000,7 +1009,7 @@ main section.dashboard-analise-funcionario a.funcionario:hover {
   }
   main section.dashboard-analise {
     grid-template-columns: 100%;
-    grid-template-areas: "k1 k2 k3" "g1 g1 i2" "g1 g1 i2";
+    grid-template-areas: "k1 k2 k3 k4" "g1 g1 i2 i3" "g1 g1 i2 i3";
     grid-template-rows: auto;
   }
   main section.dashboard-analise .legenda + span {

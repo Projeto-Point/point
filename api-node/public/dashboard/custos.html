@@ -66,23 +66,25 @@
     </section>
     <section class="dashboard-analise">
       <div class="box box-kpi kpi-horas">
-        <h3>Horas ativas:</h3>
-        <p id="kpiHoras"></p>
+        <h4>Horas ativas:</h4><br>
+        <h5 id="kh5iHoras"></h5>
+      </div>
+      <div class="box box-kpi kpi-custo">
+        <h4>Custo total:</h4><br>
+        <h5 id="kpiCusto"></h5>
       </div>
       <div class="box box-kpi kpi-mediaProc">
-        <h3>Média do processador:</h3>
-        <p id="kpiCPU">%</p>
+        <h4>Média do processador:</h4><br>
+        <h5 id="kpiCPU">%</h5>
       </div>
       <div class="box box-kpi kpi-mediaRam">
-        <h3>Média da memória RAM:</h3>
-        <p id="kpiRAM">%</p>
+        <h4>Média da memória RAM:</h4><br>
+        <h5 id="kpiRAM">%</h5>
       </div>
       <div class="grafico-processador grafico box">
         <div class="header">
           <h3>Custos</h3>
           <div class="dir">
-            <div></div>
-            <span>Total: </span>
             <select id="tempoCpu" onchange="mudarTempo('CPU', this.value)">
               <option value="ultimoMes">Último mês</option>
               <option value="ultimaSemana">Última semana</option>
@@ -203,6 +205,8 @@
         console.log(preco)
         console.log(resposta);
 
+        
+
 
         document.getElementById(
           "sobreMaquina"
@@ -223,9 +227,6 @@
         //     "sobreMaquina"
         //   ).innerHTML += `<p><b>Alterar instância: </b><span class="top-esq"><a href="https://us-east-1.console.aws.amazon.com/console/home?region=us-east-1#" class="logo">teste
         // </a></span></p>`;
-
-
-
 
         fetch(`/maquinas/pegarTempo?idMaquina=${idMaquina}&dataInicio=${moment().subtract(30, "days").format("YYYY-MM-DD")}&dataFinal=${moment().format("YYYY-MM-DD")}`)
           .then((res) => {
@@ -249,6 +250,11 @@
                 let horas = moment.duration(horasAtivas).hours();
                 let minutos = moment.duration(horasAtivas).minutes();
 
+                
+
+                kpiCusto.innerHTML =` $${(preco * (horas + (minutos/60))).toFixed(4)} USD`;
+                
+
               });
             }
           })
@@ -264,23 +270,17 @@
     function (res) {
       if (res.ok) {
         res.json().then((resposta) => {
-       
+
           var dia = resposta.map((object) => object.dataEntrada);
-          console.log(dia[0])
 
-          // var inicio = new Date(dia[0]);
-          // var fim = new Date(dia[1]);
+          var diaLabel = [];
 
-          // var diferenca = new Date(fim - inicio);
-
-          // var resultado = diferenca.getUTCHours() + "h ";
-          // resultado += diferenca.getUTCMinutes() + "m ";
-          // resultado += diferenca.getUTCSeconds() + "s ";
-          // console.log(resultado);
+          for (let p = 0; p < dia.length; p++) {
+            diaLabel.push(moment(dia[p]).utc(0).format("DD/MM/YYYY"))
+          }
 
 
-
-          const labels = dia;
+          const labels = diaLabel;
           const data = {
             labels: labels,
             datasets: [
@@ -290,7 +290,7 @@
                 borderColor: 'rgb(75, 192, 192)',
                 backgroundColor: 'rgb(75, 192, 192)',
                 stack: 'combined',
-                type: 'bar'
+                type: 'bar',
               },
               {
                 label: 'Dataset 2',
@@ -317,6 +317,9 @@
                 }
               }
             },
+            // legend: {
+            //   display: false
+            // }
           };
 
           window.graficoCusto = new Chart(
