@@ -71,14 +71,15 @@
         <div class="main-grafico">
           <h3>Sobre os processos </h3> <br>
 
-          <div id="sobreProcesso">
-            
+          <div id="sobreProcesso" style="height:50vh ;">
+
           </div>
-
-          <img src="../assets/imgs/wordcloud-processo2.png" alt="" width="100%">
         </div>
-      </div>
 
+      </div>
+      <div>
+        <img src="../assets/imgs/wordcloud-processo2.png" alt="" width="100%">
+      </div>
       <div class="box info-maquina">
         <h3>Sobre a máquina</h3>
 
@@ -105,36 +106,36 @@
 
   fetch(`/medidas/pegarRegistroMaquina?idMaquina=${idMaquina}`).then((res) => {
     if (res.ok) {
-        res.json().then((resposta) => {
-            document.getElementById(
-                "sobreMaquina"
-            ).innerHTML += `<p><b>Sistema operacional: </b><span>${resposta[0].sistemaOperacional}</span></p>`;
-            document.getElementById(
-                "sobreMaquina"
-            ).innerHTML += `<p><b>Nome da máquina: </b><span>${resposta[0].nomeMaquina}</span></p>`;
-            document.getElementById(
-                "sobreMaquina"
-            ).innerHTML += `<p><b>Tipo da máquina: </b><span>${resposta[0].tipoMaquina}</span></p>`;
+      res.json().then((resposta) => {
+        document.getElementById(
+          "sobreMaquina"
+        ).innerHTML += `<p><b>Sistema operacional: </b><span>${resposta[0].sistemaOperacional}</span></p>`;
+        document.getElementById(
+          "sobreMaquina"
+        ).innerHTML += `<p><b>Nome da máquina: </b><span>${resposta[0].nomeMaquina}</span></p>`;
+        document.getElementById(
+          "sobreMaquina"
+        ).innerHTML += `<p><b>Tipo da máquina: </b><span>${resposta[0].tipoMaquina}</span></p>`;
 
 
-            for (let index = 0; index < resposta.length; index++) {
-                if (resposta[index].atributo == "CORE") {
-                    resposta[index].unidadeMedida = "";
-                    resposta[index].valor *= 1;
-                    Math.trunc(resposta[index].valor);
-                }
-                if (resposta[index].atributo == "THREADS") {
-                    resposta[index].unidadeMedida = "";
-                    resposta[index].valor *= 1;
-                    Math.trunc(resposta[index].valor);
-                }
-                document.getElementById(
-                    "sobreMaquina"
-                ).innerHTML += `<p><b>${resposta[index].tipoComponente} - ${resposta[index].atributo}: </b><span>${resposta[index].valor} ${resposta[index].unidadeMedida}</span></p>`;
-            }
-        });
+        for (let index = 0; index < resposta.length; index++) {
+          if (resposta[index].atributo == "CORE") {
+            resposta[index].unidadeMedida = "";
+            resposta[index].valor *= 1;
+            Math.trunc(resposta[index].valor);
+          }
+          if (resposta[index].atributo == "THREADS") {
+            resposta[index].unidadeMedida = "";
+            resposta[index].valor *= 1;
+            Math.trunc(resposta[index].valor);
+          }
+          document.getElementById(
+            "sobreMaquina"
+          ).innerHTML += `<p><b>${resposta[index].tipoComponente} - ${resposta[index].atributo}: </b><span>${resposta[index].valor} ${resposta[index].unidadeMedida}</span></p>`;
+        }
+      });
     }
-});
+  });
 
 
 
