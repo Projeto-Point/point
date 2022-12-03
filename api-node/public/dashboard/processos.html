@@ -72,11 +72,7 @@
           <h3>Sobre os processos </h3> <br>
 
           <div id="sobreProcesso">
-            <div id="idProcesso">IdProcesso:</div> <br>
-            <div id="nomeProcessos">Nome:</div><br>
-            <div id="porcentagemProcesso">Porcentagem da CPU:</div><br>
-            <div id="Pidprocesso">Pid:</div>
-
+            
           </div>
 
           <img src="../assets/imgs/wordcloud-porceso.png" alt="" width="100%">
@@ -109,36 +105,36 @@
 
   fetch(`/medidas/pegarRegistroMaquina?idMaquina=${idMaquina}`).then((res) => {
     if (res.ok) {
-      res.json().then((resposta) => {
-        document.getElementById(
-          "sobreMaquina"
-        ).innerHTML += `<p><b>Sistema operacional: </b><span>${resposta[0].sistemaOperacional}</span></p>`;
-        document.getElementById(
-          "sobreMaquina"
-        ).innerHTML += `<p><b>Nome da máquina: </b><span>${resposta[0].nomeMaquina}</span></p>`;
-        document.getElementById(
-          "sobreMaquina"
-        ).innerHTML += `<p><b>Tipo da máquina: </b><span>${resposta[0].tipoMaquina}</span></p>`;
+        res.json().then((resposta) => {
+            document.getElementById(
+                "sobreMaquina"
+            ).innerHTML += `<p><b>Sistema operacional: </b><span>${resposta[0].sistemaOperacional}</span></p>`;
+            document.getElementById(
+                "sobreMaquina"
+            ).innerHTML += `<p><b>Nome da máquina: </b><span>${resposta[0].nomeMaquina}</span></p>`;
+            document.getElementById(
+                "sobreMaquina"
+            ).innerHTML += `<p><b>Tipo da máquina: </b><span>${resposta[0].tipoMaquina}</span></p>`;
 
 
-        for (let index = 0; index < resposta.length; index++) {
-          if (resposta[index].atributo == "CORE") {
-            resposta[index].unidadeMedida = "";
-            resposta[index].valor *= 1;
-            Math.trunc(resposta[index].valor);
-          }
-          if (resposta[index].atributo == "THREADS") {
-            resposta[index].unidadeMedida = "";
-            resposta[index].valor *= 1;
-            Math.trunc(resposta[index].valor);
-          }
-          document.getElementById(
-            "sobreMaquina"
-          ).innerHTML += `<p><b>${resposta[index].tipoComponente} - ${resposta[index].atributo}: </b><span>${resposta[index].valor} ${resposta[index].unidadeMedida}</span></p>`;
-        }
-      });
+            for (let index = 0; index < resposta.length; index++) {
+                if (resposta[index].atributo == "CORE") {
+                    resposta[index].unidadeMedida = "";
+                    resposta[index].valor *= 1;
+                    Math.trunc(resposta[index].valor);
+                }
+                if (resposta[index].atributo == "THREADS") {
+                    resposta[index].unidadeMedida = "";
+                    resposta[index].valor *= 1;
+                    Math.trunc(resposta[index].valor);
+                }
+                document.getElementById(
+                    "sobreMaquina"
+                ).innerHTML += `<p><b>${resposta[index].tipoComponente} - ${resposta[index].atributo}: </b><span>${resposta[index].valor} ${resposta[index].unidadeMedida}</span></p>`;
+            }
+        });
     }
-  });
+});
 
 
 
@@ -167,14 +163,13 @@
           var pid = resposta.map((object) => object.pid);
 
           for (let j = 0; j < resposta.length; j++) {
-            idProcesso.innerHTML = `<p><b>IdProcesso: </b>${id[j]}</p>`;
-            nomeProcessos.innerHTML = `<p><b>Nome: </b>${nomeProcesso[j]}</p>`;
-            porcentagemProcesso.innerHTML = `<p><b>Porcentagem CPU: </b>${porcentagem[j]}</p>`;
-            Pidprocesso.innerHTML = `<p><b>PID: </b>${pid[j]}</p>`;
-            console.log(id);
-            console.log(nomeProcesso);
-            console.log(porcentagem);
-            console.log(pid);
+            sobreProcesso.innerHTML += `
+            <div id="idProcesso">IdProcesso:${id[j]}</div> <br> 
+            <div id="nomeProcessos">Nome:${nomeProcesso[j]}</div><br>
+            <div id="porcentagemProcesso">Porcentagem da CPU:${porcentagem[j]}</div><br>
+            <div id="Pidprocesso">Pid:${pid[j]}</div> <br>
+`
+
           }
 
 
