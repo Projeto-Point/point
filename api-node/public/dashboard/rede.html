@@ -238,7 +238,6 @@
                     res.json().then((resposta) => {
                         console.log(resposta);
                         let labels = [];
-
                         if (tipoVisualizacao == "dia") {
                             labels = resposta.map((rede) =>
                                 moment(rede.dataEhora).format("DD/MM/YYYY")
