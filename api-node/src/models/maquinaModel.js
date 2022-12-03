@@ -4,19 +4,34 @@ function listar(idEmpresa, ordenarPor){
     let instrucaoSql;
 
     if(ordenarPor == "alerta"){
-        instrucaoSql = `SELECT idMaquina, nomeMaquina, Funcionario.nome, tipo FROM Maquina INNER JOIN Funcionario ON fkFuncionario = idFuncionario INNER JOIN Empresa on idEmpresa = [dbo].[Funcionario].fkEmpresa WHERE idEmpresa = ${idEmpresa};`;
+        instrucaoSql = `SELECT DISTINCT idMaquina, nomeMaquina, Funcionario.nome, tipo, (CASE WHEN resolucao LIKE 'ABERTO' THEN 'ABERTO' ELSE 'FECHADO' END) AS resolucao  FROM Maquina
+        LEFT JOIN Alerta ON fkMaquina = idMaquina
+        INNER JOIN Funcionario ON fkFuncionario = idFuncionario
+        INNER JOIN Empresa on idEmpresa = [dbo].[Funcionario].fkEmpresa
+        WHERE idEmpresa = ${idEmpresa}
+        ORDER BY resolucao;`;
     }
     else if(ordenarPor == "maquina"){
-        instrucaoSql = `SELECT idMaquina, nomeMaquina, Funcionario.nome, tipo FROM Maquina INNER JOIN Funcionario ON fkFuncionario = idFuncionario INNER JOIN Empresa on idEmpresa = [dbo].[Funcionario].fkEmpresa WHERE idEmpresa = ${idEmpresa} ORDER BY nomeMaquina;`;
+        instrucaoSql =  instrucaoSql = `SELECT DISTINCT idMaquina, nomeMaquina, Funcionario.nome, tipo, (CASE WHEN resolucao LIKE 'ABERTO' THEN 'ABERTO' ELSE 'FECHADO' END) AS resolucao FROM Maquina
+        LEFT JOIN Alerta ON fkMaquina = idMaquina
+        INNER JOIN Funcionario ON fkFuncionario = idFuncionario
+        INNER JOIN Empresa on idEmpresa = [dbo].[Funcionario].fkEmpresa
+        WHERE idEmpresa = ${idEmpresa}
+        ORDER BY nomeMaquina;`;
     }
     else if(ordenarPor == "funcionario"){
-        instrucaoSql = `SELECT idMaquina, nomeMaquina, Funcionario.nome, tipo FROM Maquina INNER JOIN Funcionario ON fkFuncionario = idFuncionario INNER JOIN Empresa on idEmpresa = [dbo].[Funcionario].fkEmpresa WHERE idEmpresa = ${idEmpresa} ORDER BY Funcionario.nome;`;
+        instrucaoSql = instrucaoSql = `SELECT DISTINCT idMaquina, nomeMaquina, Funcionario.nome, tipo, (CASE WHEN resolucao LIKE 'ABERTO' THEN 'ABERTO' ELSE 'FECHADO' END) AS resolucao FROM Maquina
+        LEFT JOIN Alerta ON fkMaquina = idMaquina
+        INNER JOIN Funcionario ON fkFuncionario = idFuncionario
+        INNER JOIN Empresa on idEmpresa = [dbo].[Funcionario].fkEmpresa
+        WHERE idEmpresa = ${idEmpresa}
+        ORDER BY Funcionario.nome;`;;
     }
     return database.executar(instrucaoSql);
 }
 
 function listarAlertas(){
-    instrucaoSql = `SELECT * FROM vw_alertas`;
+    instrucaoSql = `SELECT * FROM vw_alertas where idEmpresa = ${idEmpresa} ORDER BY dataEhora;`;
     return database.executar(instrucaoSql);
 }
 
@@ -38,12 +53,9 @@ function analiseComponente(tipoComponente, idMaquina, dataInicio, dataFinal, tip
 }
 
 function pegarTempo(fkMaquina, dataInicio, dataFinal){
-    instrucaoSql = `SELECT acao,
-        CAST(dataEhora AS DATE) AS 'dia',
-        CAST(AVG(CAST(dataEhora AS FLOAT)) AS DATETIME) AS 'horario'
+    instrucaoSql = `SELECT dataEntrada, dataSaida
     FROM Localizacao
-    WHERE fkMaquina = ${fkMaquina} AND CAST(dataEhora AS DATE) BETWEEN '${dataInicio}' AND '${dataFinal}'
-    GROUP BY acao, CAST(dataEhora AS DATE);`;
+    WHERE fkMaquina = ${fkMaquina} AND CAST(dataEntrada AS DATE) BETWEEN '${dataInicio}' AND '${dataFinal}'`;
     console.log(instrucaoSql);
     return database.executar(instrucaoSql);
 }
@@ -58,7 +70,7 @@ function pegarKpis(idMaquina, dataInicio, dataFinal){
 }
 
 function verificarAtividade(idMaquina){
-    instrucaoSql = `SELECT TOP 1 dataEhora, acao FROM Localizacao WHERE fkMaquina = ${idMaquina} ORDER BY dataEhora DESC;`;
+    instrucaoSql = `SELECT TOP 1 dataEntrada, dataSaida FROM Localizacao WHERE fkMaquina = ${idMaquina} ORDER BY idLocalizacao DESC;`;
     console.log(instrucaoSql)
     return database.executar(instrucaoSql);
 }

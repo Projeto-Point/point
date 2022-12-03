@@ -338,6 +338,7 @@
         fetch(`/medidas/pegarRegistroDownload?idMaquina=${idMaquina}`).then(function (res) {
             if (res.ok) {
                 res.json().then(Download => {
+                    console.log(Download)
 
                     
                     downMedida = Download.map((object) => object.bytesRecebidos);
@@ -409,31 +410,31 @@
             config
 
         );
-        setTimeout(() => {
-            atualizarGraficoDownload(document.getElementById('graficoBytesRecebidos').getContext("2d"), data)
-        }, tempoAtualizacao
-
-        )
+        // setTimeout(() => {
+        //     atualizarGraficoDownload(document.getElementById('graficoBytesRecebidos').getContext("2d"), data)
+        // }, tempoAtualizacao
+        //
+        // )
 
     }
 
-    function atualizarGraficoDownload(grafico, dados) {
-        fetch(`/medidas/pegarRegistroDownload?idMaquina=${idMaquina}`).then(function (res) {
-            if (res.ok) {
-                res.json().then(Download => {
-                    downMedida = Download.map((object) => object.bytesRecebidos);
-                    dados.datasets[0].data = downMedida
-                    window.graficoBytesRecebidos.update();
+    // function atualizarGraficoDownload(grafico, dados) {
+    //     fetch(`/medidas/pegarRegistroDownload?idMaquina=${idMaquina}`).then(function (res) {
+    //         if (res.ok) {
+    //             res.json().then(Download => {
+    //                 downMedida = Download.map((object) => object.bytesRecebidos);
+    //                 dados.datasets[0].data = downMedida
+    //                 window.graficoBytesRecebidos.update();
 
-                    proximaAtualizacao = setTimeout(() => {
-                        atualizarGraficoDownload(grafico, dados);
-                    }, tempoAtualizacao)
+    //                 proximaAtualizacao = setTimeout(() => {
+    //                     atualizarGraficoDownload(grafico, dados);
+    //                 }, tempoAtualizacao)
 
-                })
-            }
-        })
-        //  console.log("ta funcionando")
-    }
+    //             })
+    //         }
+    //     })
+    //     //  console.log("ta funcionando")
+    // }
     function plotarGraficoUpload(upMedida) {
         const labels = [
             '',
@@ -480,34 +481,34 @@
             config
 
         );
-        setTimeout(() => {
-            atualizarGraficoUpload(document.getElementById('graficoBytesEnviados').getContext("2d"), data)
-        }, tempoAtualizacao
-
-        )
+        // setTimeout(() => {
+        //     atualizarGraficoUpload(document.getElementById('graficoBytesEnviados').getContext("2d"), data)
+        // }, tempoAtualizacao
+        // 
+        // )
 
     }
 
-    function atualizarGraficoUpload(grafico, dados) {
-        fetch(`/medidas/pegarRegistroUpload?idMaquina=${idMaquina}`).then(function (res) {
-            if (res.ok) {
-                res.json().then(Upload => {
+    // function atualizarGraficoUpload(grafico, dados) {
+    //     fetch(`/medidas/pegarRegistroUpload?idMaquina=${idMaquina}`).then(function (res) {
+    //         if (res.ok) {
+    //             res.json().then(Upload => {
 
 
 
-                    upMedida = Upload.map((object) => object.bytesEnviados);
-                    dados.datasets[0].data = upMedida
-                    window.graficoBytesEnviados.update();
+    //                 upMedida = Upload.map((object) => object.bytesEnviados);
+    //                 dados.datasets[0].data = upMedida
+    //                 window.graficoBytesEnviados.update();
 
-                    proximaAtualizacao = setTimeout(() => {
-                        atualizarGraficoUpload(grafico, dados)
-                    }, tempoAtualizacao)
+    //                 proximaAtualizacao = setTimeout(() => {
+    //                     atualizarGraficoUpload(grafico, dados)
+    //                 }, tempoAtualizacao)
 
-                })
-            }
-        })
-        // console.log("ta funcionando")
-    }
+    //             })
+    //         }
+    //     })
+    //     // console.log("ta funcionando")
+    // }
 
 
 

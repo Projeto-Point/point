@@ -3,6 +3,10 @@ var database = require("../database/config");
 function pegarMovimentacao(periodoInicio, periodoFim, idFuncionario, cidade, idEmpresa){
     if(idFuncionario == 0){
         console.log(cidade);
+        instrucaoSql = `SELECT CAST(AVG(CAST AS FLOAT) AS DATETIME) AS dataEhora FROM Localizacao
+        INNER JOIN Maquina ON fkMaquina = idMaquina
+        INNER JOIN Funcionario ON fkFuncionario = idFuncionario
+        `;
         instrucaoSql = `SELECT acao, CAST(AVG(CAST(dataEhora AS FLOAT)) AS DATETIME) AS dataEhora FROM Localizacao
         INNER JOIN Maquina ON fkMaquina = idMaquina
         INNER JOIN Funcionario ON fkFuncionario = idFuncionario
@@ -95,23 +99,18 @@ function pegarFuncionarios(idEmpresa, cidade){
 
 function mediaHorasAtivas(idFuncionario, dataInicio, dataFinal, cidade, idEmpresa){
     if(idFuncionario != 0){
-        instrucaoSql = `SELECT acao,
-            CAST(L.dataEhora AS DATE) AS 'dia',
-            CAST(AVG(CAST(L.dataEhora AS FLOAT)) AS DATETIME) AS 'horario'
-        FROM Localizacao L
+        instrucaoSql = `SELECT dataEntrada, dataSaida
+        FROM Localizacao
         INNER JOIN Maquina ON fkMaquina = idMaquina
-        WHERE fkFuncionario = ${idFuncionario} AND CAST(L.dataEhora AS DATE) BETWEEN '${dataInicio}' AND '${dataFinal}'
-        GROUP BY acao, CAST(L.dataEhora AS DATE);`;
+        WHERE fkFuncionario = ${idFuncionario} AND CAST(dataEntrada AS DATE) BETWEEN '${dataInicio}' AND '${dataFinal}'`;
+        
     }
     else{
-        instrucaoSql = `SELECT acao,
-            CAST(L.dataEhora AS DATE) AS 'dia',
-            CAST(AVG(CAST(L.dataEhora AS FLOAT)) AS DATETIME) AS 'horario'
-        FROM Localizacao L
+        instrucaoSql = `SELECT dataEntrada, dataSaida
+        FROM Localizacao
         INNER JOIN Maquina ON fkMaquina = idMaquina
         INNER JOIN Funcionario ON fkFuncionario = idFuncionario
-        WHERE cidade = '${cidade}' AND CAST(L.dataEhora AS DATE) BETWEEN '${dataInicio}' AND '${dataFinal}' AND fkEmpresa = ${idEmpresa}
-        GROUP BY acao, CAST(L.dataEhora AS DATE);`;
+        WHERE cidade = '${cidade}' AND CAST(dataEntrada AS DATE) BETWEEN '${dataInicio}' AND '${dataFinal}' AND fkEmpresa = ${idEmpresa}`;
     }
     console.log(instrucaoSql);
     return database.executar(instrucaoSql);

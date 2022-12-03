@@ -391,8 +391,8 @@
             datasets: [
                 {
                     label: 'Quantidade dos processos',
-                    backgroundColor: 'rgb(255, 99, 132)',
-                    borderColor: 'rgb(255, 99, 132)',
+                    backgroundColor: '#00CA43',
+                    borderColor: '#00CA43',
                     data: [],
                 },
             ]
@@ -463,8 +463,8 @@
             datasets: [
                 {
                     label: 'Média CPU (%)',
-                    backgroundColor: 'rgb(255, 99, 132)',
-                    borderColor: 'rgb(255, 99, 132)',
+                    backgroundColor: '#00CA43',
+                    borderColor: '#00CA43',
                     data: [],
                 },
             ]
@@ -535,8 +535,8 @@
             datasets: [
                 {
                     label: 'Média RAM (%)',
-                    backgroundColor: 'rgb(255, 99, 132)',
-                    borderColor: 'rgb(255, 99, 132)',
+                    backgroundColor: '#00CA43',
+                    borderColor: '#00CA43',
                     data: [],
                 },
             ]
@@ -608,17 +608,13 @@
         .then((res) => {
             if (res.ok) {
                 res.json().then((resposta) => {
-                    let horarioEntrada;
                     let horariosDiferenca = [];
 
-                    console.log(resposta);
-
                     resposta.forEach(item => {
-                        if (item.acao == "E") {
-                            horarioEntrada = moment(item.horario);
-                        }
-                        else {
-                            horariosDiferenca.push(moment(item.horario).diff(horarioEntrada));
+                        if(item.dataSaida != null){
+                            let horarioEntrada = moment(item.dataEntrada).utc();
+                            let horarioSaida = moment(item.dataSaida).utc();
+                            horariosDiferenca.push(horarioSaida.diff(horarioEntrada));
                         }
                     });
 
@@ -630,9 +626,7 @@
                     if(horasAtivas <= 0){
                         kpiHoras.innerHTML += "Não foi possível calcular";
                     }
-
-                    console.log(horariosDiferenca)
-
+                    
                     let horas = moment.duration(horasAtivas).hours();
                     let minutos = moment.duration(horasAtivas).minutes();
 
