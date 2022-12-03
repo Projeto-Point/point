@@ -7,6 +7,10 @@ router.get("/pegarMovimentacao", function (req, res) {
     agdaController.pegarMovimentacao(req, res);
 });
 
+router.get("/pegarProcessos", function (req, res) {
+    agdaController.pegarProcessos(req, res);
+});
+
 router.get("/pegarCpu", function (req, res) {
     agdaController.pegarCpu(req, res);
 });

@@ -550,6 +550,12 @@ main {
       }
       .botoes {
         margin: 15px;
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        .btn-link{
+            margin-top: 5px;
+        }
       }
       position: relative;
       &.alerta::after {
@@ -770,6 +776,7 @@ main {
       }
     }
     section.dashboard-analise-funcionario {
+      background: red;
       margin-top: 30px;
       display: grid;
       gap: 30px;
@@ -779,7 +786,8 @@ main {
         "k1 k2 i1"
         "g1 g1 i1"
         "g2 g2 i2"
-        "g3 g3 i2";
+        "g3 g3 i2"
+        "g4 g4 i2";
       .kpi-horas {
         grid-area: k1;
       }
@@ -789,11 +797,14 @@ main {
       .grafico-movimentacao {
         grid-area: g1;
       }
-      .grafico-processador {
+      .grafico-processos {
         grid-area: g2;
       }
-      .grafico-ram {
+      .grafico-processador {
         grid-area: g3;
+      }
+      .grafico-ram {
+        grid-area: g4;
       }
       .info-funcionario {
         grid-area: i1;
@@ -954,11 +965,11 @@ main {
     grid-template-columns: 1fr 1fr 1fr;
     grid-template-rows: 1fr repeat(3, 250px);
     grid-template-areas:
-      "k1 k2 i1"
-      "g1 g1 i1"
-      "g2 g2 i2"
-      "g3 g3 i2";
-
+        "k1 k2 i1"
+        "g1 g1 i1"
+        "g2 g2 i2"
+        "g3 g3 i2"
+        "g4 g4 i2";
     .kpi-horas {
       grid-area: k1;
     }
@@ -968,11 +979,14 @@ main {
     .grafico-movimentacao {
       grid-area: g1;
     }
-    .grafico-processador {
+    .grafico-processos {
       grid-area: g2;
     }
-    .grafico-ram {
+    .grafico-processador {
       grid-area: g3;
+    }
+    .grafico-ram {
+      grid-area: g4;
     }
     .info-funcionario {
       grid-area: i1;

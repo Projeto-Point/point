@@ -4,13 +4,28 @@ function listar(idEmpresa, ordenarPor){
     let instrucaoSql;
 
     if(ordenarPor == "alerta"){
-        instrucaoSql = `SELECT idMaquina, nomeMaquina, Funcionario.nome, tipo FROM Maquina INNER JOIN Funcionario ON fkFuncionario = idFuncionario INNER JOIN Empresa on idEmpresa = [dbo].[Funcionario].fkEmpresa WHERE idEmpresa = ${idEmpresa};`;
+        instrucaoSql = `SELECT DISTINCT idMaquina, nomeMaquina, Funcionario.nome, tipo, (CASE WHEN resolucao LIKE 'ABERTO' THEN 'ABERTO' ELSE 'FECHADO' END) AS resolucao  FROM Maquina
+        LEFT JOIN Alerta ON fkMaquina = idMaquina
+        INNER JOIN Funcionario ON fkFuncionario = idFuncionario
+        INNER JOIN Empresa on idEmpresa = [dbo].[Funcionario].fkEmpresa
+        WHERE idEmpresa = ${idEmpresa}
+        ORDER BY resolucao;`;
     }
     else if(ordenarPor == "maquina"){
-        instrucaoSql = `SELECT idMaquina, nomeMaquina, Funcionario.nome, tipo FROM Maquina INNER JOIN Funcionario ON fkFuncionario = idFuncionario INNER JOIN Empresa on idEmpresa = [dbo].[Funcionario].fkEmpresa WHERE idEmpresa = ${idEmpresa} ORDER BY nomeMaquina;`;
+        instrucaoSql = `SELECT DISTINCT idMaquina, nomeMaquina, Funcionario.nome, tipo, (CASE WHEN resolucao LIKE 'ABERTO' THEN 'ABERTO' ELSE 'FECHADO' END) AS resolucao FROM Maquina
+            LEFT JOIN Alerta ON fkMaquina = idMaquina
+            INNER JOIN Funcionario ON fkFuncionario = idFuncionario
+            INNER JOIN Empresa on idEmpresa = [dbo].[Funcionario].fkEmpresa
+            WHERE idEmpresa = ${idEmpresa}
+            ORDER BY nomeMaquina;`;
     }
     else if(ordenarPor == "funcionario"){
-        instrucaoSql = `SELECT idMaquina, nomeMaquina, Funcionario.nome, tipo FROM Maquina INNER JOIN Funcionario ON fkFuncionario = idFuncionario INNER JOIN Empresa on idEmpresa = [dbo].[Funcionario].fkEmpresa WHERE idEmpresa = ${idEmpresa} ORDER BY Funcionario.nome;`;
+        instrucaoSql = `SELECT DISTINCT idMaquina, nomeMaquina, Funcionario.nome, tipo, (CASE WHEN resolucao LIKE 'ABERTO' THEN 'ABERTO' ELSE 'FECHADO' END) AS resolucao FROM Maquina
+            LEFT JOIN Alerta ON fkMaquina = idMaquina
+            INNER JOIN Funcionario ON fkFuncionario = idFuncionario
+            INNER JOIN Empresa on idEmpresa = [dbo].[Funcionario].fkEmpresa
+            WHERE idEmpresa = ${idEmpresa}
+            ORDER BY Funcionario.nome;`;
     }
     return database.executar(instrucaoSql);
 }

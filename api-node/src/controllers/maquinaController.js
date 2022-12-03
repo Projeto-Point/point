@@ -21,7 +21,6 @@ function listar(req, res) {
 
 // Página de alertas
 function listarAlertas(req, res){
-
     const idEmpresa = req.query.idEmpresa;
 
     maquinaModel.listarAlertas(idEmpresa)
