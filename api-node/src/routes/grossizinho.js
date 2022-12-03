@@ -11,5 +11,11 @@ router.get("/horasAtivas", function (req, res) {
     grossizinhoController.horasAtivas(req, res);
 });
 
+router.get("/entradaEsaida", function (req, res) {
+    grossizinhoController.entradaEsaida(req, res);
+});
 
+// router.get("/pegarTempo", function(req, res){
+//     grossizinhoController.pegarTempo(req, res);
+// });
 module.exports = router;
