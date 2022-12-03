@@ -34,7 +34,7 @@
                 <img src="assets/dash/alertas.png">
                 <span>Alertas</span>
             </a>
-            <a href="localizacao.html?filtroMapa=geral" class="img-nav">
+            <a href="localizacao.html" class="img-nav">
                 <img src="assets/imgs/pin.png">
                 <span>Localização</span>
             </a>
@@ -81,10 +81,10 @@
             
             <div class="dashboard">
                 <div class="tempo-real-download" id="gfCpu">
-                    <div> <canvas id="graficoDown" style="position: relative;"></canvas></div>
+                    <div> <canvas id="graficoBytesRecebidos" style="position: relative;"></canvas></div>
                 </div>
                 <div class="tempo-real-upload" id="gfRam">
-                    <canvas id="graficoUp" style="position: relative;"></canvas>
+                    <canvas id="graficoBytesEnviados" style="position: relative;"></canvas>
                 </div>
             </div>
             <div class="grafico-ram grafico box">
@@ -95,7 +95,7 @@
                         <span>Maior que 85%</span>
                         <div class="legenda normal"></div>
                         <span>Menor que 85%</span>
-                        <select id="tempoDown" onchange="mudarTempo('Download', this.value)">
+                        <select id="tempoDown" onchange="mudarTempo(bytesRecebidos, this.value)">
                             <option value="ultimoMes">Último mês</option>
                             <option value="ultimaSemana">Última semana</option>
                             <option value="ultimoAno">Último ano</option>
@@ -103,7 +103,7 @@
                     </div>
                 </div>
                 <div class="main-grafico">
-                    <canvas id="graficoRAM"></canvas>
+                    <canvas id="graficoBytesRecebidos"></canvas>
                 </div>
             </div>
             <div class="grafico-disco grafico box">
@@ -114,7 +114,7 @@
                         <span>Maior que 90%</span>
                         <div class="legenda normal"></div>
                         <span>Menor que 90%</span>
-                        <select id="tempoUp" onchange="mudarTempo('Upload', this.value)">
+                        <select id="tempoUp" onchange="mudarTempo(bytesEnviados, this.value)">
                             <option value="ultimoMes">Último mês</option>
                             <option value="ultimaSemana">Última semana</option>
                             <option value="ultimoAno">Último ano</option>
@@ -122,10 +122,9 @@
                     </div>
                 </div>
                 <div class="main-grafico">
-                    <canvas id="graficoDisco"></canvas>
+                    <canvas id="graficoEnviados"></canvas>
                 </div>
             </div>
-
             <div class="box info-funcionario" id="sobreFuncionario">
                 <h3>Sobre o funcionário</h3>
             </div>
@@ -168,22 +167,6 @@
                     "sobreMaquina"
                 ).innerHTML += `<p><b>Tipo da máquina: </b><span>${resposta[0].tipoMaquina}</span></p>`;
 
-
-                for (let index = 0; index < resposta.length; index++) {
-                    if (resposta[index].atributo == "CORE") {
-                        resposta[index].unidadeMedida = "";
-                        resposta[index].valor *= 1;
-                        Math.trunc(resposta[index].valor);
-                    }
-                    if (resposta[index].atributo == "THREADS") {
-                        resposta[index].unidadeMedida = "";
-                        resposta[index].valor *= 1;
-                        Math.trunc(resposta[index].valor);
-                    }
-                    document.getElementById(
-                        "sobreMaquina"
-                    ).innerHTML += `<p><b>${resposta[index].tipoComponente} - ${resposta[index].atributo}: </b><span>${resposta[index].valor} ${resposta[index].unidadeMedida}</span></p>`;
-                }
             });
         }
     });
@@ -216,55 +199,39 @@
             console.log(erro);
         });
 
-    fetch(`/maquinas/pegarTempo?idMaquina=${idMaquina}&dataInicio=${moment().subtract(30, "days").format("YYYY-MM-DD")}&dataFinal=${moment().format("YYYY-MM-DD")}`)
-        .then((res) => {
-            if (res.ok) {
-                res.json().then((resposta) => {
-                    let horarioEntrada;
-                    let horariosDiferenca = [];
+    var chartDown = null;
+    var chartUp = null;
+    
+    var bytesRecebidos = 'bytesRecebidos';
+    var bytesEnviados = 'bytesEnviados';
+    
+    mudarTempo(bytesEnviados, tempoDown.value);
+    mudarTempo(bytesEnviados, tempoUp.value);
 
-                    resposta.forEach(item => {
-                        if (item.acao == "E") {
-                            horarioEntrada = moment(item.horario);
-                        }
-                        else {
-                            horariosDiferenca.push(moment(item.horario).diff(horarioEntrada));
-                        }
-                    });
 
-                    let horasAtivas = 0;
-                    horariosDiferenca.forEach(horario => {
-                        horasAtivas += horario;
-                    });
+    function mudarTempo(tipoBytes, tempo) {
+        if (chartDown != null && tipoBytes == bytesEnviados) {
+            chartDown.destroy();
+        }
+        else if (chartUp != null && tipoBytes == bytesEnviados) {
+            chartUp.destroy();
+        }
 
-                    let horas = moment.duration(horasAtivas).hours();
-                    let minutos = moment.duration(horasAtivas).minutes();
+        tipoVisualizacao = "dia";
+        if (tempo == "ultimaSemana") {
+            tempo = moment().subtract(7, "days");
+        }
+        else if (tempo == "ultimoMes") {
+            tempo = moment().subtract(30, "days");
+        }
+        else {
+            tipoVisualizacao = "mes";
+            tempo = moment().subtract(1, "years");
+        }
+        pegarRegistros(`grafico${tipoBytes}`, tipoBytes, idMaquina, tempo.format("YYYY-MM-DD"), moment().format("YYYY-MM-DD"), tipoVisualizacao);
+    }
 
-                    if (horas == 1) {
-                        kpiHoras.innerHTML += horas;
-                        kpiHoras.innerHTML += " hora e "
-                    }
-                    else if (horas > 1) {
-                        kpiHoras.innerHTML += horas;
-                        kpiHoras.innerHTML += " horas e "
-                    }
-
-                    if (minutos == 1) {
-                        kpiHoras.innerHTML += minutos;
-                        kpiHoras.innerHTML += " minuto"
-                    }
-                    else if (minutos > 1) {
-                        kpiHoras.innerHTML += minutos;
-                        kpiHoras.innerHTML += " minutos"
-                    }
-                });
-            }
-        })
-        .catch((erro) => {
-            console.log(erro);
-        });
-
-    function pegarRegistros(idGrafico, tipoBytes, idMaquina, dataInicio, dataFinal, tipoVisualizacao) {
+    function pegarRegistros(tipoBytes,idGrafico, idMaquina, dataInicio, dataFinal, tipoVisualizacao) {
         fetch(`/maquinas/analiseBytes?tipoBytes=${tipoBytes}&idMaquina=${idMaquina}&dataInicio=${dataInicio}&dataFinal=${dataFinal}&tipoVisualizacao=${tipoVisualizacao}`)
             .then((res) => {
                 if (res.ok) {
@@ -273,13 +240,13 @@
                         let labels = [];
 
                         if (tipoVisualizacao == "dia") {
-                            labels = resposta.map((registro) =>
-                                moment(registro.dataEhora).format("DD/MM/YYYY")
+                            labels = resposta.map((rede) =>
+                                moment(rede.dataEhora).format("DD/MM/YYYY")
                             );
                         }
                         else {
-                            labels = resposta.map((registro) =>
-                                // registro.dataEhora
+                            labels = resposta.map((rede) =>
+                                // rede.dataEhora
                                 moment().locale('pt').month(1)
                             );
                         }
@@ -290,19 +257,20 @@
                                 {
                                     label: "Valor médio",
                                     backgroundColor: [],
-                                    data: resposta.map((registro) => registro.media),
+                                    data: resposta.map((rede) => rede.media),
                                 },
                             ],
+                            
                         };
 
                         for (let index = 0; index < resposta.length; index++) {
-                            if (tipoBytes == "CPU") {
+                            if (tipoBytes == bytesRecebidos) {
                                 if (resposta[index].media >= 80) {
                                     data.datasets[0].backgroundColor.push("#D0342C");
                                 } else {
                                     data.datasets[0].backgroundColor.push("#00CA43");
                                 }
-                            } else if (tipoBytes == "RAM") {
+                            } else if (tipoBytes == bytesEnviados) {
                                 if (resposta[index].media >= 85) {
                                     data.datasets[0].backgroundColor.push("#D0342C");
                                 } else {
@@ -331,14 +299,12 @@
                             },
                         };
 
-                        if (tipoBytes == "CPU") {
-                            chartCpu = new Chart(document.getElementById(idGrafico), config);
+
+                        if (tipoBytes == bytesRecebidos) {
+                            chartDown = new Chart(document.getElementById(idGrafico), config);
                         }
-                        else if (tipoBytes == "RAM") {
-                            chartRam = new Chart(document.getElementById(idGrafico), config);
-                        }
-                        else if (tipoBytes == "Disco") {
-                            chartDisco = new Chart(document.getElementById(idGrafico), config);
+                        else if (tipoBytes == bytesEnviados) {
+                            chartUp = new Chart(document.getElementById(idGrafico), config);
                         }
                     });
                 } else {
@@ -346,7 +312,7 @@
                 }
             })
             .catch((erro) => {
-                console.log("Erro ao acessar /maquinas/analiseComponente");
+                console.log("Erro ao acessar /maquinas/analiseBytes");
             });
     }
 
@@ -439,13 +405,13 @@
 
         };
 
-        window.graficoDown = new Chart(
-            document.getElementById('graficoDown').getContext("2d"),
+        window.graficoBytesRecebidos = new Chart(
+            document.getElementById('graficoBytesRecebidos').getContext("2d"),
             config
 
         );
         setTimeout(() => {
-            atualizarGraficoDownload(document.getElementById('graficoDown').getContext("2d"), data)
+            atualizarGraficoDownload(document.getElementById('graficoBytesRecebidos').getContext("2d"), data)
         }, tempoAtualizacao
 
         )
@@ -458,7 +424,7 @@
                 res.json().then(Download => {
                     downMedida = Download.map((object) => object.bytesRecebidos);
                     dados.datasets[0].data = downMedida
-                    window.graficoDown.update();
+                    window.graficoBytesRecebidos.update();
 
                     proximaAtualizacao = setTimeout(() => {
                         atualizarGraficoDownload(grafico, dados);
@@ -510,13 +476,13 @@
 
         };
 
-        window.graficoUp = new Chart(
-            document.getElementById('graficoUp').getContext("2d"),
+        window.graficoBytesEnviados = new Chart(
+            document.getElementById('graficoBytesEnviados').getContext("2d"),
             config
 
         );
         setTimeout(() => {
-            atualizarGraficoUpload(document.getElementById('graficoUp').getContext("2d"), data)
+            atualizarGraficoUpload(document.getElementById('graficoBytesEnviados').getContext("2d"), data)
         }, tempoAtualizacao
 
         )
@@ -532,7 +498,7 @@
 
                     upMedida = Upload.map((object) => object.bytesEnviados);
                     dados.datasets[0].data = upMedida
-                    window.graficoUp.update();
+                    window.graficoBytesEnviados.update();
 
                     proximaAtualizacao = setTimeout(() => {
                         atualizarGraficoUpload(grafico, dados)

@@ -21,9 +21,7 @@ function listar(req, res) {
 
 // Página de alertas
 function listarAlertas(req, res){
-    const idEmpresa = req.query.idEmpresa;
-
-    maquinaModel.listarAlertas(idEmpresa)
+    maquinaModel.listarAlertas()
     .then(function(resultado) {
         if(resultado.length > 0){
             res.status(200).json(resultado);
@@ -142,7 +140,7 @@ function analiseBytes(req, res){
     const dataFinal = req.query.dataFinal;
     const tipoVisualizacao = req.query.tipoVisualizacao;
 
-    maquinaModel.analiseBytes(tipoBytes, idMaquina, dataInicio, dataFinal, tipoVisualizacao)
+    maquinaModel.analiseBytes(tipoBytes,idMaquina, dataInicio, dataFinal, tipoVisualizacao)
     .then((resultado) => {
         if(resultado.length > 0){
             res.status(200).json(resultado);
@@ -157,6 +155,7 @@ function analiseBytes(req, res){
     });
 }
 
+
 module.exports = {
     listar,
     listarAlertas,
@@ -165,5 +164,6 @@ module.exports = {
     pegarKpis,
     verificarAtividade,
     pegarKpisRede,
-    analiseBytes
+    analiseBytes,
+    
 }

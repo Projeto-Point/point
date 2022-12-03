@@ -31,5 +31,9 @@ router.get("/pegarKpisRede", function(req, res){
     maquinaController.pegarKpisRede(req, res);
 });
 
+router.get("/analiseBytes", function(req, res){
+    maquinaController.analiseBytes(req, res);
+});
+
 
 module.exports = router;
