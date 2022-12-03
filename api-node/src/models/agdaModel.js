@@ -141,6 +141,22 @@ function pegarCidades(idEmpresa){
     return database.executar(instrucaoSql);
 }
 
+function pegarCidades(idEmpresa){
+    instrucaoSql = `SELECT DISTINCT cidade, pais FROM Localizacao 
+    INNER JOIN Maquina ON fkMaquina = idMaquina
+    INNER JOIN Funcionario ON fkFuncionario = idFuncionario
+    WHERE fkEmpresa = ${idEmpresa};`;
+    console.log(instrucaoSql);
+    return database.executar(instrucaoSql);
+}
+
+function sobreFuncionario(idFuncionario){
+    instrucaoSql = `SELECT nome, email, cargo, telefone FROM Funcionario 
+    WHERE idFuncionario = ${idFuncionario};`;
+    console.log(instrucaoSql);
+    return database.executar(instrucaoSql);
+}
+
 module.exports = {
     pegarMovimentacao,
     pegarProcessos,
@@ -149,4 +165,5 @@ module.exports = {
     pegarFuncionarios,
     mediaHorasAtivas,
     pegarCidades,
+    sobreFuncionario,
 }

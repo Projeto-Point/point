@@ -74,9 +74,9 @@
                         <h3>Entrada/Saída</h3>
                         <div class="dir">
                             <label for="data-movimentacao-inicio" style="margin-right: 5px;">Início:</label>
-                            <input type="date" id="data-movimentacao-inicio" style="height: fit-content; padding: 5px; margin-right: 30px;" onchange="pegarDadosMovimentacao()">
+                            <input type="date" id="data-movimentacao-inicio" style="height: fit-content; padding: 5px; margin-right: 30px;" onchange="criarGraficoMovimentacao()">
                             <label for="data-movimentacao-fim" style="margin-right: 5px;">Fim:</label>
-                            <input type="date" id="data-movimentacao-fim" style="height: fit-content; padding: 5px;" onchange="pegarDadosMovimentacao()">
+                            <input type="date" id="data-movimentacao-fim" style="height: fit-content; padding: 5px;" onchange="criarGraficoMovimentacao()">
                         </div>
                     </div>
                     <div class="main-grafico">
@@ -155,15 +155,15 @@
                         <canvas id="graficoRAM"></canvas>
                     </div>
                 </div>
-                <div class="box info-funcionario" id="sobreFuncionario">
-                    <h3>Sobre o funcionário</h3>
-                    <hr />
-                </div>
                 <div class="box box-outros-funcionarios">
                     <h3>Outros funcionários</h3>
                     <hr />
                     <div id="outros-funcionarios">
                     </div>
+                </div>
+                <div class="box info-funcionario" id="sobreFuncionario">
+                    <h3>Sobre o funcionário</h3>
+                    <hr />
                 </div>
             </section>
         </main>
@@ -180,6 +180,11 @@
     const parametros = new URLSearchParams(parametrosString);
     const cidade = parametros.get("cidade");
     const idFuncionario = Number(parametros.get("idFuncionario"));
+
+    if(idFuncionario == 0){
+        document.querySelector(".info-funcionario").style.display = "none";
+        document.querySelector(".box-outros-funcionarios").style.gridRow = "1 / 6";
+    }
 
     window.onload = () => {
         pegarFuncionarios();
@@ -205,8 +210,7 @@
         trocarSelecao(document.getElementById('tempo-cpu').value, "cpu");
         trocarSelecao(document.getElementById('tempo-ram').value, "ram");
 
-        pegarDadosMovimentacao("E");
-        pegarDadosMovimentacao("S");
+        criarGraficoMovimentacao();
 
         pegarDadosCpu();
         pegarDadosRam();
@@ -214,6 +218,8 @@
 
         pegarCidades();
         mediaHorasAtivas();
+
+        sobreFuncionario();
     };
 
     document.getElementById("select-cidades").addEventListener('change', (event) => {
@@ -251,7 +257,7 @@
         }
     }
 
-    function pegarDadosMovimentacao(acao){
+    function pegarDadosMovimentacao(acao, grafico, dados){
         const periodoInicio = moment(document.getElementById('data-movimentacao-inicio').value).format('YYYY-MM-DD');
         const periodoFim = moment(document.getElementById('data-movimentacao-fim').value).format('YYYY-MM-DD');
         fetch(`/analiseAgda/pegarMovimentacao?acao=${acao}&periodoInicio=${periodoInicio}&periodoFim=${periodoFim}&idFuncionario=${idFuncionario}&cidade=${cidade}&idEmpresa=${sessionStorage['ID_EMPRESA']}`).then((res) => {
@@ -267,22 +273,37 @@
             }
             else if(res.ok){
                 res.json().then((resposta) => {
-                    console.log("Ação 1: " + acao)
-                    graficoMovimentacao(resposta, acao);
+                    for (let index = 0; index < resposta.length; index++) {
+                        if(! dados.labels.includes(moment().utc(resposta[index]['dataEntrada']).format('DD/MM'))){
+                            dados.labels.push(moment().utc(resposta[index]['dataEntrada']).format('DD/MM'));
+                        }
+                        
+
+                        if(! dados.labels.includes(moment().utc(resposta[index]['dataSaida']).format('DD/MM'))){
+                            dados.labels.push(moment().utc(resposta[index]['dataSaida']).format('DD/MM'));
+                        }
+
+                        if(acao == "E"){
+                            dados.datasets[0].data.push(moment(resposta[index]['horarioEntrada']).utc(0).format('HHmm'));
+                        }
+                        else{
+                            dados.datasets[1].data.push(moment(resposta[index]['horarioSaida']).utc(0).format('HHmm'));
+                        }
+
+                        window.chartMovimentacao.update();
+                    }
                 });
             }
         });
     }
 
-    function graficoMovimentacao(resposta, acao){
-        if(chartMovimentacao != null && acao == "S"){
+    function criarGraficoMovimentacao(){
+        if(window.chartMovimentacao != null){
             chartMovimentacao.destroy();
         }
-
-        let labels = [];
         
         const data = {
-            labels: labels,
+            labels: [],
             datasets: [
                 {
                     label: 'Entrada',
@@ -298,62 +319,43 @@
                 },
             ]
         };
-        
-        if(acao == "E"){
-            const config = {
-                type: 'line',
-                data: data,
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    plugins: {
-                        tooltip: {
-                            callbacks: {
-                                label: function(context) {
-                                    let hora = zeroEsquerda(context.raw);
 
-                                    return formatarHorario(hora);
-                                }
+        const config = {
+            type: 'line',
+            data: data,
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                let hora = zeroEsquerda(context.raw);
+
+                                return formatarHorario(hora);
                             }
                         }
-                    },
-                    scales: {
-                        y: {
-                            max : 2359,
-                            ticks: {
-                                callback: function(value, index, ticks) {
-                                    let hora = zeroEsquerda(value, 4);
+                    }
+                },
+                scales: {
+                    y: {
+                        max : 2359,
+                        ticks: {
+                            callback: function(value, index, ticks) {
+                                let hora = zeroEsquerda(value, 4);
 
-                                    return formatarHorario(hora);
-                                }
+                                return formatarHorario(hora);
                             }
                         }
                     }
                 }
-            };
-
-            chartMovimentacao = new Chart(document.getElementById('graficoMovimentacao'), config);
-        }
-
-        for (let index = 0; index < resposta.length; index++) {
-            if(! labels.includes(moment().utc(resposta[index]['dataEntrada']).format('DD/MM'))){
-                labels.push(moment().utc(resposta[index]['dataEntrada']).format('DD/MM'));
             }
-            
-            if(! labels.includes(moment().utc(resposta[index]['dataSaida']).format('DD/MM'))){
-                labels.push(moment().utc(resposta[index]['dataSaida']).format('DD/MM'));
-            }
+        };
 
-            if(acao == "E"){
-                data.datasets[0].data.push(moment(resposta[index]['horarioEntrada']).utc(0).format('HHmm'));
-            }
-            else{
-                data.datasets[1].data.push(moment(resposta[index]['horarioSaida']).utc(0).format('HHmm'));
-            }
+        window.chartMovimentacao = new Chart(document.getElementById('graficoMovimentacao').getContext('2d'), config);
 
-            console.log(data.datasets[1])
-            chartMovimentacao.update();
-        }
+        pegarDadosMovimentacao('E', document.getElementById('graficoMovimentacao').getContext('2d'), data);
+        pegarDadosMovimentacao('S', document.getElementById('graficoMovimentacao').getContext('2d'), data);
     }
 
     function pegarDadosProcesso(){
@@ -616,6 +618,10 @@
         fetch(`/analiseAgda/mediaHorasAtivas?idFuncionario=${idFuncionario}&dataInicio=${moment().subtract(30, "days").format("YYYY-MM-DD")}&dataFinal=${moment().format("YYYY-MM-DD")}&cidade=${cidade}&idEmpresa=${sessionStorage['ID_EMPRESA']}`)
         .then((res) => {
             if (res.ok) {
+                if(res.status == 204){
+                    kpiHoras.innerHTML += "Não foi possível calcular";
+                    return;
+                }
                 res.json().then((resposta) => {
                     let horariosDiferenca = [];
 
@@ -662,6 +668,22 @@
         .catch((erro) => {
             console.log(erro);
         });
+    }
+
+    function sobreFuncionario(){
+        fetch(`/analiseAgda/sobreFuncionario?idFuncionario=${idFuncionario}`).then(
+            function (res) {
+                if (res.ok) {
+                    res.json().then((resposta) => {
+                        console.log(resposta)
+                        document.getElementById("sobreFuncionario").innerHTML += `<p><b>Nome: </b>${resposta[0].nome}</p><br>`;
+                        document.getElementById("sobreFuncionario").innerHTML += `<p><b>Cargo: </b>${resposta[0].cargo}</p><br>`;
+                        document.getElementById("sobreFuncionario").innerHTML += `<p><b>E-mail: </b>${resposta[0].email}</p><br>`;
+                        document.getElementById("sobreFuncionario").innerHTML += `<p><b>Telefone: </b>${resposta[0].telefone}</p><br>`;
+                    });
+                }
+            }
+        );
     }
 </script>
 <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>

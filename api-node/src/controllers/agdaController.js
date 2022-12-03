@@ -142,6 +142,23 @@ function pegarCidades(req, res){
     });
 }
 
+function sobreFuncionario(req, res){
+    const idFuncionario = req.query.idFuncionario;
+    agdaModel.sobreFuncionario(idFuncionario)
+    .then(function (resultado) {
+        if (resultado.length > 0) {
+            res.status(200).json(resultado);
+        }
+        else {
+            res.status(204).send("Nada sobre o funcionário!");
+        }
+    }).catch(function (erro) {
+        console.log(erro);
+        console.log("Houve um erro ao pegar info do funcionário: ", erro.sqlMessage);
+        res.status(500).json(erro.sqlMessage);
+    });
+}
+
 module.exports = {
     pegarMovimentacao,
     pegarProcessos,
@@ -150,4 +167,5 @@ module.exports = {
     pegarFuncionarios,
     mediaHorasAtivas,
     pegarCidades,
+    sobreFuncionario,
 }

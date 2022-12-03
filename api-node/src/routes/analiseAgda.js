@@ -31,4 +31,8 @@ router.get("/pegarCidades", function(req, res) {
     agdaController.pegarCidades(req, res);
 });
 
+router.get("/sobreFuncionario", function(req, res) {
+    agdaController.sobreFuncionario(req, res);
+});
+
 module.exports = router;
