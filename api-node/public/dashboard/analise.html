@@ -9,6 +9,7 @@
     <link rel="stylesheet" href="css/styleDash.css" />
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.4/moment.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.4/locale/pt-br.min.js"></script>
 </head>
 
 <body>
@@ -307,13 +308,12 @@
 
                         if(tipoVisualizacao == "dia"){
                             labels = resposta.map((registro) =>
-                                moment(registro.dataEhora).format("DD/MM/YYYY")
+                                moment.utc(registro.dataEhora).format("DD/MM/YYYY")
                             );
                         }
                         else{
                             labels = resposta.map((registro) => 
-                                // registro.dataEhora
-                                moment().locale('pt').month(1)
+                                moment().month(registro.dataEhora - 1).format("MMM").charAt(0).toUpperCase() + moment().month(registro.dataEhora - 1).format("MMM").slice(1)
                             );
                         }
 

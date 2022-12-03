@@ -269,15 +269,15 @@
         };
 
         for (let index = 0; index < resposta.length; index++) {
-            if(! labels.includes(moment(resposta[index]['dataEhora']).format('DD/MM'))){
-                labels.push(moment(resposta[index]['dataEhora']).format('DD/MM'));
+            if(! labels.includes(moment().utc(resposta[index]['dataEhora']).format('DD/MM'))){
+                labels.push(moment().utc(resposta[index]['dataEhora']).format('DD/MM'));
             }
 
             if(resposta[index]['acao'] == "E"){
-                data.datasets[0].data.push(moment(resposta[index]['dataEhora']).format('HHmm'));
+                data.datasets[0].data.push(moment().utc(resposta[index]['dataEhora']).format('HHmm'));
             }
             else{
-                data.datasets[1].data.push(moment(resposta[index]['dataEhora']).format('HHmm'));
+                data.datasets[1].data.push(moment().utc(resposta[index]['dataEhora']).format('HHmm'));
             }
         }
 
@@ -300,6 +300,7 @@
                 },
                 scales: {
                     y: {
+                        max : 2359,
                         ticks: {
                             callback: function(value, index, ticks) {
                                 let hora = zeroEsquerda(value, 4);
@@ -504,6 +505,7 @@
         .then((res) => {
             if (res.ok) {
                 res.json().then((resposta) => {
+                    console.log(resposta);
                     let horarioEntrada;
                     let horariosDiferenca = [];
 

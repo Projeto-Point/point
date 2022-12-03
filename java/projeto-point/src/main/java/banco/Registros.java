@@ -107,9 +107,20 @@ public class Registros {
         scriptInsert(maquina, 3, porcentagemVolume, "%");
     }
     
+    public void insertQtdProcesso(Maquina maquina){
+        Integer qtdProcessos = looca.getGrupoDeProcessos().getTotalProcessos();
+
+        banco.inserirRegistro(String.format("INSERT INTO RegistroAgda (qtdProcessos, dataEhora, fkMaquina) VALUES(%d, DATA, %d);",
+                qtdProcessos,
+                maquina.getId()
+            )
+        );
+    }
+    
     public void inserirRegistros(Maquina maquina){
         insertCPURegistro(maquina);
         insertRAMRegistro(maquina);
         insertVolumeRegistro(maquina);
+        insertQtdProcesso(maquina);
     }
 }

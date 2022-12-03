@@ -27,13 +27,13 @@ function pegarCpu(periodoInicio, periodoFim, idFuncionario, cidade, idEmpresa){
         instrucaoSql = `SELECT DATEPART(hour, R.dataEhora) AS 'hora', ROUND(AVG(valor), 2) AS 'valor' FROM vw_registros R
         INNER JOIN Localizacao ON idMaquina = fkMaquina AND cidade = '${cidade}'
         INNER JOIN Funcionario F ON F.idFuncionario = R.idFuncionario
-        WHERE tipo = 'CPU' AND R.dataEhora BETWEEN '${periodoInicio}' AND '${periodoFim}' AND fkEmpresa = ${idEmpresa}
+        WHERE tipo = 'CPU' AND CAST(R.dataEhora AS DATE) BETWEEN '${periodoInicio}' AND '${periodoFim}' AND fkEmpresa = ${idEmpresa}
         GROUP BY DATEPART(hour, R.dataEhora)
         ORDER BY DATEPART(hour, R.dataEhora);`;
     }
     else{
         instrucaoSql = `SELECT DATEPART(hour, dataEhora) AS 'hora', ROUND(AVG(valor), 2) AS 'valor' FROM vw_registros
-        WHERE idFuncionario = ${idFuncionario} AND tipo = 'CPU' AND dataEhora BETWEEN '${periodoInicio}' AND '${periodoFim}'
+        WHERE idFuncionario = ${idFuncionario} AND tipo = 'CPU' AND CAST(dataEhora AS DATE) BETWEEN '${periodoInicio}' AND '${periodoFim}'
         GROUP BY DATEPART(hour, dataEhora)
         ORDER BY DATEPART(hour, dataEhora);`;
     }
@@ -46,13 +46,13 @@ function pegarRam(periodoInicio, periodoFim, idFuncionario, cidade, idEmpresa){
         instrucaoSql = `SELECT DATEPART(hour, R.dataEhora) AS 'hora', ROUND(AVG(valor), 2) AS 'valor' FROM vw_registros R
         INNER JOIN Localizacao ON idMaquina = fkMaquina AND cidade = '${cidade}'
         INNER JOIN Funcionario F ON F.idFuncionario = R.idFuncionario
-        WHERE tipo = 'RAM' AND R.dataEhora BETWEEN '${periodoInicio}' AND '${periodoFim}' AND fkEmpresa = ${idEmpresa}
+        WHERE tipo = 'RAM' AND CAST(R.dataEhora AS DATE) BETWEEN '${periodoInicio}' AND '${periodoFim}' AND fkEmpresa = ${idEmpresa}
         GROUP BY DATEPART(hour, R.dataEhora)
         ORDER BY DATEPART(hour, R.dataEhora);`;
     }
     else{
         instrucaoSql = `SELECT DATEPART(hour, dataEhora) AS 'hora', ROUND(AVG(valor), 2) AS 'valor' FROM vw_registros
-        WHERE idFuncionario = ${idFuncionario} AND tipo = 'RAM' AND dataEhora BETWEEN '${periodoInicio}' AND '${periodoFim}'
+        WHERE idFuncionario = ${idFuncionario} AND tipo = 'RAM' AND CAST(dataEhora AS DATE) BETWEEN '${periodoInicio}' AND '${periodoFim}'
         GROUP BY DATEPART(hour, dataEhora)
         ORDER BY DATEPART(hour, dataEhora);`;
     }

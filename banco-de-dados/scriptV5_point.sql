@@ -81,8 +81,7 @@ CREATE TABLE RegistroAgda (
 	idRegistro INT PRIMARY KEY AUTO_INCREMENT,
 	qtdProcessos INT,
 	dataEhora DATETIME,
-	fkMaquina INT,
-	FOREIGN KEY (fkMaquina) REFERENCES Maquina(idMaquina)
+	fkMaquina INT
 );
 
 CREATE VIEW vw_componentes AS

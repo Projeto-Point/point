@@ -1,8 +1,8 @@
 import os
 import platform
 from time import sleep
-from dashing import (HSplit, VSplit, VGauge, HGauge, Text)
-from psutil import (virtual_memory, cpu_percent, disk_usage, users, pids, process_iter, cpu_count)
+from dashing import (HSplit, VSplit, HGauge, Text)
+from psutil import (virtual_memory, cpu_percent, disk_usage, users, pids, cpu_count)
 import pymssql
 import geocoder
 import pymysql
@@ -278,6 +278,8 @@ while True:
     inserirBanco(f"INSERT INTO Registro (valor, unidadeMedida, dataEhora, fkComponente, fkMaquina) VALUES ({porc_ram}, '%', GETDATE() AT TIME ZONE 'UTC' AT TIME ZONE 'Bahia Standard Time', 2, {idMaquina})")
 
     inserirBanco(f"INSERT INTO Registro (valor, unidadeMedida, dataEhora, fkComponente, fkMaquina) VALUES ({porc_disco}, '%', GETDATE() AT TIME ZONE 'UTC' AT TIME ZONE 'Bahia Standard Time', 3, {idMaquina})")
+
+    inserirBanco(f"INSERT INTO RegistroAgda (qtdProcessos, dataEhora, fkMaquina) VALUES ({len(pids())}, GETDATE() AT TIME ZONE 'UTC' AT TIME ZONE 'Bahia Standard Time', {idMaquina})")
 
     #Mostrar os dados de 3 em 3 segundos
     try:
