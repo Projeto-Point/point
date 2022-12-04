@@ -3,7 +3,7 @@ var database = require("../database/config");
 function pegarMovimentacao(acao, periodoInicio, periodoFim, idFuncionario, cidade, idEmpresa){
     if(idFuncionario == 0){
         if(acao == 'E'){
-            instrucaoSql = `SELECT DISTINCT CAST(dataEntrada AS DATE) AS dataEntrada, CAST(AVG(CAST(dataEntrada AS FLOAT)) AS DATETIME) AS horarioEntrada
+            instrucaoSql = `SELECT DISTINCT CAST(dataEntrada AS DATE) AS dataEntrada, MIN(dataEntrada) AS horarioEntrada
             FROM Localizacao
             INNER JOIN Maquina ON fkMaquina = idMaquina
             INNER JOIN Funcionario ON fkFuncionario = idFuncionario
@@ -11,7 +11,7 @@ function pegarMovimentacao(acao, periodoInicio, periodoFim, idFuncionario, cidad
             GROUP BY CAST(dataEntrada AS DATE);`;
         }
         else{
-            instrucaoSql = `SELECT DISTINCT CAST(dataSaida AS DATE) AS dataSaida, CAST(AVG(CAST(dataSaida AS FLOAT)) AS DATETIME) AS horarioSaida
+            instrucaoSql = `SELECT DISTINCT CAST(dataSaida AS DATE) AS dataSaida, MAX(dataSaida) AS horarioSaida
             FROM Localizacao
             INNER JOIN Maquina ON fkMaquina = idMaquina
             INNER JOIN Funcionario ON fkFuncionario = idFuncionario
@@ -21,7 +21,7 @@ function pegarMovimentacao(acao, periodoInicio, periodoFim, idFuncionario, cidad
     }
     else{
         if(acao == 'E'){
-            instrucaoSql = `SELECT DISTINCT CAST(dataEntrada AS DATE) AS dataEntrada, CAST(AVG(CAST(dataEntrada AS FLOAT)) AS DATETIME) AS horarioEntrada
+            instrucaoSql = `SELECT DISTINCT CAST(dataEntrada AS DATE) AS dataEntrada, MIN(dataEntrada) AS horarioEntrada
             FROM Localizacao
             INNER JOIN Maquina ON fkMaquina = idMaquina
             INNER JOIN Funcionario ON fkFuncionario = idFuncionario
@@ -29,7 +29,7 @@ function pegarMovimentacao(acao, periodoInicio, periodoFim, idFuncionario, cidad
             GROUP BY CAST(dataEntrada AS DATE);`;
         }
         else{
-            instrucaoSql = `SELECT DISTINCT CAST(dataSaida AS DATE) AS dataSaida, CAST(AVG(CAST(dataSaida AS FLOAT)) AS DATETIME) AS horarioSaida
+            instrucaoSql = `SELECT DISTINCT CAST(dataSaida AS DATE) AS dataSaida, MAX(dataSaida) AS horarioSaida
             FROM Localizacao
             INNER JOIN Maquina ON fkMaquina = idMaquina
             INNER JOIN Funcionario ON fkFuncionario = idFuncionario
@@ -118,7 +118,7 @@ function mediaHorasAtivas(idFuncionario, dataInicio, dataFinal, cidade, idEmpres
         instrucaoSql = `SELECT dataEntrada, dataSaida
         FROM Localizacao
         INNER JOIN Maquina ON fkMaquina = idMaquina
-        WHERE fkFuncionario = ${idFuncionario} AND CAST(dataEntrada AS DATE) BETWEEN '${dataInicio}' AND '${dataFinal}'`;
+        WHERE cidade = '${cidade}' AND fkFuncionario = ${idFuncionario} AND CAST(dataEntrada AS DATE) BETWEEN '${dataInicio}' AND '${dataFinal}'`;
         
     }
     else{

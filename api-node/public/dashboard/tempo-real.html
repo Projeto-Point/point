@@ -151,6 +151,9 @@
 
         fetch(`/maquinas/verificarAtividade?idMaquina=${idMaquina}`).then(function (res) {
             if (res.ok) {
+                if(res.status == 204){
+                    recuperarDados();
+                }
                 res.json().then(resposta => {
                     console.log(resposta);
                     if(resposta[0].dataEntrada == null){

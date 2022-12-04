@@ -273,14 +273,14 @@
             }
             else if(res.ok){
                 res.json().then((resposta) => {
+                    console.log(resposta)
                     for (let index = 0; index < resposta.length; index++) {
-                        if(! dados.labels.includes(moment().utc(resposta[index]['dataEntrada']).format('DD/MM'))){
-                            dados.labels.push(moment().utc(resposta[index]['dataEntrada']).format('DD/MM'));
+                        if(! dados.labels.includes(moment(resposta[index]['dataEntrada']).utc(0).format('DD/MM')) && resposta[index]['dataEntrada'] != null){
+                            dados.labels.push(moment(resposta[index]['dataEntrada']).utc(0).format('DD/MM'));
                         }
-                        
 
-                        if(! dados.labels.includes(moment().utc(resposta[index]['dataSaida']).format('DD/MM'))){
-                            dados.labels.push(moment().utc(resposta[index]['dataSaida']).format('DD/MM'));
+                        if(! dados.labels.includes(moment(resposta[index]['dataSaida']).utc(0).format('DD/MM')) && resposta[index]['dataSaida'] != null){
+                            dados.labels.push(moment(resposta[index]['dataSaida']).utc(0).format('DD/MM'));
                         }
 
                         if(acao == "E"){
@@ -306,13 +306,13 @@
             labels: [],
             datasets: [
                 {
-                    label: 'Entrada',
+                    label: 'Primeira entrada',
                     backgroundColor: 'rgb(255, 99, 132)',
                     borderColor: 'rgb(255, 99, 132)',
                     data: [],
                 },
                 {
-                    label: 'Saída',
+                    label: 'Última saída',
                     backgroundColor: 'rgb(0, 255, 0)',
                     borderColor: 'rgb(0, 255, 0)',
                     data: [],
@@ -647,18 +647,20 @@
 
                     if (horas == 1) {
                         kpiHoras.innerHTML += horas;
-                        kpiHoras.innerHTML += " hora e "
+                        kpiHoras.innerHTML += " hora "
                     }
                     else if (horas > 1) {
                         kpiHoras.innerHTML += horas;
-                        kpiHoras.innerHTML += " horas e "
+                        kpiHoras.innerHTML += " horas "
                     }
 
                     if (minutos == 1) {
+                        kpiHoras.innerHTML += "e "
                         kpiHoras.innerHTML += minutos;
                         kpiHoras.innerHTML += " minuto"
                     }
                     else if (minutos > 1) {
+                        kpiHoras.innerHTML += "e "
                         kpiHoras.innerHTML += minutos;
                         kpiHoras.innerHTML += " minutos"
                     }
@@ -675,7 +677,6 @@
             function (res) {
                 if (res.ok) {
                     res.json().then((resposta) => {
-                        console.log(resposta)
                         document.getElementById("sobreFuncionario").innerHTML += `<p><b>Nome: </b>${resposta[0].nome}</p><br>`;
                         document.getElementById("sobreFuncionario").innerHTML += `<p><b>Cargo: </b>${resposta[0].cargo}</p><br>`;
                         document.getElementById("sobreFuncionario").innerHTML += `<p><b>E-mail: </b>${resposta[0].email}</p><br>`;
