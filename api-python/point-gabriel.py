@@ -30,27 +30,64 @@ def limpar():
         os.system("cls")
 
 
+
 def inserirBanco(comando):
     # Azure
-    conexaoSqlServer = pymssql.connect(
-        server=serverSqlServer, user=usernameSqlServer, password=passwordSqlServer, database=databaseSqlServer)
 
-    with conexaoSqlServer:
-        with conexaoSqlServer.cursor() as cursor:
-            cursor.execute(comando)
+    try:
+        conexaoSqlServer = pymssql.connect(
+            server=serverSqlServer, user=usernameSqlServer, password=passwordSqlServer, database=databaseSqlServer)
+        with conexaoSqlServer:
+            with conexaoSqlServer.cursor() as cursor:
+                cursor.execute(comando)
 
-        conexaoSqlServer.commit()
+            conexaoSqlServer.commit()
+
+        # MySQL Local
+    except:
+        pass
+
+    try:
+        comando = comando.replace(
+            "GETDATE() AT TIME ZONE 'UTC' AT TIME ZONE 'Bahia Standard Time'", "NOW()")
+        conexaoMySql = pymysql.connect(
+            db=databaseMySql, user=usernameMySql, passwd=passwordMySql)
+        with conexaoMySql:
+            with conexaoMySql.cursor() as cursor:
+                cursor.execute(comando)
+
+            conexaoMySql.commit()
+    except:
+        pass
 
 
 def consultarBanco(comando):
-    # Azure SQL Server
-    conexaoSqlServer = pymssql.connect(
-        server=serverSqlServer, user=usernameSqlServer, password=passwordSqlServer, database=databaseSqlServer)
+    comando = comando.replace(
+        "GETDATE() AT TIME ZONE 'UTC' AT TIME ZONE 'Bahia Standard Time'", "NOW()")
 
-    with conexaoSqlServer:
-        with conexaoSqlServer.cursor() as cursor:
-            cursor.execute(comando)
-            return cursor.fetchall()
+    try:
+        # Azure SQL Server
+        conexaoSqlServer = pymssql.connect(
+            server=serverSqlServer, user=usernameSqlServer, password=passwordSqlServer, database=databaseSqlServer)
+
+        with conexaoSqlServer:
+            with conexaoSqlServer.cursor() as cursor:
+                cursor.execute(comando)
+                return cursor.fetchall()
+
+    except:
+        # MySQL Local
+        comando = comando.replace(
+            "GETDATE() AT TIME ZONE 'UTC' AT TIME ZONE 'Bahia Standard Time'", "NOW()")
+
+        print(comando)
+        conexaoMySql = pymysql.connect(
+            db=databaseMySql, user=usernameMySql, passwd=passwordMySql)
+
+        with conexaoMySql:
+            with conexaoMySql.cursor() as cursor:
+                cursor.execute(comando)
+                return cursor.fetchall()
 
 
 def has_alerta_por_componente(componente):

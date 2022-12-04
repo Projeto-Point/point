@@ -212,8 +212,9 @@ idMaquina = consulta[0][0]
 
 # Inserindo entrada com localização
 ip = geocoder.ip('me')
-inserirBanco(
-    f"INSERT INTO Localizacao (acao, dataEhora, ipAdress, longitude, latitude, cidade, pais, fkMaquina) VALUES ('E', GETDATE() AT TIME ZONE 'UTC' AT TIME ZONE 'Bahia Standard Time', '{ip.ip}', {ip.latlng[0]}, {ip.latlng[1]}, '{ip.city}', '{ip.country}', {idMaquina})")
+
+inserirBanco(f"INSERT INTO Localizacao (dataEntrada, ipAdress, longitude, latitude, cidade, pais, fkMaquina) VALUES (GETDATE() AT TIME ZONE 'UTC' AT TIME ZONE 'Bahia Standard Time', '{ip.ip}', {ip.latlng[0]}, {ip.latlng[1]}, '{ip.city}', '{ip.country}', {idMaquina})")
+
 
 # Personalizando o terminal
 ui = HSplit(
@@ -266,6 +267,8 @@ while True:
     # Dizendo o core + uso em %
     cores_tui = cpu_tui.items[1:9]
     ps_cpu_percent = cpu_percent(percpu=True)
+
+
     for i, (core, value) in enumerate(zip(cores_tui, ps_cpu_percent)):
         core.value = value
         core.title = f'Core_{i} {value}%'
@@ -342,27 +345,23 @@ while True:
     inserirBanco(
         f"INSERT INTO Registro (valor, unidadeMedida, dataEhora, fkComponente, fkMaquina) VALUES ({porc_disco}, '%', GETDATE() AT TIME ZONE 'UTC' AT TIME ZONE 'Bahia Standard Time', 3, {idMaquina})")
 
-      #Exibir parte dos processos linha 346 até 364
-        #def limpar():
-        #os.system('cls' if os.name == 'nt' else 'clear')
-
-    #lista_processo = []
-    #for processo in psutil.process_iter():
+    inserirBanco(f"INSERT INTO Rede (fkMaquina,dataEhora, bytesRecebidos, bytesEnviados,unidadeMedida) VALUES ( {idMaquina},GETDATE(),{bytes_para_giga(psutil.net_io_counters().bytes_recv)},{bytes_para_giga(psutil.net_io_counters().bytes_sent)},'GB')")
+      
+    lista_processo = []
+    for processo in psutil.process_iter():
         # print(processos)
-       # processos_informa = processo.as_dict(
-        #    ['name', 'cpu_percent', 'pid', 'username'])
-       # if processos_informa['cpu_percent'] > 0:
-       #     print(processos_informa)
-       #     lista_processo.append(processos_informa)
-       #     pid = processos_informa['pid']
-       #     usuario = processos_informa['username']
-       #     nome = processos_informa['name']
-       #     porcentagemProcesso = processos_informa['cpu_percent']
-       #     inserirBanco(
-      #          f"INSERT INTO processos(nome, porcentagemCpu, pid, usuario, fkMaquina, horario) VALUES('{nome}', {porcentagemProcesso}, '{pid}', '{usuario}', {idMaquina}, GETDATE())"
-       #     )
-       #     sleep(5)
-
+        processos_informa = processo.as_dict(
+           ['name', 'cpu_percent', 'pid', 'username'])
+        if processos_informa['cpu_percent'] > 0:
+           lista_processo.append(processos_informa)
+           pid = processos_informa['pid']
+           usuario = processos_informa['username']
+           nome = processos_informa['name']
+           porcentagemProcesso = processos_informa['cpu_percent']
+           inserirBanco(
+               f"INSERT INTO processos(nome, porcentagemCpu, pid, usuario, fkMaquina, horario) VALUES('{nome}', {porcentagemProcesso}, '{pid}', '{usuario}', {idMaquina}, GETDATE())"
+           )
+           
 
     # Mostrar os dados de 3 em 3 segundos
     try:
@@ -370,5 +369,5 @@ while True:
         sleep(3)
     except KeyboardInterrupt:
         # Inserindo saída com localização
-        inserirBanco(f"INSERT INTO Localizacao (acao, dataEhora, ipAdress, longitude, latitude, cidade, pais, fkMaquina) VALUES ('S', GETDATE() AT TIME ZONE 'UTC' AT TIME ZONE 'Bahia Standard Time', '{ip.ip}', {ip.latlng[0]}, {ip.latlng[1]}, '{ip.city}', '{ip.country}', {idMaquina})")
+        inserirBanco(f"UPDATE Localizacao SET dataSaida = GETDATE() AT TIME ZONE 'UTC' AT TIME ZONE 'Bahia Standard Time' WHERE fkMaquina = {idMaquina} AND idLocalizacao = (SELECT TOP 1 idLocalizacao FROM Localizacao WHERE fkMaquina = {idMaquina} ORDER BY idLocalizacao DESC);")
         break
