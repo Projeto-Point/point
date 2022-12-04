@@ -860,7 +860,7 @@ svg rect {
   display: flex;
   background-color: white;
   height: 255px;
-  width: 372px;
+  width: 430px;
   border-radius: 5px;
   color: black;
   box-shadow: 0 0 10px rgba(0,0,0,0.6);
@@ -870,7 +870,7 @@ svg rect {
   display: flex;
   background-color: white;
   height: 255px;
-  width: 368px;
+  width: 430px;
   margin-left: 25px;
   margin-right: -600px;
   border-radius: 5px;
