@@ -84,16 +84,34 @@ function pegarKpisRede(idMaquina, dataInicio, dataFinal){
     return database.executar(instrucaoSql);
 }
 
-function analiseBytes(tipoBytes,idMaquina, dataInicio, dataFinal, tipoVisualizacao = "dia"){
+function analiseBytes(idMaquina, dataInicio, dataFinal, tipoVisualizacao = "dia"){
     if(tipoVisualizacao == "dia"){
-        instrucaoSql = `SELECT CAST(dataEhora AS DATE) AS 'dataEhora', ROUND(AVG(${tipoBytes}), 2) AS 'media' FROM vw_rede
+        instrucaoSql = `SELECT CAST(dataEhora AS DATE) AS 'dataEhora', ROUND(AVG(bytesRecebidos), 2) AS 'media' FROM vw_rede
         WHERE idMaquina = ${idMaquina} AND CAST(dataEhora AS DATE) BETWEEN '${dataInicio}' AND '${dataFinal}'
         GROUP BY CAST(dataEhora AS DATE)
         ORDER BY dataEhora;`;
     }
 
     else{
-        instrucaoSql = `SELECT DATEPART(MONTH, dataEhora) AS 'dataEhora', ROUND(AVG(${tipoBytes}), 2) AS 'media' FROM vw_rede
+        instrucaoSql = `SELECT DATEPART(MONTH, dataEhora) AS 'dataEhora', ROUND(AVG(bytesRecebidos), 2) AS 'media' FROM vw_rede
+        WHERE idMaquina = ${idMaquina} AND CAST(dataEhora AS DATE) BETWEEN '${dataInicio}' AND '${dataFinal}'
+        GROUP BY DATEPART(MONTH, dataEhora)
+        ORDER BY dataEhora`;
+    }
+    console.log(instrucaoSql);
+    return database.executar(instrucaoSql);
+}
+
+function analiseBytes2(idMaquina, dataInicio, dataFinal, tipoVisualizacao = "dia"){
+    if(tipoVisualizacao == "dia"){
+        instrucaoSql = `SELECT CAST(dataEhora AS DATE) AS 'dataEhora', ROUND(AVG(bytesEnviados), 2) AS 'media' FROM vw_rede
+        WHERE idMaquina = ${idMaquina} AND CAST(dataEhora AS DATE) BETWEEN '${dataInicio}' AND '${dataFinal}'
+        GROUP BY CAST(dataEhora AS DATE)
+        ORDER BY dataEhora;`;
+    }
+
+    else{
+        instrucaoSql = `SELECT DATEPART(MONTH, dataEhora) AS 'dataEhora', ROUND(AVG(bytesEnviados), 2) AS 'media' FROM vw_rede
         WHERE idMaquina = ${idMaquina} AND CAST(dataEhora AS DATE) BETWEEN '${dataInicio}' AND '${dataFinal}'
         GROUP BY DATEPART(MONTH, dataEhora)
         ORDER BY dataEhora`;
@@ -110,5 +128,6 @@ module.exports = {
     pegarKpis,
     verificarAtividade,
     pegarKpisRede,
-    analiseBytes
+    analiseBytes,
+    analiseBytes2
 }

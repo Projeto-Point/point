@@ -35,5 +35,9 @@ router.get("/analiseBytes", function(req, res){
     maquinaController.analiseBytes(req, res);
 });
 
+router.get("/analiseBytes2", function(req, res){
+    maquinaController.analiseBytes2(req, res);
+});
+
 
 module.exports = router;

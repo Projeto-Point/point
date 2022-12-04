@@ -95,7 +95,7 @@
                         <span>Maior que 85%</span>
                         <div class="legenda normal"></div>
                         <span>Menor que 85%</span>
-                        <select id="tempoDown" onchange="mudarTempo(bytesRecebidos, this.value)">
+                        <select id="tempoDown" onchange="mudarTempo(this.value)">
                             <option value="ultimoMes">Último mês</option>
                             <option value="ultimaSemana">Última semana</option>
                             <option value="ultimoAno">Último ano</option>
@@ -103,9 +103,10 @@
                     </div>
                 </div>
                 <div class="main-grafico">
-                    <canvas id="graficoBytesRecebidos"></canvas>
+                    <canvas id="graficoAnaliseRecebidos"></canvas>
                 </div>
             </div>
+
             <div class="grafico-disco grafico box">
                 <div class="header">
                     <h3>Upload</h3>
@@ -114,7 +115,7 @@
                         <span>Maior que 90%</span>
                         <div class="legenda normal"></div>
                         <span>Menor que 90%</span>
-                        <select id="tempoUp" onchange="mudarTempo(bytesEnviados, this.value)">
+                        <select id="tempoUp" onchange="mudarTempo(this.value)">
                             <option value="ultimoMes">Último mês</option>
                             <option value="ultimaSemana">Última semana</option>
                             <option value="ultimoAno">Último ano</option>
@@ -122,9 +123,10 @@
                     </div>
                 </div>
                 <div class="main-grafico">
-                    <canvas id="graficoEnviados"></canvas>
+                    <canvas id="graficoAnaliseEnviados"></canvas>
                 </div>
             </div>
+            
             <div class="box info-funcionario" id="sobreFuncionario">
                 <h3>Sobre o funcionário</h3>
             </div>
@@ -202,19 +204,12 @@
     var chartDown = null;
     var chartUp = null;
     
-    var bytesRecebidos = 'bytesRecebidos';
-    var bytesEnviados = 'bytesEnviados';
-    
-    mudarTempo(bytesEnviados, tempoDown.value);
-    mudarTempo(bytesEnviados, tempoUp.value);
+    mudarTempo(tempoDown.value);
+    mudarTempo2(tempoUp.value);
 
-
-    function mudarTempo(tipoBytes, tempo) {
-        if (chartDown != null && tipoBytes == bytesEnviados) {
+    function mudarTempo(tempo) {
+        if (chartDown != null) {
             chartDown.destroy();
-        }
-        else if (chartUp != null && tipoBytes == bytesEnviados) {
-            chartUp.destroy();
         }
 
         tipoVisualizacao = "dia";
@@ -228,25 +223,27 @@
             tipoVisualizacao = "mes";
             tempo = moment().subtract(1, "years");
         }
-        pegarRegistros(`grafico${tipoBytes}`, tipoBytes, idMaquina, tempo.format("YYYY-MM-DD"), moment().format("YYYY-MM-DD"), tipoVisualizacao);
+        pegarRegistros('graficoAnaliseRecebidos',idMaquina, tempo.format("YYYY-MM-DD"), moment().format("YYYY-MM-DD"), tipoVisualizacao);
     }
 
-    function pegarRegistros(tipoBytes,idGrafico, idMaquina, dataInicio, dataFinal, tipoVisualizacao) {
-        fetch(`/maquinas/analiseBytes?tipoBytes=${tipoBytes}&idMaquina=${idMaquina}&dataInicio=${dataInicio}&dataFinal=${dataFinal}&tipoVisualizacao=${tipoVisualizacao}`)
+    
+
+    function pegarRegistros2(idGrafico2, idMaquina, dataInicio, dataFinal, tipoVisualizacao) {
+        fetch(`/maquinas/analiseBytes2?idMaquina=${idMaquina}&dataInicio=${dataInicio}&dataFinal=${dataFinal}&tipoVisualizacao=${tipoVisualizacao}`)
             .then((res) => {
                 if (res.ok) {
                     res.json().then((resposta) => {
                         console.log(resposta);
                         let labels = [];
-                        if (tipoVisualizacao == "dia") {
+
+                        if(tipoVisualizacao == "dia"){
                             labels = resposta.map((rede) =>
-                                moment(rede.dataEhora).format("DD/MM/YYYY")
+                                moment.utc(rede.dataEhora).format("DD/MM/YYYY")
                             );
                         }
-                        else {
-                            labels = resposta.map((rede) =>
-                                // rede.dataEhora
-                                moment().locale('pt').month(1)
+                        else{
+                            labels = resposta.map((rede) => 
+                                moment().month(rede.dataEhora - 1).format("MMM").charAt(0).toUpperCase() + moment().month(rede.dataEhora - 1).format("MMM").slice(1)
                             );
                         }
 
@@ -259,24 +256,21 @@
                                     data: resposta.map((rede) => rede.media),
                                 },
                             ],
-                            
                         };
 
                         for (let index = 0; index < resposta.length; index++) {
-                            if (tipoBytes == bytesRecebidos) {
                                 if (resposta[index].media >= 80) {
                                     data.datasets[0].backgroundColor.push("#D0342C");
                                 } else {
                                     data.datasets[0].backgroundColor.push("#00CA43");
                                 }
-                            } else if (tipoBytes == bytesEnviados) {
                                 if (resposta[index].media >= 85) {
                                     data.datasets[0].backgroundColor.push("#D0342C");
                                 } else {
                                     data.datasets[0].backgroundColor.push("#00CA43");
                                 }
 
-                            }
+                            
                         }
 
                         const config = {
@@ -298,13 +292,103 @@
                             },
                         };
 
+                        chartUp = new Chart(document.getElementById(idGrafico2), config);
+                        
+                    });
+                } else {
+                    console.log("Erro ao conseguir os resultados!");
+                }
+            })
+            .catch((erro) => {
+                console.log("Erro ao acessar /maquinas/analiseBytes2");
+            });
+    }
 
-                        if (tipoBytes == bytesRecebidos) {
-                            chartDown = new Chart(document.getElementById(idGrafico), config);
+    function mudarTempo2(tempo) {
+        if (chartUp != null) {
+            chartUp.destroy();
+        }
+
+        tipoVisualizacao = "dia";
+        if (tempo == "ultimaSemana") {
+            tempo = moment().subtract(7, "days");
+        }
+        else if (tempo == "ultimoMes") {
+            tempo = moment().subtract(30, "days");
+        }
+        else {
+            tipoVisualizacao = "mes";
+            tempo = moment().subtract(1, "years");
+        }
+        pegarRegistros2('graficoAnaliseEnviados',idMaquina, tempo.format("YYYY-MM-DD"), moment().format("YYYY-MM-DD"), tipoVisualizacao);
+    }
+
+    function pegarRegistros(idGrafico, idMaquina, dataInicio, dataFinal, tipoVisualizacao) {
+        fetch(`/maquinas/analiseBytes?idMaquina=${idMaquina}&dataInicio=${dataInicio}&dataFinal=${dataFinal}&tipoVisualizacao=${tipoVisualizacao}`)
+            .then((res) => {
+                if (res.ok) {
+                    res.json().then((resposta) => {
+                        console.log(resposta);
+                        let labels = [];
+
+                        if(tipoVisualizacao == "dia"){
+                            labels = resposta.map((rede) =>
+                                moment.utc(rede.dataEhora).format("DD/MM/YYYY")
+                            );
                         }
-                        else if (tipoBytes == bytesEnviados) {
-                            chartUp = new Chart(document.getElementById(idGrafico), config);
+                        else{
+                            labels = resposta.map((rede) => 
+                                moment().month(rede.dataEhora - 1).format("MMM").charAt(0).toUpperCase() + moment().month(rede.dataEhora - 1).format("MMM").slice(1)
+                            );
                         }
+
+                        const data = {
+                            labels: labels,
+                            datasets: [
+                                {
+                                    label: "Valor médio",
+                                    backgroundColor: [],
+                                    data: resposta.map((rede) => rede.media),
+                                },
+                            ],
+                        };
+
+                        for (let index = 0; index < resposta.length; index++) {
+                                if (resposta[index].media >= 80) {
+                                    data.datasets[0].backgroundColor.push("#D0342C");
+                                } else {
+                                    data.datasets[0].backgroundColor.push("#00CA43");
+                                }
+                                if (resposta[index].media >= 85) {
+                                    data.datasets[0].backgroundColor.push("#D0342C");
+                                } else {
+                                    data.datasets[0].backgroundColor.push("#00CA43");
+                                }
+
+                            
+                        }
+
+                        const config = {
+                            type: "bar",
+                            data: data,
+                            options: {
+                                responsive: true,
+                                maintainAspectRatio: false,
+                                scales: {
+                                    y: {
+                                        beginAtZero: true,
+                                    },
+                                },
+                                plugins: {
+                                    legend: {
+                                        display: false,
+                                    },
+                                },
+                            },
+                        };
+
+                        chartDown = new Chart(document.getElementById(idGrafico), config);
+                        
                     });
                 } else {
                     console.log("Erro ao conseguir os resultados!");
@@ -320,15 +404,7 @@
         const parametrosString = window.location.search;
         const parametros = new URLSearchParams(parametrosString);
 
-        fetch(`/maquinas/verificarAtividade?idMaquina=${idMaquina}`).then(function (res) {
-            if (res.ok) {
-                res.json().then(resposta => {
-                    if (resposta[0].acao == "S") {
-                        document.querySelector('.dashboard').innerHTML = `<p style="grid-column-start: 1; grid-column-end: 4; display: flex; justify-content: center; align-items: center; font-weight: bold; font-size: 1.3rem;">Máquina desligada desde o dia ${moment(resposta[0].dataEhora).format("DD/MM/YYYY [às] HH:mm")}</p>`;
-                    }
-                });
-            }
-        });
+        
 
         recuperarDados();
     };
@@ -410,31 +486,31 @@
             config
 
         );
-        // setTimeout(() => {
-        //     atualizarGraficoDownload(document.getElementById('graficoBytesRecebidos').getContext("2d"), data)
-        // }, tempoAtualizacao
-        //
-        // )
+         setTimeout(() => {
+             atualizarGraficoDownload(document.getElementById('graficoBytesRecebidos').getContext("2d"), data)
+         }, tempoAtualizacao
+        
+         )
 
     }
 
-    // function atualizarGraficoDownload(grafico, dados) {
-    //     fetch(`/medidas/pegarRegistroDownload?idMaquina=${idMaquina}`).then(function (res) {
-    //         if (res.ok) {
-    //             res.json().then(Download => {
-    //                 downMedida = Download.map((object) => object.bytesRecebidos);
-    //                 dados.datasets[0].data = downMedida
-    //                 window.graficoBytesRecebidos.update();
+     function atualizarGraficoDownload(grafico, dados) {
+         fetch(`/medidas/pegarRegistroDownload?idMaquina=${idMaquina}`).then(function (res) {
+             if (res.ok) {
+                 res.json().then(Download => {
+                     downMedida = Download.map((object) => object.bytesRecebidos);
+                     dados.datasets[0].data = downMedida
+                     window.graficoBytesRecebidos.update();
 
-    //                 proximaAtualizacao = setTimeout(() => {
-    //                     atualizarGraficoDownload(grafico, dados);
-    //                 }, tempoAtualizacao)
+                     proximaAtualizacao = setTimeout(() => {
+                         atualizarGraficoDownload(grafico, dados);
+                     }, tempoAtualizacao)
 
-    //             })
-    //         }
-    //     })
-    //     //  console.log("ta funcionando")
-    // }
+                 })
+             }
+         })
+          
+     }
     function plotarGraficoUpload(upMedida) {
         const labels = [
             '',
@@ -481,34 +557,34 @@
             config
 
         );
-        // setTimeout(() => {
-        //     atualizarGraficoUpload(document.getElementById('graficoBytesEnviados').getContext("2d"), data)
-        // }, tempoAtualizacao
-        // 
-        // )
+         setTimeout(() => {
+             atualizarGraficoUpload(document.getElementById('graficoBytesEnviados').getContext("2d"), data)
+         }, tempoAtualizacao
+         
+         )
 
     }
 
-    // function atualizarGraficoUpload(grafico, dados) {
-    //     fetch(`/medidas/pegarRegistroUpload?idMaquina=${idMaquina}`).then(function (res) {
-    //         if (res.ok) {
-    //             res.json().then(Upload => {
+     function atualizarGraficoUpload(grafico, dados) {
+         fetch(`/medidas/pegarRegistroUpload?idMaquina=${idMaquina}`).then(function (res) {
+             if (res.ok) {
+                 res.json().then(Upload => {
 
 
 
-    //                 upMedida = Upload.map((object) => object.bytesEnviados);
-    //                 dados.datasets[0].data = upMedida
-    //                 window.graficoBytesEnviados.update();
+                     upMedida = Upload.map((object) => object.bytesEnviados);
+                     dados.datasets[0].data = upMedida
+                     window.graficoBytesEnviados.update();
 
-    //                 proximaAtualizacao = setTimeout(() => {
-    //                     atualizarGraficoUpload(grafico, dados)
-    //                 }, tempoAtualizacao)
+                     proximaAtualizacao = setTimeout(() => {
+                         atualizarGraficoUpload(grafico, dados)
+                     }, tempoAtualizacao)
 
-    //             })
-    //         }
-    //     })
-    //     // console.log("ta funcionando")
-    // }
+                 })
+             }
+         })
+
+     }
 
 
 

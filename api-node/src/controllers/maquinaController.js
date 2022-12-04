@@ -135,14 +135,36 @@ function pegarKpisRede(req, res){
 }
 
 function analiseBytes(req, res){
-    const tipoBytes = req.query.tipoBytes;
     const idMaquina = req.query.idMaquina;
     const dataInicio = req.query.dataInicio;
     const dataFinal = req.query.dataFinal;
     const tipoVisualizacao = req.query.tipoVisualizacao;
 
-    maquinaModel.analiseBytes(tipoBytes,idMaquina, dataInicio, dataFinal, tipoVisualizacao)
+    maquinaModel.analiseBytes(idMaquina, dataInicio, dataFinal, tipoVisualizacao)
     .then((resultado) => {
+        console.log(resultado)
+        if(resultado.length > 0){
+            res.status(200).json(resultado);
+        }
+        else{
+            res.status(204).send("Nenhum registro encontrado!");
+        }
+    })
+    .catch((erro) => {
+        console.log(erro);
+        res.status(500).json(erro.sqlMessage);
+    });
+}
+
+function analiseBytes2(req, res){
+    const idMaquina = req.query.idMaquina;
+    const dataInicio = req.query.dataInicio;
+    const dataFinal = req.query.dataFinal;
+    const tipoVisualizacao = req.query.tipoVisualizacao;
+
+    maquinaModel.analiseBytes2(idMaquina, dataInicio, dataFinal, tipoVisualizacao)
+    .then((resultado) => {
+        console.log(resultado)
         if(resultado.length > 0){
             res.status(200).json(resultado);
         }
@@ -166,5 +188,6 @@ module.exports = {
     verificarAtividade,
     pegarKpisRede,
     analiseBytes,
+    analiseBytes2
     
 }
