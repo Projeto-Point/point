@@ -75,7 +75,7 @@
           </div>
         </div>
       </div>
-     
+
       <div id="wordcloud">
         <img src="../assets/imgs/wordcloud-processo2.png" alt="" width="100%">
       </div>
@@ -164,10 +164,11 @@
 
           for (let j = 0; j < resposta.length; j++) {
             sobreProcesso.innerHTML += `
-            <div id="idProcesso">IdProcesso:${id[j]}</div> <br> 
-            <div id="nomeProcessos">Nome:${nomeProcesso[j]}</div><br>
-            <div id="porcentagemProcesso">Porcentagem da CPU:${porcentagem[j]}</div><br>
-            <div id="Pidprocesso">Pid:${pid[j]}</div> <br>
+            <b><div id="idProcesso">IdProcesso: </b>${id[j]}</div> <br> 
+            <b><div id="nomeProcessos">Nome: </b>${nomeProcesso[j]}</div><br>
+            <b><div id="porcentagemProcesso">Porcentagem da CPU: </b>${porcentagem[j]}</div><br>
+            <b><div id="Pidprocesso">Pid: </b>${pid[j]}</div> <br>
+    ------------------------------------------------------------------------------------------        
 `
 
           }
