@@ -92,9 +92,9 @@
                     <h3>Download</h3>
                     <div class="dir">
                         <div class="legenda alto"></div>
-                        <span>Maior 0,80 GB</span>
+                        <span>Maior 5 GB</span>
                         <div class="legenda normal"></div>
-                        <span>Menor 0,80 GB</span>
+                        <span>Menor 5 GB</span>
                         <select id="tempoDown" onchange="mudarTempo(this.value)">
                             <option value="ultimoMes">Último mês</option>
                             <option value="ultimaSemana">Última semana</option>
@@ -112,9 +112,9 @@
                     <h3>Upload</h3>
                     <div class="dir">
                         <div class="legenda alto"></div>
-                        <span>Maior 0,60 GB</span>
+                        <span>Maior 1 GB</span>
                         <div class="legenda normal"></div>
-                        <span>Menor 0,60 GB</span>
+                        <span>Menor 1 GB</span>
                         <select id="tempoUp" onchange="mudarTempo2(this.value)">
                             <option value="ultimoMes">Último mês</option>
                             <option value="ultimaSemana">Última semana</option>
@@ -258,7 +258,7 @@
                         };
 
                         for (let index = 0; index < resposta.length; index++) {
-                            if (resposta[index].media >= 0.60) {
+                            if (resposta[index].media >= 1) {
                                 data.datasets[0].backgroundColor.push("#D0342C");
                             } else {
                                 data.datasets[0].backgroundColor.push("#00CA43");
@@ -349,7 +349,7 @@
                         };
 
                         for (let index = 0; index < resposta.length; index++) {
-                            if (resposta[index].media >= 0.80) {
+                            if (resposta[index].media >= 4) {
                                 data.datasets[0].backgroundColor.push("#D0342C");
                             } else {
                                 data.datasets[0].backgroundColor.push("#00CA43");
