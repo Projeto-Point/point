@@ -273,7 +273,6 @@
             }
             else if(res.ok){
                 res.json().then((resposta) => {
-                    console.log(resposta)
                     for (let index = 0; index < resposta.length; index++) {
                         if(! dados.labels.includes(moment(resposta[index]['dataEntrada']).utc(0).format('DD/MM')) && resposta[index]['dataEntrada'] != null){
                             dados.labels.push(moment(resposta[index]['dataEntrada']).utc(0).format('DD/MM'));
@@ -642,8 +641,8 @@
                         kpiHoras.innerHTML += "Não foi possível calcular";
                     }
                     
-                    let horas = moment.duration(horasAtivas).hours();
-                    let minutos = moment.duration(horasAtivas).minutes();
+                    let horas = moment.duration(horasAtivas / horariosDiferenca.length).hours();
+                    let minutos = moment.duration(horasAtivas / horariosDiferenca.length).minutes();
 
                     if (horas == 1) {
                         kpiHoras.innerHTML += horas;
