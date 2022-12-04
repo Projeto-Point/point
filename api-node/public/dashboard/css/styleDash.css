@@ -424,13 +424,8 @@ main .main-localizacao .rigth-wid {
   border: 2px solid white;
   align-items: center;
 }
-main .main-localizacao .rigth-wid .wordcloud {
-  border: 2px dashed red;
-  height: 40%;
-  width: 80%;
-}
 main .main-localizacao .rigth-wid .table {
-  height: 30%;
+  height: 60%;
   border: 2px solid var(--cor3);
   border-radius: var(--radius);
   width: 60%;
@@ -452,6 +447,11 @@ main .main-localizacao .rigth-wid .table a {
   flex-direction: row;
   justify-content: space-between;
   padding: 8px 18px;
+  color: black;
+  text-decoration: none;
+}
+main .main-localizacao .rigth-wid .table a:active {
+  color: black;
 }
 main .main-localizacao .rigth-wid .table li:nth-child(even) {
   background: rgba(205, 248, 205, 0.2980392157);
