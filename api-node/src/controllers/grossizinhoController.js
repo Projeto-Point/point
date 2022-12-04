@@ -51,9 +51,11 @@ function entradaEsaida(req, res){
 
 
 
+
 module.exports = {
     horasAtivas,
     pegarRegistroInstancia,
-    entradaEsaida
+    entradaEsaida,
+ 
     
 }

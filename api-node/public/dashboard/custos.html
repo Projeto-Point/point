@@ -67,29 +67,23 @@
     <section class="dashboard-analise">
       <div class="box box-kpi kpi-horas">
         <h4>Horas ativas:</h4><br>
-        <h5 id="kh5iHoras"></h5>
+        <h5 id="kpiHoras"></h5>
       </div>
       <div class="box box-kpi kpi-custo">
         <h4>Custo total:</h4><br>
         <h5 id="kpiCusto"></h5>
       </div>
-      <div class="box box-kpi kpi-mediaProc">
-        <h4>Média do processador:</h4><br>
-        <h5 id="kpiCPU">%</h5>
-      </div>
-      <div class="box box-kpi kpi-mediaRam">
-        <h4>Média da memória RAM:</h4><br>
-        <h5 id="kpiRAM">%</h5>
+      <div class="box box-kpi kpi-custo-media">
+        <h4>Media custo:</h4><br>
+        <h5 id="kpiCustoMedia"></h5>
       </div>
       <div class="grafico-processador grafico box">
         <div class="header">
-          <h3>Custos</h3>
+          <h3>Custos por dia</h3>
           <div class="dir">
-            <select id="tempoCpu" onchange="mudarTempo('CPU', this.value)">
-              <option value="ultimoMes">Último mês</option>
-              <option value="ultimaSemana">Última semana</option>
-              <option value="ultimoAno">Último ano</option>
-            </select>
+            <a style="background-color: #13b348; color: white; border-radius: 4px; height: 45px; align-items: center; justify-content: center; display: flex; width: 160px;"
+              href="https://us-east-1.console.aws.amazon.com/console/home?region=us-east-1#" class="logo">Alterar
+              instância </a>
           </div>
         </div>
         <div class="main-grafico">
@@ -110,6 +104,9 @@
 </html>
 <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
 <script src="../script.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/regression/2.0.1/regression.js"
+  integrity="sha512-PHHRPMxJK1xGYLQPv9FoDbCF2X23Ao1lMAD52oLY9TBW033s4zwIXl5JQBGlfI2iOx3W1qP3LAS/MMv5Ttj0aQ=="
+  crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <script>
   nomeGerente.innerHTML = sessionStorage.NOME_USUARIO;
   nome_gerente.innerHTML = sessionStorage.NOME_USUARIO;
@@ -136,8 +133,160 @@
     .then((res) => {
       if (res.ok) {
         res.json().then((resposta) => {
-          kpiCPU.innerHTML = resposta[0].mediaProcessador + "%";
-          kpiRAM.innerHTML = resposta[0].mediaRAM + "%";
+          var mediaProc = resposta[0].mediaProcessador + "%";
+          var mediaRAM = resposta[0].mediaRAM + "%";
+
+
+
+          fetch(`/grossizinho/pegarRegistroInstancia?idMaquina=${idMaquina}`).then((res) => {
+            if (res.ok) {
+              res.json().then((resposta) => {
+
+                var preco = resposta.map((object) => object.preco);
+                console.log(preco)
+                console.log(resposta);
+
+                document.getElementById(
+                  "sobreMaquina"
+                ).innerHTML += `<p><b>Sistema operacional: </b><span>${resposta[0].sistemaOperacional}</span></p>`;
+                document.getElementById(
+                  "sobreMaquina"
+                ).innerHTML += `<p><b>Tipo da instância: </b><span>${resposta[0].nomeInstancia}</span></p>`;
+                document.getElementById(
+                  "sobreMaquina"
+                ).innerHTML += `<p><b>Custo por hora: </b><span>$${resposta[0].preco.toFixed(4)} USD</span></p>`;
+                document.getElementById(
+                  "sobreMaquina"
+                ).innerHTML += `<p><b>Performance em rede: </b><span>${resposta[0].performaceRede}</span></p>`;
+                document.getElementById(
+                  "sobreMaquina"
+                ).innerHTML += `<p><b>Armazenamento: </b><span>${resposta[0].tipoArmazenamento}</span></p>`;
+                document.getElementById(
+                  "sobreMaquina"
+                ).innerHTML += `<p><b>Média Ram: </b><span>${mediaRAM}</span></p>`;
+                document.getElementById(
+                  "sobreMaquina"
+                ).innerHTML += `<p><b>Média Processador: </b><span>${mediaProc}</span></p>`;
+
+                fetch(`/maquinas/pegarTempo?idMaquina=${idMaquina}&dataInicio=${moment().subtract(30, "days").format("YYYY-MM-DD")}&dataFinal=${moment().format("YYYY-MM-DD")}`)
+                  .then((res) => {
+                    if (res.ok) {
+                      res.json().then((resposta) => {
+                        let horariosDiferenca = [];
+
+                        resposta.forEach(item => {
+                          if (item.dataSaida != null) {
+                            let horarioEntrada = moment(item.dataEntrada).utc();
+                            let horarioSaida = moment(item.dataSaida).utc();
+                            horariosDiferenca.push(horarioSaida.diff(horarioEntrada));
+                          }
+                        });
+
+                        let horasAtivas = 0;
+                        horariosDiferenca.forEach(horario => {
+                          horasAtivas += horario;
+                        });
+
+                        let horas = moment.duration(horasAtivas).hours();
+                        let minutos = moment.duration(horasAtivas).minutes();
+
+
+
+                        kpiCusto.innerHTML = ` $${(preco * (horas + (minutos / 60))).toFixed(4)} USD`;
+
+                        fetch(`/grossizinho/entradaEsaida?idMaquina=${idMaquina}`).then(
+                          function (res) {
+                            if (res.ok) {
+                              res.json().then((cronos) => {
+
+                                console.log(cronos)
+                                var labelData = [];
+                                var dataTempo = [];
+                                var custoDia = [];
+
+                          
+
+                                for (let c = 0; c < cronos.length; c++) {
+                                  labelData.push(moment(cronos[c].Data).utc(0).format("DD/MM/YYYY"));
+                                  dataTempo.push(((cronos[c].Tempo) / 60));
+                                }
+
+                                for (let t = 0; t < dataTempo.length; t++) {
+                                  custoDia.push(dataTempo[t] * preco)
+
+                                }
+
+                                kpiCustoMedia.innerHTML= ` $${((preco * (horas + (minutos / 60)))/dataTempo.length).toFixed(4)} USD`
+
+                                const labels = labelData;
+                                const data = {
+                                  labels: labels,
+                                  datasets: [
+                                    {
+                                      label: 'Dataset 1',
+                                      data: custoDia,
+                                      borderColor: 'rgb(75, 192, 192)',
+                                      backgroundColor: 'rgb(75, 192, 192)',
+                                      stack: 'combined',
+                                      type: 'bar',
+                                    },
+                                    {
+                                      label: 'Dataset 2',
+                                      data: custoDia,
+                                      borderColor: 'rgb(75, 192, 192)',
+                                      backgroundColor: 'rgb(75, 192, 192)',
+                                      stack: 'combined'
+                                    }
+                                  ]
+                                };
+
+                                const config = {
+                                  type: 'line',
+                                  data: data,
+                                  options: {
+                                    plugins: {
+                                      title: {
+                                        display: false,
+                                      },
+                                      legend: {
+                                        display: false,
+                                      }
+                                    },
+                                    scales: {
+                                      y: {
+                                        stacked: true
+                                      }
+                                    }
+                                  },
+                                  // legend: {
+                                  //   display: false
+                                  // }
+                                };
+
+                                window.graficoCusto = new Chart(
+                                  document.getElementById('graficoCusto').getContext("2d"),
+                                  config);
+
+
+
+
+
+
+                              });
+                            }
+                          }
+                        );
+
+                      });
+                    }
+                  })
+                  .catch((erro) => {
+                    console.log(erro);
+                  });
+
+              });
+            }
+          });
         });
       }
     })
@@ -197,139 +346,8 @@
 
 
 
-  fetch(`/grossizinho/pegarRegistroInstancia?idMaquina=${idMaquina}`).then((res) => {
-    if (res.ok) {
-      res.json().then((resposta) => {
-
-        var preco = resposta.map((object) => object.preco);
-        console.log(preco)
-        console.log(resposta);
-
-        
 
 
-        document.getElementById(
-          "sobreMaquina"
-        ).innerHTML += `<p><b>Sistema operacional: </b><span>${resposta[0].sistemaOperacional}</span></p>`;
-        document.getElementById(
-          "sobreMaquina"
-        ).innerHTML += `<p><b>Tipo da instância: </b><span>${resposta[0].nomeInstancia}</span></p>`;
-        document.getElementById(
-          "sobreMaquina"
-        ).innerHTML += `<p><b>Custo por hora: </b><span>$${resposta[0].preco.toFixed(4)} USD</span></p>`;
-        document.getElementById(
-          "sobreMaquina"
-        ).innerHTML += `<p><b>Performance em rede: </b><span>${resposta[0].performaceRede}</span></p>`;
-        document.getElementById(
-          "sobreMaquina"
-        ).innerHTML += `<p><b>Armazenamento: </b><span>${resposta[0].tipoArmazenamento}</span></p>`;
-        //   document.getElementById(
-        //     "sobreMaquina"
-        //   ).innerHTML += `<p><b>Alterar instância: </b><span class="top-esq"><a href="https://us-east-1.console.aws.amazon.com/console/home?region=us-east-1#" class="logo">teste
-        // </a></span></p>`;
-
-        fetch(`/maquinas/pegarTempo?idMaquina=${idMaquina}&dataInicio=${moment().subtract(30, "days").format("YYYY-MM-DD")}&dataFinal=${moment().format("YYYY-MM-DD")}`)
-          .then((res) => {
-            if (res.ok) {
-              res.json().then((resposta) => {
-                let horariosDiferenca = [];
-
-                resposta.forEach(item => {
-                  if (item.dataSaida != null) {
-                    let horarioEntrada = moment(item.dataEntrada).utc();
-                    let horarioSaida = moment(item.dataSaida).utc();
-                    horariosDiferenca.push(horarioSaida.diff(horarioEntrada));
-                  }
-                });
-
-                let horasAtivas = 0;
-                horariosDiferenca.forEach(horario => {
-                  horasAtivas += horario;
-                });
-
-                let horas = moment.duration(horasAtivas).hours();
-                let minutos = moment.duration(horasAtivas).minutes();
-
-                
-
-                kpiCusto.innerHTML =` $${(preco * (horas + (minutos/60))).toFixed(4)} USD`;
-                
-
-              });
-            }
-          })
-          .catch((erro) => {
-            console.log(erro);
-          });
-
-      });
-    }
-  });
-
-  fetch(`/grossizinho/entradaEsaida?idMaquina=${idMaquina}`).then(
-    function (res) {
-      if (res.ok) {
-        res.json().then((resposta) => {
-
-          var dia = resposta.map((object) => object.dataEntrada);
-
-          var diaLabel = [];
-
-          for (let p = 0; p < dia.length; p++) {
-            diaLabel.push(moment(dia[p]).utc(0).format("DD/MM/YYYY"))
-          }
-
-
-          const labels = diaLabel;
-          const data = {
-            labels: labels,
-            datasets: [
-              {
-                label: 'Dataset 1',
-                data: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
-                borderColor: 'rgb(75, 192, 192)',
-                backgroundColor: 'rgb(75, 192, 192)',
-                stack: 'combined',
-                type: 'bar',
-              },
-              {
-                label: 'Dataset 2',
-                data: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
-                borderColor: 'rgb(75, 192, 192)',
-                backgroundColor: 'rgb(75, 192, 192)',
-                stack: 'combined'
-              }
-            ]
-          };
-
-          const config = {
-            type: 'line',
-            data: data,
-            options: {
-              plugins: {
-                title: {
-                  display: false,
-                }
-              },
-              scales: {
-                y: {
-                  stacked: true
-                }
-              }
-            },
-            // legend: {
-            //   display: false
-            // }
-          };
-
-          window.graficoCusto = new Chart(
-            document.getElementById('graficoCusto').getContext("2d"),
-            config);
-
-        });
-      }
-    }
-  );
 
 
 

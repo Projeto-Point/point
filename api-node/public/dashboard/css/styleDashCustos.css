@@ -637,23 +637,20 @@ main section.dashboard-analise {
   margin-top: 30px;
   display: grid;
   gap: 30px;
-  grid-template-columns: 1fr 1fr 1fr 1fr;
+  grid-template-columns: 1fr 1fr 1fr;
   grid-template-rows: 1fr (250px);
-  grid-template-areas: "k1 k2 k3 k4"
-                       "g1 g1 g1 i2"
-                       "g1 g1 g1 i2";
+  grid-template-areas: "k1 k2 k4"
+                       "g1 g1 i2"
+                       "g1 g1 i2";
 }
 main section.dashboard-analise .kpi-horas {
   grid-area: k1;
 }
-main section.dashboard-analise .kpi-mediaProc {
+main section.dashboard-analise .kpi-custo {
   grid-area: k2;
 }
-main section.dashboard-analise .kpi-custo {
+main section.dashboard-analise .kpi-custo-media {
   grid-area: k4;
-}
-main section.dashboard-analise .kpi-mediaRam {
-  grid-area: k3;
 }
 main section.dashboard-analise .grafico-processador {
   grid-area: g1;
@@ -1052,3 +1049,4 @@ svg rect {
 .loader {
   display: none;
 }/*# sourceMappingURL=styleDash.css.map */
+

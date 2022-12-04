@@ -19,17 +19,21 @@ function horasAtivas(idMaquina) {
 }
 
 function entradaEsaida(idMaquina) {
-    instrucaoSql = `SELECT CAST(dataEntrada AS DATE) AS 'dataEntrada'
-    FROM Localizacao
-    WHERE fkMaquina = ${idMaquina}
+    instrucaoSql = `SELECT SUM(DATEDIFF(minute, dataEntrada, dataSaida)) as 'Tempo', CAST(dataEntrada AS DATE) as 'Data'
+    FROM [dbo].[Localizacao] where fkMaquina =${idMaquina}
     GROUP BY CAST(dataEntrada AS DATE);`;
     console.log(instrucaoSql);
     return database.executar(instrucaoSql);
 }
 
+
+
+
+
 module.exports = {
     horasAtivas,
     pegarRegistroInstancia,
-    entradaEsaida
+    entradaEsaida,
+    
 
 }

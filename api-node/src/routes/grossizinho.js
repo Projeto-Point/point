@@ -15,6 +15,8 @@ router.get("/entradaEsaida", function (req, res) {
     grossizinhoController.entradaEsaida(req, res);
 });
 
+
+
 // router.get("/pegarTempo", function(req, res){
 //     grossizinhoController.pegarTempo(req, res);
 // });
