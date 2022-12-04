@@ -67,18 +67,18 @@
         </section>
         <section class="dashboard-analise">
             <div class="box box-kpi kpi-horas">
-                <h3>Rede:</h3>
-                <p id="kpiHoras"></p>
-            </div>
-            <div class="box box-kpi kpi-mediaProc">
                 <h3>Média de Download:</h3>
                 <p id="kpiDownload">GB</p>
             </div>
-            <div class="box box-kpi kpi-mediaRam">
+            <div class="box box-kpi kpi-mediaProc">
                 <h3>Média de Upload:</h3>
                 <p id="kpiUpload">GB</p>
             </div>
-            
+            <div class="box box-kpi kpi-mediaRam">
+                <h3>Funcionario:</h3>
+                <p id="nomeFuncionario"></p>
+            </div>
+
             <div class="dashboard">
                 <div class="tempo-real-download" id="gfCpu">
                     <div> <canvas id="graficoBytesRecebidos" style="position: relative;"></canvas></div>
@@ -92,9 +92,9 @@
                     <h3>Download</h3>
                     <div class="dir">
                         <div class="legenda alto"></div>
-                        <span>Maior que 85%</span>
+                        <span>Maior 0,80 GB</span>
                         <div class="legenda normal"></div>
-                        <span>Menor que 85%</span>
+                        <span>Menor 0,80 GB</span>
                         <select id="tempoDown" onchange="mudarTempo(this.value)">
                             <option value="ultimoMes">Último mês</option>
                             <option value="ultimaSemana">Última semana</option>
@@ -112,9 +112,9 @@
                     <h3>Upload</h3>
                     <div class="dir">
                         <div class="legenda alto"></div>
-                        <span>Maior que 90%</span>
+                        <span>Maior 0,60 GB</span>
                         <div class="legenda normal"></div>
-                        <span>Menor que 90%</span>
+                        <span>Menor 0,60 GB</span>
                         <select id="tempoUp" onchange="mudarTempo(this.value)">
                             <option value="ultimoMes">Último mês</option>
                             <option value="ultimaSemana">Última semana</option>
@@ -126,11 +126,11 @@
                     <canvas id="graficoAnaliseEnviados"></canvas>
                 </div>
             </div>
-            
-            <div class="box info-funcionario" id="sobreFuncionario">
+
+            <div class="box info-funcionario" id="sobreFuncionario" >
                 <h3>Sobre o funcionário</h3>
             </div>
-            <div class="box info-maquina" id="sobreMaquina">
+            <div class="box info-maquina" id="sobreMaquina" id="sobreFuncionario">
                 <h3>Sobre a máquina</h3>
             </div>
         </section>
@@ -177,7 +177,7 @@
         function (res) {
             if (res.ok) {
                 res.json().then((resposta) => {
-                    sobreFuncionario.innerHTML += `<p><b>Nome: </b>${resposta[0].nome}</p>`;
+                    nomeFuncionario.innerHTML += `<p><b>Nome: </b>${resposta[0].nome}</p>`;
                     sobreFuncionario.innerHTML += `<p><b>Cargo: </b>${resposta[0].cargo}</p>`;
                     sobreFuncionario.innerHTML += `<p><b>E-mail: </b>${resposta[0].email}</p>`;
                     sobreFuncionario.innerHTML += `<p><b>Telefone: </b>${resposta[0].telefone}</p>`;
@@ -200,10 +200,9 @@
             console.log("Erro ao acessar /maquinas/pegarKpisRede");
             console.log(erro);
         });
-
     var chartDown = null;
     var chartUp = null;
-    
+
     mudarTempo(tempoDown.value);
     mudarTempo2(tempoUp.value);
 
@@ -223,10 +222,10 @@
             tipoVisualizacao = "mes";
             tempo = moment().subtract(1, "years");
         }
-        pegarRegistros('graficoAnaliseRecebidos',idMaquina, tempo.format("YYYY-MM-DD"), moment().format("YYYY-MM-DD"), tipoVisualizacao);
+        pegarRegistros('graficoAnaliseRecebidos', idMaquina, tempo.format("YYYY-MM-DD"), moment().format("YYYY-MM-DD"), tipoVisualizacao);
     }
 
-    
+
 
     function pegarRegistros2(idGrafico2, idMaquina, dataInicio, dataFinal, tipoVisualizacao) {
         fetch(`/maquinas/analiseBytes2?idMaquina=${idMaquina}&dataInicio=${dataInicio}&dataFinal=${dataFinal}&tipoVisualizacao=${tipoVisualizacao}`)
@@ -236,13 +235,13 @@
                         console.log(resposta);
                         let labels = [];
 
-                        if(tipoVisualizacao == "dia"){
+                        if (tipoVisualizacao == "dia") {
                             labels = resposta.map((rede) =>
                                 moment.utc(rede.dataEhora).format("DD/MM/YYYY")
                             );
                         }
-                        else{
-                            labels = resposta.map((rede) => 
+                        else {
+                            labels = resposta.map((rede) =>
                                 moment().month(rede.dataEhora - 1).format("MMM").charAt(0).toUpperCase() + moment().month(rede.dataEhora - 1).format("MMM").slice(1)
                             );
                         }
@@ -259,18 +258,14 @@
                         };
 
                         for (let index = 0; index < resposta.length; index++) {
-                                if (resposta[index].media >= 80) {
-                                    data.datasets[0].backgroundColor.push("#D0342C");
-                                } else {
-                                    data.datasets[0].backgroundColor.push("#00CA43");
-                                }
-                                if (resposta[index].media >= 85) {
-                                    data.datasets[0].backgroundColor.push("#D0342C");
-                                } else {
-                                    data.datasets[0].backgroundColor.push("#00CA43");
-                                }
+                            if (resposta[index].media >= 0.60) {
+                                data.datasets[0].backgroundColor.push("#D0342C");
+                            } else {
+                                data.datasets[0].backgroundColor.push("#00CA43");
+                            }
 
-                            
+
+
                         }
 
                         const config = {
@@ -293,7 +288,7 @@
                         };
 
                         chartUp = new Chart(document.getElementById(idGrafico2), config);
-                        
+
                     });
                 } else {
                     console.log("Erro ao conseguir os resultados!");
@@ -320,7 +315,7 @@
             tipoVisualizacao = "mes";
             tempo = moment().subtract(1, "years");
         }
-        pegarRegistros2('graficoAnaliseEnviados',idMaquina, tempo.format("YYYY-MM-DD"), moment().format("YYYY-MM-DD"), tipoVisualizacao);
+        pegarRegistros2('graficoAnaliseEnviados', idMaquina, tempo.format("YYYY-MM-DD"), moment().format("YYYY-MM-DD"), tipoVisualizacao);
     }
 
     function pegarRegistros(idGrafico, idMaquina, dataInicio, dataFinal, tipoVisualizacao) {
@@ -331,13 +326,13 @@
                         console.log(resposta);
                         let labels = [];
 
-                        if(tipoVisualizacao == "dia"){
+                        if (tipoVisualizacao == "dia") {
                             labels = resposta.map((rede) =>
                                 moment.utc(rede.dataEhora).format("DD/MM/YYYY")
                             );
                         }
-                        else{
-                            labels = resposta.map((rede) => 
+                        else {
+                            labels = resposta.map((rede) =>
                                 moment().month(rede.dataEhora - 1).format("MMM").charAt(0).toUpperCase() + moment().month(rede.dataEhora - 1).format("MMM").slice(1)
                             );
                         }
@@ -354,18 +349,14 @@
                         };
 
                         for (let index = 0; index < resposta.length; index++) {
-                                if (resposta[index].media >= 80) {
-                                    data.datasets[0].backgroundColor.push("#D0342C");
-                                } else {
-                                    data.datasets[0].backgroundColor.push("#00CA43");
-                                }
-                                if (resposta[index].media >= 85) {
-                                    data.datasets[0].backgroundColor.push("#D0342C");
-                                } else {
-                                    data.datasets[0].backgroundColor.push("#00CA43");
-                                }
+                            if (resposta[index].media >= 0.80) {
+                                data.datasets[0].backgroundColor.push("#D0342C");
+                            } else {
+                                data.datasets[0].backgroundColor.push("#00CA43");
+                            }
 
-                            
+
+
                         }
 
                         const config = {
@@ -388,7 +379,7 @@
                         };
 
                         chartDown = new Chart(document.getElementById(idGrafico), config);
-                        
+
                     });
                 } else {
                     console.log("Erro ao conseguir os resultados!");
@@ -404,7 +395,7 @@
         const parametrosString = window.location.search;
         const parametros = new URLSearchParams(parametrosString);
 
-        
+
 
         recuperarDados();
     };
@@ -416,10 +407,10 @@
                 res.json().then(Download => {
                     console.log(Download)
 
-                    
+
                     downMedida = Download.map((object) => object.bytesRecebidos);
                     plotarGraficoDownload(downMedida);
-                    
+
 
                 })
             }
@@ -476,7 +467,12 @@
                         display: false
                     },
                     Animation: false,
+                    title: {
+                        display: true,
+                        text: 'Download'
+                    }
                 }
+
             }
 
         };
@@ -486,31 +482,31 @@
             config
 
         );
-         setTimeout(() => {
-             atualizarGraficoDownload(document.getElementById('graficoBytesRecebidos').getContext("2d"), data)
-         }, tempoAtualizacao
-        
-         )
+        setTimeout(() => {
+            atualizarGraficoDownload(document.getElementById('graficoBytesRecebidos').getContext("2d"), data)
+        }, tempoAtualizacao
+
+        )
 
     }
 
-     function atualizarGraficoDownload(grafico, dados) {
-         fetch(`/medidas/pegarRegistroDownload?idMaquina=${idMaquina}`).then(function (res) {
-             if (res.ok) {
-                 res.json().then(Download => {
-                     downMedida = Download.map((object) => object.bytesRecebidos);
-                     dados.datasets[0].data = downMedida
-                     window.graficoBytesRecebidos.update();
+    function atualizarGraficoDownload(grafico, dados) {
+        fetch(`/medidas/pegarRegistroDownload?idMaquina=${idMaquina}`).then(function (res) {
+            if (res.ok) {
+                res.json().then(Download => {
+                    downMedida = Download.map((object) => object.bytesRecebidos);
+                    dados.datasets[0].data = downMedida
+                    window.graficoBytesRecebidos.update();
 
-                     proximaAtualizacao = setTimeout(() => {
-                         atualizarGraficoDownload(grafico, dados);
-                     }, tempoAtualizacao)
+                    proximaAtualizacao = setTimeout(() => {
+                        atualizarGraficoDownload(grafico, dados);
+                    }, tempoAtualizacao)
 
-                 })
-             }
-         })
-          
-     }
+                })
+            }
+        })
+
+    }
     function plotarGraficoUpload(upMedida) {
         const labels = [
             '',
@@ -547,6 +543,10 @@
                         display: false
                     },
                     Animation: false,
+                    title: {
+                        display: true,
+                        text: 'Download'
+                    }
                 },
             }
 
@@ -557,34 +557,34 @@
             config
 
         );
-         setTimeout(() => {
-             atualizarGraficoUpload(document.getElementById('graficoBytesEnviados').getContext("2d"), data)
-         }, tempoAtualizacao
-         
-         )
+        setTimeout(() => {
+            atualizarGraficoUpload(document.getElementById('graficoBytesEnviados').getContext("2d"), data)
+        }, tempoAtualizacao
+
+        )
 
     }
 
-     function atualizarGraficoUpload(grafico, dados) {
-         fetch(`/medidas/pegarRegistroUpload?idMaquina=${idMaquina}`).then(function (res) {
-             if (res.ok) {
-                 res.json().then(Upload => {
+    function atualizarGraficoUpload(grafico, dados) {
+        fetch(`/medidas/pegarRegistroUpload?idMaquina=${idMaquina}`).then(function (res) {
+            if (res.ok) {
+                res.json().then(Upload => {
 
 
 
-                     upMedida = Upload.map((object) => object.bytesEnviados);
-                     dados.datasets[0].data = upMedida
-                     window.graficoBytesEnviados.update();
+                    upMedida = Upload.map((object) => object.bytesEnviados);
+                    dados.datasets[0].data = upMedida
+                    window.graficoBytesEnviados.update();
 
-                     proximaAtualizacao = setTimeout(() => {
-                         atualizarGraficoUpload(grafico, dados)
-                     }, tempoAtualizacao)
+                    proximaAtualizacao = setTimeout(() => {
+                        atualizarGraficoUpload(grafico, dados)
+                    }, tempoAtualizacao)
 
-                 })
-             }
-         })
+                })
+            }
+        })
 
-     }
+    }
 
 
 
