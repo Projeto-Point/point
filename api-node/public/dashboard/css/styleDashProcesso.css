@@ -728,7 +728,11 @@ main section.dashboard-analise {
   gap: 30px;
   grid-template-columns: 1fr 1fr;
   grid-template-rows: 1fr 1fr;
-  grid-template-areas: "g1 g2";
+  grid-template-areas: "g1 g2" "g3 g2";
+}
+
+#wordcloud{
+  grid-area: g3;
 }
 
 main section.dashboard-analise .grafico-processador {
